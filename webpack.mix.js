@@ -11,7 +11,9 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+mix.js('resources/js/jquery.min.js', 'public/js').version();
+mix.js('resources/js/bootstrap.bundle.min.js', 'public/js').version();
+mix.js('resources/js/adminlte.js', 'public/admin/js/').version();
+mix.css('resources/css/adminlte.css', 'public/admin/css/').version();
+mix.css('resources/plugins/fontawesome/css/all.min.css', 'public/admin/plugins/fontawesome/').version();
+mix.css('resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css', 'public/admin/plugins/icheck-bootstrap/').version();
