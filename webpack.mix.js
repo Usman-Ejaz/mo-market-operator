@@ -10,10 +10,19 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
+// Javascript
+mix.js('resources/js/bootstrap.bundle.min.js', 'public/js');
+mix.js('resources/js/adminlte.js', 'public/admin/js/');
+mix.js('resources/js/dashboard.js', 'public/admin/js');
+mix.js('resources/plugins/chart.js/Chart.min.js', 'public/admin/plugins/chartjs/chart.min.js');
+mix.js('resources/js/demo.js', 'public/admin/demo.min.js');
 
-mix.js('resources/js/jquery.min.js', 'public/js').version();
-mix.js('resources/js/bootstrap.bundle.min.js', 'public/js').version();
-mix.js('resources/js/adminlte.js', 'public/admin/js/').version();
-mix.css('resources/css/adminlte.css', 'public/admin/css/').version();
-mix.css('resources/plugins/fontawesome/css/all.min.css', 'public/admin/plugins/fontawesome/').version();
-mix.css('resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css', 'public/admin/plugins/icheck-bootstrap/').version();
+// Css
+mix.css('resources/css/adminlte.css', 'public/admin/css/');
+mix.css('resources/plugins/fontawesome/css/all.min.css', 'public/admin/plugins/fontawesome/');
+mix.css('resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css', 'public/admin/plugins/icheck-bootstrap/');
+
+
+if (mix.inProduction()) {
+    mix.version();
+}

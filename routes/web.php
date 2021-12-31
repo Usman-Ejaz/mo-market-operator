@@ -18,7 +18,11 @@ Route::get('/', function () {
 });
 
 Route::get('/admin/dashboard', function () {
-    return view('dashboard');
+    return view('admin/dashboard/index');
 })->middleware(['auth'])->name('admin.dashboard');
+
+
+
+//Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
 
 require __DIR__.'/auth.php';

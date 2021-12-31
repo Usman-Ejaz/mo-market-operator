@@ -12,22 +12,22 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         
         <!-- Icons -->
-        <link rel="stylesheet" href="{{ asset('admin/plugins/fontawesome/all.min.css') }}">
+        <link rel="stylesheet" href="{{ mix('admin/plugins/fontawesome/all.min.css') }}">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ mix('admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
         
         <!-- Theme style -->
-        <link rel="stylesheet" href="{{ asset('admin/css/adminlte.css') }}">
+        <link rel="stylesheet" href="{{ mix('admin/css/adminlte.css') }}">
 
     </head>
     <body class="hold-transition login-page">
         @yield('content')
 
         <!-- Scripts -->
-        <script src="{{ asset('js/jquery.min.js') }}" defer></script>
-        <script src="{{ asset('js/bootstrap.bundle.min.js') }}" defer></script>
-        <script src="{{ asset('admin/js/adminlte.js') }}" defer></script>
+        <script src="{{ mix('js/jquery.min.js') }}" defer></script>
+        <script src="{{ mix('js/bootstrap.bundle.min.js') }}" defer></script>
+        <script src="{{ mix('admin/js/adminlte.js') }}" defer></script>
 
     </body>
 </html>
