@@ -2,8 +2,10 @@
     "/js/bootstrap.bundle.min.js": "/js/bootstrap.bundle.min.js",
     "/admin/js/adminlte.js": "/admin/js/adminlte.js",
     "/admin/js/dashboard.js": "/admin/js/dashboard.js",
-    "/admin/plugins/chartjs/chart.min.js": "/admin/plugins/chartjs/chart.min.js",
     "/admin/demo.min.js": "/admin/demo.min.js",
+    "/admin/plugins/chartjs/chart.min.js": "/admin/plugins/chartjs/chart.min.js",
+    "/admin/plugins/daterangepicker/daterangepicker.min.js": "/admin/plugins/daterangepicker/daterangepicker.min.js",
+    "/admin/plugins/daterangepicker/daterangepicker.css": "/admin/plugins/daterangepicker/daterangepicker.css",
     "/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css": "/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css",
     "/admin/plugins/fontawesome/all.min.css": "/admin/plugins/fontawesome/all.min.css",
     "/admin/css/adminlte.css": "/admin/css/adminlte.css"

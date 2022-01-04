@@ -1,4 +1,11 @@
 @extends('admin.layouts.app')
+@section('header', 'Dashboard')
+@section('breadcrumbs')
+<ol class="breadcrumb float-sm-right">
+  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item active">Dashboard</li>
+</ol>
+@endsection
 
 @section('content')
   <div class="container-fluid">
@@ -252,8 +259,8 @@
 @endsection
 
 
-@section('optional-scripts')
+@push('optional-scripts')
     <script src="{{ mix('admin/plugins/chartjs/chart.min.js') }}" defer></script>
     <script src="{{ mix('admin/demo.min.js') }}" defer></script>
     <script src="{{ mix('admin/js/dashboard.js') }}" defer></script>
-@endsection
+@endpush

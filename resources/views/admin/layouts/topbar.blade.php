@@ -4,10 +4,16 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="../../index3.html" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="#" class="nav-link">Contact</a>
+      </li>
     </ul>
 
     <!-- Navbar Search -->
-    <div class="form-inline col-lg-8">
+    <!--div class="form-inline col-lg-8">
       <div class="input-group col-lg-12" data-widget="sidebar-search">
         <input class="form-control form-control-sidebar col-lg-12" type="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
@@ -16,8 +22,8 @@
           </button>
         </div>
       </div><div class="sidebar-search-results"><div class="list-group"><a href="#" class="list-group-item"><div class="search-title"><strong class="text-light"></strong>N<strong class="text-light"></strong>o<strong class="text-light"></strong> <strong class="text-light"></strong>e<strong class="text-light"></strong>l<strong class="text-light"></strong>e<strong class="text-light"></strong>m<strong class="text-light"></strong>e<strong class="text-light"></strong>n<strong class="text-light"></strong>t<strong class="text-light"></strong> <strong class="text-light"></strong>f<strong class="text-light"></strong>o<strong class="text-light"></strong>u<strong class="text-light"></strong>n<strong class="text-light"></strong>d<strong class="text-light"></strong>!<strong class="text-light"></strong></div><div class="search-path"></div></a></div></div>
-    </div>
-    
+    </div-->
+
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">

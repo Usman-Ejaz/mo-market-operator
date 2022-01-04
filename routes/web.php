@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\NewsCategory;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +17,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+    //NewsCategory::factory()->create();
 });
+
 
 Route::get('/admin/dashboard', function () {
     return view('admin/dashboard/index');
 })->middleware(['auth'])->name('admin.dashboard');
 
 
+// Route::prefix('admin')->name('admin.')->group(function () {
+//     Route::resource('news', NewsController::class)->middleware(['auth']);
+// });
+
+Route::resource('/admin/news', NewsController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
 
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
 
