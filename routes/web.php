@@ -17,6 +17,7 @@ use App\Http\Controllers\NewsController;
 
 Route::get('/', function () {
     return view('welcome');
+    //App\Models\News::factory()->count(5)->create();
     //NewsCategory::factory()->create();
 });
 

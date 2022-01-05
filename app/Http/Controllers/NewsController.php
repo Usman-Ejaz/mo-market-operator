@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Models\NewsCategory;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use DataTables;
+
 
 class NewsController extends Controller
 {
@@ -15,6 +18,22 @@ class NewsController extends Controller
      */
     public function index()
     {
+
+        if ( request()->ajax()) {
+            $data = News::select('*');
+            dd($data);
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+     
+                           $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+    
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        
         return view('admin.news.index');
     }
 
@@ -38,7 +57,8 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        News::create($this->validateRequest());
+        $news = new News();
+        News::create($this->validateRequest($news));
 
         return redirect()->route('admin.news.index');
     }
@@ -75,8 +95,10 @@ class NewsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, News $news)
-    {
-        $test = $news->update($this->validateRequest($news));
+    {        
+        $news->update($this->validateRequest($news));
+
+        $this->storeImage($news);
 
         return redirect()->route('admin.news.show', $news->id);
     }
@@ -95,18 +117,34 @@ class NewsController extends Controller
     }
 
     private function validateRequest($news){
-        return request()->validate([
+        
+        return tap( request()->validate([
             'title' => 'required|min:3',
             'slug' => 'required|unique:news,slug,'.$news->id,
             'description' => 'required|min:10',
             'keywords' => '',
-            'image' => '',
-            //'start_datetime' => 'date_format:d-m-Y H:i:s',
-            //'end_datetime' => 'date_format:d-m-Y H:i:s',
-            'start_datetime' => '',
-            'end_datetime' => '',
+            'image' => 'nullable',
+            'start_datetime' => 'nullable|date_format:d/m/Y H:i:s',
+            'end_datetime' => 'nullable|date_format:d/m/Y H:i:s',
             'newscategory_id' => '',
-            'active' => '',
-        ]);
+            'active' => 'required',
+            'created_by' => '',
+            'modified_by' => ''
+        ]), function(){
+            if( request()->hasFile('image') ){
+                request()->validate([
+                    'image' => 'file|image|max:2000'
+                ]);
+            }
+        });
     }
+
+    private function storeImage($news){
+        if(request()->has('image')){
+            $news->update([
+                'image' => request()->image->store('uploads', 'public')
+            ]);
+        }
+    }
+
 }

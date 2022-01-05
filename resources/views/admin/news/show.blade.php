@@ -93,6 +93,16 @@
                   </div>
                 </div>  
 
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Image</label>
+                      <img src="{{ asset('storage/'.$news->image ) }}">
+                    </div>
+                  </div>
+                </div>
+
             </div>
             </div>
           </div>

@@ -19,7 +19,7 @@ class CreateNewsTable extends Migration
             $table->string('slug', 100)->unique();
             $table->text('description')->nullable();
             $table->mediumText('keywords')->nullable();
-            $table->mediumText('image')->nullable();
+            $table->string('image')->nullable();
             $table->timestamp('start_datetime')->nullable();
             $table->timestamp('end_datetime')->nullable();
             $table->unsignedBigInteger('newscategory_id')->nullable();
