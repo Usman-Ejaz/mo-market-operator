@@ -57,7 +57,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
     <script src="{{ mix('js/bootstrap.bundle.min.js') }}" defer></script>
     <script src="{{ mix('admin/js/adminlte.js') }}" defer></script>
-
+    
 
     @stack('optional-scripts')
     

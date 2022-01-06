@@ -45,10 +45,10 @@
     </div>
     @endif
 
-    @if( $news->active )
+    @if( isset($news->active) && \Route::current()->getName() == 'admin.news.edit' )
     <div class="col-md-12">
       <label for="endtime">Status:</label>
-      <span>{{ ($news->active == 'Active') ? 'Published' : '' }}</span>
+      <span>{{ ($news->active == 'Active') ? 'Published' : 'Draft' }}</span>
     </div>
     @endif
 

@@ -10,61 +10,66 @@
 @section('content')
   <div class="container-fluid">
 
-              <form method="POST" action="{{ url('/admin/news/'.$news->id)}}" enctype="multipart/form-data">
-                <div class="row">
-                  <div class="col-md-9">
-                    <div class="card card-primary">
-                      <div class="card-header">
-                        <h3 class="card-title">Editing News - {{ $news->title }}</h3>
-                      </div>
-                      <!-- /.card-header -->
-                      <!-- form start -->
-                      @method('PATCH')
-                      @include('admin.news.form')
+      <div class="flash-message">
+        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+          @if(Session::has('alert-' . $msg))
 
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="card card-primary">
-                      <div class="card-header">
-                        <h3 class="card-title">Schedule Content</h3>
-                      </div>
-                      
-                        @include('admin.news.publishform')
-                      
-                    </div>
+          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+          @endif
+        @endforeach
+      </div>
 
+      <form method="POST" action="{{ url('/admin/news/'.$news->id)}}" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Editing - {{ $news->title }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              @method('PATCH')
+              @include('admin.news.form')
 
-                    <!-- /.card-body -->
-                    <div class="float-right">
-
-                      <input type="hidden" name="active" id="status">
-
-                      @if($news->active == 'Active')
-                        <button type="submit" class="btn btn-primary publish_button">Update</button>
-                        <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
-                      @elseif($news->active == 'Draft')
-                        <button type="submit" class="btn btn-primary draft_button">Update</button>
-                        <button type="submit" class="btn btn-success publish_button">Publish</button>
-                      @else
-                        <button type="submit" class="btn btn-primary draft_button">Save</button>
-                        <button type="submit" class="btn btn-success publish_button">Publish</button>
-                      @endif
-
-                    </div>
-
-
-                  </div>
-                </div>
-              </form>
-              
-            
             </div>
           </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
+          <div class="col-md-3">
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Schedule Content</h3>
+              </div>
+              
+                @include('admin.news.publishform')
+              
+            </div>
 
+            <!-- /.card-body -->
+            <div class="float-right">
+
+              <input type="hidden" name="active" id="status">
+
+              @if( \Route::current()->getName() == 'admin.news.edit' )
+
+                  @if($news->active == 'Active')
+                    <button type="submit" class="btn btn-primary publish_button">Update</button>
+                    <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
+                  @elseif($news->active == 'Draft')
+                    <button type="submit" class="btn btn-primary draft_button">Update</button>
+                    <button type="submit" class="btn btn-success publish_button">Publish</button>
+                  @endif
+              @else 
+                    <button type="submit" class="btn btn-primary draft_button">Save</button>
+                    <button type="submit" class="btn btn-success publish_button">Publish</button>
+              @endif
+
+            </div>
+
+
+          </div>
+        </div>
+      </form>
+      
+         
     </div>   
 @endsection
 
@@ -85,7 +90,7 @@
 
     //Date and time picker
     $(document).ready(function(){
-     // $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
+      // $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
 
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
@@ -96,9 +101,15 @@
         $('#status').val("1");  
       });
 
-    });
+      // Slug generator
+      $("#title").keyup(function() {
+        var Text = $(this).val();
+        Text = Text.toLowerCase();
+        Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
+        $("#slug").val(Text);        
+      });        
 
+    });
   </script>
-  
 
 @endpush

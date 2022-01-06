@@ -23,7 +23,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="{{ Route('admin.dashboard') }}" class="nav-link {{ Request()->is('admin/dashboard') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -32,13 +32,14 @@
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link {{ Request()->is('admin/users') ? 'active' : '' }}">
               <i class="nav-icon fa fa-users"></i>
               <p>Users</p>
             </a>
           </li>
+          
           <li class="nav-item">
-            <a href="{{ Route('admin.news.index') }}" class="nav-link">
+            <a href="{{ Route('admin.news.index') }}" class="nav-link {{ Request()->is('admin/news/*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-newspaper"></i>
               <p>
                 News

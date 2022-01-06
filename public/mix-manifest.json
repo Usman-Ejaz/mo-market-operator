@@ -5,6 +5,8 @@
     "/admin/demo.min.js": "/admin/demo.min.js",
     "/admin/plugins/chartjs/chart.min.js": "/admin/plugins/chartjs/chart.min.js",
     "/admin/plugins/daterangepicker/daterangepicker.min.js": "/admin/plugins/daterangepicker/daterangepicker.min.js",
+    "/admin/plugins/sweetalert2/sweetalert2.min.js": "/admin/plugins/sweetalert2/sweetalert2.min.js",
+    "/admin/plugins/sweetalert2/sweetalert2.min.css": "/admin/plugins/sweetalert2/sweetalert2.min.css",
     "/admin/plugins/daterangepicker/daterangepicker.css": "/admin/plugins/daterangepicker/daterangepicker.css",
     "/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css": "/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css",
     "/admin/plugins/fontawesome/all.min.css": "/admin/plugins/fontawesome/all.min.css",

@@ -31,9 +31,14 @@ Route::get('/admin/dashboard', function () {
 //     Route::resource('news', NewsController::class)->middleware(['auth']);
 // });
 
+Route::get('admin/news/list', [NewsController::class, 'getNews'])->name('admin.news.list')->middleware(['auth']);
+
 Route::resource('/admin/news', NewsController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);
+
+
+
 
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
 

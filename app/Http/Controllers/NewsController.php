@@ -18,22 +18,6 @@ class NewsController extends Controller
      */
     public function index()
     {
-
-        if ( request()->ajax()) {
-            $data = News::select('*');
-            dd($data);
-            return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
-     
-                           $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-    
-                            return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-        }
-        
         return view('admin.news.index');
     }
 
@@ -60,6 +44,9 @@ class NewsController extends Controller
         $news = new News();
         News::create($this->validateRequest($news));
 
+        $this->storeImage($news);
+
+        $request->session()->flash('alert-success', 'News was successful added!');
         return redirect()->route('admin.news.index');
     }
 
@@ -100,7 +87,8 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
-        return redirect()->route('admin.news.show', $news->id);
+        $request->session()->flash('alert-success', 'News was successful updated!');
+        return redirect()->route('admin.news.edit', $news->id);
     }
 
     /**
@@ -114,6 +102,44 @@ class NewsController extends Controller
         $news->delete();
 
         return redirect()->route('admin.news.index');
+    }
+
+    public function getNews(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = News::with('newscategory')->latest()->get();
+
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('title', function ($row) {
+                    return ($row->title) ? ( (strlen($row->title) > 50) ? substr($row->title,0,50).'...' : $row->title ) : '';
+                })
+                ->addColumn('slug', function ($row) {
+                    return ($row->slug) ? ( (strlen($row->slug) > 50) ? substr($row->slug,0,50).'...' : $row->slug ) : '';
+                })
+                ->addColumn('newscategory', function ($row) {
+                    return ($row->newsCategory) ? $row->newsCategory->name : '';
+                })
+                ->addColumn('created_at', function ($row) {
+                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                })
+                ->addColumn('action', function ($row) {
+                    return '
+                        <a href="'. route('admin.news.edit',$row->id) .'" class="btn btn-primary">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                            '.csrf_field().'
+                            '.method_field("DELETE").'
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')">
+                                    <i class="fas fa-trash"></i>
+                            </button>
+                        </form>';
+                })
+                ->rawColumns(['action'])                
+                ->make(true);
+        }
     }
 
     private function validateRequest($news){
@@ -140,6 +166,7 @@ class NewsController extends Controller
     }
 
     private function storeImage($news){
+
         if(request()->has('image')){
             $news->update([
                 'image' => request()->image->store('uploads', 'public')

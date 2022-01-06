@@ -25,7 +25,7 @@ class News extends Model
 
     /********* Getters ***********/
     public function getActiveAttribute($attribute){
-        return $attribute ? $this->activeOptions()[$attribute] : '';
+        return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
 
     public function getStartDatetimeAttribute($attribute){
@@ -46,6 +46,16 @@ class News extends Model
     public function setEndDatetimeAttribute($attribute){
 
         $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat('d/m/Y H:i:s', $attribute) : NULL;       
+    }
+
+    public function setKeywordsAttribute($attribute){
+
+        $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;       
+    }
+
+    public function setSlugAttribute($attribute){
+
+        $this->attributes['slug'] = ($attribute) ? trim($attribute, '- ') : NULL;       
     }
     
     public function newscategory(){
