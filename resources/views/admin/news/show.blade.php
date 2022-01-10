@@ -42,7 +42,7 @@
                       <span>{{$news->slug}}</span>
                     </div>
                   </div>
-                </div>  
+                </div>
 
                 <div class="row">
                   <div class="col-md-12">
@@ -52,8 +52,8 @@
                       <div>{{$news->description}}</div>
                     </div>
                   </div>
-                </div>  
-              
+                </div>
+
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
@@ -64,10 +64,10 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Category</label>
-                      <span>{{ $news->newscategory->name ?? 'None' }}</span>
+                      <span>{{ $news->news_category ?? 'None' }}</span>
                     </div>
                   </div>
-                </div>  
+                </div>
 
                 <div class="row">
                   <div class="col-md-6">
@@ -82,7 +82,7 @@
                       <span>{{$news->end_datetime}}</span>
                     </div>
                   </div>
-                </div>  
+                </div>
 
                 <div class="row">
                   <div class="col-md-6">
@@ -91,14 +91,18 @@
                       <span>{{$news->active}}</span>
                     </div>
                   </div>
-                </div>  
+                </div>
 
 
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Image</label>
-                      <img src="{{ asset('storage/'.$news->image ) }}">
+                        @if( isset($news->image) )
+                            <img src="{{ asset('storage/'.$news->image ) }}" class="img-fluid">
+                        @else
+                            <span>None</span>
+                        @endif
                     </div>
                   </div>
                 </div>
@@ -110,7 +114,7 @@
         </div>
         <!-- /.container-fluid -->
 
-    </div>   
+    </div>
 @endsection
 
 @push('optional-styles')
@@ -134,6 +138,6 @@
     });
 
   </script>
-  
+
 
 @endpush
