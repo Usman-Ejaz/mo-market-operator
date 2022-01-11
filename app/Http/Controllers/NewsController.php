@@ -170,6 +170,8 @@ class NewsController extends Controller
                 'image' => request()->image->store('uploads', 'public'),
             ]);
 
+            //Storage::disk('public')->putFileAs
+
 //            $image = Image::make(public_path('storage/' . $news->image))->fit(300, 300, null, 'top-left');
 //            $image->save();
         }

@@ -43,7 +43,7 @@
             <option value="{{$categoryId}}" {{ ($news->news_category === $categoryValue) ? 'selected' : '' }}>{{$categoryValue}}</option>
           @endforeach
         </select>
-        <small class="form-text text-danger">{{ $errors->first('category') }} </small>
+        <small class="form-text text-danger">{{ $errors->first('news_category') }} </small>
       </div>
     </div>
     <div class="col-md-6">
@@ -52,7 +52,7 @@
             <input class="form-control" type="file" id="news_image" name="image">
             <small class="form-text text-danger">{{ $errors->first('image') }} </small>
             @if( isset($news->image) )
-                <small class="text-primary imageExists"><a href="{{ asset('storage/'.$news->image) }}" target="_blank" class="text-primary">View Image </a> <span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
+                <a class="text-primary imageExists"><a href="{{ asset('storage/'.$news->image) }}" target="_blank"><img src="{{ asset('storage/'.$news->image) }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
             @endif
         </div>
     </div>
