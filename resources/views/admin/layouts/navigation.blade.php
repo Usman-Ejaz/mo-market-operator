@@ -57,7 +57,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/mailbox/mailbox.html" class="nav-link">
+                <a href="{{ Route('admin.jobs.index') }}" class="nav-link {{ Request()->is('admin/jobs/*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jobs</p>
                 </a>

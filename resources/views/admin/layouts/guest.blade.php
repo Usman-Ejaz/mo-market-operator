@@ -10,15 +10,19 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-        
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
         <!-- Icons -->
-        <link rel="stylesheet" href="{{ mix('admin/plugins/fontawesome/all.min.css') }}">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="{{asset('admin/css/all.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin/css/ionicons.min.css')}}">
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{asset('admin/css/icheck-bootstrap.min.css')}}">
         
         <!-- Theme style -->
-        <link rel="stylesheet" href="{{ mix('admin/css/adminlte.css') }}">
+        <link rel="stylesheet" href="{{asset('admin/css/adminlte.min.css')}}">
 
     </head>
     <body class="hold-transition login-page">
@@ -26,8 +30,7 @@
 
         <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
-        <script src="{{ mix('js/bootstrap.bundle.min.js') }}" defer></script>
-        <script src="{{ mix('admin/js/adminlte.js') }}" defer></script>
-
+        <script src="{{asset('admin/js/bootstrap.bundle.min.js')}}" defer></script>
+        <script src="{{asset('admin/js/adminlte.js')}}" defer></script>
     </body>
 </html>

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\JobController;
 use App\Models\NewsCategory;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
@@ -37,9 +39,20 @@ Route::resource('/admin/news', NewsController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);
 
+// Routes for Job Module
+Route::get('admin/jobs/list', [JobController::class, 'list'])->name('admin.jobs.list')->middleware(['auth']);
 
+Route::resource('/admin/jobs', JobController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
 
+// Routes for Application Module
+Route::get('admin/jobs/{job}/applications', [JobController::class, 'getJobApplications'])->name('admin.job.applications')->middleware(['auth']);
+Route::get('admin/jobs/{job}/applications/list', [JobController::class, 'getApplicationsList'])->name('admin.job.applications.list')->middleware(['auth']);
+Route::get('admin/jobs/{job}/applications/export', [JobController::class, 'exportApplicationsList'])->name('admin.job.applications.list.export')->middleware(['auth']);
 
+Route::get('admin/applications/{application}', [ApplicationController::class, 'show'])->name('admin.job.application.detail')->middleware(['auth']);
+Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy'])->name('admin.job.application.destroy')->middleware(['auth']);
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
 
 require __DIR__.'/auth.php';
