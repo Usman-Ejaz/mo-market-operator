@@ -99,8 +99,8 @@
     
     //Date and time picker
     $(document).ready(function(){
-      // $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
-
+      $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
+      $('#endtime').datetimepicker({ icons: { time: 'far fa-clock' } });
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
