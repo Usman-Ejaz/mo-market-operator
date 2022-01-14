@@ -3,11 +3,9 @@
   Viewing Applications Of - {{ $job->title }}
 @endsection
 @section('breadcrumbs')
-<ol class="breadcrumb float-sm-right">
   <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item active">Job</li>
+  <li class="breadcrumb-item">Job</li>
   <li class="breadcrumb-item active">Applications</li>
-</ol>
 @endsection
 @section('addButton')
   <a role="button" class="btn btn-primary float-right" href="{{ route('admin.job.applications.list.export',$job->id) }}">Export Applications</a>

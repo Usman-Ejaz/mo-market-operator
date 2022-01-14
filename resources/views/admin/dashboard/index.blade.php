@@ -260,7 +260,7 @@
 
 
 @push('optional-scripts')
-    <script src="{{ mix('admin/plugins/chartjs/chart.min.js') }}" defer></script>
-    <script src="{{ mix('admin/demo.min.js') }}" defer></script>
-    <script src="{{ mix('admin/js/dashboard.js') }}" defer></script>
+    <script src="{{asset('admin/js/Chart.min.js')}}" defer></script>
+    <script src="{{asset('admin/js/demo.js')}}" defer></script>
+    <script src="{{asset('admin/js/dashboard3.js')}}" defer></script>
 @endpush

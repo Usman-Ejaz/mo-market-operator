@@ -41,7 +41,7 @@ Route::resource('/admin/news', NewsController::class, [
 
 // Routes for Job Module
 Route::get('admin/jobs/list', [JobController::class, 'list'])->name('admin.jobs.list')->middleware(['auth']);
-
+Route::post('admin/job/deleteImage', [NewsController::class, 'deleteImage'])->name('admin.job.deleteImage')->middleware(['auth']);
 Route::resource('/admin/jobs', JobController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);

@@ -6,6 +6,7 @@ use App\Models\Job;
 use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class JobController extends Controller
 {
@@ -133,17 +134,17 @@ class JobController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     return '
-                        <a href="'. route('admin.job.applications',$row->id) .'" class="btn btn-secondary">
+                        <a href="'. route('admin.job.applications',$row->id) .'" class="btn btn-secondary" title="applications">
                             <i class="fas fa-print"></i>
                         </a>
-                        <a href="'. route('admin.jobs.edit',$row->id) .'" class="btn btn-primary">
+                        <a href="'. route('admin.jobs.edit',$row->id) .'" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                         <form action="'. route('admin.jobs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
@@ -187,14 +188,14 @@ class JobController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     return '
-                        <a href="'. route('admin.job.application.detail',$row->id) .'" class="btn btn-primary">
+                        <a href="'. route('admin.job.application.detail',$row->id) .'" class="btn btn-primary" title="detail">
                             <i class="fas fa-eye"></i>
                         </a>
                         <form action="'. route('admin.job.application.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
@@ -254,8 +255,8 @@ class JobController extends Controller
             'experience' => 'required',
             'total_positions' => 'required',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:d/m/Y H:i:s',
-            'end_datetime' => 'nullable|date_format:d/m/Y H:i:s',
+            'start_datetime' => 'nullable|date_format:d/m/Y h:i A',
+            'end_datetime' => 'nullable|date_format:d/m/Y h:i A',
             'active' => 'nullable',
             'enable' => 'nullable|boolean',
             'created_by' => '',
@@ -278,4 +279,22 @@ class JobController extends Controller
             ]);
         }
     }
+
+    public function deleteImage(Request $request){
+        if ($request->ajax()) {
+            if( isset($request->product_id) ){
+                $job = Job::find($request->product_id);
+
+                if( Storage::disk('public')->delete($job->image) ){
+                    $job->image = null;
+                    $job->update();
+
+                    return response()->json(['success' => 'true', 'message' => 'image deleted successfully'], 200);
+                }
+            }
+
+        }
+
+    }
+
 }

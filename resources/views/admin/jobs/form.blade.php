@@ -54,12 +54,12 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
-        <label for="image">Job Image</label>
-        <div class="input-group">
-            <input type="file" class="custom-file-input" id="image"  name="image">
-            <label class="custom-file-label" for="image">Choose file</label>
+          <label for="image">Job Image</label>
+            <input type="file" class="form-control" id="image"  name="image">
             <small class="form-text text-danger">{{ $errors->first('image') }} </small>
-        </div>
+            @if( isset($job->image) )
+                <a class="text-primary imageExists"><a href="{{ asset('storage/'.$job->image) }}" target="_blank"><img src="{{ asset('storage/'.$job->image) }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
+            @endif
       </div>
     </div>
   </div>

@@ -1,10 +1,8 @@
 @extends('admin.layouts.app')
 @section('header', 'Jobs')
 @section('breadcrumbs')
-<ol class="breadcrumb float-sm-right">
   <li class="breadcrumb-item"><a href="#">Home</a></li>
   <li class="breadcrumb-item active">Jobs</li>
-</ol>
 @endsection
 
 @section('addButton')

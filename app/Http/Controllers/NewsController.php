@@ -125,14 +125,14 @@ class NewsController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     return '
-                        <a href="'. route('admin.news.edit',$row->id) .'" class="btn btn-primary">
+                        <a href="'. route('admin.news.edit',$row->id) .'" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                         <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

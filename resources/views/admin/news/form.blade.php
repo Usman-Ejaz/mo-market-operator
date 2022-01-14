@@ -37,7 +37,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Category</label>
-        <select class="custom-select" name="newscategory_id">
+        <select class="custom-select" name="newscategory_id" id="newscategory_id">
           <option value="">Please select an option</option>
           @foreach($categories as $category)
             <option value="{{$category->id}}" {{ $news->newscategory_id == $category->id ? 'selected' : ''}} >{{$category->name}}</option>

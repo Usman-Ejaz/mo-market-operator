@@ -1,11 +1,9 @@
 @extends('admin.layouts.app')
 @section('header', 'Applications')
 @section('breadcrumbs')
-<ol class="breadcrumb float-sm-right">
   <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item active">Jobs</li>
-  <li class="breadcrumb-item active">Application</li>
-</ol>
+  <li class="breadcrumb-item">Application</li>
+  <li class="breadcrumb-item active">Details</li>
 @endsection
 @section('content')
   <div class="container-fluid">
