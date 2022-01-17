@@ -15,7 +15,7 @@
                   <div class="col-md-9">
                     <div class="card card-primary">
                       <div class="card-header">
-                        <h3 class="card-title">Editing News - {{ $news->title }}</h3>
+                        <h3 class="card-title">Create News</h3>
                       </div>
                       <!-- /.card-header -->
                       <!-- form start -->
@@ -44,7 +44,7 @@
                             <button type="submit" class="btn btn-primary draft_button">Update</button>
                             <button type="submit" class="btn btn-success publish_button">Publish</button>
                           @endif
-                      @else 
+                      @else
                             <button type="submit" class="btn btn-primary draft_button">Save</button>
                             <button type="submit" class="btn btn-success publish_button">Publish</button>
                       @endif
@@ -54,20 +54,20 @@
                   </div>
                 </div>
               </form>
-              
-            
+
+
             </div>
           </div>
           <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
 
-    </div>   
+    </div>
 @endsection
 
 
 @push('optional-styles')
- <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">  
+ <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
 
   <style>
   .my-error-class {
@@ -75,7 +75,7 @@
   }
   .my-valid-class {
     color:#00CC00; /* green */
-  } 
+  }
   </style>
 @endpush
 
@@ -104,7 +104,7 @@
       });
 
       $('.publish_button').click(function(e) {
-        $('#status').val("1");  
+        $('#status').val("1");
       });
 
       // Slug generator
@@ -112,8 +112,9 @@
         var Text = $(this).val();
         Text = Text.toLowerCase();
         Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-        $("#slug").val(Text);        
+        $("#slug").val(Text);
       });
+
 
       $('#create-news-form').validate({
         errorElement: 'span',
@@ -186,8 +187,8 @@
           }
         }
       });
-      
+
     });
   </script>
-  
+
 @endpush

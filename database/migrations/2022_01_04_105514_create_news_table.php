@@ -22,7 +22,7 @@ class CreateNewsTable extends Migration
             $table->string('image')->nullable();
             $table->timestamp('start_datetime')->nullable();
             $table->timestamp('end_datetime')->nullable();
-            $table->unsignedBigInteger('newscategory_id')->nullable();
+            $table->unsignedBigInteger('news_category')->nullable();
             $table->unsignedBigInteger('created_by')->default(0);
             $table->unsignedBigInteger('modified_by')->default(0);
             $table->integer('active')->default(0);

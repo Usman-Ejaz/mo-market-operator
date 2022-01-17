@@ -7,6 +7,7 @@ use App\Models\NewsCategory;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DataTables;
+use Illuminate\Support\Facades\Storage;
 
 
 class NewsController extends Controller
@@ -28,9 +29,8 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $categories = NewsCategory::all();
         $news = new News();
-        return view('admin.news.create', compact('categories', 'news'));
+        return view('admin.news.create', compact('news'));
     }
 
     /**
@@ -42,7 +42,7 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $news = new News();
-        News::create($this->validateRequest($news));
+        $news = News::create( $this->validateRequest($news) );
 
         $this->storeImage($news);
 
@@ -69,9 +69,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        $categories = NewsCategory::all();
-        
-        return view('admin.news.edit', compact('categories', 'news'));
+        return view('admin.news.edit', compact('news'));
     }
 
     /**
@@ -82,7 +80,7 @@ class NewsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, News $news)
-    {        
+    {
         $news->update($this->validateRequest($news));
 
         $this->storeImage($news);
@@ -104,10 +102,10 @@ class NewsController extends Controller
         return redirect()->route('admin.news.index');
     }
 
-    public function getNews(Request $request)
+    public function list(Request $request)
     {
         if ($request->ajax()) {
-            $data = News::with('newscategory')->latest()->get();
+            $data = News::latest()->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -117,8 +115,8 @@ class NewsController extends Controller
                 ->addColumn('slug', function ($row) {
                     return ($row->slug) ? ( (strlen($row->slug) > 50) ? substr($row->slug,0,50).'...' : $row->slug ) : '';
                 })
-                ->addColumn('newscategory', function ($row) {
-                    return ($row->newsCategory) ? $row->newsCategory->name : '';
+                ->addColumn('news_category', function ($row) {
+                    return ($row->news_category) ? $row->news_category : '';
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
@@ -137,22 +135,22 @@ class NewsController extends Controller
                             </button>
                         </form>';
                 })
-                ->rawColumns(['action'])                
+                ->rawColumns(['action'])
                 ->make(true);
         }
     }
 
     private function validateRequest($news){
-        
+
         return tap( request()->validate([
             'title' => 'required|min:3',
             'slug' => 'required|unique:news,slug,'.$news->id,
             'description' => 'required|min:10',
-            'keywords' => '',
+            'keywords' => 'nullable',
             'image' => 'nullable',
             'start_datetime' => 'nullable|date_format:d/m/Y H:i:s',
             'end_datetime' => 'nullable|date_format:d/m/Y H:i:s',
-            'newscategory_id' => '',
+            'news_category' => 'required|integer',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
@@ -167,11 +165,31 @@ class NewsController extends Controller
 
     private function storeImage($news){
 
-        if(request()->has('image')){
+        if (request()->has('image')) {
             $news->update([
-                'image' => request()->image->store('uploads', 'public')
+                'image' => request()->image->store('uploads', 'public'),
             ]);
+
+//            $image = Image::make(public_path('storage/' . $news->image))->fit(300, 300, null, 'top-left');
+//            $image->save();
         }
+    }
+
+    public function deleteImage(Request $request){
+        if ($request->ajax()) {
+            if( isset($request->product_id) ){
+                $news = News::find($request->product_id);
+
+                if( Storage::disk('public')->delete($news->image) ){
+                    $news->image = null;
+                    $news->update();
+
+                    return response()->json(['success' => 'true', 'message' => 'image deleted successfully'], 200);
+                }
+            }
+
+        }
+
     }
 
 }

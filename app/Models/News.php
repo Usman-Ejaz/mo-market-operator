@@ -28,6 +28,10 @@ class News extends Model
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
 
+    public function getNewsCategoryAttribute($attribute){
+        return ( isset($attribute) && isset( $this->newsCategoryOptions()[$attribute] ) ) ? $this->newsCategoryOptions()[$attribute] : '';
+    }
+
     public function getStartDatetimeAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format('d/m/Y H:i:s') : '';
     }
@@ -39,28 +43,31 @@ class News extends Model
 
     /********** Setters *********/
     public function setStartDatetimeAttribute($attribute){
-     
+
         $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat('d/m/Y H:i:s', $attribute) : NULL;
     }
 
     public function setEndDatetimeAttribute($attribute){
 
-        $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat('d/m/Y H:i:s', $attribute) : NULL;       
+        $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat('d/m/Y H:i:s', $attribute) : NULL;
     }
 
     public function setKeywordsAttribute($attribute){
 
-        $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;       
+        $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;
     }
 
     public function setSlugAttribute($attribute){
 
-        $this->attributes['slug'] = ($attribute) ? trim($attribute, '- ') : NULL;       
+        $this->attributes['slug'] = ($attribute) ? trim($attribute, '- ') : NULL;
     }
-    
-    public function newscategory(){
-        
-        return $this->belongsTo(NewsCategory::class);
+
+    public function newsCategoryOptions(){
+        return [
+            0 => 'News',
+            1 => 'Blog',
+            2 => 'Press Release'
+        ];
     }
 
     public function activeOptions(){

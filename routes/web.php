@@ -33,7 +33,8 @@ Route::get('/admin/dashboard', function () {
 //     Route::resource('news', NewsController::class)->middleware(['auth']);
 // });
 
-Route::get('admin/news/list', [NewsController::class, 'getNews'])->name('admin.news.list')->middleware(['auth']);
+Route::get('admin/news/list', [NewsController::class, 'list'])->name('admin.news.list')->middleware(['auth']);
+Route::post('admin/news/deleteImage', [NewsController::class, 'deleteImage'])->name('admin.news.deleteImage')->middleware(['auth']);
 
 Route::resource('/admin/news', NewsController::class, [
     'as' => 'admin'

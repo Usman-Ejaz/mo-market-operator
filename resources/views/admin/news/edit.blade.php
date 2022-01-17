@@ -37,9 +37,9 @@
               <div class="card-header">
                 <h3 class="card-title">Schedule Content</h3>
               </div>
-              
+
                 @include('admin.news.publishform')
-              
+
             </div>
 
             <!-- /.card-body -->
@@ -56,7 +56,7 @@
                     <button type="submit" class="btn btn-primary draft_button">Update</button>
                     <button type="submit" class="btn btn-success publish_button">Publish</button>
                   @endif
-              @else 
+              @else
                     <button type="submit" class="btn btn-primary draft_button">Save</button>
                     <button type="submit" class="btn btn-success publish_button">Publish</button>
               @endif
@@ -67,9 +67,9 @@
           </div>
         </div>
       </form>
-      
-         
-    </div>   
+
+
+    </div>
 @endsection
 
 @push('optional-styles')
@@ -80,7 +80,7 @@
   }
   .my-valid-class {
     color:#00CC00; /* green */
-  } 
+  }
   </style>
 @endpush
 
@@ -108,7 +108,7 @@
       });
 
       $('.publish_button').click(function(e) {
-        $('#status').val("1");  
+        $('#status').val("1");
       });
 
       // Slug generator
@@ -116,9 +116,9 @@
         var Text = $(this).val();
         Text = Text.toLowerCase();
         Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-        $("#slug").val(Text);        
-      });   
-      
+        $("#slug").val(Text);
+      });
+
       $('#update-news-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
@@ -191,7 +191,27 @@
         }
       });
 
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $("#deleteImage").click(function(){
+
+            if (confirm('Are you sure you want to this image?')) {
+                $.ajax({
+                    url: "{{ route('admin.news.deleteImage') }}",
+                    type: 'POST',
+                    data: {_token: "{{ csrf_token() }}", product_id: "{{$news->id}}"},
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if(data.success){
+                            alert('image deleted successfully');
+                            $('.imageExists').remove();
+                        }
+                    }
+                });
+            }
+        });
+
     });
+
   </script>
 
 @endpush
