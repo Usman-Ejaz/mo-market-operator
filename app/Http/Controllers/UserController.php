@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
-use App\Models\NewsCategory;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Carbon\Carbon;
-use DataTables;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 
-
-class NewsController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +18,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        return view('admin.news.index');
+        return view('admin.users.index');
     }
 
     /**
@@ -29,8 +28,8 @@ class NewsController extends Controller
      */
     public function create()
     {
-        $news = new News();
-        return view('admin.news.create', compact('news'));
+        $user = new User();
+        return view('admin.users.create', compact('user'));
     }
 
     /**
@@ -41,92 +40,92 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $news = new News();
-        $news = News::create( $this->validateRequest($news) );
+        $user = new User();
+        $user = User::create( $this->validateRequest($user) );
 
-        $this->storeImage($news);
+        $this->storeImage($user);
 
-        $request->session()->flash('success', 'News was successful added!');
-        return redirect()->route('admin.news.index');
+        $request->session()->flash('success', 'User was successful added!');
+        return redirect()->route('admin.users.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(User $user)
     {
-        return view('admin.news.show', compact('news'));
+        return view('admin.users.show', compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news)
+    public function edit(User $user)
     {
-        return view('admin.news.edit', compact('news'));
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, User $user)
     {
-        $news->update($this->validateRequest($news));
+        $user->update($this->validateRequest($user));
 
-        $this->storeImage($news);
+        $this->storeImage($user);
 
-        $request->session()->flash('success', 'News was successful updated!');
-        return redirect()->route('admin.news.edit', $news->id);
+        $request->session()->flash('success', 'User was successful updated!');
+        return redirect()->route('admin.users.edit', $user->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(User $user)
     {
-        $news->delete();
+        $user->delete();
 
-        return redirect()->route('admin.news.index')->with('success', 'News was successful deleted!');
+        return redirect()->route('admin.users.index')->with('success', 'User was successful deleted!');
     }
 
     public function list(Request $request)
     {
         if ($request->ajax()) {
-            $data = News::latest()->get();
+            $data = User::with(['Role'])->latest()->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 50) ? substr($row->title,0,50).'...' : $row->title ) : '';
+                ->addColumn('role', function ($row) {
+                    return ( isset($row->role->name)) ? $row->role->name : '';
                 })
-                ->addColumn('slug', function ($row) {
-                    return ($row->slug) ? ( (strlen($row->slug) > 50) ? substr($row->slug,0,50).'...' : $row->slug ) : '';
+                ->addColumn('department', function ($row) {
+                    return ($row->department) ? $row->department : '';
                 })
-                ->addColumn('news_category', function ($row) {
-                    return ($row->news_category) ? $row->news_category : '';
+                ->addColumn('status', function ($row) {
+                    return ($row->active) ? $row->active : '';
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
                 })
                 ->addColumn('action', function ($row) {
                     return '
-                        <a href="'. route('admin.news.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                        <a href="'. route('admin.users.edit',$row->id) .'" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
-                        <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                        <form action="'. route('admin.users.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
@@ -140,17 +139,14 @@ class NewsController extends Controller
         }
     }
 
-    private function validateRequest($news){
+    private function validateRequest($user){
 
         return tap( request()->validate([
-            'title' => 'required|min:3',
-            'slug' => 'required|unique:news,slug,'.$news->id,
-            'description' => 'required|min:10',
-            'keywords' => 'nullable',
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users,email,'.$user->id,
+            'role_id' => 'required|min:1',
+            'department' => 'nullable',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:d/m/Y H:i:s',
-            'end_datetime' => 'nullable|date_format:d/m/Y H:i:s',
-            'news_category' => 'required|integer',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
@@ -163,29 +159,31 @@ class NewsController extends Controller
         });
     }
 
-    private function storeImage($news){
+    private function storeImage($user){
 
         if (request()->has('image')) {
             $uploadFile = request()->file('image');
             $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.newsImagePath.internal_path'), $file_name);
+            $uploadFile->storeAs(config('filepaths.userProfileImagePath.internal_path'), $file_name);
 
-            $news->update([
+            $user->update([
                 'image' => $file_name,
             ]);
         }
     }
 
     public function deleteImage(Request $request){
-        if ($request->ajax()) {
-            if( isset($request->news_id) ){
 
-                $news = News::find($request->news_id);
-                $image_path = config('filepaths.newsImagePath.public_path').$news->image;
+        if ($request->ajax()) {
+
+            if( isset($request->user_id) ){
+                $user = User::find($request->user_id);
+
+                $image_path = config('filepaths.userProfileImagePath.public_path').$user->image;
 
                 if( unlink($image_path) ){
-                    $news->image = null;
-                    $news->update();
+                    $user->image = null;
+                    $user->update();
 
                     return response()->json(['success' => 'true', 'message' => 'image deleted successfully'], 200);
                 }
@@ -194,5 +192,4 @@ class NewsController extends Controller
         }
 
     }
-
 }

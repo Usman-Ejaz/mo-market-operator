@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\JobController;
-use App\Models\NewsCategory;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 
@@ -18,9 +19,8 @@ use App\Http\Controllers\NewsController;
 */
 
 Route::get('/', function () {
+
     return view('welcome');
-    //App\Models\News::factory()->count(5)->create();
-    //NewsCategory::factory()->create();
 });
 
 
@@ -28,14 +28,16 @@ Route::get('/admin/dashboard', function () {
     return view('admin/dashboard/index');
 })->middleware(['auth'])->name('admin.dashboard');
 
+// Routes for User Module
+Route::get('admin/users/list', [UserController::class, 'list'])->name('admin.users.list')->middleware(['auth']);
+Route::post('admin/users/deleteImage', [UserController::class, 'deleteImage'])->name('admin.users.deleteImage')->middleware(['auth']);
+Route::resource('/admin/users', UserController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
 
-// Route::prefix('admin')->name('admin.')->group(function () {
-//     Route::resource('news', NewsController::class)->middleware(['auth']);
-// });
-
+// Routes for News Module
 Route::get('admin/news/list', [NewsController::class, 'list'])->name('admin.news.list')->middleware(['auth']);
 Route::post('admin/news/deleteImage', [NewsController::class, 'deleteImage'])->name('admin.news.deleteImage')->middleware(['auth']);
-
 Route::resource('/admin/news', NewsController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);

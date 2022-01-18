@@ -32,12 +32,12 @@
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link {{ Request()->is('admin/users') ? 'active' : '' }}">
+            <a href="{{ Route('admin.users.index') }}" class="nav-link {{ Request()->is('admin/users') ? 'active' : '' }}">
               <i class="nav-icon fa fa-users"></i>
               <p>Users</p>
             </a>
           </li>
-          
+
           <li class="nav-item">
             <a href="{{ Route('admin.news.index') }}" class="nav-link {{ Request()->is('admin/news/*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-newspaper"></i>
@@ -94,7 +94,7 @@
               </li>
             </ul>
           </li>
-         
+
           <li class="nav-header">LABELS</li>
           <li class="nav-item">
             <a href="#" class="nav-link">

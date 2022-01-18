@@ -9,15 +9,6 @@
 @section('content')
   <div class="container-fluid">
 
-      <div class="flash-message">
-        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-          @if(Session::has('alert-' . $msg))
-
-          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-          @endif
-        @endforeach
-      </div>
-
       <form method="POST" action="{{ url('/admin/news/'.$news->id)}}" enctype="multipart/form-data" id="update-news-form">
         <div class="row">
           <div class="col-md-9">
@@ -198,7 +189,7 @@
                 $.ajax({
                     url: "{{ route('admin.news.deleteImage') }}",
                     type: 'POST',
-                    data: {_token: "{{ csrf_token() }}", product_id: "{{$news->id}}"},
+                    data: {_token: "{{ csrf_token() }}", news_id: "{{$news->id}}"},
                     dataType: 'JSON',
                     success: function (data) {
                         if(data.success){

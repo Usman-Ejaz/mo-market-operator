@@ -98,7 +98,7 @@
                     <div class="form-group">
                       <label>Image</label>
                         @if( isset($news->image) )
-                            <img src="{{ asset('storage/'.$news->image ) }}" class="img-fluid">
+                            <img src="{{ asset( config('filepaths.newsImagePath.public_path') .$news->image) }}" class="img-fluid">
                         @else
                             <span>None</span>
                         @endif
