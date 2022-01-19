@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
 use App\Models\NewsCategory;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,13 @@ Route::get('admin/jobs/{job}/applications/export', [JobController::class, 'expor
 
 Route::get('admin/applications/{application}', [ApplicationController::class, 'show'])->name('admin.job.application.detail')->middleware(['auth']);
 Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy'])->name('admin.job.application.destroy')->middleware(['auth']);
+
+// Routes for FAQ Module
+Route::get('admin/faqs/list', [FaqController::class, 'list'])->name('admin.faqs.list')->middleware(['auth']);
+Route::resource('/admin/faqs', FaqController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
+
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
 
 require __DIR__.'/auth.php';

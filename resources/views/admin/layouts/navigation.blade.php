@@ -94,6 +94,15 @@
               </li>
             </ul>
           </li>
+
+          <li class="nav-item">
+            <a href="{{ Route('admin.faqs.index') }}" class="nav-link {{ Request()->is('admin/faqs/*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-question-circle"></i>
+              <p>
+                FAQ
+              </p>
+            </a>
+          </li>
          
           <li class="nav-header">LABELS</li>
           <li class="nav-item">
