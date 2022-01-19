@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,5 +58,12 @@ Route::get('admin/jobs/{job}/applications/export', [JobController::class, 'expor
 Route::get('admin/applications/{application}', [ApplicationController::class, 'show'])->name('admin.job.application.detail')->middleware(['auth']);
 Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy'])->name('admin.job.application.destroy')->middleware(['auth']);
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
+
+// Routes for Page Module
+Route::get('admin/pages/list', [PageController::class, 'list'])->name('admin.pages.list')->middleware(['auth']);
+Route::post('admin/pages/deleteImage', [PageController::class, 'deleteImage'])->name('admin.pages.deleteImage')->middleware(['auth']);
+Route::resource('/admin/pages', PageController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
 
 require __DIR__.'/auth.php';

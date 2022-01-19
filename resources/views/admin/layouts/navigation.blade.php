@@ -95,6 +95,15 @@
             </ul>
           </li>
 
+          <li class="nav-item">
+            <a href="{{ Route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages/*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-pager"></i>
+              <p>
+                Pages
+              </p>
+            </a>
+          </li>
+
           <li class="nav-header">LABELS</li>
           <li class="nav-item">
             <a href="#" class="nav-link">

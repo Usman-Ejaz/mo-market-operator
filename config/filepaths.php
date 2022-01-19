@@ -8,5 +8,9 @@ return [
     'newsImagePath' => [
         'internal_path' => 'public/uploads/news/',
         'public_path' => 'storage/uploads/news/',
+    ],
+    'pageImagePath' => [
+        'internal_path' => 'public/uploads/pages/',
+        'public_path' => 'storage/uploads/pages/',
     ]
 ];
