@@ -61,6 +61,7 @@ Route::delete('admin/applications/{application}', [ApplicationController::class,
 
 // Routes for Page Module
 Route::get('admin/pages/list', [PageController::class, 'list'])->name('admin.pages.list')->middleware(['auth']);
+Route::post('admin/pages/ckeditor', [PageController::class, 'ckeditorPlugin'])->name('admin.pages.ckeditor')->middleware(['auth']);
 Route::post('admin/pages/deleteImage', [PageController::class, 'deleteImage'])->name('admin.pages.deleteImage')->middleware(['auth']);
 Route::resource('/admin/pages', PageController::class, [
     'as' => 'admin'

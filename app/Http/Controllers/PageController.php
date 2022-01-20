@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\DataTables;
 
 class PageController extends Controller
@@ -187,5 +188,47 @@ class PageController extends Controller
 
         }
 
+    }
+
+    public function ckeditorPlugin() {
+        if (request()->has('upload')) {
+            
+            $uploadFile = request()->file('upload');
+
+            $file_name = $uploadFile->hashName();
+
+            $uploadFile->storeAs(config('filepaths.pageImagePath.internal_path'), $file_name);
+
+            $url = URL::to( config('filepaths.pageImagePath.public_path').$file_name);
+
+            $funcNum = request()->input('CKEditorFuncNum');
+            // Optional: instance name (might be used to load a specific configuration file or anything else).
+            $CKEditor = request()->input('CKEditor') ;
+            // Optional: might be used to provide localized messages.
+            $langCode = request()->input('langCode') ;
+         
+            // Usually you will only assign something here if the file could not be uploaded.
+            $message = '';
+            echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '$message');</script>";
+        }
+        // if(isset($_FILES['upload'])){
+        //     // ------ Process your file upload code -------
+        //      $filen = $_FILES['upload']['tmp_name'];
+        //      $con_images = "public/uploads/pages/".$_FILES['upload']['name'];
+        //      move_uploaded_file($filen, $con_images );
+        //      //echo $filen."/////".$con_images;
+        //      //die("umer");
+            //   $url = $con_images;
+          
+            //  $funcNum = $_GET['CKEditorFuncNum'] ;
+            //  // Optional: instance name (might be used to load a specific configuration file or anything else).
+            //  $CKEditor = $_GET['CKEditor'] ;
+            //  // Optional: might be used to provide localized messages.
+            //  $langCode = $_GET['langCode'] ;
+          
+            //  // Usually you will only assign something here if the file could not be uploaded.
+            //  $message = '';
+            //  echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '$message');</script>";
+        //   }
     }
 }

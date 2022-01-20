@@ -79,7 +79,7 @@
 @endpush
 
 @push('optional-scripts')
-  <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
+<script src="{{ asset('admin/plugins/ckeditor/ckeditor.js') }}"></script>
   <script src="{{ asset('admin/js/moment.min.js') }}"></script>
   <script src="{{ asset('admin/js/tempusdominus-bootstrap-4.min.js') }}"></script>
   <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
