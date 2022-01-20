@@ -47,29 +47,15 @@
             </a>
           </li>
 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tasks"></i>
-              <p>
-                Jobs
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
+            <li class="nav-item">
                 <a href="{{ Route('admin.jobs.index') }}" class="nav-link {{ Request()->is('admin/jobs/*') ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Jobs</p>
+                    <i class="nav-icon fa fa-newspaper"></i>
+                    <p>
+                        Jobs
+                    </p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/mailbox/mailbox.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Applications</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+            </li>
+
 
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -92,6 +78,27 @@
                   <p>Applications</p>
                 </a>
               </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>Settings <i class="fas fa-angle-left right"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ Route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles/*') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Roles</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ Route('admin.permissions.index') }}" class="nav-link {{ Request()->is('admin/permissions/*') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Permissions</p>
+                    </a>
+                </li>
             </ul>
           </li>
 

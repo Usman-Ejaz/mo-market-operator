@@ -8,7 +8,7 @@
 
 @section('content')
   <div class="container-fluid">
-              <form method="POST" action="{{ url('/admin/jobs')}}" enctype="multipart/form-data" id="create-job-form">
+              <form method="POST" action="{{ url('/admin/jobs') }}" enctype="multipart/form-data" id="create-job-form">
                 <div class="row">
                   <div class="col-md-9">
                     <div class="card card-primary">
@@ -42,7 +42,7 @@
                             <button type="submit" class="btn btn-primary draft_button">Update</button>
                             <button type="submit" class="btn btn-success publish_button">Publish</button>
                           @endif
-                      @else 
+                      @else
                             <button type="submit" class="btn btn-primary draft_button">Save</button>
                             <button type="submit" class="btn btn-success publish_button">Publish</button>
                       @endif
@@ -52,20 +52,20 @@
                   </div>
                 </div>
               </form>
-              
-            
+
+
             </div>
           </div>
           <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
 
-    </div>   
+    </div>
 @endsection
 
 
 @push('optional-styles')
-  <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">  
+  <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
   <style>
   .my-error-class {
     color:#FF0000;  /* red */
@@ -74,7 +74,7 @@
   }
   .my-valid-class {
     color:#00CC00; /* green */
-  } 
+  }
   </style>
 @endpush
 
@@ -101,7 +101,7 @@
       });
 
       $('.publish_button').click(function(e) {
-        $('#status').val("1");  
+        $('#status').val("1");
       });
 
       $('#create-job-form').validate({
@@ -198,5 +198,5 @@
 
     });
   </script>
-  
+
 @endpush

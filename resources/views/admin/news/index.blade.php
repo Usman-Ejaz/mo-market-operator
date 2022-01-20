@@ -53,16 +53,6 @@
 @push('optional-styles')
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <style>
-
-      ul.pagination li{
-        padding:0px!important;
-        border-color: #fff!important;
-      }
-      ul.pagination li.active{
-        background-color: #fff!important;
-      }
-    </style>
 @endpush
 
 @push('optional-scripts')
