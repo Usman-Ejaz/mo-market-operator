@@ -4,3 +4,11 @@
 .my-valid-class {
     color:#00CC00; /* green */
 }
+
+ul.pagination li {
+    padding:0px!important;
+    border-color: #fff!important;
+}
+ul.pagination li.active {
+    background-color: #fff!important;
+}

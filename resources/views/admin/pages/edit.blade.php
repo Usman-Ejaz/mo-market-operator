@@ -9,7 +9,7 @@
 @section('content')
   <div class="container-fluid">
 
-      <form method="POST" action="{{ url('/admin/page/'.$page->id)}}" enctype="multipart/form-data" id="update-page-form">
+      <form method="POST" action="{{ url('/admin/pages/'.$page->id)}}" enctype="multipart/form-data" id="update-page-form">
         <div class="row">
           <div class="col-md-9">
             <div class="card card-primary">
@@ -65,14 +65,7 @@
 
 @push('optional-styles')
 <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
-  <style>
-  .my-error-class {
-    color:#FF0000;  /* red */
-  }
-  .my-valid-class {
-    color:#00CC00; /* green */
-  }
-  </style>
+<link rel="stylesheet" href="{{ asset('admin/css/app.css') }}">
 @endpush
 
 @push('optional-scripts')
@@ -128,7 +121,7 @@
             maxlength: 2000
           },
           keywords: {
-            required: true,
+            required: false,
             maxlength: 500
           },
           image: {
@@ -158,7 +151,7 @@
             maxlength: "Slug cannot be more than 2000 characters",
           },
           keywords: {
-            required: "Keywords is required",
+            required: "Keywords is not required",
             maxlength: "Keywords cannot be more than 500 characters"
           },
           image: {

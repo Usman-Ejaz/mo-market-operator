@@ -68,15 +68,7 @@
 
 @push('optional-styles')
  <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
-
-  <style>
-  .my-error-class {
-    color:#FF0000;  /* red */
-  }
-  .my-valid-class {
-    color:#00CC00; /* green */
-  }
-  </style>
+ <link rel="stylesheet" href="{{ asset('admin/css/app.css') }}">
 @endpush
 
 @push('optional-scripts')
@@ -134,7 +126,7 @@
             maxlength: 2000
           },
           keywords: {
-            required: true,
+            required: false,
             maxlength: 500
           },
           image: {
@@ -164,7 +156,7 @@
             maxlength: "Slug cannot be more than 2000 characters",
           },
           keywords: {
-            required: "Keywords is required",
+            required: "Keywords is not required",
             maxlength: "Keywords cannot be more than 500 characters"
           },
           image: {
