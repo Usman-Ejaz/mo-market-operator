@@ -9,7 +9,7 @@
 @section('content')
   <div class="container-fluid">
 
-      <form method="POST" action="{{ url('/admin/roles/'.$role->id)}}" enctype="multipart/form-data" id="update-roles-form">
+      <form method="POST" action="{{ route('admin.roles', $role->id) }}" enctype="multipart/form-data" id="update-roles-form">
         <div class="row">
           <div class="col-md-12">
             <div class="card card-primary">
@@ -38,8 +38,8 @@
 @endpush
 
 @push('optional-scripts')
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
     $(document).ready(function(){

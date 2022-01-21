@@ -5,9 +5,7 @@
   <li class="breadcrumb-item active">Permissions</li>
 @endsection
 
-
 @section('content')
-
 <div class="container-fluid">
       <div class="row">
           <div class="col-md-12">
@@ -70,9 +68,11 @@
                         </tbody>
                     </table>
 
-                    <div class="card-footer text-right">
-                        <input type="submit" class="btn btn-primary" value="Update" />
-                    </div>
+                    @if( Auth::user()->role->hasPermission('permissions', 'edit') )
+                        <div class="card-footer text-right">
+                            <input type="submit" class="btn btn-primary" value="Update" />
+                        </div>
+                    @endif
 
                     <input type="hidden" id="role_id" name="role_id" value="">
                     @csrf

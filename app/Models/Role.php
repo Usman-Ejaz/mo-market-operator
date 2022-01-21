@@ -19,4 +19,13 @@ class Role extends Model
     public function permissions(){
         return $this->hasMany(Permission::class);
     }
+
+    public function hasPermission($moduleName, $capability)
+    {
+        $permissionExists = $this->permissions->where('name', $moduleName)->where('capability', $capability)->first();
+        if($permissionExists){
+            return true;
+        }
+        return false;
+    }
 }

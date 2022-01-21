@@ -6,11 +6,10 @@
   <li class="breadcrumb-item active">Create</li>
 @endsection
 
-
 @section('content')
   <div class="container-fluid">
 
-              <form method="POST" action="{{ url('/admin/users')}}" enctype="multipart/form-data" id="create-users-form">
+              <form method="POST" action="{{ route('admin.users.store') }}" enctype="multipart/form-data" id="create-users-form">
                 <div class="row">
                   <div class="col-md-12">
                     <div class="card card-primary">
@@ -23,7 +22,6 @@
 
                     </div>
                   </div>
-
 
                     <!-- /.card-body -->
                     <div class="col-md-12">
@@ -45,22 +43,9 @@
 @endsection
 
 
-@push('optional-styles')
- <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
-
-  <style>
-  .my-error-class {
-    color:#FF0000;  /* red */
-  }
-  .my-valid-class {
-    color:#00CC00; /* green */
-  }
-  </style>
-@endpush
-
 @push('optional-scripts')
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
 

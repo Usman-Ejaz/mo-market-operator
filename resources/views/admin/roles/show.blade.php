@@ -7,7 +7,7 @@
 @endsection
 
 @section('addButton')
-<form method="POST" action="/admin/roles/{{$role->id}}" class="float-right">
+<form method="POST" action="{{ route('admin.roles', $role->id) }}" class="float-right">
   @method('DELETE')
   @csrf
   <button class="btn btn-danger">Delete</button>

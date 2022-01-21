@@ -10,7 +10,7 @@
 @section('content')
   <div class="container-fluid">
 
-              <form method="POST" action="{{ url('/admin/news')}}" enctype="multipart/form-data" id="create-news-form">
+              <form method="POST" action="{{ route('admin.news.store') }}" enctype="multipart/form-data" id="create-news-form">
                 <div class="row">
                   <div class="col-md-9">
                     <div class="card card-primary">
@@ -39,14 +39,20 @@
                       @if( \Route::current()->getName() == 'admin.news.edit' )
                           @if($news->active == 'Active')
                             <button type="submit" class="btn btn-primary publish_button">Update</button>
-                            <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
+                            @if( Auth::user()->role->hasPermission('news', 'publish') )
+                                <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
+                            @endif
                           @elseif($news->active == 'Draft')
                             <button type="submit" class="btn btn-primary draft_button">Update</button>
-                            <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @if( Auth::user()->role->hasPermission('news', 'publish') )
+                                <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @endif
                           @endif
                       @else
                             <button type="submit" class="btn btn-primary draft_button">Save</button>
-                            <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @if( Auth::user()->role->hasPermission('news', 'publish') )
+                                <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @endif
                       @endif
 
                     </div>
@@ -67,24 +73,15 @@
 
 
 @push('optional-styles')
- <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
-
-  <style>
-  .my-error-class {
-    color:#FF0000;  /* red */
-  }
-  .my-valid-class {
-    color:#00CC00; /* green */
-  }
-  </style>
+ <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
 @endpush
 
 @push('optional-scripts')
   <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
-  <script src="{{ asset('admin/js/moment.min.js') }}"></script>
-  <script src="{{ asset('admin/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
     CKEDITOR.replace('editor1', {

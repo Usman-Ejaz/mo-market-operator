@@ -10,7 +10,7 @@
 @section('content')
   <div class="container-fluid">
 
-              <form method="POST" action="{{ url('/admin/roles')}}" enctype="multipart/form-data" id="create-roles-form">
+              <form method="POST" action="{{ route('admin.roles.store') }}" enctype="multipart/form-data" id="create-roles-form">
                 <div class="row">
                   <div class="col-md-12">
                     <div class="card card-primary">
@@ -47,7 +47,7 @@
 
 
 @push('optional-styles')
- <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
+ <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
 
   <style>
   .my-error-class {
@@ -60,8 +60,8 @@
 @endpush
 
 @push('optional-scripts')
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
 

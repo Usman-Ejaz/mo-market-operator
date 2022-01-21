@@ -7,6 +7,7 @@ use App\Models\NewsCategory;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DataTables;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -19,6 +20,10 @@ class NewsController extends Controller
      */
     public function index()
     {
+        if( !Auth::user()->role->hasPermission('news', 'list') ){
+            return abort(403);
+        }
+
         return view('admin.news.index');
     }
 
@@ -29,6 +34,10 @@ class NewsController extends Controller
      */
     public function create()
     {
+        if( !Auth::user()->role->hasPermission('news', 'create') ){
+            return abort(403);
+        }
+
         $news = new News();
         return view('admin.news.create', compact('news'));
     }
@@ -41,12 +50,19 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('news', 'create') ){
+            return abort(403);
+        }
+
         $news = new News();
         $news = News::create( $this->validateRequest($news) );
+        if ($news->exists) {
+            $this->storeImage($news);
+            $request->session()->flash('success', 'News was successful added!');
+            return redirect()->route('admin.news.index');
+        }
 
-        $this->storeImage($news);
-
-        $request->session()->flash('success', 'News was successful added!');
+        $request->session()->flash('error', 'News was not added, please try again.');
         return redirect()->route('admin.news.index');
     }
 
@@ -58,6 +74,10 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
+        if( !Auth::user()->role->hasPermission('news', 'view') ){
+            return abort(403);
+        }
+
         return view('admin.news.show', compact('news'));
     }
 
@@ -69,6 +89,10 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
+        if( !Auth::user()->role->hasPermission('news', 'edit') ){
+            return abort(403);
+        }
+
         return view('admin.news.edit', compact('news'));
     }
 
@@ -81,11 +105,17 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        $news->update($this->validateRequest($news));
+        if( !Auth::user()->role->hasPermission('news', 'edit') ){
+            return abort(403);
+        }
 
-        $this->storeImage($news);
+        if ( $news->update($this->validateRequest($news)) ) {
+            $this->storeImage($news);
+            $request->session()->flash('success', 'News was successful updated!');
+            return redirect()->route('admin.news.edit', $news->id);
+        }
 
-        $request->session()->flash('success', 'News was successful updated!');
+        $request->session()->flash('error', 'News was not updated, please try again');
         return redirect()->route('admin.news.edit', $news->id);
     }
 
@@ -97,13 +127,23 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        $news->delete();
+        if( !Auth::user()->role->hasPermission('news', 'delete') ){
+            return abort(403);
+        }
 
-        return redirect()->route('admin.news.index')->with('success', 'News was successful deleted!');
+        if( $news->delete() ) {
+            return redirect()->route('admin.news.index')->with('success', 'News was successful deleted!');
+        }
+
+        return redirect()->route('admin.news.index')->with('error', 'News was not deleted!');
     }
 
     public function list(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('news', 'list') ){
+            return abort(403);
+        }
+
         if ($request->ajax()) {
             $data = News::latest()->get();
 
@@ -122,11 +162,14 @@ class NewsController extends Controller
                     return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
                 })
                 ->addColumn('action', function ($row) {
-                    return '
-                        <a href="'. route('admin.news.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                    $options = '';
+                    if( Auth::user()->role->hasPermission('news', 'edit') ) {
+                        $options .= '<a href="' . route('admin.news.edit', $row->id) . '" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                        </a>';
+                    }
+                    if( Auth::user()->role->hasPermission('news', 'delete') ) {
+                        $options .= ' <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
@@ -134,6 +177,8 @@ class NewsController extends Controller
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])
                 ->make(true);

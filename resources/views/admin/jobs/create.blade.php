@@ -8,7 +8,7 @@
 
 @section('content')
   <div class="container-fluid">
-              <form method="POST" action="{{ url('/admin/jobs') }}" enctype="multipart/form-data" id="create-job-form">
+              <form method="POST" action="{{ route('admin.jobs') }}" enctype="multipart/form-data" id="create-job-form">
                 <div class="row">
                   <div class="col-md-9">
                     <div class="card card-primary">
@@ -65,7 +65,7 @@
 
 
 @push('optional-styles')
-  <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
   <style>
   .my-error-class {
     color:#FF0000;  /* red */
@@ -80,10 +80,10 @@
 
 @push('optional-scripts')
   <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
-  <script src="{{ asset('admin/js/moment.min.js') }}"></script>
-  <script src="{{ asset('admin/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
   <script>
     CKEDITOR.replace('editor1', {
       height: 800,

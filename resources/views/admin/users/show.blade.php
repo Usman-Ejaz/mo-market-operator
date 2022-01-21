@@ -7,14 +7,15 @@
 @endsection
 
 @section('addButton')
-<form method="POST" action="/admin/users/{{$user->id}}" class="float-right">
+<form method="POST" action="{{ route('admin.users', $user->id) }}" class="float-right">
   @method('DELETE')
   @csrf
   <button class="btn btn-danger">Delete</button>
 </form>
 
-<a class="btn btn-primary float-right mr-2" href="{{ route('admin.users.edit', $user->id)}}">Edit User</a>
-
+@if( Auth::user()->role->hasPermission('users', 'edit') ){
+    <a class="btn btn-primary float-right mr-2" href="{{ route('admin.users.edit', $user->id)}}">Edit User</a>
+@endif
 @endsection
 
 @section('content')
@@ -91,10 +92,3 @@
 
     </div>
 @endsection
-
-@push('optional-styles')
-@endpush
-
-@push('optional-scripts')
-
-@endpush

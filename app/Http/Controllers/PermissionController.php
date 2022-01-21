@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends Controller
 {
@@ -16,6 +17,10 @@ class PermissionController extends Controller
      */
     public function index()
     {
+        if( !Auth::user()->role->hasPermission('permissions', 'view') ){
+            return abort(403);
+        }
+
         $roles = Role::all();
         $permissions = config('permissions');
         return view('admin.permissions.index', compact('roles', 'permissions'));
@@ -29,18 +34,28 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('permissions', 'edit') ){
+            return abort(403);
+        }
+
         $data = $request->all();
         Permission::where('role_id',$data['role_id'])->delete();
 
         $records = array();
-        foreach( $data['permissions'] as $permission => $capabilities ) {
-            foreach( $capabilities as $capability => $status){
-                array_push($records, ['role_id' => $data['role_id'], 'name' => $permission, 'capability' => $capability, 'created_at' => Carbon::now()]);
+        if( isset($data['permissions']) ) {
+            foreach ($data['permissions'] as $permission => $capabilities) {
+                foreach ($capabilities as $capability => $status) {
+                    array_push($records, ['role_id' => $data['role_id'], 'name' => $permission, 'capability' => $capability, 'created_at' => Carbon::now()]);
+                }
             }
         }
 
-        Permission::insert( $records );
-        $request->session()->flash('success', 'Permissions were successful updated!');
+        if( Permission::insert( $records ) ) {
+            $request->session()->flash('success', 'Permissions were successful updated!');
+            return redirect()->route('admin.permissions.index', ['role_id'=>$data['role_id']]);
+        }
+
+        $request->session()->flash('error', 'Permissions were not added, please try again.');
         return redirect()->route('admin.permissions.index', ['role_id'=>$data['role_id']]);
     }
 
@@ -52,6 +67,10 @@ class PermissionController extends Controller
      */
     public function getPermissions(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('permissions', 'view') ){
+            return abort(403);
+        }
+
         if ($request->ajax()) {
             if (isset($request->role_id)) {
                 $role = Role::find($request->role_id);
@@ -59,12 +78,5 @@ class PermissionController extends Controller
             }
         }
         return false;
-    }
-
-    private function validateRequest($role){
-
-        return request()->validate([
-            'name' => 'required|unique:roles,name,'.$role->id
-        ]);
     }
 }
