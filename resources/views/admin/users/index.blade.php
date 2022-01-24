@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
-@section('header', 'News')
+@section('header', 'Users')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item active">News</li>
+  <li class="breadcrumb-item active">Users</li>
 @endsection
 
 @section('addButton')
-    @if( Auth::user()->role->hasPermission('news', 'create') )
-        <a class="btn btn-primary float-right" href="{{ route('admin.news.create') }}">Add new news</a>
+    @if( Auth::user()->role->hasPermission('users', 'create') )
+        <a class="btn btn-primary float-right" href="{{ route('admin.users.create') }}">Add new user</a>
     @endif
 @endsection
 
@@ -16,15 +16,25 @@
           <div class="row">
             <div class="col-md-12">
 
+              <div class="flash-message">
+                @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+                  @if(Session::has('alert-' . $msg))
+
+                  <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+                  @endif
+                @endforeach
+              </div>
+
               <table class="table table-bordered yajra-datatable">
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Tittle</th>
-                          <th>Slug</th>
-                          <th>Category</th>
-                          <th>Keywords</th>
-                          <th>Created date</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Department</th>
+                          <th>Role</th>
+                          <th>Status</th>
+                          <th>Created at</th>
                           <th>Action</th>
                       </tr>
                   </thead>
@@ -61,13 +71,14 @@
             processing: true,
             serverSide: true,
             pageLength: 15,
-            ajax: "{{ route('admin.news.list') }}",
+            ajax: "{{ route('admin.users.list') }}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'title', name: 'title'},
-                {data: 'slug', name: 'slug'},
-                {data: 'news_category', name: 'news_category'},
-                {data: 'keywords', name: 'keywords'},
+                {data: 'name', name: 'name'},
+                {data: 'email', name: 'email'},
+                {data: 'department', name: 'department'},
+                {data: 'role', name: 'role'},
+                {data: 'status', name: 'status'},
                 {data: 'created_at', name: 'created_at'},
                 {
                     data: 'action',

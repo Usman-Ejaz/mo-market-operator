@@ -17,7 +17,7 @@
         @endforeach
       </div>
 
-      <form method="POST" action="{{ url('/admin/jobs/'.$job->id)}}" enctype="multipart/form-data" id="update-job-form">
+      <form method="POST" action="{{ route('admin.jobs',$job->id)}}" enctype="multipart/form-data" id="update-job-form">
         <div class="row">
           <div class="col-md-9">
             <div class="card card-primary">
@@ -36,9 +36,9 @@
               <div class="card-header">
                 <h3 class="card-title">Schedule Content</h3>
               </div>
-              
+
                 @include('admin.jobs.publishform')
-              
+
             </div>
 
             <!-- /.card-body -->
@@ -55,7 +55,7 @@
                     <button type="submit" class="btn btn-primary draft_button">Update</button>
                     <button type="submit" class="btn btn-success publish_button">Publish</button>
                   @endif
-              @else 
+              @else
                     <button type="submit" class="btn btn-primary draft_button">Save</button>
                     <button type="submit" class="btn btn-success publish_button">Publish</button>
               @endif
@@ -66,29 +66,29 @@
           </div>
         </div>
       </form>
-      
-         
-    </div>   
+
+
+    </div>
 @endsection
 
 @push('optional-styles')
-  <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
   <style>
   .my-error-class {
     color:#FF0000;  /* red */
   }
   .my-valid-class {
     color:#00CC00; /* green */
-  } 
+  }
   </style>
 @endpush
 
 @push('optional-scripts')
   <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
-  <script src="{{ asset('admin/js/moment.min.js') }}"></script>
-  <script src="{{ asset('admin/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
     CKEDITOR.replace('editor1', {
@@ -96,7 +96,7 @@
       baseFloatZIndex: 10005,
       removeButtons: 'PasteFromWord'
     });
-    
+
     //Date and time picker
     $(document).ready(function(){
       $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
@@ -107,10 +107,10 @@
       });
 
       $('.publish_button').click(function(e) {
-        $('#status').val("1");  
-      });       
-      
-      
+        $('#status').val("1");
+      });
+
+
       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $("#deleteImage").click(function(){
           if (confirm('Are you sure you want to this image?')) {
@@ -221,7 +221,7 @@
         }
       });
 
-      
+
     });
   </script>
 

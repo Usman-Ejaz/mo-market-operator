@@ -13,12 +13,11 @@
         <!-- Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-        
-        <!-- Theme style -->
-        <link rel="stylesheet" href="{{asset('admin/css/adminlte.min.css')}}">
-        <!-- Toastr style -->
-        <link rel="stylesheet" href="{{asset('admin/css/toastr.min.css')}}">
 
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{asset('admin-resources/css/adminlte.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin-resources/css/toastr.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin-resources/css/app.css')}}">
         @stack('optional-styles')
 
     </head>
@@ -46,7 +45,7 @@
 
             <!-- Page Content -->
             <div class="content">
-                @yield('content') 
+                @yield('content')
 
             </div>
 
@@ -56,11 +55,13 @@
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
-    <script src="{{asset('admin/js/bootstrap.bundle.min.js')}}" defer></script>
-    <script src="{{asset('admin/js/adminlte.js')}}" defer></script>
-    <script src="{{asset('admin/js/toastr.min.js')}}" defer></script>
+    <script src="{{asset('admin-resources/js/bootstrap.bundle.min.js')}}" defer></script>
+    <script src="{{asset('admin-resources/js/adminlte.js')}}" defer></script>
+    <script src="{{asset('admin-resources/js/toastr.min.js')}}" defer></script>
+
+    @include('admin.layouts.toaster')
 
     @stack('optional-scripts')
-    
+
     </body>
 </html>

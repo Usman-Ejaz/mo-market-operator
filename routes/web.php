@@ -3,7 +3,10 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
-use App\Models\NewsCategory;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 
@@ -20,23 +23,38 @@ use App\Http\Controllers\NewsController;
 
 Route::get('/', function () {
     return view('welcome');
-    //App\Models\News::factory()->count(5)->create();
-    //NewsCategory::factory()->create();
 });
 
+Route::get('/admin', function () {
+    return redirect()->route('admin.dashboard');
+});
 
 Route::get('/admin/dashboard', function () {
     return view('admin/dashboard/index');
 })->middleware(['auth'])->name('admin.dashboard');
 
+// Routes for User Module
+Route::get('admin/users/list', [UserController::class, 'list'])->name('admin.users.list')->middleware(['auth']);
+Route::post('admin/users/deleteImage', [UserController::class, 'deleteImage'])->name('admin.users.deleteImage')->middleware(['auth']);
+Route::resource('/admin/users', UserController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
 
-// Route::prefix('admin')->name('admin.')->group(function () {
-//     Route::resource('news', NewsController::class)->middleware(['auth']);
-// });
+// Routes for User Module
+Route::get('admin/roles/list', [RoleController::class, 'list'])->name('admin.roles.list')->middleware(['auth']);
+Route::resource('/admin/roles', RoleController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
 
+// Routes for User Permissions
+Route::get('admin/permissions', [PermissionController::class, 'index'])->name('admin.permissions.index')->middleware(['auth']);
+Route::post('admin/permissions/getpermissions', [PermissionController::class, 'getPermissions'])->name('admin.permissions.getpermissions')->middleware(['auth']);
+Route::post('admin/permissions/store', [PermissionController::class, 'store'])->name('admin.permissions.store')->middleware(['auth']);
+
+
+// Routes for News Module
 Route::get('admin/news/list', [NewsController::class, 'list'])->name('admin.news.list')->middleware(['auth']);
 Route::post('admin/news/deleteImage', [NewsController::class, 'deleteImage'])->name('admin.news.deleteImage')->middleware(['auth']);
-
 Route::resource('/admin/news', NewsController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);

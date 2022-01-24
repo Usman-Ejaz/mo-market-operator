@@ -52,7 +52,7 @@
             <input class="form-control" type="file" id="news_image" name="image">
             <small class="form-text text-danger">{{ $errors->first('image') }} </small>
             @if( isset($news->image) )
-                <a class="text-primary imageExists"><a href="{{ asset('storage/'.$news->image) }}" target="_blank"><img src="{{ asset('storage/'.$news->image) }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
+                <small class="text-primary imageExists"><a href="{{ asset( config('filepaths.newsImagePath.public_path') .$news->image) }}" target="_blank"><img src="{{ asset( config('filepaths.newsImagePath.public_path') .$news->image) }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
             @endif
         </div>
     </div>
