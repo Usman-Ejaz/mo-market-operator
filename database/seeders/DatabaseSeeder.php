@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Document;
 use App\Models\News;
 use App\Models\Role;
 use App\Models\User;
@@ -45,5 +46,8 @@ class DatabaseSeeder extends Seeder
 
         // News
         News::factory(30)->create();
+
+        // Documents
+        Document::factory(20)->create();
     }
 }

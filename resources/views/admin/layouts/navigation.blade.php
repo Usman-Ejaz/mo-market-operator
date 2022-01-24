@@ -72,27 +72,12 @@
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-file"></i>
+          <a href="{{ Route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents/*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-file"></i>
               <p>
-                Documents
-                <i class="fas fa-angle-left right"></i>
+                ISMO Library
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/mailbox/mailbox.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Jobs</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/mailbox/mailbox.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Applications</p>
-                </a>
-              </li>
-            </ul>
           </li>
 
           <li class="nav-header">LABELS</li>

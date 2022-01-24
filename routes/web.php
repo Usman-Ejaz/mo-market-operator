@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
@@ -57,5 +58,12 @@ Route::get('admin/jobs/{job}/applications/export', [JobController::class, 'expor
 Route::get('admin/applications/{application}', [ApplicationController::class, 'show'])->name('admin.job.application.detail')->middleware(['auth']);
 Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy'])->name('admin.job.application.destroy')->middleware(['auth']);
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
+
+// Routes for Document Module
+Route::get('admin/documents/list', [DocumentController::class, 'list'])->name('admin.documents.list')->middleware(['auth']);
+Route::post('admin/documents/deleteFile', [DocumentController::class, 'deleteFile'])->name('admin.documents.deleteFile')->middleware(['auth']);
+Route::resource('/admin/documents', DocumentController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
 
 require __DIR__.'/auth.php';
