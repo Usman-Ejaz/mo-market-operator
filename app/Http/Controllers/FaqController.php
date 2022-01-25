@@ -6,6 +6,7 @@ use App\Models\Faq;
 use Carbon\Carbon;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FaqController extends Controller
 {
@@ -16,6 +17,10 @@ class FaqController extends Controller
      */
     public function index()
     {
+        if( !Auth::user()->role->hasPermission('faq', 'list') ){
+            return abort(403);
+        }
+
         return view('admin.faqs.index');
     }
 
@@ -26,6 +31,10 @@ class FaqController extends Controller
      */
     public function create()
     {
+        if( !Auth::user()->role->hasPermission('faq', 'create') ){
+            return abort(403);
+        }
+
         $faq = new Faq();
         return view('admin.faqs.create', compact('faq'));
     }
@@ -38,10 +47,19 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('faq', 'create') ){
+            return abort(403);
+        }
+
         $faq = new Faq();
         $faq = Faq::create( $this->validateRequest($faq) );
 
-        $request->session()->flash('alert-success', 'Faq was successful added!');
+        if ($faq->exists) {
+            $request->session()->flash('success', 'Faq was successfully added!');
+            return redirect()->route('admin.faqs.index');
+        }
+
+        $request->session()->flash('error', 'Faq was not added, please try again.');
         return redirect()->route('admin.faqs.index');
     }
 
@@ -53,6 +71,10 @@ class FaqController extends Controller
      */
     public function show(Faq $faq)
     {
+        if( !Auth::user()->role->hasPermission('faq', 'view') ){
+            return abort(403);
+        }
+
         return view('admin.faqs.show', compact('faq'));
     }
 
@@ -64,6 +86,10 @@ class FaqController extends Controller
      */
     public function edit(Faq $faq)
     {
+        if( !Auth::user()->role->hasPermission('faq', 'edit') ){
+            return abort(403);
+        }
+
         return view('admin.faqs.edit', compact('faq'));
     }
 
@@ -75,9 +101,17 @@ class FaqController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Faq $faq)
-    {      
-        $faq->update($this->validateRequest($faq));
-        $request->session()->flash('alert-success', 'Faq was successful updated!');
+    {   
+        if( !Auth::user()->role->hasPermission('faq', 'edit') ){
+            return abort(403);
+        }
+
+        if ( $faq->update($this->validateRequest($faq)) ) {
+            $request->session()->flash('success', 'Faq was successfully updated!');
+            return redirect()->route('admin.faqs.edit', $faq->id);
+        }
+
+        $request->session()->flash('error', 'Faq was not updated, please try again');
         return redirect()->route('admin.faqs.edit', $faq->id);
     }
 
@@ -89,8 +123,15 @@ class FaqController extends Controller
      */
     public function destroy(Faq $faq)
     {
-        $faq->delete();
-        return redirect()->route('admin.faqs.index');
+        if( !Auth::user()->role->hasPermission('faq', 'delete') ){
+            return abort(403);
+        }
+
+        if( $faq->delete() ) {
+            return redirect()->route('admin.faqs.index')->with('success', 'FAQ was successfully deleted!');
+        }
+
+        return redirect()->route('admin.faqs.index')->with('error', 'FAQ was not deleted!');
     }
 
     /**
@@ -101,15 +142,16 @@ class FaqController extends Controller
      */
     public function list(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('faq', 'list') ){
+            return abort(403);
+        }
+
         if ($request->ajax()) {
             $data = Faq::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('question', function ($row) {
-                    return ($row->question) ? ( (strlen($row->question) > 50) ? substr($row->question,0,50).'...' : $row->question ) : '';
-                })
-                ->addColumn('answer', function ($row) {
-                    return ($row->answer) ? ( (strlen($row->answer) > 50) ? substr($row->answer,0,50).'...' : $row->answer ) : '';
+                    return ($row->question) ? ( (strlen($row->question) > 100) ? substr($row->question,0,100).'...' : $row->question ) : '';
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';

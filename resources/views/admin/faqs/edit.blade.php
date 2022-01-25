@@ -1,21 +1,13 @@
 @extends('admin.layouts.app')
 @section('header', 'FAQ')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item">FAQ</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQ</a></li>
   <li class="breadcrumb-item active">Update</li>
 @endsection
 
 @section('content')
     <div class="container-fluid">
-        <div class="flash-message">
-            @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-                @if(Session::has('alert-' . $msg))
-                    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-                @endif
-            @endforeach
-        </div>
-
         <form method="POST" action="{{ url('/admin/faqs/'.$faq->id)}}" enctype="multipart/form-data" id="update-faq-form">
             <div class="row">
                 <div class="col-md-12">
@@ -53,20 +45,13 @@
 @endsection
 
 @push('optional-styles')
-  <style>
-  .my-error-class {
-    color:#FF0000;  /* red */
-  }
-  .my-valid-class {
-    color:#00CC00; /* green */
-  } 
-  </style>
+  <link rel="stylesheet" href="{{asset('admin-resources/css/app.css')}}">
 @endpush
 
 @push('optional-scripts')
   <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
     CKEDITOR.replace('editor1', {
@@ -91,21 +76,21 @@
         rules:{
           question: {
             required: true,
-            maxlength: 50000
+            minlength: 5
           },
           answer:{
             required: true,
-            maxlength: 50000
+            minlength: 5
           }
         },
         messages: {
           question: {
             required: "Question is required",
-            maxlength: "Question cannot be more than 50000 characters"
+            minlength: "Question cannot be less than 5 characters"
           },
           answer: {
             required: "Answer is required",
-            maxlength: "Answer cannot be more than 50000 characters"
+            minlength: "Answer cannot be less than 5 characters"
           }
         }
       });

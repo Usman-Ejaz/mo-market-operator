@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Faq;
 use App\Models\News;
 use App\Models\Permission;
 use App\Models\Role;
@@ -58,5 +59,8 @@ class DatabaseSeeder extends Seeder
 
         // Create News
         News::factory(30)->create();
+
+        // Create FAQ
+        Faq::factory(30)->create();
     }
 }

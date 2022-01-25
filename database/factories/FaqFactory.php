@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FaqFactory extends Factory
@@ -16,8 +17,8 @@ class FaqFactory extends Factory
         return [
             'question' => $this->faker->paragraph(3),
             'answer' => $this->faker->paragraph(8),
-            'created_by' => $this->faker->numberBetween(1,5),
-            'modified_by' => $this->faker->numberBetween(1,5),
+            'created_by' => User::all()->random()->id,
+            'modified_by' => User::all()->random()->id,
             'active' => $this->faker->randomElement(['0','1']),
         ];
     }

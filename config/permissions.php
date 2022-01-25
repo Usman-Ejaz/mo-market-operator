@@ -54,5 +54,17 @@ return [
             "delete" => "Delete",
             "view_applications" => "View Applications",
         ]
+    ],
+    [
+        "name" => "faq",
+        "display_name" => "FAQ",
+        "capabilities" => [
+            "list" => "List",
+            //"view" => "View",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            "publish" => "Publish"
+        ]
     ]
 ];
