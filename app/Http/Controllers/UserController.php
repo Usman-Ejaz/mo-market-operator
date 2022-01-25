@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
@@ -18,6 +19,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        if( !Auth::user()->role->hasPermission('users', 'list') ){
+            return abort(403);
+        }
+
         return view('admin.users.index');
     }
 
@@ -28,6 +33,10 @@ class UserController extends Controller
      */
     public function create()
     {
+        if( !Auth::user()->role->hasPermission('users', 'create') ){
+            return abort(403);
+        }
+
         $user = new User();
         return view('admin.users.create', compact('user'));
     }
@@ -40,12 +49,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('users', 'create') ){
+            return abort(403);
+        }
+
         $user = new User();
         $user = User::create( $this->validateRequest($user) );
 
-        $this->storeImage($user);
+        if ($user->exists) {
+            $this->storeImage($user);
 
-        $request->session()->flash('success', 'User was successful added!');
+            $request->session()->flash('success', 'User was successful added!');
+            return redirect()->route('admin.users.index');
+        }
+
+        $request->session()->flash('error', 'User was not added, please try again');
         return redirect()->route('admin.users.index');
     }
 
@@ -57,6 +75,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if( !Auth::user()->role->hasPermission('users', 'view') ){
+            return abort(403);
+        }
+
         return view('admin.users.show', compact('user'));
     }
 
@@ -68,6 +90,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if( !Auth::user()->role->hasPermission('users', 'edit') ){
+            return abort(403);
+        }
+
         return view('admin.users.edit', compact('user'));
     }
 
@@ -80,12 +106,19 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->update($this->validateRequest($user));
+        if( !Auth::user()->role->hasPermission('users', 'edit') ){
+            return abort(403);
+        }
 
-        $this->storeImage($user);
+        if ( $user->update($this->validateRequest($user)) ) {
+            $this->storeImage($user);
 
-        $request->session()->flash('success', 'User was successful updated!');
-        return redirect()->route('admin.users.edit', $user->id);
+            $request->session()->flash('success', 'User was successful updated!');
+            return redirect()->route('admin.users.edit', $user->id);
+        }
+
+        $request->session()->flash('error', 'User was not updated, please try again');
+        return redirect()->route('admin.news.edit', $user->id);
     }
 
     /**
@@ -96,13 +129,23 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        if( !Auth::user()->role->hasPermission('users', 'delete') ){
+            return abort(403);
+        }
 
-        return redirect()->route('admin.users.index')->with('success', 'User was successful deleted!');
+        if( $user->delete() ) {
+            return redirect()->route('admin.users.index')->with('success', 'User was successful deleted!');
+        }
+
+        return redirect()->route('admin.users.index')->with('error', 'User was not deleted!');
     }
 
     public function list(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('users', 'list') ){
+            return abort(403);
+        }
+
         if ($request->ajax()) {
             $data = User::with(['Role'])->latest()->get();
 
@@ -121,18 +164,23 @@ class UserController extends Controller
                     return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
                 })
                 ->addColumn('action', function ($row) {
-                    return '
-                        <a href="'. route('admin.users.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                    $options = '';
+                    if( Auth::user()->role->hasPermission('users', 'edit') ) {
+                        $options .= '<a href="' . route('admin.users.edit', $row->id) . '" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <form action="'. route('admin.users.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
+                        </a>';
+                    }
+                    if( Auth::user()->role->hasPermission('users', 'delete') ) {
+                        $options .= ' <form action="' . route('admin.users.destroy', $row->id) . '" method="POST" style="display: inline-block;">
+                            ' . csrf_field() . '
+                            ' . method_field("DELETE") . '
                             <button type="submit" class="btn btn-danger"
                                 onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])
                 ->make(true);

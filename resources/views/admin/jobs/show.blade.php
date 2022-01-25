@@ -7,7 +7,7 @@
 @endsection
 
 @section('addButton')
-<form method="POST" action="/admin/jobs/{{$job->id}}" class="float-right">
+<form method="POST" action="{{ route('admin.jobs', $job->id) }}" class="float-right">
   @method('DELETE')
   @csrf
   <button class="btn btn-danger">Delete</button>
@@ -50,7 +50,7 @@
                       <span>{{$job->experience}}</span>
                     </div>
                   </div>
-                </div> 
+                </div>
 
                 <div class="row">
                   <div class="col-md-6">
@@ -65,7 +65,7 @@
                       <span>{{$job->total_positions}}</span>
                     </div>
                   </div>
-                </div> 
+                </div>
 
                 <div class="row">
                   <div class="col-md-12">
@@ -75,7 +75,7 @@
                       <div>{{$job->description}}</div>
                     </div>
                   </div>
-                </div> 
+                </div>
 
                 <div class="row">
                   <div class="col-md-6">
@@ -90,7 +90,7 @@
                       <span>{{$job->end_datetime}}</span>
                     </div>
                   </div>
-                </div>  
+                </div>
 
                 <div class="row">
                   <div class="col-md-6">
@@ -99,7 +99,7 @@
                       <span>{{$job->active}}</span>
                     </div>
                   </div>
-                </div>  
+                </div>
 
 
                 <div class="row">
@@ -118,16 +118,16 @@
         </div>
         <!-- /.container-fluid -->
 
-    </div>   
+    </div>
 @endsection
 
 @push('optional-styles')
-  <link rel="stylesheet" href="{{ mix('admin/plugins/daterangepicker/daterangepicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('admin-resources/plugins/daterangepicker/daterangepicker.css') }}">
 @endpush
 
 @push('optional-scripts')
   <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
-  <script src="{{ mix('admin/plugins/daterangepicker/daterangepicker.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/plugins/daterangepicker/daterangepicker.min.js') }}"></script>
 
   <script>
     CKEDITOR.replace('editor1', {
@@ -142,6 +142,6 @@
     });
 
   </script>
-  
+
 
 @endpush

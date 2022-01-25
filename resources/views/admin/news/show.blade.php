@@ -7,7 +7,7 @@
 @endsection
 
 @section('addButton')
-<form method="POST" action="/admin/news/{{$news->id}}" class="float-right">
+<form method="POST" action="{{ route('admin.news', $news->id) }}" class="float-right">
   @method('DELETE')
   @csrf
   <button class="btn btn-danger">Delete</button>
@@ -117,12 +117,12 @@
 @endsection
 
 @push('optional-styles')
-  <link rel="stylesheet" href="{{ mix('admin/plugins/daterangepicker/daterangepicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('admin-resources/plugins/daterangepicker/daterangepicker.css') }}">
 @endpush
 
 @push('optional-scripts')
   <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
-  <script src="{{ mix('admin/plugins/daterangepicker/daterangepicker.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/plugins/daterangepicker/daterangepicker.min.js') }}"></script>
 
   <script>
     CKEDITOR.replace('editor1', {
@@ -137,6 +137,5 @@
     });
 
   </script>
-
 
 @endpush

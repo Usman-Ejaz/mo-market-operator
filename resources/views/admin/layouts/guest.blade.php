@@ -14,15 +14,15 @@
 
         <!-- Icons -->
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-        <link rel="stylesheet" href="{{asset('admin/css/all.min.css')}}">
-        <link rel="stylesheet" href="{{asset('admin/css/ionicons.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin-resources/css/all.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin-resources/css/ionicons.min.css')}}">
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{asset('admin/css/icheck-bootstrap.min.css')}}">
-        
+        <link rel="stylesheet" href="{{asset('admin-resources/css/icheck-bootstrap.min.css')}}">
+
         <!-- Theme style -->
-        <link rel="stylesheet" href="{{asset('admin/css/adminlte.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin-resources/css/adminlte.min.css')}}">
 
     </head>
     <body class="hold-transition login-page">
@@ -30,7 +30,7 @@
 
         <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script>
-        <script src="{{asset('admin/js/bootstrap.bundle.min.js')}}" defer></script>
-        <script src="{{asset('admin/js/adminlte.js')}}" defer></script>
+        <script src="{{asset('admin-resources/js/bootstrap.bundle.min.js')}}" defer></script>
+        <script src="{{asset('admin-resources/js/adminlte.js')}}" defer></script>
     </body>
 </html>

@@ -1,14 +1,16 @@
+/* Validation classes */
 .my-error-class {
-    color:#FF0000;  /* red */
+    color:#FF0000;
 }
 .my-valid-class {
-    color:#00CC00; /* green */
+    color:#00CC00;
 }
 
-ul.pagination li {
+/* Breadcrumbs */
+ul.pagination li{
     padding:0px!important;
     border-color: #fff!important;
 }
-ul.pagination li.active {
+ul.pagination li.active{
     background-color: #fff!important;
 }
