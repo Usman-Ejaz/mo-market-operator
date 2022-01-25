@@ -17,6 +17,7 @@
         <!-- Theme style -->
         <link rel="stylesheet" href="{{asset('admin-resources/css/adminlte.min.css')}}">
         <link rel="stylesheet" href="{{asset('admin-resources/css/toastr.min.css')}}">
+        <link rel="stylesheet" href="{{asset('admin-resources/css/jquery.datetimepicker.min.css')}}">
         <link rel="stylesheet" href="{{asset('admin-resources/css/app.css')}}">
         @stack('optional-styles')
 
@@ -58,6 +59,7 @@
     <script src="{{asset('admin-resources/js/bootstrap.bundle.min.js')}}" defer></script>
     <script src="{{asset('admin-resources/js/adminlte.js')}}" defer></script>
     <script src="{{asset('admin-resources/js/toastr.min.js')}}" defer></script>
+    <script src="{{asset('admin-resources/js/jquery.datetimepicker.full.min.js')}}" defer></script>
 
     @include('admin.layouts.toaster')
 

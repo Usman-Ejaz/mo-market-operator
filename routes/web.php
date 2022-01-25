@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CkeditorImageUploader;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -73,5 +74,8 @@ Route::get('admin/jobs/{job}/applications/export', [JobController::class, 'expor
 Route::get('admin/applications/{application}', [ApplicationController::class, 'show'])->name('admin.job.application.detail')->middleware(['auth']);
 Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy'])->name('admin.job.application.destroy')->middleware(['auth']);
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
+
+// Route for uploading images for ckeditor
+Route::post('admin/ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('admin.ckeditor.upload')->middleware(['auth']);
 
 require __DIR__.'/auth.php';

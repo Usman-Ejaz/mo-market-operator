@@ -56,13 +56,10 @@ class NewsController extends Controller
 
         $news = new News();
         $news = News::create( $this->validateRequest($news) );
-        if ($news->exists) {
-            $this->storeImage($news);
-            $request->session()->flash('success', 'News was successful added!');
-            return redirect()->route('admin.news.index');
-        }
 
-        $request->session()->flash('error', 'News was not added, please try again.');
+        $this->storeImage($news);
+
+        $request->session()->flash('success', 'News was successfully added!');
         return redirect()->route('admin.news.index');
     }
 
@@ -109,13 +106,11 @@ class NewsController extends Controller
             return abort(403);
         }
 
-        if ( $news->update($this->validateRequest($news)) ) {
-            $this->storeImage($news);
-            $request->session()->flash('success', 'News was successful updated!');
-            return redirect()->route('admin.news.edit', $news->id);
-        }
+        $news->update($this->validateRequest($news));
 
-        $request->session()->flash('error', 'News was not updated, please try again');
+        $this->storeImage($news);
+
+        $request->session()->flash('success', 'News was successfully updated!');
         return redirect()->route('admin.news.edit', $news->id);
     }
 
@@ -131,11 +126,8 @@ class NewsController extends Controller
             return abort(403);
         }
 
-        if( $news->delete() ) {
-            return redirect()->route('admin.news.index')->with('success', 'News was successful deleted!');
-        }
-
-        return redirect()->route('admin.news.index')->with('error', 'News was not deleted!');
+        $news->delete();
+        return redirect()->route('admin.news.index')->with('success', 'News was successfully deleted!');
     }
 
     public function list(Request $request)
@@ -159,7 +151,7 @@ class NewsController extends Controller
                     return ($row->news_category) ? $row->news_category : '';
                 })
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
@@ -193,8 +185,8 @@ class NewsController extends Controller
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:d/m/Y H:i:s',
-            'end_datetime' => 'nullable|date_format:d/m/Y H:i:s',
+            'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
+            'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
             'news_category' => 'required|integer',
             'active' => 'required',
             'created_by' => '',

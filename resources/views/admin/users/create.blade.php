@@ -57,63 +57,27 @@
         errorClass: "my-error-class",
         validClass: "my-valid-class",
         rules:{
-          title: {
+          name: {
             required: true,
-            maxlength: 5000
+            maxlength: 255
           },
-          description:{
+          email:{
             required: true,
-            maxlength: 50000
+            email: true
           },
-          slug: {
+          role_id: {
             required: true,
-            maxlength: 2000
+            number: true
           },
-          keywords: {
+          department: {
             required: true,
-            maxlength: 500
+            number: true
           },
           image: {
-            extension: "jpg|jpeg|png|ico|bmp"
+            extension: "jpg|jpeg|png"
           },
-          starttime: {
-            required : false,
-            date:true,
-            dateLessThan : '#endtime'
-          },
-          endtime: {
-            required : false,
-            date:true
-          }
-        },
-        messages: {
-          title: {
-            required: "Title is required",
-            maxlength: "Title cannot be more than 5000 characters"
-          },
-          description: {
-            required: "Description is required",
-            maxlength: "Description cannot be more than 50000 characters"
-          },
-          slug: {
-            required: "Slug is required",
-            maxlength: "Slug cannot be more than 2000 characters",
-          },
-          keywords: {
-            required: "Keywords is required",
-            maxlength: "Keywords cannot be more than 500 characters"
-          },
-          image: {
-            extension: "This type of file is not accepted"
-          },
-          starttime: {
-            required: "Start time is not required",
-            date:"Start time must be date time",
-            dateLessThan: "Start time must less than end time"
-          },
-          endtime: {
-            required: "End time is not required",
-            date:"End time must be date time",
+          status: {
+            required : true,
           }
         }
       });

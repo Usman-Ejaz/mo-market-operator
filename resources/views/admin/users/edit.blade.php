@@ -40,55 +40,35 @@
   <script>
     $(document).ready(function(){
 
-      $('#update-users-form').validate({
-        errorElement: 'span',
-        errorClass: "my-error-class",
-        validClass: "my-valid-class",
-        rules:{
-          name: {
-            required: true,
-            maxlength: 5000
-          },
-          email:{
-            required: true,
-            maxlength: 50000
-          },
-          department: {
-            maxlength: 2000
-          },
-          role_id: {
-            required: true,
-            maxlength: 100
-          },
-          active: {
-            required: true,
-          },
-          image: {
-            extension: "jpg|jpeg|png|ico|bmp"
-          }
-        },
-        messages: {
-          name: {
-            required: "Name is required",
-            maxlength: "Name cannot be more than 5000 characters"
-          },
-          email: {
-            required: "Email is required",
-            maxlength: "Email cannot be more than 50000 characters"
-          },
-          role_id: {
-            required: "Role is required",
-            maxlength: "Role cannot be more than 2000 characters",
-          },
-          department: {
-            required: "Department is required",
-            maxlength: "Department cannot be more than 500 characters"
-          },
-          image: {
-            extension: "This type of file is not accepted"
-          },
-        }
-      });
+        $('#update-users-form').validate({
+            errorElement: 'span',
+            errorClass: "my-error-class",
+            validClass: "my-valid-class",
+            rules:{
+                name: {
+                    required: true,
+                    maxlength: 255
+                },
+                email:{
+                    required: true,
+                    email: true
+                },
+                role_id: {
+                    required: true,
+                    number: true
+                },
+                department: {
+                    required: true,
+                    number: true
+                },
+                image: {
+                    extension: "jpg|jpeg|png"
+                },
+                status: {
+                    required : true,
+                }
+            }
+        });
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $("#deleteImage").click(function(){
