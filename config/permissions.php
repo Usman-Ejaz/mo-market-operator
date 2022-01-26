@@ -58,16 +58,18 @@ return [
     [
         "name" => "pages",
         "display_name" => "Pages",
-        "list" => "List",
-        //"view" => "View",
-        "create" => "Create",
-        "edit" => "Edit",
-        "delete" => "Delete",
-        "publish" => "Publish"
+        "capabilities" => [
+            "list" => "List",
+            //"view" => "View",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            "publish" => "Publish"
+        ]
     ],
     [
-        "name" => "faq",
-        "display_name" => "FAQ",
+        "name" => "faqs",
+        "display_name" => "FAQs",
         "capabilities" => [
             "list" => "List",
             //"view" => "View",

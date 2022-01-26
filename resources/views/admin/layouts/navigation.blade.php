@@ -88,8 +88,7 @@
           </li>
           @endif
 
-          <li class="nav-header">LABELS</li>
-          @if( Auth::user()->role->hasPermission('faq', 'list') )
+          @if( Auth::user()->role->hasPermission('faqs', 'list') )
           <li class="nav-item">
             <a href="{{ Route('admin.faqs.index') }}" class="nav-link {{ Request()->is('admin/faqs/*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-question-circle"></i>
@@ -100,19 +99,6 @@
           </li>
           @endif
 
-          <li class="nav-header">LABELS</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">Important</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-warning"></i>
-              <p>Warning</p>
-            </a>
-          </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>

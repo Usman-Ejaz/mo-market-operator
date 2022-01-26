@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\DataTables;
 
 class PageController extends Controller
@@ -104,7 +102,10 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'edit') ){
             return abort(403);
         }
-
+        if (request()->has('image')) {
+            $file_path = config('filepaths.pageImagePath.public_path').$page->image; 
+            unlink($file_path);
+        }
         $page->update($this->validateRequest($page));
 
         $this->storeImage($page);
@@ -124,6 +125,8 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'delete') ){
             return abort(403);
         }
+        $file_path = config('filepaths.pageImagePath.public_path').$page->image;
+        unlink($file_path);
 
         $page->delete();
 
@@ -147,22 +150,23 @@ class PageController extends Controller
                     return ($row->slug) ? ( (strlen($row->slug) > 35) ? substr($row->slug,0,35).'...' : $row->slug ) : '';
                 })
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if( Auth::user()->role->hasPermission('pages', 'edit') ) {
-                        $options .= ' <a href="'. route('admin.pages.edit',$row->id) .'" class="btn btn-primary" title="edit">
-                        <i class="fas fa-pencil-alt"></i></a>';
+                        $options .= '<a href="' . route('admin.pages.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>';
                     }
                     if( Auth::user()->role->hasPermission('pages', 'delete') ) {
-                        $options .= '<form action="'. route('admin.pages.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                        '.csrf_field().'
-                        '.method_field("DELETE").'
-                        <button type="submit" class="btn btn-danger"
-                            onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
-                                <i class="fas fa-trash"></i>
-                        </button>
+                        $options .= ' <form action="'. route('admin.pages.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                            '.csrf_field().'
+                            '.method_field("DELETE").'
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                    <i class="fas fa-trash"></i>
+                            </button>
                         </form>';
                     }
                     return $options;
@@ -180,8 +184,8 @@ class PageController extends Controller
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:d/m/Y H:i:s',
-            'end_datetime' => 'nullable|date_format:d/m/Y H:i:s',
+            'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
+            'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
@@ -224,47 +228,5 @@ class PageController extends Controller
 
         }
 
-    }
-
-    public function ckeditorPlugin() {
-        if (request()->has('upload')) {
-            
-            $uploadFile = request()->file('upload');
-
-            $file_name = $uploadFile->hashName();
-
-            $uploadFile->storeAs(config('filepaths.pageImagePath.internal_path'), $file_name);
-
-            $url = URL::to( config('filepaths.pageImagePath.public_path').$file_name);
-
-            $funcNum = request()->input('CKEditorFuncNum');
-            // Optional: instance name (might be used to load a specific configuration file or anything else).
-            $CKEditor = request()->input('CKEditor') ;
-            // Optional: might be used to provide localized messages.
-            $langCode = request()->input('langCode') ;
-         
-            // Usually you will only assign something here if the file could not be uploaded.
-            $message = '';
-            echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '$message');</script>";
-        }
-        // if(isset($_FILES['upload'])){
-        //     // ------ Process your file upload code -------
-        //      $filen = $_FILES['upload']['tmp_name'];
-        //      $con_images = "public/uploads/pages/".$_FILES['upload']['name'];
-        //      move_uploaded_file($filen, $con_images );
-        //      //echo $filen."/////".$con_images;
-        //      //die("umer");
-            //   $url = $con_images;
-          
-            //  $funcNum = $_GET['CKEditorFuncNum'] ;
-            //  // Optional: instance name (might be used to load a specific configuration file or anything else).
-            //  $CKEditor = $_GET['CKEditor'] ;
-            //  // Optional: might be used to provide localized messages.
-            //  $langCode = $_GET['langCode'] ;
-          
-            //  // Usually you will only assign something here if the file could not be uploaded.
-            //  $message = '';
-            //  echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '$message');</script>";
-        //   }
     }
 }

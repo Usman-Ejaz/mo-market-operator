@@ -6,7 +6,7 @@
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('faq', 'create') )
+@if( Auth::user()->role->hasPermission('faqs', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.faqs.create') }}">Add New FAQ</a>
 @endif
 @endsection

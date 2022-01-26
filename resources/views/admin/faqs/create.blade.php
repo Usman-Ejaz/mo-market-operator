@@ -24,18 +24,18 @@
                                 @if( \Route::current()->getName() == 'admin.faqs.edit' )
                                     @if($faq->active == 'Active')
                                     <button type="submit" class="btn btn-primary publish_button">Update</button>
-                                    @if( Auth::user()->role->hasPermission('faq', 'publish') )
+                                    @if( Auth::user()->role->hasPermission('faqs', 'publish') )
                                       <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
                                     @endif
                                     @elseif($faq->active == 'Draft')
                                     <button type="submit" class="btn btn-primary draft_button">Update</button>
-                                    @if( Auth::user()->role->hasPermission('faq', 'publish') )
+                                    @if( Auth::user()->role->hasPermission('faqs', 'publish') )
                                       <button type="submit" class="btn btn-success publish_button">Publish</button>
                                     @endif
                                     @endif
                                 @else 
                                     <button type="submit" class="btn btn-primary draft_button">Save</button>
-                                    @if( Auth::user()->role->hasPermission('faq', 'publish') )
+                                    @if( Auth::user()->role->hasPermission('faqs', 'publish') )
                                       <button type="submit" class="btn btn-success publish_button">Publish</button>
                                     @endif
                                 @endif

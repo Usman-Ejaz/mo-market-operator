@@ -71,17 +71,9 @@
     </div>
 @endsection
 
-
-@push('optional-styles')
-<link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
-@endpush
-
 @push('optional-scripts')
-  <!-- <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script> -->
-  <script src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
-  
+  <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
   <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
@@ -94,8 +86,9 @@
 
     //Date and time picker
     $(document).ready(function(){
-      $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
-      $('#endtime').datetimepicker({ icons: { time: 'far fa-clock' } });
+      $('#start_datetime, #end_datetime').datetimepicker({
+          format:'{{ config('settings.datetime_format') }}',
+      });
 
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
@@ -138,11 +131,11 @@
           image: {
             extension: "jpg|jpeg|png|ico|bmp"
           },
-          starttime: {
+          start_datetime: {
             date:true,
-            dateLessThan : '#endtime'
+            dateLessThan : '#end_datetime'
           },
-          endtime: {
+          end_datetime: {
             date:true
           }
         }

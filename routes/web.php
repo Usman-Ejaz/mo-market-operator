@@ -86,11 +86,11 @@ Route::resource('/admin/faqs', FaqController::class, [
 
 // Routes for Page Module
 Route::get('admin/pages/list', [PageController::class, 'list'])->name('admin.pages.list')->middleware(['auth']);
-Route::post('admin/pages/ckeditor', [PageController::class, 'ckeditorPlugin'])->name('admin.pages.ckeditor')->middleware(['auth']);
 Route::post('admin/pages/deleteImage', [PageController::class, 'deleteImage'])->name('admin.pages.deleteImage')->middleware(['auth']);
 Route::resource('/admin/pages', PageController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);
+
 // Route for uploading images for ckeditor
 Route::post('admin/ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('admin.ckeditor.upload')->middleware(['auth']);
 

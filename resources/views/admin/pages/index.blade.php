@@ -15,31 +15,20 @@
   <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
-
-              <div class="flash-message">
-                @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-                  @if(Session::has('alert-' . $msg))
-
-                  <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-                  @endif
-                @endforeach
-              </div>
-
               <table class="table table-bordered yajra-datatable">
                   <thead>
                       <tr>
-                          <th>Id</th>
-                          <th>Tittle</th>
-                          <th>Slug</th>
-                          <th>Keywords</th>
-                          <th>Created date</th>
-                          <th>Action</th>
+                        <th>Id</th>
+                        <th>Tittle</th>
+                        <th>Slug</th>
+                        <th>Keywords</th>
+                        <th>Created date</th>
+                        <th>Action</th>
                       </tr>
                   </thead>
                   <tbody>
                   </tbody>
               </table>
-
               <br/>
             </div>
           </div>
