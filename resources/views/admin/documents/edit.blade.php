@@ -8,7 +8,7 @@
 
 @section('content')
   <div class="container-fluid">
-    <form method="POST" action="{{ url('/admin/documents/'.$document->id)}}" enctype="multipart/form-data" id="update-document-form">
+    <form method="POST" action="{{ route('admin.documents.update', $document->id) }}" enctype="multipart/form-data" id="update-document-form">
       <div class="row">
         <div class="col-md-12">
           <div class="card card-primary">
@@ -31,13 +31,9 @@
   </div>
 @endsection
 
-@push('optional-styles')
-  <link rel="stylesheet" href="{{ asset('admin/css/app.css') }}">
-@endpush
-
 @push('optional-scripts')
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
     $(document).ready(function(){
@@ -57,19 +53,6 @@
           file: {
             required: true,
             extension: "doc|docx|txt|ppt|csv|xls|xlsx|pdf|odt"
-          }
-        },
-        messages: {
-          title: {
-            required: "Title is required",
-            minlength: "Title cannot be less than 8 characters"
-          },
-          keywords: {
-            minlength: "Keywords cannot be less than 3 characters"
-          },
-          file: {
-            required: "File is required",
-            extension: "This type of file is not accepted"
           }
         }
       });

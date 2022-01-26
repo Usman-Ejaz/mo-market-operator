@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
-
 class DocumentController extends Controller
 {
+    private $allowedFileExtensions = array('doc','docx', 'txt', 'ppt', 'pptx', 'odt');
+
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +18,10 @@ class DocumentController extends Controller
      */
     public function index()
     {
+        if( !Auth::user()->role->hasPermission('documents', 'list') ){
+            return abort(403);
+        }
+
         return view('admin.documents.index');
     }
 
@@ -26,6 +32,10 @@ class DocumentController extends Controller
      */
     public function create()
     {
+        if( !Auth::user()->role->hasPermission('documents', 'create') ){
+            return abort(403);
+        }
+
         $document = new Document();
         return view('admin.documents.create', compact('document'));
     }
@@ -39,33 +49,24 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('documents', 'create') ){
+            return abort(403);
+        }
+
         $document = new Document();
-        $document = $this->validateRequest($document);
+        $document = Document::create( $this->validateRequest($document) );
+
+        $fileName = $this->storeFile($document);
+
         $extension = request()->file('file')->getClientOriginalExtension();
-        if($request->get('convert') == null || ( $extension != 'doc' && $extension != 'docx' && $extension != 'ppt' && $extension != 'pptx' && $extension != 'txt' && $extension !='odt')) {
-            $document = Document::create($document);
-            $this->storeFile($document);
-            $request->session()->flash('success', 'Document was successfully added!');
-        } else {
-            $document = Document::create($document);
-            $uploadFile = request()->file('file');
-            $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.documentsFilePath.public_path'), $file_name);
-            $storagePath = public_path( config('filepaths.documentsFilePath.internal_path') );
-            $storageFile = $storagePath.$file_name;
+        if(in_array($extension,$this->allowedFileExtensions)){
             
-            exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir '.$storagePath.' '.$storageFile);
-            $convertedFileName = pathinfo($file_name, PATHINFO_FILENAME);
-            if (file_exists($storagePath. $convertedFileName . '.pdf')) {
-                $document->update([
-                    'file' => $convertedFileName.'.pdf',
-                ]);
-                unlink($storagePath.$file_name);
-                $request->session()->flash('success', 'Document was successfully added!');
-            } else {
-                $request->session()->flash('error', 'Something went wrong during conversion!');
+            if ( !$this->convertFile($document, $fileName) ) {
+                $request->session()->flash('success', 'Document was not converted successfully!');
             }
         }
+        
+        $request->session()->flash('success', 'Document was successfully added!');
         return redirect()->route('admin.documents.index');
     }
 
@@ -77,6 +78,10 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
+        if( !Auth::user()->role->hasPermission('documents', 'view') ){
+            return abort(403);
+        }
+
         return view('admin.documents.show', compact('document'));
     }
 
@@ -88,6 +93,10 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
+        if( !Auth::user()->role->hasPermission('documents', 'edit') ){
+            return abort(403);
+        }
+
         return view('admin.documents.edit', compact('document'));
     }
 
@@ -100,37 +109,25 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
-        $data = $this->validateRequest($document);
-        $extension = 'notSupported';
-        if (request()->hasFile('file')) {
-            $file_path = config('filepaths.documentsFilePath.internal_path').$document->file; 
-            unlink($file_path);
-            $extension = request()->file('file')->getClientOriginalExtension();
+        if( !Auth::user()->role->hasPermission('documents', 'edit') ){
+            return abort(403);
         }
-        if($request->get('convert') == null || ($extension != 'doc' && $extension != 'docx' && $extension != 'ppt' && $extension != 'pptx' && $extension != 'txt' && $extension != 'odt') ) {
-            $document->update($data);
-            $this->storeFile($document);
-            $request->session()->flash('success', 'Document was successful updated!');
-        } else {
-            $document->update($data);
-            $uploadFile = request()->file('file');
-            $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.documentsFilePath.public_path'), $file_name);
-            $storagePath = public_path( config('filepaths.documentsFilePath.internal_path') );
-            $storageFile = $storagePath.$file_name;
+
+        $data = $this->validateRequest($document);
+
+        $document->update($data);
+
+        $fileName = $this->storeFile($document);
+
+        $extension = request()->file('file')->getClientOriginalExtension();
+        if(in_array($extension,$this->allowedFileExtensions)){
             
-            exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir '.$storagePath.' '.$storageFile);
-            $convertedFileName = pathinfo($file_name, PATHINFO_FILENAME);
-            if (file_exists($storagePath. $convertedFileName . '.pdf')) {
-                $document->update([
-                    'file' => $convertedFileName.'.pdf',
-                ]);
-                unlink($storagePath.$file_name);
-                $request->session()->flash('success', 'Document was successful updated!');
-            } else {
-                $request->session()->flash('error', 'Something went wrong during conversion!');
+            if ( !$this->convertFile($document, $fileName) ) {
+                $request->session()->flash('success', 'Document was not converted successfully!');
             }
         }
+
+        $request->session()->flash('success', 'Document was successful updated!');
         return redirect()->route('admin.documents.edit', $document->id);
     }
 
@@ -142,6 +139,10 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
+        if( !Auth::user()->role->hasPermission('documents', 'delete') ){
+            return abort(403);
+        }
+
         $file_path = config('filepaths.documentsFilePath.internal_path').$document->file;
         $document->delete();
         unlink($file_path);
@@ -151,6 +152,10 @@ class DocumentController extends Controller
 
     public function list(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('documents', 'list') ){
+            return abort(403);
+        }
+
         if ($request->ajax()) {
             $data = Document::latest()->get();
 
@@ -160,14 +165,17 @@ class DocumentController extends Controller
                     return ($row->title) ? ( (strlen($row->title) > 50) ? substr($row->title,0,50).'...' : $row->title ) : '';
                 })               
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
-                    return '
-                        <a href="'. route('admin.documents.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                   $options = '';
+                    if( Auth::user()->role->hasPermission('documents', 'edit') ) {
+                        $options .= '<a href="' . route('admin.documents.edit', $row->id) . '" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <form action="'. route('admin.documents.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                        </a>';
+                    }
+                    if( Auth::user()->role->hasPermission('documents', 'delete') ) {
+                        $options .= ' <form action="'. route('admin.documents.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
@@ -175,6 +183,8 @@ class DocumentController extends Controller
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -204,11 +214,33 @@ class DocumentController extends Controller
             $uploadFile = request()->file('file');
             $file_name = $uploadFile->hashName();
             $uploadFile->storeAs(config('filepaths.documentsFilePath.public_path'), $file_name);
-
             $document->update([
                 'file' => $file_name,
             ]);
+            return $file_name;
         }
+    }
+
+    private function convertFile($document, $fileName)
+    {
+        if (request()->has('file') && !request()->get('convert') == null) {
+
+            $storagePath = public_path( config('filepaths.documentsFilePath.internal_path') );
+            $storageFile = $storagePath.$fileName;
+            
+            exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir '.$storagePath.' '.$storageFile);
+            
+            $convertedFileName = pathinfo($storageFile, PATHINFO_FILENAME);
+            if( file_exists($storagePath.$convertedFileName.'.pdf') ){
+                $document->update([
+                    'file' => $convertedFileName.'.pdf',
+                ]);
+                unlink($storageFile);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function deleteFile(Request $request){

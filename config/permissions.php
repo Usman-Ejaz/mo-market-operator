@@ -78,6 +78,16 @@ return [
             "delete" => "Delete",
             "publish" => "Publish"
         ]
+    ],
+    [
+        "name" => "documents",
+        "display_name" => "Documents",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+        ]
     ]
 
 ];

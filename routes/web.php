@@ -1,12 +1,9 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
-<<<<<<< HEAD
 use App\Http\Controllers\DocumentController;
-=======
 use App\Http\Controllers\CkeditorImageUploader;
 use App\Http\Controllers\FaqController;
->>>>>>> development
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
