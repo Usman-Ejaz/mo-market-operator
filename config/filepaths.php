@@ -12,5 +12,13 @@ return [
     'documentsFilePath' => [
         'internal_path' => 'storage/uploads/documents/',
         'public_path' => 'public/uploads/documents/',
+    ],
+    'pageImagePath' => [
+        'internal_path' => 'public/uploads/pages/',
+        'public_path' => 'storage/uploads/pages/',
+    ],
+    'ckeditorImagePath' => [
+        'internal_path' => 'public/uploads/ckeditor/',
+        'public_path' => 'storage/uploads/ckeditor/',
     ]
 ];

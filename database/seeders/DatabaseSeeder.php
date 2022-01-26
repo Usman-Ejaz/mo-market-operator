@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Document;
+use App\Models\Faq;
 use App\Models\News;
+use App\Models\Page;
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -21,6 +24,18 @@ class DatabaseSeeder extends Seeder
         $adminRole = Role::factory()->create(['name' => 'Administrator']);
         $employeeRole = Role::factory()->create(['name' => 'Employee']);
         $roles = Role::factory(1)->create();
+
+        // Grant all permissions to admin
+        $permissions = config('permissions');
+        foreach( $permissions as $permission ) {
+            foreach( $permission['capabilities'] as $capability_name => $capability_display_name){
+                Permission::factory()->create([
+                    'role_id' => $adminRole->id,
+                    'name' => $permission['name'],
+                    'capability' => $capability_name
+                ]);
+            }
+        }
 
         // Create Admin Users
         $adminUsers = User::factory(1)->create([
@@ -44,10 +59,16 @@ class DatabaseSeeder extends Seeder
             'modified_by' => $employeeRole->id
         ]);
 
-        // News
+        // Create News
         News::factory(30)->create();
 
         // Documents
         Document::factory(20)->create();
+        
+        //CMS
+        Page::factory(20)->create();
+        
+        // Create FAQ
+        Faq::factory(30)->create();
     }
 }

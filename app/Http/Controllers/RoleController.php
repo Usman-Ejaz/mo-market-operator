@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
 {
@@ -14,7 +17,11 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        if( !Auth::user()->role->hasPermission('roles', 'list') ){
+            return abort(403);
+        }
+
+        return view('admin.roles.index');
     }
 
     /**
@@ -24,7 +31,12 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        if( !Auth::user()->role->hasPermission('roles', 'create') ){
+            return abort(403);
+        }
+
+        $role = new Role();
+        return view('admin.roles.create', compact('role'));
     }
 
     /**
@@ -35,7 +47,15 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if( !Auth::user()->role->hasPermission('roles', 'create') ){
+            return abort(403);
+        }
+
+        $role = new Role();
+        $role = Role::create( $this->validateRequest($role) );
+
+        $request->session()->flash('success', 'Role was successfully added!');
+        return redirect()->route('admin.roles.index');
     }
 
     /**
@@ -46,7 +66,11 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        if( !Auth::user()->role->hasPermission('roles', 'view') ){
+            return abort(403);
+        }
+
+        return view('admin.roles.show', compact('role'));
     }
 
     /**
@@ -57,7 +81,11 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        if( !Auth::user()->role->hasPermission('roles', 'edit') ){
+            return abort(403);
+        }
+
+        return view('admin.roles.edit', compact('role'));
     }
 
     /**
@@ -69,7 +97,14 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        if( !Auth::user()->role->hasPermission('roles', 'edit') ){
+            return abort(403);
+        }
+
+        $role->update($this->validateRequest($role));
+
+        $request->session()->flash('success', 'Role was successfully updated!');
+        return redirect()->route('admin.roles.edit', $role->id);
     }
 
     /**
@@ -80,6 +115,61 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        if( !Auth::user()->role->hasPermission('news', 'delete') ){
+            return abort(403);
+        }
+
+        $role->delete();
+        return redirect()->route('admin.roles.index')->with('success', 'Role was successfully deleted!');
+    }
+
+    public function list(Request $request)
+    {
+        if( !Auth::user()->role->hasPermission('news', 'list') ){
+            return abort(403);
+        }
+
+        if ($request->ajax()) {
+            $data = Role::latest()->get();
+
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('name', function ($row) {
+                    return ( isset($row->name)) ? $row->name : '';
+                })
+                ->addColumn('created_at', function ($row) {
+                    return ($row->created_at) ? $row->created_at : '';
+                })
+                ->addColumn('action', function ($row) {
+                    $options = '';
+                    if( Auth::user()->role->hasPermission('roles', 'edit') ) {
+                        $options .= '<a href="'. route('admin.roles.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>';
+                    }
+
+                    if( Auth::user()->role->hasPermission('roles', 'delete') ) {
+                        $options .= ' <form action="'. route('admin.roles.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                            '.csrf_field().'
+                            '.method_field("DELETE").'
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                    <i class="fas fa-trash"></i>
+                            </button>
+                        </form>';
+                    }
+
+                    return $options;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    private function validateRequest($role){
+
+        return request()->validate([
+            'name' => 'required|unique:roles,name,'.$role->id
+        ]);
     }
 }

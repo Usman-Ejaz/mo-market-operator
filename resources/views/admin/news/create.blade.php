@@ -10,7 +10,7 @@
 @section('content')
   <div class="container-fluid">
 
-              <form method="POST" action="{{ url('/admin/news')}}" enctype="multipart/form-data" id="create-news-form">
+              <form method="POST" action="{{ route('admin.news.store') }}" enctype="multipart/form-data" id="create-news-form">
                 <div class="row">
                   <div class="col-md-9">
                     <div class="card card-primary">
@@ -39,14 +39,20 @@
                       @if( \Route::current()->getName() == 'admin.news.edit' )
                           @if($news->active == 'Active')
                             <button type="submit" class="btn btn-primary publish_button">Update</button>
-                            <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
+                            @if( Auth::user()->role->hasPermission('news', 'publish') )
+                                <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
+                            @endif
                           @elseif($news->active == 'Draft')
                             <button type="submit" class="btn btn-primary draft_button">Update</button>
-                            <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @if( Auth::user()->role->hasPermission('news', 'publish') )
+                                <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @endif
                           @endif
                       @else
                             <button type="submit" class="btn btn-primary draft_button">Save</button>
-                            <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @if( Auth::user()->role->hasPermission('news', 'publish') )
+                                <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @endif
                       @endif
 
                     </div>
@@ -55,36 +61,19 @@
                 </div>
               </form>
 
-
             </div>
           </div>
           <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-
     </div>
 @endsection
 
-
-@push('optional-styles')
- <link rel="stylesheet" href="{{ asset('admin/css/tempusdominus-bootstrap-4.min.css') }}">
-
-  <style>
-  .my-error-class {
-    color:#FF0000;  /* red */
-  }
-  .my-valid-class {
-    color:#00CC00; /* green */
-  }
-  </style>
-@endpush
-
 @push('optional-scripts')
-  <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
-  <script src="{{ asset('admin/js/moment.min.js') }}"></script>
-  <script src="{{ asset('admin/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-  <script src="{{ asset('admin/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin/js/additional-methods.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
     CKEDITOR.replace('editor1', {
@@ -95,8 +84,10 @@
 
     //Date and time picker
     $(document).ready(function(){
-      $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
-      $('#endtime').datetimepicker({ icons: { time: 'far fa-clock' } });
+
+      $('#start_datetime, #end_datetime').datetimepicker({
+          format:'{{ config('settings.datetime_format') }}',
+      });
 
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
@@ -123,7 +114,7 @@
         rules:{
           title: {
             required: true,
-            maxlength: 5000
+            maxlength: 255
           },
           description:{
             required: true,
@@ -131,59 +122,19 @@
           },
           slug: {
             required: true,
-            maxlength: 2000
+            maxlength: 255
           },
-          keywords: {
-            required: true,
-            maxlength: 500
-          },
-          newscategory_id: {
+          news_category: {
             required: true,
           },
           image: {
-            extension: "jpg|jpeg|png|ico|bmp"
+            extension: "jpg|jpeg|png",
           },
-          starttime: {
+          start_datetime: {
             required : false,
-            date:true,
-            dateLessThan : '#endtime'
           },
-          endtime: {
+          end_datetime: {
             required : false,
-            date:true
-          }
-        },
-        messages: {
-          title: {
-            required: "Title is required",
-            maxlength: "Title cannot be more than 5000 characters"
-          },
-          description: {
-            required: "Description is required",
-            maxlength: "Description cannot be more than 50000 characters"
-          },
-          slug: {
-            required: "Slug is required",
-            maxlength: "Slug cannot be more than 2000 characters",
-          },
-          keywords: {
-            required: "Keywords is required",
-            maxlength: "Keywords cannot be more than 500 characters"
-          },
-          newscategory_id: {
-            required: "Newscategory id is required"
-          },
-          image: {
-            extension: "This type of file is not accepted"
-          },
-          starttime: {
-            required: "Start time is not required",
-            date:"Start time must be date time",
-            dateLessThan: "Start time must less than end time"
-          },
-          endtime: {
-            required: "End time is not required",
-            date:"End time must be date time",
           }
         }
       });

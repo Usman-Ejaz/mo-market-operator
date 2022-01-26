@@ -7,6 +7,7 @@ use App\Models\NewsCategory;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DataTables;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -19,6 +20,10 @@ class NewsController extends Controller
      */
     public function index()
     {
+        if( !Auth::user()->role->hasPermission('news', 'list') ){
+            return abort(403);
+        }
+
         return view('admin.news.index');
     }
 
@@ -29,6 +34,10 @@ class NewsController extends Controller
      */
     public function create()
     {
+        if( !Auth::user()->role->hasPermission('news', 'create') ){
+            return abort(403);
+        }
+
         $news = new News();
         return view('admin.news.create', compact('news'));
     }
@@ -41,12 +50,16 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('news', 'create') ){
+            return abort(403);
+        }
+
         $news = new News();
         $news = News::create( $this->validateRequest($news) );
 
         $this->storeImage($news);
 
-        $request->session()->flash('success', 'News was successful added!');
+        $request->session()->flash('success', 'News was successfully added!');
         return redirect()->route('admin.news.index');
     }
 
@@ -58,6 +71,10 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
+        if( !Auth::user()->role->hasPermission('news', 'view') ){
+            return abort(403);
+        }
+
         return view('admin.news.show', compact('news'));
     }
 
@@ -69,6 +86,10 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
+        if( !Auth::user()->role->hasPermission('news', 'edit') ){
+            return abort(403);
+        }
+
         return view('admin.news.edit', compact('news'));
     }
 
@@ -81,11 +102,15 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
+        if( !Auth::user()->role->hasPermission('news', 'edit') ){
+            return abort(403);
+        }
+
         $news->update($this->validateRequest($news));
 
         $this->storeImage($news);
 
-        $request->session()->flash('success', 'News was successful updated!');
+        $request->session()->flash('success', 'News was successfully updated!');
         return redirect()->route('admin.news.edit', $news->id);
     }
 
@@ -97,13 +122,20 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        $news->delete();
+        if( !Auth::user()->role->hasPermission('news', 'delete') ){
+            return abort(403);
+        }
 
-        return redirect()->route('admin.news.index')->with('success', 'News was successful deleted!');
+        $news->delete();
+        return redirect()->route('admin.news.index')->with('success', 'News was successfully deleted!');
     }
 
     public function list(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('news', 'list') ){
+            return abort(403);
+        }
+
         if ($request->ajax()) {
             $data = News::latest()->get();
 
@@ -119,14 +151,17 @@ class NewsController extends Controller
                     return ($row->news_category) ? $row->news_category : '';
                 })
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
-                    return '
-                        <a href="'. route('admin.news.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                    $options = '';
+                    if( Auth::user()->role->hasPermission('news', 'edit') ) {
+                        $options .= '<a href="' . route('admin.news.edit', $row->id) . '" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                        </a>';
+                    }
+                    if( Auth::user()->role->hasPermission('news', 'delete') ) {
+                        $options .= ' <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
@@ -134,6 +169,8 @@ class NewsController extends Controller
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -148,8 +185,8 @@ class NewsController extends Controller
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:d/m/Y H:i:s',
-            'end_datetime' => 'nullable|date_format:d/m/Y H:i:s',
+            'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
+            'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
             'news_category' => 'required|integer',
             'active' => 'required',
             'created_by' => '',

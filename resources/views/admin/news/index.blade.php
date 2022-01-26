@@ -6,22 +6,15 @@
 @endsection
 
 @section('addButton')
-<a class="btn btn-primary float-right" href="{{ route('admin.news.create') }}">Add new news</a>
+    @if( Auth::user()->role->hasPermission('news', 'create') )
+        <a class="btn btn-primary float-right" href="{{ route('admin.news.create') }}">Add news</a>
+    @endif
 @endsection
 
 @section('content')
   <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
-
-              <div class="flash-message">
-                @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-                  @if(Session::has('alert-' . $msg))
-
-                  <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-                  @endif
-                @endforeach
-              </div>
 
               <table class="table table-bordered yajra-datatable">
                   <thead>
@@ -53,16 +46,6 @@
 @push('optional-styles')
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <style>
-
-      ul.pagination li{
-        padding:0px!important;
-        border-color: #fff!important;
-      }
-      ul.pagination li.active{
-        background-color: #fff!important;
-      }
-    </style>
 @endpush
 
 @push('optional-scripts')

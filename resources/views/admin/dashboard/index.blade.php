@@ -1,10 +1,8 @@
 @extends('admin.layouts.app')
 @section('header', 'Dashboard')
 @section('breadcrumbs')
-<ol class="breadcrumb float-sm-right">
   <li class="breadcrumb-item"><a href="#">Home</a></li>
   <li class="breadcrumb-item active">Dashboard</li>
-</ol>
 @endsection
 
 @section('content')
@@ -255,12 +253,12 @@
         </div>
         <!-- /.container-fluid -->
 
-    </div>   
+    </div>
 @endsection
 
 
 @push('optional-scripts')
-    <script src="{{asset('admin/js/Chart.min.js')}}" defer></script>
-    <script src="{{asset('admin/js/demo.js')}}" defer></script>
-    <script src="{{asset('admin/js/dashboard3.js')}}" defer></script>
+    <script src="{{asset('admin-resources/js/Chart.min.js')}}" defer></script>
+    <script src="{{asset('admin-resources/js/demo.js')}}" defer></script>
+    <script src="{{asset('admin-resources/js/dashboard3.js')}}" defer></script>
 @endpush
