@@ -87,8 +87,10 @@
 
     //Date and time picker
     $(document).ready(function(){
-      $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
-      $('#endtime').datetimepicker({ icons: { time: 'far fa-clock' } });
+
+    $('#start_datetime, #end_datetime').datetimepicker({
+        format:'{{ config('settings.datetime_format') }}',
+    });
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
@@ -106,77 +108,37 @@
         $("#slug").val(Text);
       });
 
-      $('#update-news-form').validate({
-        errorElement: 'span',
-        errorClass: "my-error-class",
-        validClass: "my-valid-class",
-        rules:{
-          title: {
-            required: true,
-            maxlength: 5000
-          },
-          description:{
-            required: true,
-            maxlength: 50000
-          },
-          slug: {
-            required: true,
-            maxlength: 2000
-          },
-          keywords: {
-            required: true,
-            maxlength: 500
-          },
-          newscategory_id: {
-            required: true,
-          },
-          image: {
-            extension: "jpg|jpeg|png|ico|bmp"
-          },
-          starttime: {
-            required : false,
-            date:true,
-            dateLessThan : '#endtime'
-          },
-          endtime: {
-            required : false,
-            date:true
-          }
-        },
-        messages: {
-          title: {
-            required: "Title is required",
-            maxlength: "Title cannot be more than 5000 characters"
-          },
-          description: {
-            required: "Description is required",
-            maxlength: "Description cannot be more than 50000 characters"
-          },
-          slug: {
-            required: "Slug is required",
-            maxlength: "Slug cannot be more than 2000 characters",
-          },
-          keywords: {
-            required: "Keywords is required",
-            maxlength: "Keywords cannot be more than 500 characters"
-          },
-          newscategory_id: {
-            required: "Newscategory id is required"
-          },
-          image: {
-            extension: "This type of file is not accepted"
-          },
-          starttime: {
-            required: "Start time is not required",
-            date:"Start time must be date time",
-            dateLessThan: "Start time must less than end time"
-          },
-          endtime: {
-            required: "End time is not required",
-            date:"End time must be date time",
-          }
-        }
-      });
+        $('#update-news-form').validate({
+            errorElement: 'span',
+            errorClass: "my-error-class",
+            validClass: "my-valid-class",
+            rules:{
+                title: {
+                    required: true,
+                    maxlength: 255
+                },
+                description:{
+                    required: true,
+                    maxlength: 50000
+                },
+                slug: {
+                    required: true,
+                    maxlength: 255
+                },
+                news_category: {
+                    required: true,
+                },
+                image: {
+                    extension: "jpg|jpeg|png",
+                },
+                start_datetime: {
+                    required : false,
+                },
+                end_datetime: {
+                    required : false,
+                }
+            }
+        });
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $("#deleteImage").click(function(){

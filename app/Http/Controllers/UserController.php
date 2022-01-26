@@ -161,7 +161,7 @@ class UserController extends Controller
                     return ($row->active) ? $row->active : '';
                 })
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';

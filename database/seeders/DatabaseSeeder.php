@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Faq;
 use App\Models\News;
 use App\Models\Page;
 use App\Models\Permission;
@@ -62,5 +63,8 @@ class DatabaseSeeder extends Seeder
 
         //CMS
         Page::factory(20)->create();
+        
+        // Create FAQ
+        Faq::factory(30)->create();
     }
 }

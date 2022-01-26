@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CkeditorImageUploader;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -73,6 +75,13 @@ Route::get('admin/jobs/{job}/applications/export', [JobController::class, 'expor
 
 Route::get('admin/applications/{application}', [ApplicationController::class, 'show'])->name('admin.job.application.detail')->middleware(['auth']);
 Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy'])->name('admin.job.application.destroy')->middleware(['auth']);
+
+// Routes for FAQ Module
+Route::get('admin/faqs/list', [FaqController::class, 'list'])->name('admin.faqs.list')->middleware(['auth']);
+Route::resource('/admin/faqs', FaqController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
+
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
 
 // Routes for Page Module
@@ -82,5 +91,7 @@ Route::post('admin/pages/deleteImage', [PageController::class, 'deleteImage'])->
 Route::resource('/admin/pages', PageController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);
+// Route for uploading images for ckeditor
+Route::post('admin/ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('admin.ckeditor.upload')->middleware(['auth']);
 
 require __DIR__.'/auth.php';

@@ -61,25 +61,17 @@
                 </div>
               </form>
 
-
             </div>
           </div>
           <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-
     </div>
 @endsection
 
-
-@push('optional-styles')
- <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
-@endpush
-
 @push('optional-scripts')
-  <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
+  <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
   <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
@@ -92,8 +84,10 @@
 
     //Date and time picker
     $(document).ready(function(){
-      $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
-      $('#endtime').datetimepicker({ icons: { time: 'far fa-clock' } });
+
+      $('#start_datetime, #end_datetime').datetimepicker({
+          format:'{{ config('settings.datetime_format') }}',
+      });
 
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
@@ -120,7 +114,7 @@
         rules:{
           title: {
             required: true,
-            maxlength: 5000
+            maxlength: 255
           },
           description:{
             required: true,
@@ -128,59 +122,19 @@
           },
           slug: {
             required: true,
-            maxlength: 2000
+            maxlength: 255
           },
-          keywords: {
-            required: true,
-            maxlength: 500
-          },
-          newscategory_id: {
+          news_category: {
             required: true,
           },
           image: {
-            extension: "jpg|jpeg|png|ico|bmp"
+            extension: "jpg|jpeg|png",
           },
-          starttime: {
+          start_datetime: {
             required : false,
-            date:true,
-            dateLessThan : '#endtime'
           },
-          endtime: {
+          end_datetime: {
             required : false,
-            date:true
-          }
-        },
-        messages: {
-          title: {
-            required: "Title is required",
-            maxlength: "Title cannot be more than 5000 characters"
-          },
-          description: {
-            required: "Description is required",
-            maxlength: "Description cannot be more than 50000 characters"
-          },
-          slug: {
-            required: "Slug is required",
-            maxlength: "Slug cannot be more than 2000 characters",
-          },
-          keywords: {
-            required: "Keywords is required",
-            maxlength: "Keywords cannot be more than 500 characters"
-          },
-          newscategory_id: {
-            required: "Newscategory id is required"
-          },
-          image: {
-            extension: "This type of file is not accepted"
-          },
-          starttime: {
-            required: "Start time is not required",
-            date:"Start time must be date time",
-            dateLessThan: "Start time must less than end time"
-          },
-          endtime: {
-            required: "End time is not required",
-            date:"End time must be date time",
           }
         }
       });

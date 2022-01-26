@@ -60,6 +60,10 @@ class User extends Authenticatable
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
 
+    public function getCreatedAtAttribute($attribute){
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+    }
+
     public function roles(){
         return Role::latest()->get();
     }

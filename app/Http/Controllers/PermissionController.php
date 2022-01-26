@@ -50,12 +50,9 @@ class PermissionController extends Controller
             }
         }
 
-        if( Permission::insert( $records ) ) {
-            $request->session()->flash('success', 'Permissions were successful updated!');
-            return redirect()->route('admin.permissions.index', ['role_id'=>$data['role_id']]);
-        }
+        Permission::insert( $records );
 
-        $request->session()->flash('error', 'Permissions were not added, please try again.');
+        $request->session()->flash('success', 'Permissions were successfully updated!');
         return redirect()->route('admin.permissions.index', ['role_id'=>$data['role_id']]);
     }
 
