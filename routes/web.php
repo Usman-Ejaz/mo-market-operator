@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\FaqController;
+use App\Http\Controllers\CkeditorImageUploader;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -81,5 +81,8 @@ Route::resource('/admin/faqs', FaqController::class, [
 ])->middleware(['auth']);
 
 //Route::resource('customers', 'CustomersController')->middleware(['auth'])->name('index', 'customers');
+
+// Route for uploading images for ckeditor
+Route::post('admin/ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('admin.ckeditor.upload')->middleware(['auth']);
 
 require __DIR__.'/auth.php';

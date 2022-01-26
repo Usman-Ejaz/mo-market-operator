@@ -54,12 +54,7 @@ class RoleController extends Controller
         $role = new Role();
         $role = Role::create( $this->validateRequest($role) );
 
-        if ($role->exists) {
-            $request->session()->flash('success', 'Role was successful added!');
-            return redirect()->route('admin.roles.index');
-        }
-
-        $request->session()->flash('error', 'Role was not added, please try again.');
+        $request->session()->flash('success', 'Role was successfully added!');
         return redirect()->route('admin.roles.index');
     }
 
@@ -106,13 +101,9 @@ class RoleController extends Controller
             return abort(403);
         }
 
-        if ( $role->update($this->validateRequest($role)) ) {
+        $role->update($this->validateRequest($role));
 
-            $request->session()->flash('success', 'Role was successful updated!');
-            return redirect()->route('admin.roles.edit', $role->id);
-        }
-
-        $request->session()->flash('error', 'Role was not updated, please try again.');
+        $request->session()->flash('success', 'Role was successfully updated!');
         return redirect()->route('admin.roles.edit', $role->id);
     }
 
@@ -128,11 +119,8 @@ class RoleController extends Controller
             return abort(403);
         }
 
-        if( $role->delete() ) {
-            return redirect()->route('admin.roles.index')->with('success', 'Role was successful deleted!');
-        }
-
-        return redirect()->route('admin.roles.index')->with('error', 'Role was not deleted!');
+        $role->delete();
+        return redirect()->route('admin.roles.index')->with('success', 'Role was successfully deleted!');
     }
 
     public function list(Request $request)
@@ -150,7 +138,7 @@ class RoleController extends Controller
                     return ( isset($row->name)) ? $row->name : '';
                 })
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';

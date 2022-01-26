@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,5 +28,9 @@ class Role extends Model
             return true;
         }
         return false;
+    }
+
+    public function getCreatedAtAttribute($attribute){
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 }
