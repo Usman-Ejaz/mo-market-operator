@@ -6,7 +6,9 @@
 @endsection
 
 @section('addButton')
-<a class="btn btn-primary float-right" href="{{ route('admin.faqs.create') }}">Add New FAQ</a>
+@if( Auth::user()->role->hasPermission('faq', 'create') )
+  <a class="btn btn-primary float-right" href="{{ route('admin.faqs.create') }}">Add New FAQ</a>
+@endif
 @endsection
 
 @section('content')
@@ -40,7 +42,6 @@
 @push('optional-styles')
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('admin-resources/css/app.css')}}">
 @endpush
 
 @push('optional-scripts')

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
-use Carbon\Carbon;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,13 +52,8 @@ class FaqController extends Controller
 
         $faq = new Faq();
         $faq = Faq::create( $this->validateRequest($faq) );
-
-        if ($faq->exists) {
-            $request->session()->flash('success', 'Faq was successfully added!');
-            return redirect()->route('admin.faqs.index');
-        }
-
-        $request->session()->flash('error', 'Faq was not added, please try again.');
+        
+        $request->session()->flash('success', 'Faq was successfully added!');
         return redirect()->route('admin.faqs.index');
     }
 
@@ -106,12 +100,9 @@ class FaqController extends Controller
             return abort(403);
         }
 
-        if ( $faq->update($this->validateRequest($faq)) ) {
-            $request->session()->flash('success', 'Faq was successfully updated!');
-            return redirect()->route('admin.faqs.edit', $faq->id);
-        }
+        $faq->update($this->validateRequest($faq));
 
-        $request->session()->flash('error', 'Faq was not updated, please try again');
+        $request->session()->flash('success', 'Faq was successfully updated!');
         return redirect()->route('admin.faqs.edit', $faq->id);
     }
 
@@ -127,11 +118,8 @@ class FaqController extends Controller
             return abort(403);
         }
 
-        if( $faq->delete() ) {
-            return redirect()->route('admin.faqs.index')->with('success', 'FAQ was successfully deleted!');
-        }
-
-        return redirect()->route('admin.faqs.index')->with('error', 'FAQ was not deleted!');
+        $faq->delete();
+        return redirect()->route('admin.faqs.index')->with('success', 'FAQ was successfully deleted!');
     }
 
     /**
@@ -154,14 +142,17 @@ class FaqController extends Controller
                     return ($row->question) ? ( (strlen($row->question) > 100) ? substr($row->question,0,100).'...' : $row->question ) : '';
                 })
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
-                    return '
-                        <a href="'. route('admin.faqs.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                    $options = '';
+                    if( Auth::user()->role->hasPermission('faq', 'edit') ) {
+                        $options .= '<a href="' . route('admin.faqs.edit', $row->id) . '" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <form action="'. route('admin.faqs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                        </a>';
+                    }
+                    if( Auth::user()->role->hasPermission('faq', 'delete') ) {
+                        $options .= ' <form action="'. route('admin.faqs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
@@ -169,6 +160,8 @@ class FaqController extends Controller
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])                
                 ->make(true);
