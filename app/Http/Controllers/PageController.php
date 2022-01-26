@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\DataTables;
 
@@ -17,6 +18,10 @@ class PageController extends Controller
      */
     public function index()
     {
+        if( !Auth::user()->role->hasPermission('pages', 'list') ){
+            return abort(403);
+        }
+
         return view('admin.pages.index');
     }
 
@@ -28,6 +33,10 @@ class PageController extends Controller
      */
     public function create()
     {
+        if( !Auth::user()->role->hasPermission('pages', 'create') ){
+            return abort(403);
+        }
+
         $page = new Page();
         return view('admin.pages.create', compact('page'));
     }
@@ -40,12 +49,16 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('pages', 'create') ){
+            return abort(403);
+        }
+
         $page = new Page();
         $page = Page::create( $this->validateRequest($page) );
 
         $this->storeImage($page);
 
-        $request->session()->flash('success', 'Page was successful added!');
+        $request->session()->flash('success', 'Page was successfully added!');
         return redirect()->route('admin.pages.index');
     }
 
@@ -57,6 +70,10 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
+        if( !Auth::user()->role->hasPermission('pages', 'view') ){
+            return abort(403);
+        }
+
         return view('admin.pages.show', compact('page'));
     }
 
@@ -68,6 +85,10 @@ class PageController extends Controller
      */
     public function edit(Page $page)
     {
+        if( !Auth::user()->role->hasPermission('pages', 'edit') ){
+            return abort(403);
+        }
+
         return view('admin.pages.edit', compact('page'));
     }
 
@@ -80,11 +101,15 @@ class PageController extends Controller
      */
     public function update(Request $request, Page $page)
     {
+        if( !Auth::user()->role->hasPermission('pages', 'edit') ){
+            return abort(403);
+        }
+
         $page->update($this->validateRequest($page));
 
         $this->storeImage($page);
 
-        $request->session()->flash('success', 'Page was successful updated!');
+        $request->session()->flash('success', 'Page was successfully updated!');
         return redirect()->route('admin.pages.edit', $page->id);
     }
 
@@ -96,13 +121,20 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {
+        if( !Auth::user()->role->hasPermission('pages', 'delete') ){
+            return abort(403);
+        }
+
         $page->delete();
 
-        return redirect()->route('admin.pages.index')->with('success', 'Page was successful deleted!');
+        return redirect()->route('admin.pages.index')->with('success', 'Page was successfully deleted!');
     }
 
     public function list(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('pages', 'list') ){
+            return abort(403);
+        }
         if ($request->ajax()) {
             $data = Page::latest()->get();
 
@@ -118,18 +150,22 @@ class PageController extends Controller
                     return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
                 })
                 ->addColumn('action', function ($row) {
-                    return '
-                        <a href="'. route('admin.pages.edit',$row->id) .'" class="btn btn-primary" title="edit">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <form action="'. route('admin.pages.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
+                    $options = '';
+                    if( Auth::user()->role->hasPermission('pages', 'edit') ) {
+                        $options .= ' <a href="'. route('admin.pages.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                        <i class="fas fa-pencil-alt"></i></a>';
+                    }
+                    if( Auth::user()->role->hasPermission('pages', 'delete') ) {
+                        $options .= '<form action="'. route('admin.pages.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                        '.csrf_field().'
+                        '.method_field("DELETE").'
+                        <button type="submit" class="btn btn-danger"
+                            onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                <i class="fas fa-trash"></i>
+                        </button>
                         </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])
                 ->make(true);

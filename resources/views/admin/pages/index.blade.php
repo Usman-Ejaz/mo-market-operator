@@ -1,12 +1,14 @@
 @extends('admin.layouts.app')
 @section('header', 'Pages')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
   <li class="breadcrumb-item active">Pages</li>
 @endsection
 
 @section('addButton')
-<a class="btn btn-primary float-right" href="{{ route('admin.pages.create') }}">Add New Page</a>
+  @if( Auth::user()->role->hasPermission('pages', 'create') )
+    <a class="btn btn-primary float-right" href="{{ route('admin.pages.create') }}">Add New Page</a>
+  @endif
 @endsection
 
 @section('content')
@@ -52,12 +54,9 @@
 @push('optional-styles')
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('admin/css/app.css') }}">
 @endpush
 
 @push('optional-scripts')
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 

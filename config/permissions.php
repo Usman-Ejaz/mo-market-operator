@@ -54,5 +54,18 @@ return [
             "delete" => "Delete",
             "view_applications" => "View Applications",
         ]
+    ],
+    [
+        "name" => "pages",
+        "display_name" => "Pages",
+        "capabilities" => [
+            "list" => "List",
+            //"view" => "View",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            "publish" => "Publish"
+        ]
     ]
+
 ];

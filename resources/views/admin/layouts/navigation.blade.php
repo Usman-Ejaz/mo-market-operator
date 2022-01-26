@@ -77,7 +77,7 @@
               </li>
             </ul>
           </li>
-
+          @if( Auth::user()->role->hasPermission('pages', 'list') )
           <li class="nav-item">
             <a href="{{ Route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages/*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-pager"></i>
@@ -86,6 +86,7 @@
               </p>
             </a>
           </li>
+          @endif
 
           <li class="nav-header">LABELS</li>
           <li class="nav-item">
