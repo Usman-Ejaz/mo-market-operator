@@ -246,7 +246,7 @@ class JobController extends Controller
                         $options = '';
                         if( Auth::user()->role->hasPermission('applications', 'view') ) {
                             $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="edit">
-                                <i class="fas fa-eye-alt"></i>
+                                <i class="fas fa-eye"></i>
                             </a>';
                         }
                         if( Auth::user()->role->hasPermission('applications', 'delete') ) {
