@@ -7,7 +7,11 @@
 
 
         <title>
-            {{ config('app.name', 'ISMO') }}
+            @if(View::hasSection('header'))
+                @yield('header') - {{ config('app.name', 'ISMO') }}
+            @else
+                {{ config('app.name', 'ISMO') }}
+            @endif
         </title>
 
         <!-- Fonts -->

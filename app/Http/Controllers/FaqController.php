@@ -16,7 +16,7 @@ class FaqController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('faq', 'list') ){
+        if( !Auth::user()->role->hasPermission('faqs', 'list') ){
             return abort(403);
         }
 
@@ -30,7 +30,7 @@ class FaqController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('faq', 'create') ){
+        if( !Auth::user()->role->hasPermission('faqs', 'create') ){
             return abort(403);
         }
 
@@ -46,7 +46,7 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('faq', 'create') ){
+        if( !Auth::user()->role->hasPermission('faqs', 'create') ){
             return abort(403);
         }
 
@@ -65,7 +65,7 @@ class FaqController extends Controller
      */
     public function show(Faq $faq)
     {
-        if( !Auth::user()->role->hasPermission('faq', 'view') ){
+        if( !Auth::user()->role->hasPermission('faqs', 'view') ){
             return abort(403);
         }
 
@@ -80,7 +80,7 @@ class FaqController extends Controller
      */
     public function edit(Faq $faq)
     {
-        if( !Auth::user()->role->hasPermission('faq', 'edit') ){
+        if( !Auth::user()->role->hasPermission('faqs', 'edit') ){
             return abort(403);
         }
 
@@ -96,7 +96,7 @@ class FaqController extends Controller
      */
     public function update(Request $request, Faq $faq)
     {   
-        if( !Auth::user()->role->hasPermission('faq', 'edit') ){
+        if( !Auth::user()->role->hasPermission('faqs', 'edit') ){
             return abort(403);
         }
 
@@ -114,7 +114,7 @@ class FaqController extends Controller
      */
     public function destroy(Faq $faq)
     {
-        if( !Auth::user()->role->hasPermission('faq', 'delete') ){
+        if( !Auth::user()->role->hasPermission('faqs', 'delete') ){
             return abort(403);
         }
 
@@ -130,7 +130,7 @@ class FaqController extends Controller
      */
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('faq', 'list') ){
+        if( !Auth::user()->role->hasPermission('faqs', 'list') ){
             return abort(403);
         }
 
@@ -146,12 +146,12 @@ class FaqController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('faq', 'edit') ) {
+                    if( Auth::user()->role->hasPermission('faqs', 'edit') ) {
                         $options .= '<a href="' . route('admin.faqs.edit', $row->id) . '" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( Auth::user()->role->hasPermission('faq', 'delete') ) {
+                    if( Auth::user()->role->hasPermission('faqs', 'delete') ) {
                         $options .= ' <form action="'. route('admin.faqs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

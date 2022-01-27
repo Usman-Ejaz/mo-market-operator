@@ -4,17 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApplicationController extends Controller
 {
     public function show(Application $application)
     {
+        if( !Auth::user()->role->hasPermission('applications', 'view') ){
+            return abort(403);
+        }
+
         $application = Application::find($application->id);
         return view('admin.applications.show', compact('application'));
     }
 
     public function destroy(Application $application)
     {
+        if( !Auth::user()->role->hasPermission('applications', 'delete') ){
+            return abort(403);
+        }
+
         $application = Application::find($application->id);
         $application->delete();
 

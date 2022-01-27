@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
-@section('header', 'FAQs')
+@section('header', 'Pages')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item active">FAQs</li>
+  <li class="breadcrumb-item active">Pages</li>
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('faqs', 'create') )
-  <a class="btn btn-primary float-right" href="{{ route('admin.faqs.create') }}">Add New FAQ</a>
-@endif
+  @if( Auth::user()->role->hasPermission('pages', 'create') )
+    <a class="btn btn-primary float-right" href="{{ route('admin.pages.create') }}">Add New Page</a>
+  @endif
 @endsection
 
 @section('content')
@@ -18,16 +18,17 @@
               <table class="table table-bordered yajra-datatable">
                   <thead>
                       <tr>
-                          <th>Id</th>
-                          <th>Question</th>
-                          <th>Created date</th>
-                          <th>Action</th>
+                        <th>Id</th>
+                        <th>Tittle</th>
+                        <th>Slug</th>
+                        <th>Keywords</th>
+                        <th>Created date</th>
+                        <th>Action</th>
                       </tr>
                   </thead>
                   <tbody>
                   </tbody>
               </table>
-
               <br/>
             </div>
           </div>
@@ -45,25 +46,27 @@
 @endpush
 
 @push('optional-scripts')
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js" defer></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 
     <script type="text/javascript">
       $(function () {
-        
+
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
             pageLength: 15,
-            ajax: "{{ route('admin.faqs.list') }}",
+            ajax: "{{ route('admin.pages.list') }}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'question', name: 'question'},
+                {data: 'title', name: 'title'},
+                {data: 'slug', name: 'slug'},
+                {data: 'keywords', name: 'keywords'},
                 {data: 'created_at', name: 'created_at'},
                 {
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: true, 
+                    data: 'action',
+                    name: 'action',
+                    orderable: true,
                     searchable: true
                 },
             ]

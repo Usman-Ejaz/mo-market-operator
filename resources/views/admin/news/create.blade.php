@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @section('header', 'News')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item">News</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.news.index') }}">News</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
 

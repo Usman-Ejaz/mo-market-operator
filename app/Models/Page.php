@@ -7,9 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Application;
-
-class Job extends Model
+class Page extends Model
 {
     use HasFactory;
 
@@ -41,17 +39,25 @@ class Job extends Model
 
     /********** Setters *********/
     public function setStartDatetimeAttribute($attribute){
+
         $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
     }
 
     public function setEndDatetimeAttribute($attribute){
+
         $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
     }
 
-    public function applications(){
-        return $this->hasMany(Application::class);
+    public function setKeywordsAttribute($attribute){
+
+        $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;
     }
 
+    public function setSlugAttribute($attribute){
+
+        $this->attributes['slug'] = ($attribute) ? trim($attribute, '- ') : NULL;
+    }
+    
     public function activeOptions(){
         return [
             0 => 'Draft',

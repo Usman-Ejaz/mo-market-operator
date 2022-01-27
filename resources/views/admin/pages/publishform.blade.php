@@ -5,7 +5,7 @@
         <div class="form-group">
             <label>Start DateTime:</label>
             <div class="input-group">
-                <input type="text" autocomplete="off" class="form-control" id="start_datetime" name="start_datetime" value="{{ old('start_datetime') ?? $job->start_datetime }}" placeholder="{{  config('settings.datetime_format') }}">
+                <input type="text" autocomplete="off" class="form-control" id="start_datetime" name="start_datetime" value="{{ old('start_datetime') ?? $page->start_datetime }}" placeholder="{{  config('settings.datetime_format') }}">
                 <div class="input-group-append">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
@@ -20,7 +20,7 @@
       <div class="form-group">
         <label for="endtime">End DateTime</label>
           <div class="input-group">
-              <input type="text" autocomplete="off" class="form-control" id="end_datetime" name="end_datetime" value="{{ old('end_datetime') ?? $job->end_datetime }}" placeholder="{{  config('settings.datetime_format') }}">
+              <input type="text" autocomplete="off" class="form-control" id="end_datetime" name="end_datetime" value="{{ old('end_datetime') ?? $page->end_datetime }}" placeholder="{{  config('settings.datetime_format') }}">
               <div class="input-group-append">
                   <div class="input-group-text"><i class="fa fa-calendar"></i></div>
               </div>
@@ -32,24 +32,24 @@
 
   <div class="row">
 
-    @if( $job->created_at )
+    @if( $page->created_at )
     <div class="col-md-12">
       <label for="endtime">Created At:</label>
-      <span>{{$job->created_at}}</span>
+      <span>{{$page->created_at}}</span>
     </div>
     @endif
 
-    @if( $job->modified_at )
+    @if( $page->modified_at )
     <div class="col-md-12">
       <label for="endtime">Modified At:</label>
-      <span>{{$job->modified_at ?? 'Not yet'}}</span>
+      <span>{{$page->modified_at ?? 'Not yet'}}</span>
     </div>
     @endif
 
-    @if( isset($job->active) && \Route::current()->getName() == 'admin.jobs.edit' )
+    @if( isset($page->active) && \Route::current()->getName() == 'admin.pages.edit' )
     <div class="col-md-12">
       <label for="endtime">Status:</label>
-      <span>{{ ($job->active == 'Active') ? 'Published' : 'Draft' }}</span>
+      <span>{{ ($page->active == 'Active') ? 'Published' : 'Draft' }}</span>
     </div>
     @endif
 

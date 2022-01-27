@@ -2,9 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Application;
+use App\Models\Document;
 use App\Models\Faq;
 use App\Models\Menu;
+use App\Models\Job;
 use App\Models\News;
+use App\Models\Page;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -66,7 +70,27 @@ class DatabaseSeeder extends Seeder
         // Create News
         News::factory(30)->create();
 
-        // Create FAQ
-        Faq::factory(30)->create();
+        //Create Documents
+        Document::factory(20)->create();
+
+        //Create CMS
+        Page::factory(20)->create();
+
+        //Create Create FAQ
+        Faq::factory(20)->create();
+
+         //Create Job
+        $sampleJob = Job::factory(20)->create();
+
+        //Create Job Applications
+        Application::factory(5)->create([
+            'job_id' => $sampleJob[0]->id,
+        ]);
+
+        Application::factory(5)->create([
+            'job_id' => $sampleJob[1]->id,
+        ]);
+
+        Application::factory(10)->create();
     }
 }

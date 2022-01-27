@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
-use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
@@ -17,6 +16,10 @@ class JobController extends Controller
      */
     public function index()
     {
+        if( !Auth::user()->role->hasPermission('jobs', 'list') ){
+            return abort(403);
+        }
+
         return view('admin.jobs.index');
     }
 
@@ -27,6 +30,10 @@ class JobController extends Controller
      */
     public function create()
     {
+        if( !Auth::user()->role->hasPermission('jobs', 'create') ){
+            return abort(403);
+        }
+
         $job = new Job();
         return view('admin.jobs.create', compact('job'));
     }
@@ -39,13 +46,17 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('jobs', 'create') ){
+            return abort(403);
+        }
+
         $job = new Job();
         $job = $this->validateRequest($job);
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $job = Job::create($job);
         $this->storeImage($job);
 
-        $request->session()->flash('alert-success', 'Job was successful added!');
+        $request->session()->flash('success', 'Job was successfully added!');
         return redirect()->route('admin.jobs.index');
     }
 
@@ -57,6 +68,10 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
+        if( !Auth::user()->role->hasPermission('jobs', 'view') ){
+            return abort(403);
+        }
+
         return view('admin.jobs.show', compact('job'));
     }
 
@@ -68,6 +83,10 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
+        if( !Auth::user()->role->hasPermission('jobs', 'edit') ){
+            return abort(403);
+        }
+
         return view('admin.jobs.edit', compact('job'));
     }
 
@@ -80,13 +99,22 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {      
+        if( !Auth::user()->role->hasPermission('jobs', 'edit') ){
+            return abort(403);
+        }
+
+        if (request()->has('image')) {
+            $file_path = config('filepaths.jobImagePath.public_path').$job->image; 
+            unlink($file_path);
+        }
+
         $data = $this->validateRequest($job);
         $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
 
         $job->update($data);
         $this->storeImage($job);
 
-        $request->session()->flash('alert-success', 'job was successful updated!');
+        $request->session()->flash('success', 'job was successfully updated!');
         return redirect()->route('admin.jobs.edit', $job->id);
     }
 
@@ -98,8 +126,15 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
+        if( !Auth::user()->role->hasPermission('jobs', 'delete') ){
+            return abort(403);
+        }
+
+        $file_path = config('filepaths.jobImagePath.public_path').$job->image;
+        unlink($file_path);
+
         $job->delete();
-        return redirect()->route('admin.jobs.index');
+        return redirect()->route('admin.jobs.index')->with('success', 'Job was successfully deleted!');
     }
 
     /**
@@ -110,6 +145,10 @@ class JobController extends Controller
      */
     public function list(Request $request)
     {
+        if( !Auth::user()->role->hasPermission('jobs', 'list') ){
+            return abort(403);
+        }
+
         if ($request->ajax()) {
             $data = Job::latest()->get();
             return Datatables::of($data)
@@ -130,17 +169,22 @@ class JobController extends Controller
                     return ($row->total_positions) ? $row->total_positions : '';
                 })
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
-                    return '
-                        <a href="'. route('admin.job.applications',$row->id) .'" class="btn btn-secondary" title="applications">
+                    $options = '';
+                    if( Auth::user()->role->hasPermission('jobs', 'view_applications') ) {
+                        $options .= '<a href="' . route('admin.job.applications', $row->id) . '" class="btn btn-primary" title="applications">
                             <i class="fas fa-print"></i>
-                        </a>
-                        <a href="'. route('admin.jobs.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                        </a>';
+                    }
+                    if( Auth::user()->role->hasPermission('jobs', 'edit') ) {
+                        $options .= '<a href="' . route('admin.jobs.edit', $row->id) . '" class="btn btn-primary" title="edit" style="margin-left: 3px;">
                             <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <form action="'. route('admin.jobs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                        </a>';
+                    }
+                    if( Auth::user()->role->hasPermission('jobs', 'delete') ) {
+                        $options .= ' <form action="'. route('admin.jobs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
@@ -148,6 +192,8 @@ class JobController extends Controller
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])                
                 ->make(true);
@@ -155,10 +201,20 @@ class JobController extends Controller
     }
 
     public function getJobApplications (Job $job) {
+
+        if( !Auth::user()->role->hasPermission('jobs', 'view_applications') ){
+            return abort(403);
+        }
+
         return view('admin.applications.index',compact('job'));
     }
 
     public function getApplicationsList(Request $request,Job $job) {
+
+        if( !Auth::user()->role->hasPermission('jobs', 'view_applications') ){
+            return abort(403);
+        }
+
         $job = Job::find($job->id);
         $data = $job->applications;
         if ($request->ajax()) {
@@ -184,21 +240,26 @@ class JobController extends Controller
                     return ($row->experience) ? ( (strlen($row->experience) > 10) ? substr($row->experience,0,10).'...' : $row->experience ) : '';
                 })
                 ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? Carbon::parse($row->created_at)->format('d/m/Y H:i:s') : '';
+                    return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
-                    return '
-                        <a href="'. route('admin.job.application.detail',$row->id) .'" class="btn btn-primary" title="detail">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <form action="'. route('admin.job.application.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options = '';
+                        if( Auth::user()->role->hasPermission('applications', 'view') ) {
+                            $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="edit">
+                                <i class="fas fa-eye"></i>
+                            </a>';
+                        }
+                        if( Auth::user()->role->hasPermission('applications', 'delete') ) {
+                            $options .= ' <form action="'. route('admin.job.application.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                                '.csrf_field().'
+                                '.method_field("DELETE").'
+                                <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                        <i class="fas fa-trash"></i>
+                                </button>
+                            </form>';
+                        }
+                        return $options;
                 })
                 ->rawColumns(['action'])                
                 ->make(true);
@@ -206,6 +267,11 @@ class JobController extends Controller
     }
 
     public function exportApplicationsList(Request $request,Job $job) {
+
+        if( !Auth::user()->role->hasPermission('jobs', 'export_applications') ){
+            return abort(403);
+        }
+
         $job = Job::find($job->id);
         $data = $job->applications;
         
@@ -255,8 +321,8 @@ class JobController extends Controller
             'experience' => 'required',
             'total_positions' => 'required',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:d/m/Y h:i A',
-            'end_datetime' => 'nullable|date_format:d/m/Y h:i A',
+            'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
+            'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
             'active' => 'nullable',
             'enable' => 'nullable|boolean',
             'created_by' => '',
@@ -274,18 +340,22 @@ class JobController extends Controller
     private function storeImage($job){
 
         if(request()->has('image')){
+            $uploadFile = request()->file('image');
+            $file_name = $uploadFile->hashName();
+            $uploadFile->storeAs(config('filepaths.jobImagePath.internal_path'), $file_name);
+
             $job->update([
-                'image' => request()->image->store('uploads', 'public')
+                'image' => $file_name,
             ]);
         }
     }
 
     public function deleteImage(Request $request){
         if ($request->ajax()) {
-            if( isset($request->product_id) ){
-                $job = Job::find($request->product_id);
-
-                if( Storage::disk('public')->delete($job->image) ){
+            if( isset($request->job_id) ){
+                $job = Job::find($request->job_id);
+                $image_path = config('filepaths.jobImagePath.public_path').$job->image;
+                if( unlink($image_path) ){
                     $job->image = null;
                     $job->update();
 

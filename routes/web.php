@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +53,7 @@ Route::resource('/admin/news', NewsController::class, [
 
 // Routes for Job Module
 Route::get('admin/jobs/list', [JobController::class, 'list'])->name('admin.jobs.list')->middleware(['auth']);
-Route::post('admin/job/deleteImage', [NewsController::class, 'deleteImage'])->name('admin.job.deleteImage')->middleware(['auth']);
+Route::post('admin/jobs/deleteImage', [JobController::class, 'deleteImage'])->name('admin.jobs.deleteImage')->middleware(['auth']);
 Route::resource('/admin/jobs', JobController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);
@@ -88,6 +90,20 @@ Route::resource('/admin/menus', MenuController::class, [
     'as' => 'admin'
 ])->middleware(['auth']);
 
+
+// Routes for Document Module
+Route::get('admin/documents/list', [DocumentController::class, 'list'])->name('admin.documents.list')->middleware(['auth']);
+Route::post('admin/documents/deleteFile', [DocumentController::class, 'deleteFile'])->name('admin.documents.deleteFile')->middleware(['auth']);
+Route::resource('/admin/documents', DocumentController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
+
+// Routes for Page Module
+Route::get('admin/pages/list', [PageController::class, 'list'])->name('admin.pages.list')->middleware(['auth']);
+Route::post('admin/pages/deleteImage', [PageController::class, 'deleteImage'])->name('admin.pages.deleteImage')->middleware(['auth']);
+Route::resource('/admin/pages', PageController::class, [
+    'as' => 'admin'
+])->middleware(['auth']);
 
 // Route for uploading images for ckeditor
 Route::post('admin/ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('admin.ckeditor.upload')->middleware(['auth']);

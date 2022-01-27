@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
-use App\Models\NewsCategory;
+use App\Models\Page;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use DataTables;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 
-
-class NewsController extends Controller
+class PageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,12 +16,13 @@ class NewsController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('news', 'list') ){
+        if( !Auth::user()->role->hasPermission('pages', 'list') ){
             return abort(403);
         }
 
-        return view('admin.news.index');
+        return view('admin.pages.index');
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,12 +31,12 @@ class NewsController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('news', 'create') ){
+        if( !Auth::user()->role->hasPermission('pages', 'create') ){
             return abort(403);
         }
 
-        $news = new News();
-        return view('admin.news.create', compact('news'));
+        $page = new Page();
+        return view('admin.pages.create', compact('page'));
     }
 
     /**
@@ -50,118 +47,120 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('news', 'create') ){
+        if( !Auth::user()->role->hasPermission('pages', 'create') ){
             return abort(403);
         }
 
-        $news = new News();
-        $news = News::create( $this->validateRequest($news) );
+        $page = new Page();
+        $page = Page::create( $this->validateRequest($page) );
 
-        $this->storeImage($news);
+        $this->storeImage($page);
 
-        $request->session()->flash('success', 'News was successfully added!');
-        return redirect()->route('admin.news.index');
+        $request->session()->flash('success', 'Page was successfully added!');
+        return redirect()->route('admin.pages.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(Page $page)
     {
-        if( !Auth::user()->role->hasPermission('news', 'view') ){
+        if( !Auth::user()->role->hasPermission('pages', 'view') ){
             return abort(403);
         }
 
-        return view('admin.news.show', compact('news'));
+        return view('admin.pages.show', compact('page'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news)
+    public function edit(Page $page)
     {
-        if( !Auth::user()->role->hasPermission('news', 'edit') ){
+        if( !Auth::user()->role->hasPermission('pages', 'edit') ){
             return abort(403);
         }
 
-        return view('admin.news.edit', compact('news'));
+        return view('admin.pages.edit', compact('page'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, Page $page)
     {
-        if( !Auth::user()->role->hasPermission('news', 'edit') ){
+        if( !Auth::user()->role->hasPermission('pages', 'edit') ){
             return abort(403);
         }
+        if (request()->has('image')) {
+            $file_path = config('filepaths.pageImagePath.public_path').$page->image; 
+            unlink($file_path);
+        }
+        $page->update($this->validateRequest($page));
 
-        $news->update($this->validateRequest($news));
+        $this->storeImage($page);
 
-        $this->storeImage($news);
-
-        $request->session()->flash('success', 'News was successfully updated!');
-        return redirect()->route('admin.news.edit', $news->id);
+        $request->session()->flash('success', 'Page was successfully updated!');
+        return redirect()->route('admin.pages.edit', $page->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(Page $page)
     {
-        if( !Auth::user()->role->hasPermission('news', 'delete') ){
+        if( !Auth::user()->role->hasPermission('pages', 'delete') ){
             return abort(403);
         }
+        $file_path = config('filepaths.pageImagePath.public_path').$page->image;
+        unlink($file_path);
 
-        $news->delete();
-        return redirect()->route('admin.news.index')->with('success', 'News was successfully deleted!');
+        $page->delete();
+
+        return redirect()->route('admin.pages.index')->with('success', 'Page was successfully deleted!');
     }
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('news', 'list') ){
+        if( !Auth::user()->role->hasPermission('pages', 'list') ){
             return abort(403);
         }
-
         if ($request->ajax()) {
-            $data = News::latest()->get();
+            $data = Page::latest()->get();
 
-            return Datatables::of($data)
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 27) ? substr($row->title,0,27).'...' : $row->title ) : '';
+                    return ($row->title) ? ( (strlen($row->title) > 35) ? substr($row->title,0,35).'...' : $row->title ) : '';
                 })
                 ->addColumn('slug', function ($row) {
-                    return ($row->slug) ? ( (strlen($row->slug) > 27) ? substr($row->slug,0,27).'...' : $row->slug ) : '';
-                })
-                ->addColumn('news_category', function ($row) {
-                    return ($row->news_category) ? $row->news_category : '';
+                    return ($row->slug) ? ( (strlen($row->slug) > 35) ? substr($row->slug,0,35).'...' : $row->slug ) : '';
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('news', 'edit') ) {
-                        $options .= '<a href="' . route('admin.news.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                    if( Auth::user()->role->hasPermission('pages', 'edit') ) {
+                        $options .= '<a href="' . route('admin.pages.edit', $row->id) . '" class="btn btn-primary" title="edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( Auth::user()->role->hasPermission('news', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                    if( Auth::user()->role->hasPermission('pages', 'delete') ) {
+                        $options .= ' <form action="'. route('admin.pages.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
@@ -177,17 +176,16 @@ class NewsController extends Controller
         }
     }
 
-    private function validateRequest($news){
+    private function validateRequest($page){
 
         return tap( request()->validate([
             'title' => 'required|min:3',
-            'slug' => 'required|unique:news,slug,'.$news->id,
+            'slug' => 'required',
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
             'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
             'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
-            'news_category' => 'required|integer',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
@@ -200,14 +198,14 @@ class NewsController extends Controller
         });
     }
 
-    private function storeImage($news){
+    private function storeImage($page){
 
         if (request()->has('image')) {
             $uploadFile = request()->file('image');
             $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.newsImagePath.internal_path'), $file_name);
+            $uploadFile->storeAs(config('filepaths.pageImagePath.internal_path'), $file_name);
 
-            $news->update([
+            $page->update([
                 'image' => $file_name,
             ]);
         }
@@ -215,14 +213,14 @@ class NewsController extends Controller
 
     public function deleteImage(Request $request){
         if ($request->ajax()) {
-            if( isset($request->news_id) ){
+            if( isset($request->page_id) ){
 
-                $news = News::find($request->news_id);
-                $image_path = config('filepaths.newsImagePath.public_path').$news->image;
+                $page = Page::find($request->page_id);
+                $image_path = config('filepaths.pageImagePath.public_path').$page->image;
 
                 if( unlink($image_path) ){
-                    $news->image = null;
-                    $news->update();
+                    $page->image = null;
+                    $page->update();
 
                     return response()->json(['success' => 'true', 'message' => 'image deleted successfully'], 200);
                 }
@@ -231,5 +229,4 @@ class NewsController extends Controller
         }
 
     }
-
 }

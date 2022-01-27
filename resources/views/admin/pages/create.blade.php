@@ -1,23 +1,25 @@
 @extends('admin.layouts.app')
-@section('header', 'Jobs')
+@section('header', 'Pages')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.pages.index') }}">Pages</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
 
+
 @section('content')
   <div class="container-fluid">
-              <form method="POST" action="{{ route('admin.jobs.store') }}" enctype="multipart/form-data" id="create-job-form">
+
+              <form method="POST" action="{{ route('admin.pages.store') }}" enctype="multipart/form-data" id="create-page-form">
                 <div class="row">
                   <div class="col-md-9">
                     <div class="card card-primary">
                       <div class="card-header">
-                        <h3 class="card-title">Editing Job - {{ $job->title }}</h3>
+                        <h3 class="card-title">Create Page</h3>
                       </div>
                       <!-- /.card-header -->
                       <!-- form start -->
-                      @include('admin.jobs.form')
+                      @include('admin.pages.form')
 
                     </div>
                   </div>
@@ -26,7 +28,7 @@
                       <div class="card-header">
                         <h3 class="card-title">Schedule Content</h3>
                       </div>
-                        @include('admin.jobs.publishform')
+                        @include('admin.pages.publishform')
                     </div>
 
                     <!-- /.card-body -->
@@ -34,22 +36,22 @@
 
                       <input type="hidden" name="active" id="status">
 
-                      @if( \Route::current()->getName() == 'admin.jobs.edit' )
-                          @if($job->active == 'Active')
+                      @if( \Route::current()->getName() == 'admin.pages.edit' )
+                          @if($page->active == 'Active')
                             <button type="submit" class="btn btn-primary publish_button">Update</button>
-                            @if( Auth::user()->role->hasPermission('jobs', 'publish') )
-                              <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
+                            @if( Auth::user()->role->hasPermission('pages', 'publish') )
+                            <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
                             @endif
-                          @elseif($job->active == 'Draft')
+                          @elseif($page->active == 'Draft')
                             <button type="submit" class="btn btn-primary draft_button">Update</button>
-                            @if( Auth::user()->role->hasPermission('jobs', 'publish') )
-                              <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @if( Auth::user()->role->hasPermission('pages', 'publish') )
+                            <button type="submit" class="btn btn-success publish_button">Publish</button>
                             @endif
                           @endif
                       @else
                             <button type="submit" class="btn btn-primary draft_button">Save</button>
-                            @if( Auth::user()->role->hasPermission('jobs', 'publish') )
-                              <button type="submit" class="btn btn-success publish_button">Publish</button>
+                            @if( Auth::user()->role->hasPermission('pages', 'publish') )
+                            <button type="submit" class="btn btn-success publish_button">Publish</button>
                             @endif
                       @endif
 
@@ -87,6 +89,7 @@
       $('#start_datetime, #end_datetime').datetimepicker({
           format:'{{ config('settings.datetime_format') }}',
       });
+
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
@@ -96,7 +99,16 @@
         $('#status').val("1");
       });
 
-      $('#create-job-form').validate({
+      // Slug generator
+      $("#title").keyup(function() {
+        var Text = $(this).val();
+        Text = Text.toLowerCase();
+        Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
+        $("#slug").val(Text);
+      });
+
+
+      $('#create-page-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
@@ -109,35 +121,21 @@
             required: true,
             minlength: 5
           },
-          qualification: {
+          slug: {
             required: true,
             minlength: 5
           },
-          experience: {
-            required: true,
+          keywords: {
             minlength: 5
-          },
-          location: {
-            required: true,
-            minlength: 5
-          },
-          total_positions: {
-            required: true,
-            number: true,
-            min:1,
-            maxlength: 4
           },
           image: {
             extension: "jpg|jpeg|png|ico|bmp"
           },
-          enable: {
-            required: false,
-          },
-          starttime: {
+          start_datetime: {
             date:true,
-            dateLessThan : '#endtime'
+            dateLessThan : '#end_datetime'
           },
-          endtime: {
+          end_datetime: {
             date:true
           }
         }

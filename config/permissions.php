@@ -52,12 +52,22 @@ return [
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
+            "publish" => "Publish",
             "view_applications" => "View Applications",
+            "export_applications" => "Export Applications"
         ]
     ],
     [
-        "name" => "faq",
-        "display_name" => "FAQ",
+        "name" => "applications",
+        "display_name" => "Applications",
+        "capabilities" => [
+            "view" => "View",
+            "delete" => "Delete",
+        ]
+    ],
+    [
+        "name" => "pages",
+        "display_name" => "Pages",
         "capabilities" => [
             "list" => "List",
             //"view" => "View",
@@ -65,6 +75,28 @@ return [
             "edit" => "Edit",
             "delete" => "Delete",
             "publish" => "Publish"
+        ]
+    ],
+    [
+        "name" => "faqs",
+        "display_name" => "FAQs",
+        "capabilities" => [
+            "list" => "List",
+            //"view" => "View",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            "publish" => "Publish"
+        ]
+    ],
+    [
+        "name" => "documents",
+        "display_name" => "Documents",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
         ]
     ],
     [
@@ -76,7 +108,8 @@ return [
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
-            "submenus" => "Sub Menus"
+            "submenus" => "SubMenus"
         ]
-    ]
+    ],
+
 ];

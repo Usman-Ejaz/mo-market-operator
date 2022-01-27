@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class JobFactory extends Factory
@@ -20,11 +21,11 @@ class JobFactory extends Factory
             'experience' => implode(",", $this->faker->randomElements(['2 years', '3 years', '4 years', '5 years', '6 years'], 1)),
             'qualification' => $this->faker->name(),
             'total_positions' => $this->faker->numberBetween(1,5),
-            'image' => $this->faker->image('storage/app/public/uploads', 640, 480, 'cats', false),
-            'start_datetime' => '20/01/2021 23:10:01',
-            'end_datetime' => '30/01/2021 23:10:01',
-            'created_by' => $this->faker->numberBetween(1,5),
-            'modified_by' => $this->faker->numberBetween(1,5),
+            'image' => $this->faker->image( 'public/' . config('filepaths.jobImagePath.public_path'), 640, 480, 'cats', false),
+            'start_datetime' => null,
+            'end_datetime' => null,
+            'created_by' => User::all()->random()->id,
+            'modified_by' => User::all()->random()->id,
             'active' => $this->faker->randomElement(['0','1']),
             'enable' => $this->faker->randomElement(['0','1']),
         ];

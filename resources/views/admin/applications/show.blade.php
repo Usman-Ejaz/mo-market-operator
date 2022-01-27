@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 @section('header', 'Applications')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item">Application</li>
-  <li class="breadcrumb-item active">Details</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
+  <li class="breadcrumb-item">Application/Details</li>
 @endsection
 @section('content')
   <div class="container-fluid">
@@ -105,22 +105,3 @@
 
     </div>
 @endsection
-
-@push('optional-styles')
-  <link rel="stylesheet" href="{{ asset('admin-resources/plugins/daterangepicker/daterangepicker.css') }}">
-@endpush
-
-@push('optional-scripts')
-  <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
-  <script src="{{ asset('admin-resources/plugins/daterangepicker/daterangepicker.min.js') }}"></script>
-
-  <script>
-    //Date and time picker
-    $(document).ready(function(){
-    //   $('#starttime').datetimepicker({ icons: { time: 'far fa-clock' } });
-    });
-
-  </script>
-
-
-@endpush
