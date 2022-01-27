@@ -27,23 +27,25 @@ class Job extends Model
     }
 
     public function getStartDatetimeAttribute($attribute){
-        return $attribute ? Carbon::parse($attribute)->format('d/m/Y H:i:s') : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
     public function getEndDatetimeAttribute($attribute){
-        return $attribute ? Carbon::parse($attribute)->format('d/m/Y H:i:s') : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+    }
+
+    public function getCreatedAtAttribute($attribute){
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
 
     /********** Setters *********/
     public function setStartDatetimeAttribute($attribute){
-     
-        $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat('d/m/Y H:i:s', $attribute) : NULL;
+        $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
     }
 
     public function setEndDatetimeAttribute($attribute){
-
-        $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat('d/m/Y H:i:s', $attribute) : NULL;       
+        $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
     }
 
     public function applications(){

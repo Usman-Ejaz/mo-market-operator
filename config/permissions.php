@@ -53,6 +53,15 @@ return [
             "edit" => "Edit",
             "delete" => "Delete",
             "view_applications" => "View Applications",
+            "export_applications" => "Export Applications"
+        ]
+    ],
+    [
+        "name" => "applications",
+        "display_name" => "Applications",
+        "capabilities" => [
+            "view" => "View",
+            "delete" => "Delete",
         ]
     ],
     [
