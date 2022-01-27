@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Faq;
+use App\Models\Menu;
 use App\Models\News;
 use App\Models\Permission;
 use App\Models\Role;
@@ -56,6 +57,11 @@ class DatabaseSeeder extends Seeder
             'created_by' => $adminRole->id,
             'modified_by' => $employeeRole->id
         ]);
+
+        // Create Menus
+        Menu::factory()->create(['name' => 'Menu header']);
+        Menu::factory()->create(['name' => 'Menu footer']);
+        Menu::factory(2)->create();
 
         // Create News
         News::factory(30)->create();

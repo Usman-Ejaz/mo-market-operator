@@ -89,19 +89,6 @@
           </li>
           @endif
 
-          <li class="nav-header">LABELS</li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-danger"></i>
-              <p class="text">Important</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-circle text-warning"></i>
-              <p>Warning</p>
-            </a>
-          </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
@@ -122,6 +109,15 @@
                         <a href="{{ Route('admin.permissions.index') }}" class="nav-link {{ Request()->is('admin/permissions*') ? 'active' : '' }}">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Permissions</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if( Auth::user()->role->hasPermission('menus', 'list') )
+                    <li class="nav-item">
+                        <a href="{{ Route('admin.menus.index') }}" class="nav-link {{ Request()->is('admin/menus*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Menus</p>
                         </a>
                     </li>
                 @endif

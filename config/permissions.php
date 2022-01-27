@@ -66,5 +66,17 @@ return [
             "delete" => "Delete",
             "publish" => "Publish"
         ]
+    ],
+    [
+        "name" => "menus",
+        "display_name" => "Menus",
+        "capabilities" => [
+            "list" => "List",
+            //"view" => "View",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            "submenus" => "Sub Menus"
+        ]
     ]
 ];
