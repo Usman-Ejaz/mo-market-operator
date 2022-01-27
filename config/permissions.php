@@ -52,6 +52,7 @@ return [
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
+            "publish" => "Publish",
             "view_applications" => "View Applications",
             "export_applications" => "Export Applications"
         ]

@@ -61,20 +61,6 @@ class DatabaseSeeder extends Seeder
             'modified_by' => $employeeRole->id
         ]);
 
-        //Create Job
-        $sampleJob = Job::factory(20)->create();
-
-        //Create Job
-        Application::factory(5)->create([
-            'job_id' => $sampleJob[0]->id,
-        ]);
-
-        Application::factory(5)->create([
-            'job_id' => $sampleJob[1]->id,
-        ]);
-
-        Application::factory(10)->create();
-
         // Create News
         News::factory(30)->create();
 
@@ -86,5 +72,19 @@ class DatabaseSeeder extends Seeder
         
         //Create Create FAQ
         Faq::factory(20)->create();
+
+         //Create Job
+        $sampleJob = Job::factory(20)->create();
+
+        //Create Job Applications
+        Application::factory(5)->create([
+            'job_id' => $sampleJob[0]->id,
+        ]);
+
+        Application::factory(5)->create([
+            'job_id' => $sampleJob[1]->id,
+        ]);
+
+        Application::factory(10)->create();
     }
 }
