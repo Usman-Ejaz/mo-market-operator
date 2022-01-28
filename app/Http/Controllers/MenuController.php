@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\Page;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,8 @@ use Yajra\DataTables\DataTables;
 
 class MenuController extends Controller
 {
+
+    private $lastSubMenuId;
     /**
      * Display a listing of the resource.
      *
@@ -135,10 +138,18 @@ class MenuController extends Controller
             return abort(403);
         }
 
-        $submenus = json_decode($menu->submenu_json, true);
-        $html = $this->recursilvelyGenerateSubmenuHtml($submenus, 0, $html = '');
+        $pages = Page::where('active', 1)->pluck('title', 'id')->all();
 
-        return view('admin.menus.submenus', compact('menu', 'html'));
+        $submenus = json_decode($menu->submenu_json, true);
+        $html = '';
+
+        if( $submenus ){
+            $html = $this->recursilvelyGenerateSubmenuHtml($submenus, 0, $html = '');
+        }
+
+        $lastSubMenuId = $this->lastSubMenuId;
+
+        return view('admin.menus.submenus', compact('menu', 'html', 'pages', 'lastSubMenuId'));
     }
 
 
@@ -146,17 +157,25 @@ class MenuController extends Controller
     {
         foreach ($array as $item)
         {
-//            $link = DB::table('submenus')->where(['id' => $item['id']])->select('id','type','page_id', 'anchor')->find( $item['id'] );
-//            if( $link ){
-//                $title = $link->anchor;
-//            } else {
-//                $title = '';
-//            }
+            $title = ''; $dataAttribute = ''; $type ='';
+            if( isset($item['page']) ){
+                //$title = Page::where(['active' => 1, 'id' => $item['page']])->pluck('title', 'id')->first();
+                $dataAttribute = 'data-page="'.$item['page'].'"';
+                $type="page";
+            } else if ( isset($item['anchor']) ){
+                //$title = $item['anchor'];
+                $dataAttribute = 'data-anchor="'.$item['anchor'].'"';
+                $type="anchor";
+            }
 
-            $title = '';
+            if( isset($item['title']) && !empty($item['title']) ){
+                $title = $item['title'];
+            }
 
-            $html .= '<li class="dd-item dd3-item" data-id="'.$item['id'].'">
-                    <div class="dd-handle dd3-handle"></div><div class="dd3-content">'. $item['id'] .' - '. $title .'</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>';
+            $this->lastSubMenuId = $item['id'];
+
+            $html .= '<li class="dd-item dd3-item" data-id="'.$item['id'].'" '.$dataAttribute.' data-title="'.$title.'">
+                    <div class="dd-handle dd3-handle"></div><div class="dd3-content">'. $item['id'] .' - ('.$type.') '. $title .'</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>';
 
             if ( isset($item['children']) && count($item['children']) > 0) {
                 $html .= '<ol class="dd-list">';
