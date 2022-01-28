@@ -35,7 +35,7 @@
                                 </div>
                             </div>
 
-                            <textarea id="nestable-output" name="menu_order"></textarea>
+                            <textarea id="nestable-output" name="menu_order" style="display:none;"></textarea>
                         </div>
 
                         <div class="card-footer text-right">

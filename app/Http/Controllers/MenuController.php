@@ -14,6 +14,7 @@ class MenuController extends Controller
 {
 
     private $lastSubMenuId;
+
     /**
      * Display a listing of the resource.
      *
@@ -186,8 +187,6 @@ class MenuController extends Controller
                 $html .= '<ol class="dd-list">';
                 $html .= $this->recursilvelyGenerateSubmenuHtml($item['children'], $depth + 1);
                 $html .= '</ol>';
-            } else {
-                //echo ('child : no child');
             }
 
             $html .= '</li>';
