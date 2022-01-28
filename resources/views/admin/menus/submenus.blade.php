@@ -35,7 +35,7 @@
                                 </div>
                             </div>
 
-                            <textarea id="nestable-output" name="menu_order" style="display:none;"></textarea>
+                            <textarea id="nestable-output" name="menu_order"></textarea>
                         </div>
 
                         <div class="card-footer text-right">
@@ -206,7 +206,8 @@
 
             // activate Nestable for list
             $('#nestable').nestable({
-                group: 1
+                group: 1,
+                maxDepth:10
             }).on('change', updateOutput);
 
             // output initial serialised data
@@ -231,7 +232,7 @@
             });
 
             // This keeps track of the last id, which is incremented to create new sub menu
-            let lastSubMenuId = {!! $lastSubMenuId !!};
+            let lastSubMenuId = @if( $lastSubMenuId ) {{ $lastSubMenuId }} @else 0 @endif;
 
             // Add pages to menu functionality
             $('#add_pages_to_menu').click(function(){
@@ -239,7 +240,7 @@
                     lastSubMenuId = lastSubMenuId + 1;
                     $('ol#submenu').append('<li class="dd-item dd3-item" data-id="'+ lastSubMenuId +'" data-page="'+$(this).data('page')+'" data-title="'+$(this).data('title')+'">' +
                         '<div class="dd-handle dd3-handle"></div><div class="dd3-content">' +
-                            lastSubMenuId + ' - ( page ) ' + $(this).data('title') +
+                            ' ( page ) ' + $(this).data('title') +
                         '</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>' +
                         '</li>'
                     );
@@ -310,7 +311,7 @@
                     let page = $("#newMenuPage").val();
                     page = (page != "") ? page : '';
                     attributes = "data-page='"+page+"' data-title='"+title+"'";
-                    html = lastSubMenuId + ' - ( page ) ' + title;
+                    html = ' ( page ) ' + title;
                 }
 
                 $('ol#submenu').append('<li class="dd-item dd3-item" data-id="'+ lastSubMenuId +'" '+attributes+'>' +
@@ -376,11 +377,9 @@
                 let menuIdToUpdate = $('#currentMenuId').val();
 
                 // Set title
-                if( $('#MenuTitle').val() != '' ) {
-                    let title = $('#MenuTitle').val();
-                    $("li[data-id='" + menuIdToUpdate +"']").attr( 'data-title', title );
-                    $("li[data-id='" + menuIdToUpdate +"']").find('.dd3-content').text();
-                }
+                let title = $('#MenuTitle').val();
+                $("li[data-id='" + menuIdToUpdate +"']").attr( 'data-title', title );
+                //$("li[data-id='" + menuIdToUpdate +"']").find('.dd3-content').text();
 
                 // Check menuType
                 let menuType = $('input[name="menuType"]:checked').val();

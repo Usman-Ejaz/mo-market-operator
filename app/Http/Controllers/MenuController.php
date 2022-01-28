@@ -159,23 +159,28 @@ class MenuController extends Controller
         {
             $title = ''; $dataAttribute = ''; $type ='';
             if( isset($item['page']) ){
-                //$title = Page::where(['active' => 1, 'id' => $item['page']])->pluck('title', 'id')->first();
                 $dataAttribute = 'data-page="'.$item['page'].'"';
                 $type="page";
             } else if ( isset($item['anchor']) ){
-                //$title = $item['anchor'];
                 $dataAttribute = 'data-anchor="'.$item['anchor'].'"';
                 $type="anchor";
             }
 
-            if( isset($item['title']) && !empty($item['title']) ){
-                $title = $item['title'];
+            if( isset($item['title']) ){
+                $title = ' ('.$type.') '. $item['title'];
+
+                if( isset($item['page']) ) {
+                    $page = Page::where(['active' => 1, 'id' => $item['page']])->pluck('title', 'id')->first();
+                    if (!$page) {
+                        $title = ' (page not found) ' . $item['title'];
+                    }
+                }
             }
 
             $this->lastSubMenuId = $item['id'];
 
-            $html .= '<li class="dd-item dd3-item" data-id="'.$item['id'].'" '.$dataAttribute.' data-title="'.$title.'">
-                    <div class="dd-handle dd3-handle"></div><div class="dd3-content">'. $item['id'] .' - ('.$type.') '. $title .'</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>';
+            $html .= '<li class="dd-item dd3-item" data-id="'.$item['id'].'" '.$dataAttribute.' data-title="'. $item['title'].'">
+                    <div class="dd-handle dd3-handle"></div><div class="dd3-content">'. $title .'</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>';
 
             if ( isset($item['children']) && count($item['children']) > 0) {
                 $html .= '<ol class="dd-list">';
