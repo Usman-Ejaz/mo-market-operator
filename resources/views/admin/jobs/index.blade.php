@@ -58,7 +58,7 @@
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
-            pageLength: 15,
+            pageLength: 25,
             ajax: "{{ route('admin.jobs.list') }}",
             columns: [
                 {data: 'id', name: 'id'},
@@ -71,8 +71,8 @@
                 {
                     data: 'action',
                     name: 'action',
-                    orderable: true,
-                    searchable: true
+                    orderable: false,
+                    searchable: false
                 },
             ]
         });
