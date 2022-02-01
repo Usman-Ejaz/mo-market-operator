@@ -56,7 +56,7 @@ class JobController extends Controller
         $job = Job::create($job);
         $this->storeImage($job);
 
-        $request->session()->flash('success', 'Job was successfully added!');
+        $request->session()->flash('success', 'Job Added Successfully!');
         return redirect()->route('admin.jobs.index');
     }
 
@@ -114,7 +114,7 @@ class JobController extends Controller
         $job->update($data);
         $this->storeImage($job);
 
-        $request->session()->flash('success', 'job was successfully updated!');
+        $request->session()->flash('success', 'job Updated Successfully!');
         return redirect()->route('admin.jobs.edit', $job->id);
     }
 
@@ -134,7 +134,7 @@ class JobController extends Controller
         unlink($file_path);
 
         $job->delete();
-        return redirect()->route('admin.jobs.index')->with('success', 'Job was successfully deleted!');
+        return redirect()->route('admin.jobs.index')->with('success', 'Job Deleted Successfully!');
     }
 
     /**
@@ -359,7 +359,7 @@ class JobController extends Controller
                     $job->image = null;
                     $job->update();
 
-                    return response()->json(['success' => 'true', 'message' => 'image deleted successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
 

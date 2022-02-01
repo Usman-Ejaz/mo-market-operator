@@ -59,7 +59,7 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
-        $request->session()->flash('success', 'News was successfully added!');
+        $request->session()->flash('success', 'News Added Successfully!');
         return redirect()->route('admin.news.index');
     }
 
@@ -110,7 +110,7 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
-        $request->session()->flash('success', 'News was successfully updated!');
+        $request->session()->flash('success', 'News Updated Successfully!');
         return redirect()->route('admin.news.edit', $news->id);
     }
 
@@ -127,7 +127,7 @@ class NewsController extends Controller
         }
 
         $news->delete();
-        return redirect()->route('admin.news.index')->with('success', 'News was successfully deleted!');
+        return redirect()->route('admin.news.index')->with('success', 'News Deleted Successfully!');
     }
 
     public function list(Request $request)
@@ -224,7 +224,7 @@ class NewsController extends Controller
                     $news->image = null;
                     $news->update();
 
-                    return response()->json(['success' => 'true', 'message' => 'image deleted successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
 

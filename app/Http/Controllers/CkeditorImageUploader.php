@@ -28,7 +28,7 @@ class CkeditorImageUploader extends Controller
             //$langCode = request()->input('langCode') ;
 
             // Usually you will only assign something here if the file could not be uploaded.
-            $message = 'File was uploaded successfully!';
+            $message = 'File Uploaded Successfully!';
             echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '$message');</script>";
         }
     }

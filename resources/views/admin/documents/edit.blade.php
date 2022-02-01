@@ -68,7 +68,7 @@
                     dataType: 'JSON',
                     success: function (data) {
                         if(data.success){
-                            alert('File deleted successfully');
+                            alert('File Deleted Successfully');
                             $('.fileExists').remove();
                         }
                     }

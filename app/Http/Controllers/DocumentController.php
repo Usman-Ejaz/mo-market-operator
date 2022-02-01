@@ -62,11 +62,11 @@ class DocumentController extends Controller
         if(in_array($extension,$this->allowedFileExtensions)){
             
             if ( !$this->convertFile($document, $fileName) ) {
-                $request->session()->flash('success', 'Document was not converted successfully!');
+                $request->session()->flash('success', 'Document Was Not Converted Successfully!');
             }
         }
         
-        $request->session()->flash('success', 'Document was successfully added!');
+        $request->session()->flash('success', 'Document Added Successfully!');
         return redirect()->route('admin.documents.index');
     }
 
@@ -123,11 +123,11 @@ class DocumentController extends Controller
         if(in_array($extension,$this->allowedFileExtensions)){
             
             if ( !$this->convertFile($document, $fileName) ) {
-                $request->session()->flash('success', 'Document was not converted successfully!');
+                $request->session()->flash('success', 'Document Was Not Converted Successfully!');
             }
         }
 
-        $request->session()->flash('success', 'Document was successful updated!');
+        $request->session()->flash('success', 'Document Updated Successfully!');
         return redirect()->route('admin.documents.edit', $document->id);
     }
 
@@ -147,7 +147,7 @@ class DocumentController extends Controller
         $document->delete();
         unlink($file_path);
 
-        return redirect()->route('admin.documents.index')->with('success', 'Document was successful deleted!');
+        return redirect()->route('admin.documents.index')->with('success', 'Document Deleted Successfully!');
     }
 
     public function list(Request $request)
@@ -254,7 +254,7 @@ class DocumentController extends Controller
                     $document->file = null;
                     $document->update();
 
-                    return response()->json(['success' => 'true', 'message' => 'File deleted successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => 'File Deleted Successfully'], 200);
                 }
             }
 

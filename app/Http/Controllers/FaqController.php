@@ -53,7 +53,7 @@ class FaqController extends Controller
         $faq = new Faq();
         $faq = Faq::create( $this->validateRequest($faq) );
         
-        $request->session()->flash('success', 'Faq was successfully added!');
+        $request->session()->flash('success', 'Faq Added Successfully!');
         return redirect()->route('admin.faqs.index');
     }
 
@@ -102,7 +102,7 @@ class FaqController extends Controller
 
         $faq->update($this->validateRequest($faq));
 
-        $request->session()->flash('success', 'Faq was successfully updated!');
+        $request->session()->flash('success', 'Faq Updated Successfully!');
         return redirect()->route('admin.faqs.edit', $faq->id);
     }
 
@@ -119,7 +119,7 @@ class FaqController extends Controller
         }
 
         $faq->delete();
-        return redirect()->route('admin.faqs.index')->with('success', 'FAQ was successfully deleted!');
+        return redirect()->route('admin.faqs.index')->with('success', 'FAQ Deleted Successfully!');
     }
 
     /**

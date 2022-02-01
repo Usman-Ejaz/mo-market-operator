@@ -59,7 +59,7 @@ class UserController extends Controller
         if ($user->exists) {
             $this->storeImage($user);
 
-            $request->session()->flash('success', 'User was successful added!');
+            $request->session()->flash('success', 'User Added Successfully!');
             return redirect()->route('admin.users.index');
         }
 
@@ -113,7 +113,7 @@ class UserController extends Controller
         if ( $user->update($this->validateRequest($user)) ) {
             $this->storeImage($user);
 
-            $request->session()->flash('success', 'User was successful updated!');
+            $request->session()->flash('success', 'User Updated Successfully!');
             return redirect()->route('admin.users.edit', $user->id);
         }
 
@@ -134,7 +134,7 @@ class UserController extends Controller
         }
 
         if( $user->delete() ) {
-            return redirect()->route('admin.users.index')->with('success', 'User was successful deleted!');
+            return redirect()->route('admin.users.index')->with('success', 'User Deleted Successfully!');
         }
 
         return redirect()->route('admin.users.index')->with('error', 'User was not deleted!');
@@ -233,7 +233,7 @@ class UserController extends Controller
                     $user->image = null;
                     $user->update();
 
-                    return response()->json(['success' => 'true', 'message' => 'image deleted successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
 

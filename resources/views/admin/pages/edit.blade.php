@@ -154,7 +154,7 @@
                     dataType: 'JSON',
                     success: function (data) {
                         if(data.success){
-                            alert('image deleted successfully');
+                            alert('Image Deleted Successfully');
                             $('.imageExists').remove();
                         }
                     }

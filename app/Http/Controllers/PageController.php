@@ -56,7 +56,7 @@ class PageController extends Controller
 
         $this->storeImage($page);
 
-        $request->session()->flash('success', 'Page was successfully added!');
+        $request->session()->flash('success', 'Page Added Successfully!');
         return redirect()->route('admin.pages.index');
     }
 
@@ -110,7 +110,7 @@ class PageController extends Controller
 
         $this->storeImage($page);
 
-        $request->session()->flash('success', 'Page was successfully updated!');
+        $request->session()->flash('success', 'Page Updated Successfully!');
         return redirect()->route('admin.pages.edit', $page->id);
     }
 
@@ -130,7 +130,7 @@ class PageController extends Controller
 
         $page->delete();
 
-        return redirect()->route('admin.pages.index')->with('success', 'Page was successfully deleted!');
+        return redirect()->route('admin.pages.index')->with('success', 'Page Deleted Successfully!');
     }
 
     public function list(Request $request)
@@ -222,7 +222,7 @@ class PageController extends Controller
                     $page->image = null;
                     $page->update();
 
-                    return response()->json(['success' => 'true', 'message' => 'image deleted successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
 

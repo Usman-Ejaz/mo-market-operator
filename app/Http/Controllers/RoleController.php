@@ -54,7 +54,7 @@ class RoleController extends Controller
         $role = new Role();
         $role = Role::create( $this->validateRequest($role) );
 
-        $request->session()->flash('success', 'Role was successfully added!');
+        $request->session()->flash('success', 'Role Added Successfully!');
         return redirect()->route('admin.roles.index');
     }
 
@@ -103,7 +103,7 @@ class RoleController extends Controller
 
         $role->update($this->validateRequest($role));
 
-        $request->session()->flash('success', 'Role was successfully updated!');
+        $request->session()->flash('success', 'Role Updated Successfully!');
         return redirect()->route('admin.roles.edit', $role->id);
     }
 
@@ -120,7 +120,7 @@ class RoleController extends Controller
         }
 
         $role->delete();
-        return redirect()->route('admin.roles.index')->with('success', 'Role was successfully deleted!');
+        return redirect()->route('admin.roles.index')->with('success', 'Role Deleted Successfully!');
     }
 
     public function list(Request $request)

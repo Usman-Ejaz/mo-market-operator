@@ -59,7 +59,7 @@ class MenuController extends Controller
         $menu = new Menu();
         $menu = Menu::create( $this->validateRequest($menu) );
 
-        $request->session()->flash('success', 'Menu was successfully added!');
+        $request->session()->flash('success', 'Menu Added Successfully!');
         return redirect()->route('admin.menus.index');
     }
 
@@ -108,7 +108,7 @@ class MenuController extends Controller
 
         $menu->update($this->validateRequest($menu));
 
-        $request->session()->flash('success', 'Menu was successfully updated!');
+        $request->session()->flash('success', 'Menu Updated Successfully!');
         return redirect()->route('admin.menus.edit', $menu->id);
     }
 
@@ -125,7 +125,7 @@ class MenuController extends Controller
         }
 
         $menu->delete();
-        return redirect()->route('admin.menus.index')->with('success', 'Menu was successfully deleted!');
+        return redirect()->route('admin.menus.index')->with('success', 'Menu Deleted Successfully!');
     }
 
     /**
@@ -201,7 +201,7 @@ class MenuController extends Controller
 
         $menu->update(['submenu_json' => $menuOrder]);
 
-        $request->session()->flash('success', 'Submenus were updated successfully!');
+        $request->session()->flash('success', 'Submenus Updated Successfully!');
         return redirect()->route('admin.menus.submenus', $menu->id);
     }
 
