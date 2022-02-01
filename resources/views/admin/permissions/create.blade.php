@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
-@section('header', 'Roles')
+@section('header', 'Permissions')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item">Roles</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.permissions.index') }}">Permissions</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
 
@@ -48,15 +48,6 @@
 
 @push('optional-styles')
  <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
-
-  <style>
-  .my-error-class {
-    color:#FF0000;  /* red */
-  }
-  .my-valid-class {
-    color:#00CC00; /* green */
-  }
-  </style>
 @endpush
 
 @push('optional-scripts')
@@ -100,36 +91,6 @@
           endtime: {
             required : false,
             date:true
-          }
-        },
-        messages: {
-          title: {
-            required: "Title is required",
-            maxlength: "Title cannot be more than 5000 characters"
-          },
-          description: {
-            required: "Description is required",
-            maxlength: "Description cannot be more than 50000 characters"
-          },
-          slug: {
-            required: "Slug is required",
-            maxlength: "Slug cannot be more than 2000 characters",
-          },
-          keywords: {
-            required: "Keywords is required",
-            maxlength: "Keywords cannot be more than 500 characters"
-          },
-          image: {
-            extension: "This type of file is not accepted"
-          },
-          starttime: {
-            required: "Start time is not required",
-            date:"Start time must be date time",
-            dateLessThan: "Start time must less than end time"
-          },
-          endtime: {
-            required: "End time is not required",
-            date:"End time must be date time",
           }
         }
       });

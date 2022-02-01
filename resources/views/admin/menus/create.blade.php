@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @section('header', 'Main Menus')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
-  <li class="breadcrumb-item">Main Menus</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.menus.index') }}">Main Menus</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
 
@@ -45,15 +45,6 @@
 
 @push('optional-styles')
  <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
-
-  <style>
-  .my-error-class {
-    color:#FF0000;  /* red */
-  }
-  .my-valid-class {
-    color:#00CC00; /* green */
-  }
-  </style>
 @endpush
 
 @push('optional-scripts')
