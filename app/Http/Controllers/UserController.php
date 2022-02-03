@@ -114,11 +114,11 @@ class UserController extends Controller
             $this->storeImage($user);
 
             $request->session()->flash('success', 'User Updated Successfully!');
-            return redirect()->route('admin.users.edit', $user->id);
+            return redirect()->route('admin.users.index');
         }
 
         $request->session()->flash('error', 'User was not updated, please try again');
-        return redirect()->route('admin.news.edit', $user->id);
+        return redirect()->route('admin.users.index');
     }
 
     /**

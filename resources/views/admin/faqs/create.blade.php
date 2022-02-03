@@ -20,24 +20,9 @@
                         <div class="card-footer">
                             <div class="float-right">
                                 <input type="hidden" name="active" id="status">
-
-                                @if( \Route::current()->getName() == 'admin.faqs.edit' )
-                                    @if($faq->active == 'Active')
-                                    <button type="submit" class="btn btn-primary publish_button">Update</button>
-                                    @if( Auth::user()->role->hasPermission('faqs', 'publish') )
-                                      <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
-                                    @endif
-                                    @elseif($faq->active == 'Draft')
-                                    <button type="submit" class="btn btn-primary draft_button">Update</button>
-                                    @if( Auth::user()->role->hasPermission('faqs', 'publish') )
-                                      <button type="submit" class="btn btn-success publish_button">Publish</button>
-                                    @endif
-                                    @endif
-                                @else 
-                                    <button type="submit" class="btn btn-primary draft_button">Save</button>
-                                    @if( Auth::user()->role->hasPermission('faqs', 'publish') )
-                                      <button type="submit" class="btn btn-success publish_button">Publish</button>
-                                    @endif
+                                <button type="submit" class="btn btn-primary draft_button">Save</button>
+                                @if( Auth::user()->role->hasPermission('faqs', 'publish') )
+                                  <button type="submit" class="btn btn-success publish_button">Publish</button>
                                 @endif
                             </div>
                         </div>
@@ -66,7 +51,7 @@
       });
 
       $('.publish_button').click(function(e) {
-        $('#status').val("1");  
+        $('#status').val("1");
       });
 
       $('#create-faq-form').validate({
@@ -82,10 +67,16 @@
             required: true,
             minlength: 5
           }
-        }
+        },
       });
 
-    });
+      $('#create-faq-form').on("focusout", "input", function() {
+        if ($(this).val().trim().length > 0) {
+          $(this).hasClass("my-error-class") && $(this).removeClass("my-error-class");
+          $(this).next().hasClass("my-error-class") && $(this).next().remove();
+        }
+      });
+    });    
   </script>
   
 @endpush

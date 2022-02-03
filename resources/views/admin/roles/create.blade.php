@@ -63,14 +63,26 @@
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
-        rules:{
+        rules: {
           name: {
-            required: true,
-            maxlength: 255
+            required: {
+              depends: function() {
+                $(this).val($.trim($(this).val()));                
+                return true;
+              }
+            },
+            minlength: 3
           }
         }
       });
 
+      // removing error labels when someone put value inside the input and leave the focus
+      $('#create-roles-form').on("focusout", "input", function() {
+        if ($(this).val().trim().length > 0) {
+          $(this).hasClass("my-error-class") && $(this).removeClass("my-error-class");
+          $(this).next().hasClass("my-error-class") && $(this).next().remove();
+        }
+      });
     });
   </script>
 

@@ -128,7 +128,7 @@ class DocumentController extends Controller
         }
 
         $request->session()->flash('success', 'Document Updated Successfully!');
-        return redirect()->route('admin.documents.edit', $document->id);
+        return redirect()->route('admin.documents.index');
     }
 
     /**

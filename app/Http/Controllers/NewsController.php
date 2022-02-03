@@ -111,7 +111,7 @@ class NewsController extends Controller
         $this->storeImage($news);
 
         $request->session()->flash('success', 'News Updated Successfully!');
-        return redirect()->route('admin.news.edit', $news->id);
+        return redirect()->route('admin.news.index');
     }
 
     /**

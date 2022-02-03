@@ -104,7 +104,7 @@ class RoleController extends Controller
         $role->update($this->validateRequest($role));
 
         $request->session()->flash('success', 'Role Updated Successfully!');
-        return redirect()->route('admin.roles.edit', $role->id);
+        return redirect()->route('admin.roles.index');
     }
 
     /**

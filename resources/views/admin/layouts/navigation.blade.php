@@ -84,7 +84,7 @@
           </li>
           @endif
 
-          <li class="nav-item">
+          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') ) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
                 <p>Settings <i class="fas fa-angle-left right"></i></p>
@@ -93,7 +93,7 @@
                 @if( Auth::user()->role->hasPermission('roles', 'list') )
                     <li class="nav-item">
                         <a href="{{ Route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles*') ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
+                            <i class="fa fa-tasks nav-icon"></i>
                             <p>Roles</p>
                         </a>
                     </li>
@@ -102,7 +102,7 @@
                 @if( Auth::user()->role->hasPermission('permissions', 'view') )
                     <li class="nav-item">
                         <a href="{{ Route('admin.permissions.index') }}" class="nav-link {{ Request()->is('admin/permissions*') ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
+                            <i class="fa fa-lock nav-icon"></i>
                             <p>Permissions</p>
                         </a>
                     </li>
@@ -111,7 +111,7 @@
                 @if( Auth::user()->role->hasPermission('menus', 'list') )
                     <li class="nav-item">
                         <a href="{{ Route('admin.menus.index') }}" class="nav-link {{ Request()->is('admin/menus*') ? 'active' : '' }}">
-                            <i class="far fa-circle nav-icon"></i>
+                            <i class="fa fa-bars nav-icon"></i>
                             <p>Menus</p>
                         </a>
                     </li>

@@ -111,7 +111,7 @@ class PageController extends Controller
         $this->storeImage($page);
 
         $request->session()->flash('success', 'Page Updated Successfully!');
-        return redirect()->route('admin.pages.edit', $page->id);
+        return redirect()->route('admin.pages.index');
     }
 
     /**

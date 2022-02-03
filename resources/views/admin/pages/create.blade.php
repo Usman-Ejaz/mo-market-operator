@@ -141,6 +141,13 @@
         }
       });
 
+      $('#create-page-form').on("focusout", "input", function() {
+        if ($(this).val().trim().length > 0) {
+          $(this).hasClass("my-error-class") && $(this).removeClass("my-error-class");
+          $(this).next().hasClass("my-error-class") && $(this).next().remove();
+        }
+      });
+
     });
   </script>
 

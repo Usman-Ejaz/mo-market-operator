@@ -115,7 +115,7 @@ class JobController extends Controller
         $this->storeImage($job);
 
         $request->session()->flash('success', 'job Updated Successfully!');
-        return redirect()->route('admin.jobs.edit', $job->id);
+        return redirect()->route('admin.jobs.index');
     }
 
     /**
