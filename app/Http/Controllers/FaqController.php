@@ -103,7 +103,7 @@ class FaqController extends Controller
         $faq->update($this->validateRequest($faq));
 
         $request->session()->flash('success', 'Faq Updated Successfully!');
-        return redirect()->route('admin.faqs.edit', $faq->id);
+        return redirect()->route('admin.faqs.index');
     }
 
     /**

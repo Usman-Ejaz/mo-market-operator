@@ -109,7 +109,7 @@ class MenuController extends Controller
         $menu->update($this->validateRequest($menu));
 
         $request->session()->flash('success', 'Menu Updated Successfully!');
-        return redirect()->route('admin.menus.edit', $menu->id);
+        return redirect()->route('admin.menus.index');
     }
 
     /**

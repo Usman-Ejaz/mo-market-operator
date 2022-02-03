@@ -33,79 +33,66 @@ Route::get('/admin', function () {
     return redirect()->route('admin.dashboard');
 });
 
-Route::get('/admin/dashboard', function () {
-    return view('admin/dashboard/index');
-})->middleware(['auth'])->name('admin.dashboard');
+Route::middleware(['auth'])->prefix("admin")->name("admin.")->group(function () {
+    
+    Route::get('dashboard', function () {
+        return view('admin.dashboard.index');
+    })->name('dashboard');
 
-// Routes for User Module
-Route::get('admin/users/list', [UserController::class, 'list'])->name('admin.users.list')->middleware(['auth']);
-Route::post('admin/users/deleteImage', [UserController::class, 'deleteImage'])->name('admin.users.deleteImage')->middleware(['auth']);
-Route::resource('/admin/users', UserController::class, [
-    'as' => 'admin'
-])->middleware(['auth']);
+    // Routes for User Module
+    Route::get('users/list', [UserController::class, 'list'])->name('users.list');
+    Route::post('users/deleteImage', [UserController::class, 'deleteImage'])->name('users.deleteImage');
+    Route::resource('users', UserController::class);
 
-// Routes for News Module
-Route::get('admin/news/list', [NewsController::class, 'list'])->name('admin.news.list')->middleware(['auth']);
-Route::post('admin/news/deleteImage', [NewsController::class, 'deleteImage'])->name('admin.news.deleteImage')->middleware(['auth']);
-Route::resource('/admin/news', NewsController::class, [
-    'as' => 'admin'
-])->middleware(['auth']);
+    // Routes for News Module
+    Route::get('news/list', [NewsController::class, 'list'])->name('news.list');
+    Route::post('news/deleteImage', [NewsController::class, 'deleteImage'])->name('news.deleteImage');
+    Route::resource('news', NewsController::class);
 
-// Routes for Job Module
-Route::get('admin/jobs/list', [JobController::class, 'list'])->name('admin.jobs.list')->middleware(['auth']);
-Route::post('admin/jobs/deleteImage', [JobController::class, 'deleteImage'])->name('admin.jobs.deleteImage')->middleware(['auth']);
-Route::resource('/admin/jobs', JobController::class, [
-    'as' => 'admin'
-])->middleware(['auth']);
+    // Routes for Job Module
+    Route::get('jobs/list', [JobController::class, 'list'])->name('jobs.list');
+    Route::post('jobs/deleteImage', [JobController::class, 'deleteImage'])->name('jobs.deleteImage');
+    Route::resource('jobs', JobController::class);
 
-// Routes for Application Module
-Route::get('admin/jobs/{job}/applications', [JobController::class, 'getJobApplications'])->name('admin.job.applications')->middleware(['auth']);
-Route::get('admin/jobs/{job}/applications/list', [JobController::class, 'getApplicationsList'])->name('admin.job.applications.list')->middleware(['auth']);
-Route::get('admin/jobs/{job}/applications/export', [JobController::class, 'exportApplicationsList'])->name('admin.job.applications.list.export')->middleware(['auth']);
-Route::get('admin/applications/{application}', [ApplicationController::class, 'show'])->name('admin.job.application.detail')->middleware(['auth']);
-Route::delete('admin/applications/{application}', [ApplicationController::class, 'destroy'])->name('admin.job.application.destroy')->middleware(['auth']);
+    // Routes for Application Module
+    Route::get('jobs/{job}/applications', [JobController::class, 'getJobApplications'])->name('job.applications');
+    Route::get('jobs/{job}/applications/list', [JobController::class, 'getApplicationsList'])->name('job.applications.list');
+    Route::get('jobs/{job}/applications/export', [JobController::class, 'exportApplicationsList'])->name('job.applications.list.export');
+    Route::get('applications/{application}', [ApplicationController::class, 'show'])->name('job.application.detail');
+    Route::delete('applications/{application}', [ApplicationController::class, 'destroy'])->name('job.application.destroy');
 
-// Routes for FAQ Module
-Route::get('admin/faqs/list', [FaqController::class, 'list'])->name('admin.faqs.list')->middleware(['auth']);
-Route::resource('/admin/faqs', FaqController::class, [
-    'as' => 'admin'
-])->middleware(['auth']);
+    // Routes for FAQ Module
+    Route::get('faqs/list', [FaqController::class, 'list'])->name('faqs.list');
+    Route::resource('faqs', FaqController::class);
 
-// Routes for Role Module
-Route::get('admin/roles/list', [RoleController::class, 'list'])->name('admin.roles.list')->middleware(['auth']);
-Route::resource('/admin/roles', RoleController::class, [
-    'as' => 'admin'
-])->middleware(['auth']);
+    // Routes for Role Module
+    Route::get('roles/list', [RoleController::class, 'list'])->name('roles.list');
+    Route::resource('roles', RoleController::class);
 
-// Routes for Permission Module
-Route::get('admin/permissions', [PermissionController::class, 'index'])->name('admin.permissions.index')->middleware(['auth']);
-Route::post('admin/permissions/getpermissions', [PermissionController::class, 'getPermissions'])->name('admin.permissions.getpermissions')->middleware(['auth']);
-Route::post('admin/permissions/store', [PermissionController::class, 'store'])->name('admin.permissions.store')->middleware(['auth']);
+    // Routes for Permission Module
+    Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
+    Route::post('permissions/getpermissions', [PermissionController::class, 'getPermissions'])->name('permissions.getpermissions');
+    Route::post('permissions/store', [PermissionController::class, 'store'])->name('permissions.store');
 
-// Routes for Menu Module
-Route::get('admin/menus/{menu}/submenus', [MenuController::class, 'submenus'])->name('admin.menus.submenus')->middleware(['auth']);
-Route::patch('admin/menus/{menu}/submenusupdate', [MenuController::class, 'submenusupdate'])->name('admin.menus.submenusupdate')->middleware(['auth']);
-Route::get('admin/menus/list', [MenuController::class, 'list'])->name('admin.menus.list')->middleware(['auth']);
-Route::resource('/admin/menus', MenuController::class, [
-    'as' => 'admin'
-])->middleware(['auth']);
+    // Routes for Menu Module
+    Route::get('menus/{menu}/submenus', [MenuController::class, 'submenus'])->name('menus.submenus');
+    Route::patch('menus/{menu}/submenusupdate', [MenuController::class, 'submenusupdate'])->name('menus.submenusupdate');
+    Route::get('menus/list', [MenuController::class, 'list'])->name('menus.list');
+    Route::resource('menus', MenuController::class);
 
+    // Routes for Document Module
+    Route::get('documents/list', [DocumentController::class, 'list'])->name('documents.list');
+    Route::post('documents/deleteFile', [DocumentController::class, 'deleteFile'])->name('documents.deleteFile');
+    Route::resource('documents', DocumentController::class);
 
-// Routes for Document Module
-Route::get('admin/documents/list', [DocumentController::class, 'list'])->name('admin.documents.list')->middleware(['auth']);
-Route::post('admin/documents/deleteFile', [DocumentController::class, 'deleteFile'])->name('admin.documents.deleteFile')->middleware(['auth']);
-Route::resource('/admin/documents', DocumentController::class, [
-    'as' => 'admin'
-])->middleware(['auth']);
+    // Routes for Page Module
+    Route::get('pages/list', [PageController::class, 'list'])->name('pages.list');
+    Route::post('pages/deleteImage', [PageController::class, 'deleteImage'])->name('pages.deleteImage');
+    Route::resource('pages', PageController::class);
 
-// Routes for Page Module
-Route::get('admin/pages/list', [PageController::class, 'list'])->name('admin.pages.list')->middleware(['auth']);
-Route::post('admin/pages/deleteImage', [PageController::class, 'deleteImage'])->name('admin.pages.deleteImage')->middleware(['auth']);
-Route::resource('/admin/pages', PageController::class, [
-    'as' => 'admin'
-])->middleware(['auth']);
+    // Route for uploading images for ckeditor
+    Route::post('ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('ckeditor.upload');
+});
 
-// Route for uploading images for ckeditor
-Route::post('admin/ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('admin.ckeditor.upload')->middleware(['auth']);
 
 require __DIR__.'/auth.php';
