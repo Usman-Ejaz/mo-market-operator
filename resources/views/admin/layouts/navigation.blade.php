@@ -49,22 +49,21 @@
           @endif
 
           <li class="nav-item">
-                <a href="{{ Route('admin.jobs.index') }}" class="nav-link {{ Request()->is('admin/jobs*') ? 'active' : '' }}">
+                <a href="{{ Route('admin.jobs.index') }}" class="nav-link {{ Request::is('admin/jobs*') ? 'active' : '' }}">
                     <i class="nav-icon fa fa-newspaper"></i>
                     <p>Jobs</p>
                 </a>
           </li>
+
           <li class="nav-item">
-          <a href="{{ Route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents/*') ? 'active' : '' }}">
+            <a href="{{ Route('admin.documents.index') }}" class="nav-link {{ Request::is('admin/documents*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
-              <p>
-                ISMO Library
-              </p>
+              <p>ISMO Library</p>
             </a>
           </li>
           @if( Auth::user()->role->hasPermission('pages', 'list') )
           <li class="nav-item">
-            <a href="{{ Route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages/*') ? 'active' : '' }}">
+            <a href="{{ Route('admin.pages.index') }}" class="nav-link {{ Request::is('admin/pages*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-pager"></i>
               <p>
                 Pages
@@ -75,7 +74,7 @@
 
           @if( Auth::user()->role->hasPermission('faqs', 'list') )
           <li class="nav-item">
-            <a href="{{ Route('admin.faqs.index') }}" class="nav-link {{ Request()->is('admin/faqs/*') ? 'active' : '' }}">
+            <a href="{{ Route('admin.faqs.index') }}" class="nav-link {{ Request::is('admin/faqs*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-question-circle"></i>
               <p>
                 FAQ
