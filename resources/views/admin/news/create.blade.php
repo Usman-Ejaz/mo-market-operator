@@ -106,6 +106,18 @@
         $("#slug").val(Text);
       });
 
+      $.validator.addMethod(
+        "notNumericValues",
+        function(value, element) {
+          return this.optional(element) || isNaN(Number(value));
+        },
+        "String cannot be numeric"
+      );
+
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
 
       $('#create-news-form').validate({
         errorElement: 'span',
@@ -114,7 +126,10 @@
         rules:{
           title: {
             required: true,
-            maxlength: 255
+            maxlength: 255,
+            minlength: 2,
+            notNumericValues: true,
+            noSpace:true,
           },
           description:{
             required: true,
@@ -122,7 +137,9 @@
           },
           slug: {
             required: true,
-            maxlength: 255
+            maxlength: 255,
+            noSpace:true,
+            notNumericValues: true,
           },
           news_category: {
             required: true,
@@ -132,9 +149,12 @@
           },
           start_datetime: {
             required : false,
+            date:true,
+            dateLessThan : '#end_datetime'
           },
           end_datetime: {
             required : false,
+            date:true,
           }
         }
       });
