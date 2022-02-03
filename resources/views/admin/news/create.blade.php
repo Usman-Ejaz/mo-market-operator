@@ -149,12 +149,10 @@
           },
           start_datetime: {
             required : false,
-            date:true,
             dateLessThan : '#end_datetime'
           },
           end_datetime: {
             required : false,
-            date:true,
           }
         }
       });

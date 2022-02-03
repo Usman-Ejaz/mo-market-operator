@@ -128,7 +128,9 @@
             rules:{
                 title: {
                     required: true,
-                    maxlength: 255
+                    maxlength: 255,
+                    notNumericValues: true,
+                    noSpace: true
                 },
                 description:{
                     required: true,
@@ -136,7 +138,9 @@
                 },
                 slug: {
                     required: true,
-                    maxlength: 255
+                    maxlength: 255,
+                    notNumericValues: true,
+                    noSpace: true
                 },
                 news_category: {
                     required: true,
@@ -146,12 +150,10 @@
                 },
                 start_datetime: {
                     required : false,
-                    date:true,
                     dateLessThan : '#end_datetime'
                 },
                 end_datetime: {
                     required : false,
-                    date:true,
                 }
             }
         });
