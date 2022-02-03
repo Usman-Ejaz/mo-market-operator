@@ -65,12 +65,7 @@
         validClass: "my-valid-class",
         rules: {
           name: {
-            required: {
-              depends: function() {
-                $(this).val($.trim($(this).val()));                
-                return true;
-              }
-            },
+            required: true,
             minlength: 3
           }
         }

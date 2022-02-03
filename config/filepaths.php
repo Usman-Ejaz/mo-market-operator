@@ -24,5 +24,9 @@ return [
     'ckeditorImagePath' => [
         'internal_path' => 'public/uploads/ckeditor/',
         'public_path' => 'storage/uploads/ckeditor/',
+    ],
+    'applicationsPath' => [
+        'internal_path' => 'public/uploads/applications/',
+        'public_path' => 'storage/uploads/applications/',
     ]
 ];
