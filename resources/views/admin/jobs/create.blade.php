@@ -158,11 +158,11 @@
             required: false,
           },
           start_datetime: {
-            date:true,
+            required: false,
             dateLessThan : '#end_datetime'
           },
           end_datetime: {
-            date:true
+            required: false,
           }
         }
       });

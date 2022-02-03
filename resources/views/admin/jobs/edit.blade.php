@@ -118,7 +118,7 @@
           }
         });
         
-        $.validator.addMethod(
+      $.validator.addMethod(
         "notNumericValues",
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
@@ -180,11 +180,11 @@
             required: false,
           },
           start_datetime: {
-            date:true,
+            required: false,
             dateLessThan : '#end_datetime'
           },
           end_datetime: {
-            date:true
+            required: false,
           }
         }
       });
