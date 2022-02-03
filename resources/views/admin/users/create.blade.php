@@ -52,6 +52,19 @@
     //Date and time picker
     $(document).ready(function(){
 
+      $.validator.addMethod(
+        "notNumericValues",
+        function(value, element) {
+          return this.optional(element) || isNaN(Number(value));
+        },
+        "String cannot be numeric"
+      );
+
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#create-users-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
@@ -59,11 +72,16 @@
         rules:{
           name: {
             required: true,
-            maxlength: 255
+            maxlength: 255,
+            minlength: 2,
+            notNumericValues: true,
+            noSpace:true,
           },
           email:{
             required: true,
-            email: true
+            email: true,
+            notNumericValues: true,
+            noSpace:true,
           },
           role_id: {
             required: true,
@@ -71,7 +89,8 @@
           },
           department: {
             required: true,
-            number: true
+            number: true,
+            noSpace:true,
           },
           image: {
             extension: "jpg|jpeg|png"

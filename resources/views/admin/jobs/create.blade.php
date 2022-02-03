@@ -96,6 +96,19 @@
         $('#status').val("1");
       });
 
+      $.validator.addMethod(
+        "notNumericValues",
+        function(value, element) {
+          return this.optional(element) || isNaN(Number(value));
+        },
+        "String cannot be numeric"
+      );
+
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#create-job-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
@@ -103,7 +116,10 @@
         rules:{
           title: {
             required: true,
-            minlength: 5
+            maxlength: 255,
+            minlength: 2,
+            notNumericValues: true,
+            noSpace:true,
           },
           description:{
             required: true,
@@ -111,15 +127,23 @@
           },
           qualification: {
             required: true,
-            minlength: 5
+            maxlength: 255,
+            minlength: 5,
+            notNumericValues: true,
+            noSpace:true,
           },
           experience: {
             required: true,
-            minlength: 5
+            maxlength: 255,
+            minlength: 2,
+            notNumericValues: true,
+            noSpace:true,
           },
           location: {
             required: true,
-            minlength: 5
+            minlength: 5,
+            notNumericValues: true,
+            noSpace:true,
           },
           total_positions: {
             required: true,
@@ -133,11 +157,11 @@
           enable: {
             required: false,
           },
-          starttime: {
+          start_datetime: {
             date:true,
-            dateLessThan : '#endtime'
+            dateLessThan : '#end_datetime'
           },
-          endtime: {
+          end_datetime: {
             date:true
           }
         }
