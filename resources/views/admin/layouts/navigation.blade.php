@@ -54,12 +54,11 @@
                     <p>Jobs</p>
                 </a>
           </li>
+
           <li class="nav-item">
           <a href="{{ route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
-              <p>
-                ISMO Library
-              </p>
+              <p>ISMO Library</p>
             </a>
           </li>
           @if( Auth::user()->role->hasPermission('pages', 'list') )

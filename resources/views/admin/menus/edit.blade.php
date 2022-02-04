@@ -43,6 +43,18 @@
 
   <script>
     $(document).ready(function(){
+      $.validator.addMethod(
+        "notNumericValues",
+        function(value, element) {
+          return this.optional(element) || isNaN(Number(value));
+        },
+        "String cannot be numeric"
+      );
+
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
 
         $('#update-menus-form').validate({
             errorElement: 'span',
@@ -50,12 +62,16 @@
             validClass: "my-valid-class",
             rules:{
                 name: {
-                    required: true,
-                    maxlength: 255
+                  required: true,
+                  maxlength: 255,
+                  minlength: 2,
+                  notNumericValues: true,
+                  noSpace:true,
                 },
                 theme: {
                     required: true,
-                    maxlength: 255
+                    maxlength: 255,
+                    minlength: 1,
                 },
                 active: {
                     required: true,

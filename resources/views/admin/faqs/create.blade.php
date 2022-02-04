@@ -53,6 +53,19 @@
       $('.publish_button').click(function(e) {
         $('#status').val("1");
       });
+      
+      $.validator.addMethod(
+        "notNumericValues",
+        function(value, element) {
+          return this.optional(element) || isNaN(Number(value));
+        },
+        "String cannot be numeric"
+      );
+
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
 
       $('#create-faq-form').validate({
         errorElement: 'span',
@@ -61,7 +74,9 @@
         rules:{
           question: {
             required: true,
-            minlength: 5
+            minlength: 2,
+            notNumericValues: true,
+            noSpace:true,
           },
           answer:{
             required: true,

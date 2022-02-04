@@ -33,7 +33,7 @@
 
     <div class="col-md-6">
       <div class="form-group">
-          <label for="department">Department </label>
+          <label for="department">Department <span class="text-danger">*</span> </label>
           <input type="input" class="form-control" id="department" placeholder="Enter Department" name="department" value="{{ old('department') ?? $user->department }}">
           <small class="form-text text-danger">{{ $errors->first('department') }} </small>
       </div>

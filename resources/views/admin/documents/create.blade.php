@@ -36,6 +36,19 @@
 
   <script>
     $(document).ready(function(){
+      $.validator.addMethod(
+        "notNumericValues",
+        function(value, element) {
+          return this.optional(element) || isNaN(Number(value));
+        },
+        "String cannot be numeric"
+      );
+
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#create-document-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
@@ -43,10 +56,15 @@
         rules:{
           title: {
             required: true,
-            minlength: 8
+            maxlength: 255,
+            minlength: 2,
+            notNumericValues: true,
+            noSpace:true,
           },
           keywords: {
-            minlength: 3
+            minlength: 2,
+            notNumericValues: true,
+            noSpace:true,
           },
           file: {
             required:true,
