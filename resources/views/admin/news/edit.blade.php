@@ -72,6 +72,7 @@
 @endpush
 
 @push('optional-scripts')
+  <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
   <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
   <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
@@ -89,7 +90,7 @@
     $(document).ready(function(){
 
     $('#start_datetime, #end_datetime').datetimepicker({
-        format:'{{ config('settings.datetime_format') }}',
+      format:'{{ config("settings.datetime_format") }}'.replace(" A", ""),
     });
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
@@ -155,6 +156,9 @@
                 end_datetime: {
                     required : false,
                 }
+            },
+            messages: {
+              image: "Please Attach a file with valid extension"
             }
         });
 

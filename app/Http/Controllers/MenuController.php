@@ -202,7 +202,7 @@ class MenuController extends Controller
         $menu->update(['submenu_json' => $menuOrder]);
 
         $request->session()->flash('success', 'Submenus Updated Successfully!');
-        return redirect()->route('admin.menus.submenus', $menu->id);
+        return redirect()->route('admin.menus.index');
     }
 
     public function list(Request $request)

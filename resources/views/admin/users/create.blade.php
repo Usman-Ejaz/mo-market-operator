@@ -98,6 +98,9 @@
           status: {
             required : true,
           }
+        },
+        messages: {
+          image: "Please Attach a file with valid extension"
         }
       });
 

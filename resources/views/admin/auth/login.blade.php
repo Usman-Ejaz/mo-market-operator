@@ -30,7 +30,7 @@
           <input type="password" class="form-control" placeholder="{{__('Password')}}" name="password" required autocomplete="current-password">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+              <span class="fas fa-eye"></span>
             </div>
           </div>
         </div>
