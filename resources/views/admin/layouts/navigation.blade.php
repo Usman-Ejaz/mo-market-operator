@@ -92,7 +92,7 @@
             <ul class="nav nav-treeview">
                 @if( Auth::user()->role->hasPermission('roles', 'list') )
                     <li class="nav-item">
-                        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles*') ? 'active pimary' : '' }}">
                             <i class="fa fa-tasks nav-icon"></i>
                             <p>Roles</p>
                         </a>

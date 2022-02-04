@@ -33,7 +33,7 @@ Route::get('/admin', function () {
     return redirect()->route('admin.dashboard');
 });
 
-Route::middleware(['auth'])->prefix("admin")->name("admin.")->group(function () {
+Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("admin.")->group(function () {
     
     Route::get('dashboard', function () {
         return view('admin.dashboard.index');

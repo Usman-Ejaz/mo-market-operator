@@ -86,7 +86,7 @@
     $(document).ready(function(){
 
       $('#start_datetime, #end_datetime').datetimepicker({
-          format:'{{ config('settings.datetime_format') }}',
+        format:'{{ config("settings.datetime_format") }}'.replace(" A", ""),
       });
 
       // Set hidden fields based on button click

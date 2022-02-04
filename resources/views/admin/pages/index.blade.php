@@ -57,6 +57,13 @@
             serverSide: true,
             pageLength: 25,
             ajax: "{{ route('admin.pages.list') }}",
+            fnDrawCallback: function () {
+              if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
+                $('.dataTables_info').hide();
+              } else {
+                $('.dataTables_info').show();
+              }
+            },
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'title', name: 'title'},
