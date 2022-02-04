@@ -54,6 +54,9 @@
             required: true,
             extension: "doc|docx|txt|ppt|csv|xls|xlsx|pdf|odt"
           }
+        },
+        messages: {
+          file: "Please Attach a file with valid extension"
         }
       });
 

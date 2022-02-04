@@ -140,6 +140,9 @@
           end_datetime: {
             date:true
           }
+        },
+        messages: {
+          image: "Please Attach a file with valid extension"
         }
       });
 

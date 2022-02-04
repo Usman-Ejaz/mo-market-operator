@@ -24,7 +24,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="{{ Route('admin.dashboard') }}" class="nav-link {{ Request()->is('admin/dashboard') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
@@ -32,7 +32,7 @@
 
           @if( Auth::user()->role->hasPermission('users', 'list') )
               <li class="nav-item">
-                <a href="{{ Route('admin.users.index') }}" class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}">
+                <a href="{{ route('admin.users.index') }}" class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}">
                   <i class="nav-icon fa fa-users"></i>
                   <p>Users</p>
                 </a>
@@ -41,7 +41,7 @@
 
           @if( Auth::user()->role->hasPermission('news', 'list') )
           <li class="nav-item">
-            <a href="{{ Route('admin.news.index') }}" class="nav-link {{ Request::is('admin/news*') ? 'active' : '' }}">
+            <a href="{{ route('admin.news.index') }}" class="nav-link {{ Request::is('admin/news*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-newspaper"></i>
               <p>News</p>
             </a>
@@ -49,13 +49,13 @@
           @endif
 
           <li class="nav-item">
-                <a href="{{ Route('admin.jobs.index') }}" class="nav-link {{ Request()->is('admin/jobs*') ? 'active' : '' }}">
+                <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ Request::is('admin/jobs*') ? 'active' : '' }}">
                     <i class="nav-icon fa fa-newspaper"></i>
                     <p>Jobs</p>
                 </a>
           </li>
           <li class="nav-item">
-          <a href="{{ Route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents/*') ? 'active' : '' }}">
+          <a href="{{ route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
               <p>
                 ISMO Library
@@ -64,7 +64,7 @@
           </li>
           @if( Auth::user()->role->hasPermission('pages', 'list') )
           <li class="nav-item">
-            <a href="{{ Route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages/*') ? 'active' : '' }}">
+            <a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-pager"></i>
               <p>
                 Pages
@@ -75,7 +75,7 @@
 
           @if( Auth::user()->role->hasPermission('faqs', 'list') )
           <li class="nav-item">
-            <a href="{{ Route('admin.faqs.index') }}" class="nav-link {{ Request()->is('admin/faqs/*') ? 'active' : '' }}">
+            <a href="{{ route('admin.faqs.index') }}" class="nav-link {{ Request()->is('admin/faqs*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-question-circle"></i>
               <p>
                 FAQ
@@ -84,7 +84,7 @@
           </li>
           @endif
 
-          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') ) ? 'menu-is-opening menu-open' : '' }}">
+          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
                 <p>Settings <i class="fas fa-angle-left right"></i></p>
@@ -92,7 +92,7 @@
             <ul class="nav nav-treeview">
                 @if( Auth::user()->role->hasPermission('roles', 'list') )
                     <li class="nav-item">
-                        <a href="{{ Route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles*') ? 'active' : '' }}">
                             <i class="fa fa-tasks nav-icon"></i>
                             <p>Roles</p>
                         </a>
@@ -101,7 +101,7 @@
 
                 @if( Auth::user()->role->hasPermission('permissions', 'view') )
                     <li class="nav-item">
-                        <a href="{{ Route('admin.permissions.index') }}" class="nav-link {{ Request()->is('admin/permissions*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.permissions.index') }}" class="nav-link {{ Request()->is('admin/permissions*') ? 'active' : '' }}">
                             <i class="fa fa-lock nav-icon"></i>
                             <p>Permissions</p>
                         </a>
@@ -110,7 +110,7 @@
 
                 @if( Auth::user()->role->hasPermission('menus', 'list') )
                     <li class="nav-item">
-                        <a href="{{ Route('admin.menus.index') }}" class="nav-link {{ Request()->is('admin/menus*') ? 'active' : '' }}">
+                        <a href="{{ route('admin.menus.index') }}" class="nav-link {{ Request()->is('admin/menus*') ? 'active' : '' }}">
                             <i class="fa fa-bars nav-icon"></i>
                             <p>Menus</p>
                         </a>
