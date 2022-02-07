@@ -48,19 +48,24 @@
           </li>
           @endif
 
+          @if( Auth::user()->role->hasPermission('jobs', 'list') )
           <li class="nav-item">
                 <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ Request::is('admin/jobs*') ? 'active' : '' }}">
                     <i class="nav-icon fa fa-newspaper"></i>
                     <p>Jobs</p>
                 </a>
           </li>
+          @endif
 
+          @if( Auth::user()->role->hasPermission('documents', 'list') )
           <li class="nav-item">
           <a href="{{ route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
               <p>ISMO Library</p>
             </a>
           </li>
+          @endif
+
           @if( Auth::user()->role->hasPermission('pages', 'list') )
           <li class="nav-item">
             <a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages*') ? 'active' : '' }}">
