@@ -11,6 +11,7 @@ use App\Models\News;
 use App\Models\Page;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Settings;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -93,9 +94,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Application::factory(10)->create();
+
+        // Set current theme
+        Settings::factory(1)->create([
+            'name' => 'current_theme',
+            'value' => 'theme1'
+        ]);
     }
 
-    
+
     /**
      * Create directories for storing assets in public directory of the application.
      *
