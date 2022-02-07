@@ -110,6 +110,12 @@ return [
             "delete" => "Delete",
             "submenus" => "SubMenus"
         ]
+    ],    [
+        "name" => "settings",
+        "display_name" => "Settings",
+        "capabilities" => [
+            "list" => "List"
+        ]
     ],
 
 ];

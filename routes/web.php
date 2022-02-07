@@ -8,6 +8,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,7 @@ Route::get('/admin', function () {
 });
 
 Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("admin.")->group(function () {
-    
+
     Route::get('dashboard', function () {
         return view('admin.dashboard.index');
     })->name('dashboard');
@@ -92,6 +93,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     // Route for uploading images for ckeditor
     Route::post('ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('ckeditor.upload');
+
+    // Route for settings
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::patch('settings/update', [SettingsController::class, 'update'])->name('settings.update');
 });
 
 
