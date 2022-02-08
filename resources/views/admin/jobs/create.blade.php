@@ -13,7 +13,7 @@
                   <div class="col-md-9">
                     <div class="card card-primary">
                       <div class="card-header">
-                        <h3 class="card-title">Editing Job - {{ $job->title }}</h3>
+                        <h3 class="card-title">Creating Job -</h3>
                       </div>
                       <!-- /.card-header -->
                       <!-- form start -->
@@ -101,15 +101,11 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
 
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
-
       $('#create-job-form').validate({
+        ignore: [],
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
@@ -118,8 +114,7 @@
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           description:{
             required: true,
@@ -129,21 +124,18 @@
             required: true,
             maxlength: 255,
             minlength: 5,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           experience: {
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           location: {
             required: true,
             minlength: 5,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           total_positions: {
             required: true,
@@ -166,7 +158,7 @@
           }
         },
         messages: {
-          image: "Please Attach a file with valid extension"
+          image: '{{ __("messages.valid_file_extension") }}'
         }
       });
 

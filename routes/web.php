@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,5 +95,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::post('ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('ckeditor.upload');
 });
 
+Route::get("create-password/{user}", function (Request $request, $user) {
+    if (! $request->hasValidSignature()) {
+        abort(401);
+    }
+})->name("create-password")->middleware("guest");
 
 require __DIR__.'/auth.php';

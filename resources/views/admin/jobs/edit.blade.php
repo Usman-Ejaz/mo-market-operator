@@ -87,7 +87,7 @@
     //Date and time picker
     $(document).ready(function(){
       $('#start_datetime, #end_datetime').datetimepicker({
-        format:'{{ config('settings.datetime_format') }}',
+        format:'{{ config("settings.datetime_format") }}',
       });
 
       // Set hidden fields based on button click
@@ -126,11 +126,6 @@
         "String cannot be numeric"
       );
 
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
-
       $('#create-job-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
@@ -140,8 +135,7 @@
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           description:{
             required: true,
@@ -151,21 +145,18 @@
             required: true,
             maxlength: 255,
             minlength: 5,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true,            
           },
           experience: {
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true,            
           },
           location: {
             required: true,
             minlength: 5,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true,            
           },
           total_positions: {
             required: true,
@@ -188,7 +179,7 @@
           }
         },
         messages: {
-          image: "Please Attach a file with valid extension"
+          image: '{{ __("messages.valid_file_extension") }}'
         }
       });
     });
