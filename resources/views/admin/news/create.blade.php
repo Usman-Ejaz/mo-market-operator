@@ -106,26 +106,36 @@
         // Error Message for this field | Should put on the single quotes given below.
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
 
       $('#create-news-form').validate({
+        errorPlacement: function(error, element) {
+            error.insertAfter(element);
+        },
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        ignore: [],
         rules:{
           title: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace:true
           },
           description:{
-            required: true,
-            maxlength: 50000
+            required:  function() 
+                      {
+                       CKEDITOR.instances.description.updateElement();
+                      },
           },
           slug: {
             required: true,
-            maxlength: 255,
             notNumericValues: true,
+            noSpace:true
           },
           news_category: {
             required: true,

@@ -35,26 +35,15 @@
 
 @push('optional-scripts')
   <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
-
-    //Date and time picker
     $(document).ready(function(){
-      $.validator.addMethod(
-        "notNumericValues",
-        function(value, element) {
-          return this.optional(element) || isNaN(Number(value));
-        },
-        "String cannot be numeric"
-      );
+
+      $.validator.addMethod("notNumericValues", function (value, element) {
+        return this.optional(element) || isNaN(Number(value));
+      }, '{{ __("messages.not_numeric") }}');
 
       $.validator.addMethod("noSpace", function(value) { 
         this.value = $.trim(value);
@@ -62,9 +51,13 @@
       });
 
       $('#create-newsletter-form').validate({
+        errorPlacement: function(error, element) {
+            error.insertAfter(element);
+        },
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        ignore: [],
         rules:{
           subject: {
             required: true,
@@ -73,7 +66,10 @@
             noSpace:true,
           },
           description:{
-            required: true,
+            required:  function() 
+                        {
+                         CKEDITOR.instances.description.updateElement();
+                        },
             minlength: 1
           },
         }

@@ -47,11 +47,11 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
+    // CKEDITOR.replace('editor1', {
+    //   height: 800,
+    //   baseFloatZIndex: 10005,
+    //   removeButtons: 'PasteFromWord'
+    // });
     $(document).ready(function(){
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
@@ -77,18 +77,31 @@
         '{{ __("messages.not_numeric") }}'
       );
 
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#update-faq-form').validate({
+        errorPlacement: function(error, element) {
+          error.insertAfter(element);
+        },
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        ignore: [],
         rules:{
           question: {
             required: true,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace: true
           },
           answer:{
-            required: true,
+            required:  function() 
+                        {
+                         CKEDITOR.instances.description.updateElement();
+                        },
             minlength: 5
           }
         }

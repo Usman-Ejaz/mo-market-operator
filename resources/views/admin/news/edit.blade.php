@@ -71,11 +71,11 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
+    // CKEDITOR.replace('editor1', {
+    //   height: 800,
+    //   baseFloatZIndex: 10005,
+    //   removeButtons: 'PasteFromWord'
+    // });
 
     //Date and time picker
     $(document).ready(function(){
@@ -124,24 +124,35 @@
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
 
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
         $('#update-news-form').validate({
+            errorPlacement: function(error, element) {
+             error.insertAfter(element);
+            },
             errorElement: 'span',
             errorClass: "my-error-class",
             validClass: "my-valid-class",
+            ignore: [],
             rules:{
                 title: {
                     required: true,
-                    maxlength: 255,
-                    notNumericValues: true
+                    notNumericValues: true,
+                    noSpace:true
                 },
                 description:{
-                    required: true,
-                    maxlength: 50000
+                  required:  function() 
+                      {
+                       CKEDITOR.instances.description.updateElement();
+                      },
                 },
                 slug: {
                     required: true,
-                    maxlength: 255,
-                    notNumericValues: true
+                    notNumericValues: true,
+                    noSpace:true
                 },
                 news_category: {
                     required: true,

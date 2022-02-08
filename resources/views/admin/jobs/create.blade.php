@@ -100,38 +100,51 @@
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
 
+
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#create-job-form').validate({
-        ignore: [],
+        errorPlacement: function(error, element) {
+          error.insertAfter(element);
+        },
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        ignore: [],
         rules:{
           title: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace: true
           },
           description:{
-            required: true,
+            required:  function() 
+                        {
+                         CKEDITOR.instances.description.updateElement();
+                        },
             minlength: 5
           },
           qualification: {
             required: true,
-            maxlength: 255,
             minlength: 5,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace: true
           },
           experience: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace: true
           },
           location: {
             required: true,
             minlength: 5,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace: true
           },
           total_positions: {
             required: true,
