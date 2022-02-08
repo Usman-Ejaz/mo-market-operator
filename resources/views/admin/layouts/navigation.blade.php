@@ -48,19 +48,24 @@
           </li>
           @endif
 
+          @if( Auth::user()->role->hasPermission('jobs', 'list') )
           <li class="nav-item">
                 <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ Request::is('admin/jobs*') ? 'active' : '' }}">
                     <i class="nav-icon fa fa-newspaper"></i>
                     <p>Jobs</p>
                 </a>
           </li>
+          @endif
 
+          @if( Auth::user()->role->hasPermission('documents', 'list') )
           <li class="nav-item">
           <a href="{{ route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
               <p>ISMO Library</p>
             </a>
           </li>
+          @endif
+
           @if( Auth::user()->role->hasPermission('pages', 'list') )
           <li class="nav-item">
             <a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages*') ? 'active' : '' }}">
@@ -91,8 +96,8 @@
             <ul class="nav nav-treeview">
                 @if( Auth::user()->role->hasPermission('roles', 'list') )
                     <li class="nav-item">
-                        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles*') ? 'active pimary' : '' }}">
-                            <i class="fa fa-tasks nav-icon"></i>
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles*') ? 'active' : '' }}">
+                            <i class="fa fa-user-tag nav-icon"></i>
                             <p>Roles</p>
                         </a>
                     </li>
@@ -110,8 +115,17 @@
                 @if( Auth::user()->role->hasPermission('menus', 'list') )
                     <li class="nav-item">
                         <a href="{{ route('admin.menus.index') }}" class="nav-link {{ Request()->is('admin/menus*') ? 'active' : '' }}">
-                            <i class="fa fa-bars nav-icon"></i>
+                            <i class="fa fa-compass nav-icon"></i>
                             <p>Menus</p>
+                        </a>
+                    </li>
+                @endif
+
+                @if( Auth::user()->role->hasPermission('settings', 'list') )
+                    <li class="nav-item">
+                        <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings') ? 'active' : '' }}">
+                            <i class="fa fa-cog nav-icon"></i>
+                            <p>Settings</p>
                         </a>
                     </li>
                 @endif
