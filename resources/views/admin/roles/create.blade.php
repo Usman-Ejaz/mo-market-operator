@@ -50,7 +50,7 @@
  <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
 @endpush
 
-@push('optional-scripts')
+@push('optional-scripts')  
   <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
@@ -64,13 +64,8 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
 
       $('#create-roles-form').validate({
         errorElement: 'span',
@@ -82,17 +77,8 @@
             minlength: 3,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           }
-        }
-      });
-
-      // removing error labels when someone put value inside the input and leave the focus
-      $('#create-roles-form').on("focusout", "input", function() {
-        if ($(this).val().trim().length > 0) {
-          $(this).hasClass("my-error-class") && $(this).removeClass("my-error-class");
-          $(this).next().hasClass("my-error-class") && $(this).next().remove();
         }
       });
     });

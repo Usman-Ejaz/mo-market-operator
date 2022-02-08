@@ -35,26 +35,12 @@
                     <div class="float-right">
 
                       <input type="hidden" name="active" id="status">
-
-                      @if( \Route::current()->getName() == 'admin.pages.edit' )
-                          @if($page->active == 'Active')
-                            <button type="submit" class="btn btn-primary publish_button">Update</button>
-                            @if( Auth::user()->role->hasPermission('pages', 'publish') )
-                            <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
-                            @endif
-                          @elseif($page->active == 'Draft')
-                            <button type="submit" class="btn btn-primary draft_button">Update</button>
-                            @if( Auth::user()->role->hasPermission('pages', 'publish') )
-                            <button type="submit" class="btn btn-success publish_button">Publish</button>
-                            @endif
-                          @endif
-                      @else
-                            <button type="submit" class="btn btn-primary draft_button">Save</button>
-                            @if( Auth::user()->role->hasPermission('pages', 'publish') )
-                            <button type="submit" class="btn btn-success publish_button">Publish</button>
-                            @endif
+                      <input type="hidden" name="action" id="action">
+                      
+                      <button type="submit" class="btn btn-primary draft_button">Save</button>
+                      @if( Auth::user()->role->hasPermission('pages', 'publish') )
+                      <button type="submit" class="btn btn-success publish_button">Publish</button>
                       @endif
-
                     </div>
 
                   </div>
@@ -87,38 +73,42 @@
     //Date and time picker
     $(document).ready(function(){
       $('#start_datetime, #end_datetime').datetimepicker({
-        format:'{{ config("settings.datetime_format") }}'.replace(" A", ""),
+        format:'{{ config("settings.datetime_format") }}',
+        validateOnBlur: false,
       });
 
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
+        $('#action').val("Added");
       });
 
       $('.publish_button').click(function(e) {
         $('#status').val("1");
+        $('#action').val("Published");
       });
 
       // Slug generator
       $("#title").keyup(function() {
         var Text = $(this).val();
-        Text = Text.toLowerCase();
+        Text = Text.toLowerCase().trim();
         Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
         $("#slug").val(Text);
       });
 
-      $.validator.addMethod(
-        "notNumericValues",
-        function(value, element) {
+      $.validator.addMethod("notNumericValues", function (value, element) {
           return this.optional(element) || isNaN(Number(value));
-        },
-        "String cannot be numeric"
-      );
+      }, '{{ __("messages.not_numeric") }}');
 
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
+      $.validator.addMethod("greaterThan", function (value, element, params) {
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            return new Date(value) > new Date($(params).val());
+        }
+        return isNaN(value) && isNaN($(params).val()) || (Number(value) > Number($(params).val())); 
+
+        // Error Message for this field | Should put on the single quotes given below.
+        // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
+      }, '');
       
       $('#create-page-form').validate({
         errorElement: 'span',
@@ -129,8 +119,7 @@
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           description:{
             required: true,
@@ -138,36 +127,26 @@
           },
           slug: {
             required: true,
-            minlength: 5,
-            noSpace:true,
+            minlength: 5,            
           },
           keywords: {
-            minlength: 5,
-            noSpace:true,
+            minlength: 5,            
           },
           image: {
             extension: "jpg|jpeg|png|ico|bmp"
           },
           start_datetime: {
-            required: false,
-            dateLessThan : '#end_datetime'
+            required: false
           },
           end_datetime: {
             required: false,
+            greaterThan: "#start_datetime"
           }
         },
         messages: {
-          image: "Please Attach a file with valid extension"
+          image: '{{ __("messages.valid_file_extension") }}'
         }
       });
-
-      $('#create-page-form').on("focusout", "input", function() {
-        if ($(this).val().trim().length > 0) {
-          $(this).hasClass("my-error-class") && $(this).removeClass("my-error-class");
-          $(this).next().hasClass("my-error-class") && $(this).next().remove();
-        }
-      });
-
     });
   </script>
 

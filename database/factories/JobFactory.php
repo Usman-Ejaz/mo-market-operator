@@ -21,7 +21,7 @@ class JobFactory extends Factory
             'experience' => implode(",", $this->faker->randomElements(['2 years', '3 years', '4 years', '5 years', '6 years'], 1)),
             'qualification' => $this->faker->name(),
             'total_positions' => $this->faker->numberBetween(1,5),
-            'image' => $this->faker->image( 'public/' . config('filepaths.jobImagePath.public_path'), 640, 480, 'cats', false),
+            'image' => $this->faker->image( 'storage/app/' . config('filepaths.jobImagePath.internal_path'), 640, 480, 'cats', false),
             'start_datetime' => null,
             'end_datetime' => null,
             'created_by' => User::all()->random()->id,

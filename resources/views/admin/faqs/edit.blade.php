@@ -21,23 +21,16 @@
                         <div class="card-footer">
                             <div class="float-right">
                                 <input type="hidden" name="active" id="status">
-
-                                @if( \Route::current()->getName() == 'admin.faqs.edit' )
-
-                                    @if($faq->active == 'Active')
-                                    <button type="submit" class="btn btn-primary publish_button">Update</button>
-                                    <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
-                                    @elseif($faq->active == 'Draft')
-                                    <button type="submit" class="btn btn-primary draft_button">Update</button>
-                                    @if( Auth::user()->role->hasPermission('faqs', 'publish') )
-                                      <button type="submit" class="btn btn-success publish_button">Publish</button>
-                                    @endif
-                                    @endif
-                                @else 
-                                    <button type="submit" class="btn btn-primary draft_button">Save</button>
-                                    @if( Auth::user()->role->hasPermission('faqs', 'publish') )
-                                      <button type="submit" class="btn btn-success publish_button">Publish</button>
-                                    @endif
+                                <input type="hidden" name="action" id="action">
+                                
+                                @if($faq->active == 'Active')
+                                  <button type="submit" class="btn btn-primary publish_button">Update</button>
+                                  <button type="submit" class="btn btn-danger unpublish_button">Unpublish</button>
+                                @elseif($faq->active == 'Draft')
+                                  <button type="submit" class="btn btn-primary draft_button">Update</button>
+                                  @if( Auth::user()->role->hasPermission('faqs', 'publish') )
+                                    <button type="submit" class="btn btn-success publish_button">Publish</button>
+                                  @endif
                                 @endif
                             </div>
                         </div>
@@ -63,10 +56,17 @@
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
+        $('#action').val("Updated");
       });
 
       $('.publish_button').click(function(e) {
         $('#status').val("1");  
+        $('#action').val("Published");
+      }); 
+
+      $('.unpublish_button').click(function(e) {
+        $('#status').val("0");  
+        $('#action').val("Unpublished");
       }); 
 
       $.validator.addMethod(
@@ -74,13 +74,8 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
 
       $('#update-faq-form').validate({
         errorElement: 'span',
@@ -90,8 +85,7 @@
           question: {
             required: true,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           answer:{
             required: true,

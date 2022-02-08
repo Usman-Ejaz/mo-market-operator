@@ -19,7 +19,7 @@
 
   <div class="form-group">
     <label for="description">Description <span class="text-danger">*</span></label>
-    <textarea class="form-control ckeditor" id="description" placeholder="Enter Page Description" name="description" rows="400" cols="50">{{ old('description') ?? $page->description }}</textarea>
+    <textarea class="form-control ckeditor" id="description-editor" placeholder="Enter Page Description" name="description" rows="400" cols="50">{{ old('description') ?? $page->description }}</textarea>
     <small class="form-text text-danger">{{ $errors->first('description') }} </small>
   </div>
 

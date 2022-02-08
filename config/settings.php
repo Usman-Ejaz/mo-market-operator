@@ -6,5 +6,6 @@ return [
     'themes' => [
         'theme1' => 'Theme 1',
         'theme2' => 'Theme 2'
-    ]
+    ],
+    "createPassowrdLinkExpiryTime" => 30 // in mins
 ];

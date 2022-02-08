@@ -57,13 +57,8 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
 
       $('#create-users-form').validate({
         errorElement: 'span',
@@ -74,14 +69,12 @@
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           email:{
             required: true,
             email: true,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           role_id: {
             required: true,
@@ -89,8 +82,7 @@
           },
           department: {
             required: true,
-            number: true,
-            noSpace:true,
+            number: true
           },
           image: {
             extension: "jpg|jpeg|png"
@@ -100,7 +92,7 @@
           }
         },
         messages: {
-          image: "Please Attach a file with valid extension"
+          image: '{{ __("messages.valid_file_extension") }}'
         }
       });
 

@@ -115,66 +115,38 @@ class DatabaseSeeder extends Seeder
     private function makeDirectories()
     {
         // For User Profile
-        if (!is_dir(public_path(config('filepaths.userProfileImagePath.public_path')))) {
-            mkdir(public_path(config('filepaths.userProfileImagePath.public_path')), 0777, true);
-        }
-
-        if (!is_dir(base_path(config('filepaths.userProfileImagePath.internal_path')))) {
-            mkdir(base_path(config('filepaths.userProfileImagePath.internal_path')), 0777, true);
+        if (!is_dir(storage_path('app/' . config('filepaths.userProfileImagePath.internal_path')))) {
+            mkdir(storage_path('app/' . config('filepaths.userProfileImagePath.internal_path')), 0777, true);
         }
 
         // For Page Images
-        if (!is_dir(public_path(config('filepaths.pageImagePath.public_path')))) {
-            mkdir(public_path(config('filepaths.pageImagePath.public_path')), 0777, true);
-        }
-
-        if (!is_dir(base_path(config('filepaths.pageImagePath.internal_path')))) {
-            mkdir(base_path(config('filepaths.pageImagePath.internal_path')), 0777, true);
+        if (!is_dir(storage_path('app/' . config('filepaths.pageImagePath.internal_path')))) {
+            mkdir(storage_path('app/' . config('filepaths.pageImagePath.internal_path')), 0777, true);
         }
 
         // For News Images
-        if (!is_dir(public_path(config('filepaths.newsImagePath.public_path')))) {
-            mkdir(public_path(config('filepaths.newsImagePath.public_path')), 0777, true);
-        }
-
-        if (!is_dir(base_path(config('filepaths.newsImagePath.internal_path')))) {
-            mkdir(base_path(config('filepaths.newsImagePath.internal_path')), 0777, true);
+        if (!is_dir(storage_path('app/' . config('filepaths.newsImagePath.internal_path')))) {
+            mkdir(storage_path('app/' . config('filepaths.newsImagePath.internal_path')), 0777, true);
         }
 
         // For Job Images
-        if (!is_dir(public_path(config('filepaths.jobImagePath.public_path')))) {
-            mkdir(public_path(config('filepaths.jobImagePath.public_path')), 0777, true);
-        }
-
-        if (!is_dir(base_path(config('filepaths.jobImagePath.internal_path')))) {
-            mkdir(base_path(config('filepaths.jobImagePath.internal_path')), 0777, true);
+        if (!is_dir(storage_path('app/' . config('filepaths.jobImagePath.internal_path')))) {
+            mkdir(storage_path('app/' . config('filepaths.jobImagePath.internal_path')), 0777, true);
         }
 
         // For Documents Images
-        if (!is_dir(public_path(config('filepaths.documentsFilePath.internal_path')))) {
-            mkdir(public_path(config('filepaths.documentsFilePath.internal_path')), 0777, true);
-        }
-
-        if (!is_dir(base_path(config('filepaths.documentsFilePath.public_path')))) {
-            mkdir(base_path(config('filepaths.documentsFilePath.public_path')), 0777, true);
+        if (!is_dir(storage_path('app/' . config('filepaths.documentsFilePath.public_path')))) {
+            mkdir(storage_path('app/' . config('filepaths.documentsFilePath.public_path')), 0777, true);
         }
 
         // For CK-Editor Images
-        if (!is_dir(public_path(config('filepaths.ckeditorImagePath.public_path')))) {
-            mkdir(public_path(config('filepaths.ckeditorImagePath.public_path')), 0777, true);
-        }
-
-        if (!is_dir(base_path(config('filepaths.ckeditorImagePath.internal_path')))) {
-            mkdir(base_path(config('filepaths.ckeditorImagePath.internal_path')), 0777, true);
+        if (!is_dir(storage_path('app/' . config('filepaths.ckeditorImagePath.internal_path')))) {
+            mkdir(storage_path('app/' . config('filepaths.ckeditorImagePath.internal_path')), 0777, true);
         }
 
         // For Applications
-        if (!is_dir(public_path(config('filepaths.applicationsPath.public_path')))) {
-            mkdir(public_path(config('filepaths.applicationsPath.public_path')), 0777, true);
-        }
-
-        if (!is_dir(base_path(config('filepaths.applicationsPath.internal_path')))) {
-            mkdir(base_path(config('filepaths.applicationsPath.internal_path')), 0777, true);
+        if (!is_dir(storage_path('app/' . config('filepaths.applicationsPath.internal_path')))) {
+            mkdir(storage_path('app/' . config('filepaths.applicationsPath.internal_path')), 0777, true);
         }
     }
 }

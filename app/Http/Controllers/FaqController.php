@@ -53,7 +53,7 @@ class FaqController extends Controller
         $faq = new Faq();
         $faq = Faq::create( $this->validateRequest($faq) );
         
-        $request->session()->flash('success', 'Faq Added Successfully!');
+        $request->session()->flash('success', "Faq {$request->action} Successfully!");
         return redirect()->route('admin.faqs.index');
     }
 
@@ -102,7 +102,7 @@ class FaqController extends Controller
 
         $faq->update($this->validateRequest($faq));
 
-        $request->session()->flash('success', 'Faq Updated Successfully!');
+        $request->session()->flash('success', "Faq {$request->action} Successfully!");
         return redirect()->route('admin.faqs.index');
     }
 
@@ -147,7 +147,7 @@ class FaqController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if( Auth::user()->role->hasPermission('faqs', 'edit') ) {
-                        $options .= '<a href="' . route('admin.faqs.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                        $options .= '<a href="' . route('admin.faqs.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
@@ -156,7 +156,7 @@ class FaqController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

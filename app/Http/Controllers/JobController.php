@@ -56,7 +56,7 @@ class JobController extends Controller
         $job = Job::create($job);
         $this->storeImage($job);
 
-        $request->session()->flash('success', 'Job Added Successfully!');
+        $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
     }
 
@@ -114,7 +114,7 @@ class JobController extends Controller
         $job->update($data);
         $this->storeImage($job);
 
-        $request->session()->flash('success', 'job Updated Successfully!');
+        $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
     }
 
@@ -174,12 +174,12 @@ class JobController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if( Auth::user()->role->hasPermission('jobs', 'view_applications') ) {
-                        $options .= '<a href="' . route('admin.job.applications', $row->id) . '" class="btn btn-primary" title="applications">
+                        $options .= '<a href="' . route('admin.job.applications', $row->id) . '" class="btn btn-primary" title="Applications">
                             <i class="fas fa-print"></i>
                         </a>';
                     }
                     if( Auth::user()->role->hasPermission('jobs', 'edit') ) {
-                        $options .= '<a href="' . route('admin.jobs.edit', $row->id) . '" class="btn btn-primary" title="edit" style="margin-left: 3px;">
+                        $options .= '<a href="' . route('admin.jobs.edit', $row->id) . '" class="btn btn-primary" title="Edit" style="margin-left: 3px;">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
@@ -188,7 +188,7 @@ class JobController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
