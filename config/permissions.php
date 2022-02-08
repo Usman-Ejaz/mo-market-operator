@@ -117,5 +117,15 @@ return [
             "list" => "List"
         ]
     ],
+    [
+        "name" => "newsletters",
+        "display_name" => "News Letters",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+        ]
+    ],
 
 ];

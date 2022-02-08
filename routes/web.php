@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 
 /*
@@ -97,6 +98,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     // Route for settings
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::patch('settings/update', [SettingsController::class, 'update'])->name('settings.update');
+    // Routes for Newsletter Module
+    Route::get('newsletters/list', [NewsletterController::class, 'list'])->name('newsletters.list');
+    Route::resource('newsletters', NewsletterController::class);
 });
 
 
