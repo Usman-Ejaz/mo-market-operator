@@ -74,11 +74,11 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
+    // CKEDITOR.replace('editor1', {
+    //   height: 800,
+    //   baseFloatZIndex: 10005,
+    //   removeButtons: 'PasteFromWord'
+    // });
 
     //Date and time picker
     $(document).ready(function(){
@@ -125,6 +125,11 @@
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
 
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#update-page-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
@@ -132,9 +137,9 @@
         rules:{
           title: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace: true
           },
           description:{
             required: true,
@@ -142,10 +147,14 @@
           },
           slug: {
             required: true,
-            minlength: 5,            
+            minlength: 2,
+            notNumericValues: true,
+            noSpace: true           
           },
           keywords: {
-            minlength: 5,            
+            minlength: 5,
+            notNumericValues: true,
+            noSpace: true             
           },
           image: {
             extension: "jpg|jpeg|png|ico|bmp"

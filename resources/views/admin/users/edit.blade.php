@@ -48,6 +48,11 @@
         '{{ __("messages.not_numeric") }}'
       );
 
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
         $('#update-users-form').validate({
             errorElement: 'span',
             errorClass: "my-error-class",
@@ -55,14 +60,16 @@
             rules:{
                 name: {
                     required: true,
-                    maxlength: 255,
+                    maxlength: 64,
                     minlength: 2,
-                    notNumericValues: true
+                    notNumericValues: true,
+                    noSpace: true
                 },
                 email:{
                     required: true,
                     email: true,
-                    notNumericValues: true
+                    notNumericValues: true,
+                    noSpace: true
                 },
                 role_id: {
                     required: true,

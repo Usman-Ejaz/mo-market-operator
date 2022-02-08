@@ -51,6 +51,11 @@
         '{{ __("messages.not_numeric") }}'
       );
 
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
         $('#update-roles-form').validate({
             errorElement: 'span',
             errorClass: "my-error-class",
@@ -60,7 +65,8 @@
                   required: true,
                   maxlength: 255,
                   minlength: 2,
-                  notNumericValues: true
+                  notNumericValues: true,
+                  noSpace: true
                 }
             }
         });

@@ -67,6 +67,11 @@
         '{{ __("messages.not_numeric") }}'
       );
 
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#create-roles-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
@@ -74,10 +79,10 @@
         rules: {
           name: {
             required: true,
-            minlength: 3,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace: true
           }
         }
       });
