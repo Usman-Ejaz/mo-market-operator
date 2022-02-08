@@ -57,7 +57,9 @@
             ajax: "{{ route('admin.menus.list') }}",
             fnDrawCallback: function () {
               if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
-                $('.dataTables_info').hide();
+                const searchedRecods = this.fnSettings()._iRecordsDisplay;
+                const totalRecords = this.fnSettings()._iRecordsTotal;
+                $('.dataTables_info').text(`Showing ${searchedRecods} to ${searchedRecods} of ${searchedRecods} entry ${"("}filtered from ${totalRecords} total entries${")"}`);
               } else {
                 $('.dataTables_info').show();
               }

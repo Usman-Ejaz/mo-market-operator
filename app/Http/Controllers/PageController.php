@@ -155,7 +155,7 @@ class PageController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if( Auth::user()->role->hasPermission('pages', 'edit') ) {
-                        $options .= '<a href="' . route('admin.pages.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                        $options .= '<a href="' . route('admin.pages.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
@@ -164,7 +164,7 @@ class PageController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

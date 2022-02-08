@@ -33,28 +33,11 @@
 
                     <!-- /.card-body -->
                     <div class="float-right">
-
                       <input type="hidden" name="active" id="status">
-
-                      @if( \Route::current()->getName() == 'admin.news.edit' )
-                          @if($news->active == 'Active')
-                            <button type="submit" class="btn btn-primary publish_button">Update</button>
-                            @if( Auth::user()->role->hasPermission('news', 'publish') )
-                                <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
-                            @endif
-                          @elseif($news->active == 'Draft')
-                            <button type="submit" class="btn btn-primary draft_button">Update</button>
-                            @if( Auth::user()->role->hasPermission('news', 'publish') )
-                                <button type="submit" class="btn btn-success publish_button">Publish</button>
-                            @endif
-                          @endif
-                      @else
-                            <button type="submit" class="btn btn-primary draft_button">Save</button>
-                            @if( Auth::user()->role->hasPermission('news', 'publish') )
-                                <button type="submit" class="btn btn-success publish_button">Publish</button>
-                            @endif
+                      <button type="submit" class="btn btn-primary draft_button">Save</button>
+                      @if( Auth::user()->role->hasPermission('news', 'publish') )
+                          <button type="submit" class="btn btn-success publish_button">Publish</button>
                       @endif
-
                     </div>
 
                   </div>
@@ -76,11 +59,11 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
+    // CKEDITOR.replace('editor1', {
+    //   height: 800,
+    //   baseFloatZIndex: 10005,
+    //   removeButtons: 'PasteFromWord'
+    // });
 
     //Date and time picker
     $(document).ready(function(){
@@ -111,13 +94,8 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
 
       $('#create-news-form').validate({
         errorElement: 'span',
@@ -128,8 +106,7 @@
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           description:{
             required: true,
@@ -138,7 +115,6 @@
           slug: {
             required: true,
             maxlength: 255,
-            noSpace:true,
             notNumericValues: true,
           },
           news_category: {
@@ -156,7 +132,7 @@
           }
         },
         messages: {
-          image: "Please Attach a file with valid extension"
+          image: '{{ __("messages.valid_file_extension") }}'
         }
       });
 

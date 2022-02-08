@@ -102,7 +102,7 @@
       // Slug generator
       $("#title").keyup(function() {
         var Text = $(this).val();
-        Text = Text.toLowerCase();
+        Text = Text.toLowerCase().trim();
         Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
         $("#slug").val(Text);
       });
@@ -112,13 +112,8 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
       
       $('#create-page-form').validate({
         errorElement: 'span',
@@ -129,8 +124,7 @@
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           description:{
             required: true,
@@ -138,12 +132,10 @@
           },
           slug: {
             required: true,
-            minlength: 5,
-            noSpace:true,
+            minlength: 5,            
           },
           keywords: {
-            minlength: 5,
-            noSpace:true,
+            minlength: 5,            
           },
           image: {
             extension: "jpg|jpeg|png|ico|bmp"
@@ -157,17 +149,9 @@
           }
         },
         messages: {
-          image: "Please Attach a file with valid extension"
+          image: '{{ __("messages.valid_file_extension") }}'
         }
       });
-
-      $('#create-page-form').on("focusout", "input", function() {
-        if ($(this).val().trim().length > 0) {
-          $(this).hasClass("my-error-class") && $(this).removeClass("my-error-class");
-          $(this).next().hasClass("my-error-class") && $(this).next().remove();
-        }
-      });
-
     });
   </script>
 

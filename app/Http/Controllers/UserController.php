@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -58,6 +57,8 @@ class UserController extends Controller
 
         if ($user->exists) {
             $this->storeImage($user);
+            
+            // Mail::to($user->email)->send(new UserCreated($user));
 
             $request->session()->flash('success', 'User Added Successfully!');
             return redirect()->route('admin.users.index');
@@ -166,7 +167,7 @@ class UserController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if( Auth::user()->role->hasPermission('users', 'edit') ) {
-                        $options .= '<a href="' . route('admin.users.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                        $options .= '<a href="' . route('admin.users.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
@@ -175,7 +176,7 @@ class UserController extends Controller
                             ' . csrf_field() . '
                             ' . method_field("DELETE") . '
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

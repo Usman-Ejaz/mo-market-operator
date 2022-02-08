@@ -11,11 +11,11 @@ use App\Models\Application;
 
 class Job extends Model
 {
-    use HasFactory;
-
-    use CreatedModifiedBy;
+    use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
+
+    protected $table = "job_posts";
 
     protected $attributes = [
         // 'active' => 1

@@ -59,15 +59,11 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
 
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
-
       $('#create-faq-form').validate({
+        // ignore: [],
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
@@ -76,20 +72,12 @@
             required: true,
             minlength: 2,
             notNumericValues: true,
-            noSpace:true,
           },
           answer:{
             required: true,
             minlength: 5
           }
         },
-      });
-
-      $('#create-faq-form').on("focusout", "input", function() {
-        if ($(this).val().trim().length > 0) {
-          $(this).hasClass("my-error-class") && $(this).removeClass("my-error-class");
-          $(this).next().hasClass("my-error-class") && $(this).next().remove();
-        }
       });
     });    
   </script>

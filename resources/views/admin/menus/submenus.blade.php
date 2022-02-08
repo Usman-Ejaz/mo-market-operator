@@ -311,7 +311,7 @@
                     let page = $("#newMenuPage").val();
                     page = (page != "") ? page : '';
                     attributes = "data-page='"+page+"' data-title='"+title+"'";
-                    html = ' ( page ) ' + title;
+                    html = lastSubMenuId + ' ( page ) ' + title;
                 }
 
                 $('ol#submenu').append('<li class="dd-item dd3-item" data-id="'+ lastSubMenuId +'" '+attributes+'>' +

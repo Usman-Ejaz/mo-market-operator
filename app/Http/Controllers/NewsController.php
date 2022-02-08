@@ -59,7 +59,9 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
-        $request->session()->flash('success', 'News Added Successfully!');
+        $message = $request->active == "0" ? "News Added Successfully!" : "New Published Successfully!";
+
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.news.index');
     }
 
@@ -156,7 +158,7 @@ class NewsController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if( Auth::user()->role->hasPermission('news', 'edit') ) {
-                        $options .= '<a href="' . route('admin.news.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                        $options .= '<a href="' . route('admin.news.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
@@ -165,7 +167,7 @@ class NewsController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

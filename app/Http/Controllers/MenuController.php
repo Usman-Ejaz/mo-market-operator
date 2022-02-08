@@ -237,7 +237,7 @@ class MenuController extends Controller
                     }
 
                     if( Auth::user()->role->hasPermission('menus', 'edit') ) {
-                        $options .= ' <a href="'. route('admin.menus.edit',$row->id) .'" class="btn btn-primary" title="edit">
+                        $options .= ' <a href="'. route('admin.menus.edit',$row->id) .'" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
@@ -247,7 +247,7 @@ class MenuController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

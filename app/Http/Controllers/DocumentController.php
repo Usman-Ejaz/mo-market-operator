@@ -170,7 +170,7 @@ class DocumentController extends Controller
                 ->addColumn('action', function ($row) {
                    $options = '';
                     if( Auth::user()->role->hasPermission('documents', 'edit') ) {
-                        $options .= '<a href="' . route('admin.documents.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                        $options .= '<a href="' . route('admin.documents.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
@@ -179,7 +179,7 @@ class DocumentController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

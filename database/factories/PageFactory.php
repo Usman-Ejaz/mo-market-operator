@@ -21,7 +21,7 @@ class PageFactory extends Factory
             'slug' => $slug,
             'description' => $this->faker->paragraph(10),
             'keywords' => implode(",", $this->faker->randomElements(['pakistan', 'international', 'sports', 'finance', 'entertainment'], 2)),
-            'image' => $this->faker->image( 'public/' . config('filepaths.pageImagePath.public_path'), 640, 480, 'cats', false),
+            'image' => $this->faker->image( 'storage/app/' . config('filepaths.pageImagePath.internal_path'), 640, 480, 'cats', false),
             'start_datetime' => null,
             'end_datetime' => null,
             'created_by' => User::all()->random()->id,

@@ -60,13 +60,8 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
 
       $('#create-menus-form').validate({
         errorElement: 'span',
@@ -77,8 +72,7 @@
               required: true,
               maxlength: 255,
               minlength: 2,
-              notNumericValues: true,
-              noSpace:true,
+              notNumericValues: true
             },
             theme: {
                 required: true,

@@ -90,7 +90,7 @@
     //Date and time picker
     $(document).ready(function(){
       $('#start_datetime, #end_datetime').datetimepicker({
-        format:'{{ config('settings.datetime_format') }}',
+        format:'{{ config("settings.datetime_format") }}',
       });
 
       // Set hidden fields based on button click
@@ -115,13 +115,8 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
 
       $('#update-page-form').validate({
         errorElement: 'span',
@@ -132,8 +127,7 @@
             required: true,
             maxlength: 255,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           description:{
             required: true,
@@ -141,12 +135,10 @@
           },
           slug: {
             required: true,
-            minlength: 5,
-            noSpace:true,
+            minlength: 5,            
           },
           keywords: {
-            minlength: 5,
-            noSpace:true,
+            minlength: 5,            
           },
           image: {
             extension: "jpg|jpeg|png|ico|bmp"
@@ -160,7 +152,7 @@
           }
         },
         messages: {
-          image: "Please Attach a file with valid extension"
+          image: '{{ __("messages.valid_file_extension") }}'
         }
       });
 

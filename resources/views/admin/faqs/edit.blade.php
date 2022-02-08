@@ -74,13 +74,8 @@
         function(value, element) {
           return this.optional(element) || isNaN(Number(value));
         },
-        "String cannot be numeric"
+        '{{ __("messages.not_numeric") }}'
       );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
 
       $('#update-faq-form').validate({
         errorElement: 'span',
@@ -90,8 +85,7 @@
           question: {
             required: true,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           answer:{
             required: true,
