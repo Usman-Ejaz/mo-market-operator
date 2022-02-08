@@ -111,5 +111,15 @@ return [
             "submenus" => "SubMenus"
         ]
     ],
+    [
+        "name" => "newsletters",
+        "display_name" => "News Letters",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+        ]
+    ],
 
 ];

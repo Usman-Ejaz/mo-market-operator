@@ -41,7 +41,7 @@
 
           @if( Auth::user()->role->hasPermission('news', 'list') )
           <li class="nav-item">
-            <a href="{{ route('admin.news.index') }}" class="nav-link {{ Request::is('admin/news*') ? 'active' : '' }}">
+            <a href="{{ route('admin.news.index') }}" class="nav-link {{ (Request::is('admin/news/*') || Request::is('admin/news') ) ? 'active' : '' }}">
               <i class="nav-icon fa fa-newspaper"></i>
               <p>News</p>
             </a>
@@ -61,6 +61,7 @@
               <p>ISMO Library</p>
             </a>
           </li>
+
           @if( Auth::user()->role->hasPermission('pages', 'list') )
           <li class="nav-item">
             <a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages*') ? 'active' : '' }}">
@@ -68,6 +69,15 @@
               <p>
                 Pages
               </p>
+            </a>
+          </li>
+          @endif
+
+          @if( Auth::user()->role->hasPermission('newsletters', 'list') )
+          <li class="nav-item">
+            <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ Request::is('admin/newsletters*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-envelope-open"></i>
+              <p>Newsletters</p>
             </a>
           </li>
           @endif

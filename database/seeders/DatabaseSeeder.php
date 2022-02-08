@@ -8,6 +8,7 @@ use App\Models\Faq;
 use App\Models\Menu;
 use App\Models\Job;
 use App\Models\News;
+use App\Models\Newsletter;
 use App\Models\Page;
 use App\Models\Permission;
 use App\Models\Role;
@@ -93,6 +94,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Application::factory(10)->create();
+
+        // Create News Letters
+        Newsletter::factory(20)->create();
     }
 
     
