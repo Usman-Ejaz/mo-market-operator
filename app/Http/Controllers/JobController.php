@@ -56,7 +56,7 @@ class JobController extends Controller
         $job = Job::create($job);
         $this->storeImage($job);
 
-        $request->session()->flash('success', 'Job Added Successfully!');
+        $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
     }
 
@@ -114,7 +114,7 @@ class JobController extends Controller
         $job->update($data);
         $this->storeImage($job);
 
-        $request->session()->flash('success', 'job Updated Successfully!');
+        $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
     }
 

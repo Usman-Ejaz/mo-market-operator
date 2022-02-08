@@ -20,6 +20,7 @@
                         <div class="card-footer">
                             <div class="float-right">
                                 <input type="hidden" name="active" id="status">
+                                <input type="hidden" name="action" id="action">
                                 <button type="submit" class="btn btn-primary draft_button">Save</button>
                                 @if( Auth::user()->role->hasPermission('faqs', 'publish') )
                                   <button type="submit" class="btn btn-success publish_button">Publish</button>
@@ -48,10 +49,12 @@
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
+        $('#action').val("Added");
       });
 
       $('.publish_button').click(function(e) {
         $('#status').val("1");
+        $('#action').val("Published");
       });
       
       $.validator.addMethod(

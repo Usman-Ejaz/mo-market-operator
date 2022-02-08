@@ -59,9 +59,7 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
-        $message = $request->active == "0" ? "News Added Successfully!" : "New Published Successfully!";
-
-        $request->session()->flash('success', $message);
+        $request->session()->flash('success', "News {$request->action} Successfully!");
         return redirect()->route('admin.news.index');
     }
 
@@ -112,7 +110,7 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
-        $request->session()->flash('success', 'News Updated Successfully!');
+        $request->session()->flash('success', "News {$request->action} Successfully!");
         return redirect()->route('admin.news.index');
     }
 

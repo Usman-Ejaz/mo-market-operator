@@ -56,7 +56,7 @@ class PageController extends Controller
 
         $this->storeImage($page);
 
-        $request->session()->flash('success', 'Page Added Successfully!');
+        $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
     }
 
@@ -110,7 +110,7 @@ class PageController extends Controller
 
         $this->storeImage($page);
 
-        $request->session()->flash('success', 'Page Updated Successfully!');
+        $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
     }
 

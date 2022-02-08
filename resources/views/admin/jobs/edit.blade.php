@@ -36,27 +36,19 @@
             <div class="float-right">
 
               <input type="hidden" name="active" id="status">
+              <input type="hidden" name="action" id="action">
 
-              @if( \Route::current()->getName() == 'admin.jobs.edit' )
-
-                  @if($job->active == 'Active')
-                    <button type="submit" class="btn btn-primary publish_button">Update</button>
-                    @if( Auth::user()->role->hasPermission('jobs', 'publish') )
-                      <button type="submit" class="btn btn-danger draft_button">Unpublish</button>
-                    @endif
-                  @elseif($job->active == 'Draft')
-                    <button type="submit" class="btn btn-primary draft_button">Update</button>
-                    @if( Auth::user()->role->hasPermission('jobs', 'publish') )
-                      <button type="submit" class="btn btn-success publish_button">Publish</button>
-                    @endif
-                  @endif
-              @else
-                    <button type="submit" class="btn btn-primary draft_button">Save</button>
-                    @if( Auth::user()->role->hasPermission('jobs', 'publish') )
-                      <button type="submit" class="btn btn-success publish_button">Publish</button>
-                    @endif
+              @if($job->active == 'Active')
+                <button type="submit" class="btn btn-primary publish_button">Update</button>
+                @if( Auth::user()->role->hasPermission('jobs', 'publish') )
+                  <button type="submit" class="btn btn-danger unpublish_button">Unpublish</button>
+                @endif
+              @elseif($job->active == 'Draft')
+                <button type="submit" class="btn btn-primary draft_button">Update</button>
+                @if( Auth::user()->role->hasPermission('jobs', 'publish') )
+                  <button type="submit" class="btn btn-success publish_button">Publish</button>
+                @endif
               @endif
-
             </div>
           </div>
         </div>
@@ -78,25 +70,33 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
+    // CKEDITOR.replace('editor1', {
+    //   height: 800,
+    //   baseFloatZIndex: 10005,
+    //   removeButtons: 'PasteFromWord'
+    // });
 
     //Date and time picker
     $(document).ready(function(){
       $('#start_datetime, #end_datetime').datetimepicker({
         format:'{{ config("settings.datetime_format") }}',
+        validateOnBlur: false,
       });
 
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
+        $('#action').val("Updated");
       });
 
       $('.publish_button').click(function(e) {
         $('#status').val("1");
+        $('#action').val("Published");
+      });
+
+      $('.unpublish_button').click(function(e) {
+        $('#status').val("0");
+        $('#action').val("Unpublished");
       });
 
 
@@ -118,13 +118,19 @@
           }
         });
         
-      $.validator.addMethod(
-        "notNumericValues",
-        function(value, element) {
+      $.validator.addMethod("notNumericValues", function (value, element) {
           return this.optional(element) || isNaN(Number(value));
-        },
-        "String cannot be numeric"
-      );
+      }, '{{ __("messages.not_numeric") }}');
+
+      $.validator.addMethod("greaterThan", function (value, element, params) {
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            return new Date(value) > new Date($(params).val());
+        }
+        return isNaN(value) && isNaN($(params).val()) || (Number(value) > Number($(params).val())); 
+
+        // Error Message for this field | Should put on the single quotes given below.
+        // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
+      }, '');
 
       $('#create-job-form').validate({
         errorElement: 'span',
@@ -171,11 +177,11 @@
             required: false,
           },
           start_datetime: {
-            required: false,
-            dateLessThan : '#end_datetime'
+            required: false
           },
           end_datetime: {
             required: false,
+            greaterThan: "#start_datetime"
           }
         },
         messages: {
