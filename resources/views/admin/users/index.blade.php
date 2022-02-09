@@ -6,9 +6,9 @@
 @endsection
 
 @section('addButton')
-    @if( Auth::user()->role->hasPermission('users', 'create') )
+    @can('create', App\Models\User::class)
         <a class="btn btn-primary float-right" href="{{ route('admin.users.create') }}">Add user</a>
-    @endif
+    @endcan
 @endsection
 
 @section('content')

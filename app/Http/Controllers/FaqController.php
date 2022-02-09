@@ -46,6 +46,7 @@ class FaqController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize("create", Faq::class);
         if( !Auth::user()->role->hasPermission('faqs', 'create') ){
             return abort(403);
         }

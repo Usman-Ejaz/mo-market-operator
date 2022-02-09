@@ -18,10 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('users', 'list') ){
-            return abort(403);
-        }
-
+        $this->authorize("list", User::class);
         return view('admin.users.index');
     }
 
@@ -32,9 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('users', 'create') ){
-            return abort(403);
-        }
+        $this->authorize("create", User::class);
 
         $user = new User();
         return view('admin.users.create', compact('user'));
@@ -48,9 +43,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('users', 'create') ){
-            return abort(403);
-        }
+        $this->authorize("create", User::class);
 
         $user = new User();
         $user = User::create( $this->validateRequest($user) );
@@ -76,10 +69,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if( !Auth::user()->role->hasPermission('users', 'view') ){
-            return abort(403);
-        }
-
+        $this->authorize("view", $user);
         return view('admin.users.show', compact('user'));
     }
 
@@ -91,9 +81,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if( !Auth::user()->role->hasPermission('users', 'edit') ){
-            return abort(403);
-        }
+        $this->authorize("update", $user);
 
         return view('admin.users.edit', compact('user'));
     }
@@ -107,9 +95,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if( !Auth::user()->role->hasPermission('users', 'edit') ){
-            return abort(403);
-        }
+        $this->authorize("update", $user);
 
         if ( $user->update($this->validateRequest($user)) ) {
             $this->storeImage($user);
@@ -130,9 +116,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if( !Auth::user()->role->hasPermission('users', 'delete') ){
-            return abort(403);
-        }
+        $this->authorize("delete", $user);
 
         if( $user->delete() ) {
             return redirect()->route('admin.users.index')->with('success', 'User Deleted Successfully!');
@@ -143,9 +127,7 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('users', 'list') ){
-            return abort(403);
-        }
+        $this->authorize("list", User::class);
 
         if ($request->ajax()) {
             $data = User::with(['Role'])->latest()->get();
