@@ -99,8 +99,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     // Route for settings
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::patch('settings/update', [SettingsController::class, 'update'])->name('settings.update');
+
     // Routes for Newsletter Module
     Route::get('newsletters/list', [NewsletterController::class, 'list'])->name('newsletters.list');
+    Route::get('newsletters/sendNewsLetter/{newsletter}', [NewsletterController::class, 'sendNewsLetter'])->name('newsletters.sendNewsLetter');
     Route::resource('newsletters', NewsletterController::class);
 });
 

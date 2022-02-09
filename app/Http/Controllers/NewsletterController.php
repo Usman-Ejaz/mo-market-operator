@@ -141,17 +141,24 @@ class NewsletterController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
+                    if( Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter') ) {
+                        $options .= '<a href="'. route('admin.newsletters.sendNewsLetter',$row->id) .'" class="btn btn-secondary" title="send newsletter">
+                            <i class="fas fa-paper-plane"></i>
+                        </a>';
+                    }
+
                     if( Auth::user()->role->hasPermission('newsletters', 'edit') ) {
-                        $options .= '<a href="' . route('admin.newsletters.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                        $options .= ' <a href="'. route('admin.newsletters.edit',$row->id) .'" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
+
                     if( Auth::user()->role->hasPermission('newsletters', 'delete') ) {
                         $options .= ' <form action="'. route('admin.newsletters.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
@@ -172,6 +179,16 @@ class NewsletterController extends Controller
             'modified_by' => ''
         ]), function(){
         });
+    }
+
+    public function sendNewsLetter(Request $request,Newsletter $newsletter) {
+        
+        if( !Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter') ){
+            return abort(403);
+        }
+        $newsletter = Newsletter::find($newsletter->id);
+        $request->session()->flash('success', 'Newsletter Sended Successfully!');
+        return redirect()->route('admin.newsletters.index');
     }
 }
 
