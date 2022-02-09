@@ -62,16 +62,23 @@
         return messageLength !== 0;
       }, '{{ __("messages.ckeditor_required") }}');
 
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#create-faq-form').validate({
         ignore: [],
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        ignore: [],
         rules:{
           question: {
             required: true,
             minlength: 2,
             notNumericValues: true,
+            noSpace: true
           },
           answer:{
             ckeditor_required: true,

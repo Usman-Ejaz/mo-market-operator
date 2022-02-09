@@ -134,11 +134,12 @@
             errorElement: 'span',
             errorClass: "my-error-class",
             validClass: "my-valid-class",
+            ignore: [],
             rules:{
                 title: {
                     required: true,
-                    maxlength: 255,
-                    notNumericValues: true
+                    notNumericValues: true,
+                    noSpace:true
                 },
                 description:{
                     ckeditor_required: true,
@@ -146,8 +147,8 @@
                 },
                 slug: {
                     required: true,
-                    maxlength: 255,
-                    notNumericValues: true
+                    notNumericValues: true,
+                    noSpace:true
                 },
                 news_category: {
                     required: true,

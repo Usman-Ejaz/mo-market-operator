@@ -44,6 +44,11 @@
         '{{ __("messages.not_numeric") }}'
       );
 
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
+
       $('#create-document-form').validate({
         errorElement: 'span',
         errorClass: "my-error-class",
@@ -51,13 +56,14 @@
         rules:{
           title: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true,            
+            notNumericValues: true, 
+            noSpace: true            
           },
           keywords: {
             minlength: 2,
-            notNumericValues: true,            
+            notNumericValues: true, 
+            noSpace: true            
           },
           file: {
             required:true,

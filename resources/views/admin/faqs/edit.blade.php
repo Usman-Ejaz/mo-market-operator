@@ -47,7 +47,6 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-
     $(document).ready(function(){
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
@@ -80,11 +79,12 @@
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        ignore: [],
         rules:{
           question: {
             required: true,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,            
           },
           answer:{
             ckeditor_required: true,

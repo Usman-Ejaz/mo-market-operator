@@ -122,9 +122,8 @@
         rules:{
           title: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,            
           },
           description:{
             ckeditor_required: true,
@@ -132,12 +131,12 @@
           },
           slug: {
             required: true,
-            minlength: 5,
-            notNumericValues: true
+            minlength: 2,
+            notNumericValues: true,                       
           },
           keywords: {
             minlength: 5,
-            notNumericValues: true
+            notNumericValues: true,                       
           },
           image: {
             extension: "jpg|jpeg|png|ico|bmp"

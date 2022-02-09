@@ -104,6 +104,10 @@
         // Error Message for this field | Should put on the single quotes given below.
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
+      $.validator.addMethod("noSpace", function(value) { 
+        this.value = $.trim(value);
+        return this.value;
+      });
 
       $.validator.addMethod("ckeditor_required", function(value, element) {
         var editorId = $(element).attr('id');
@@ -116,12 +120,12 @@
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        ignore: [],
         rules:{
           title: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,            
           },
           description:{
             ckeditor_required: true,
@@ -129,8 +133,7 @@
           },
           slug: {
             required: true,
-            maxlength: 255,
-            notNumericValues: true,
+            notNumericValues: true,            
           },
           news_category: {
             required: true,

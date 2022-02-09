@@ -142,12 +142,13 @@
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
+        ignore: [],
         rules:{
           title: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true
+            notNumericValues: true,
+            noSpace: true
           },
           description:{
             ckeditor_required: true,
@@ -155,20 +156,21 @@
           },
           qualification: {
             required: true,
-            maxlength: 255,
             minlength: 5,
-            notNumericValues: true,            
+            notNumericValues: true,
+            noSpace: true          
           },
           experience: {
             required: true,
-            maxlength: 255,
             minlength: 2,
-            notNumericValues: true,            
+            notNumericValues: true,
+            noSpace: true           
           },
           location: {
             required: true,
             minlength: 5,
-            notNumericValues: true,            
+            notNumericValues: true,
+            noSpace: true           
           },
           total_positions: {
             required: true,
