@@ -39,11 +39,6 @@
   <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
 
     $(document).ready(function(){
       // Set hidden fields based on button click
@@ -57,16 +52,18 @@
         $('#action').val("Published");
       });
       
-      $.validator.addMethod(
-        "notNumericValues",
-        function(value, element) {
+      $.validator.addMethod("notNumericValues", function(value, element) {
           return this.optional(element) || isNaN(Number(value));
-        },
-        '{{ __("messages.not_numeric") }}'
-      );
+      }, '{{ __("messages.not_numeric") }}');
+
+      $.validator.addMethod("ckeditor_required", function(value, element) {        
+        var editorId = $(element).attr('id');
+        var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
+        return messageLength !== 0;
+      }, '{{ __("messages.ckeditor_required") }}');
 
       $('#create-faq-form').validate({
-        // ignore: [],
+        ignore: [],
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
@@ -77,10 +74,16 @@
             notNumericValues: true,
           },
           answer:{
-            required: true,
+            ckeditor_required: true,
             minlength: 5
           }
         },
+        errorPlacement: function (error, element) {
+          if (element.attr("id") == "answer") {
+            element = $("#cke_" + element.attr("id"));
+          }
+          error.insertAfter(element);
+        }
       });
     });    
   </script>

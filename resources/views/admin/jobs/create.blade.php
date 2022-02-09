@@ -63,11 +63,6 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
 
     //Date and time picker
     $(document).ready(function(){
@@ -91,6 +86,9 @@
       }, '{{ __("messages.not_numeric") }}');
 
       $.validator.addMethod("greaterThan", function (value, element, params) {
+        // if there is no date in both fields, then bypass the validation
+        if (value.trim().length === 0 && $(params).val().trim().length === 0) return true;
+        
         if (!/Invalid|NaN/.test(new Date(value))) {
             return new Date(value) > new Date($(params).val());
         }
@@ -99,6 +97,12 @@
         // Error Message for this field | Should put on the single quotes given below.
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
+
+      $.validator.addMethod("ckeditor_required", function(value, element) {
+        var editorId = $(element).attr('id');
+        var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
+        return messageLength !== 0;
+      }, '{{ __("messages.ckeditor_required") }}');
 
       $('#create-job-form').validate({
         ignore: [],
@@ -113,7 +117,7 @@
             notNumericValues: true
           },
           description:{
-            required: true,
+            ckeditor_required: true,
             minlength: 5
           },
           qualification: {
@@ -152,6 +156,12 @@
             required: false,
             greaterThan: "#start_datetime"
           }
+        },
+        errorPlacement: function (error, element) {
+          if (element.attr("id") == "description") {
+            element = $("#cke_" + element.attr("id"));
+          }
+          error.insertAfter(element);
         },
         messages: {
           image: '{{ __("messages.valid_file_extension") }}'

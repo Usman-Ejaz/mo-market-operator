@@ -21,7 +21,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Role <span class="text-danger">*</span></label>
-        <select class="custom-select" name="role_id">
+        <select class="custom-select" name="role_id" id="role_id">
           <option value="">Please select an option</option>
           @foreach($user->roles() as $role)
             <option value="{{$role->id}}" {{ ( isset($user->role->id) && $user->role->id === $role->id) ? 'selected' : '' }}>{{$role->name}}</option>
@@ -44,7 +44,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Status <span class="text-danger">*</span></label>
-                <select class="custom-select" name="active">
+                <select class="custom-select" name="active" id="active">
                     <option value="">Please select a status</option>
                     @foreach($user->activeOptions() as $statusId => $statusValue)
                         <option value="{{$statusId}}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
