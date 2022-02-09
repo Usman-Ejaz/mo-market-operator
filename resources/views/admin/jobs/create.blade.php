@@ -63,11 +63,6 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    CKEDITOR.replace('editor1', {
-      height: 800,
-      baseFloatZIndex: 10005,
-      removeButtons: 'PasteFromWord'
-    });
 
     //Date and time picker
     $(document).ready(function(){
@@ -91,6 +86,9 @@
       }, '{{ __("messages.not_numeric") }}');
 
       $.validator.addMethod("greaterThan", function (value, element, params) {
+        // if there is no date in both fields, then bypass the validation
+        if (value.trim().length === 0 && $(params).val().trim().length === 0) return true;
+        
         if (!/Invalid|NaN/.test(new Date(value))) {
             return new Date(value) > new Date($(params).val());
         }
@@ -100,16 +98,13 @@
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
 
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
+      $.validator.addMethod("ckeditor_required", function(value, element) {
+        var editorId = $(element).attr('id');
+        var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
+        return messageLength !== 0;
+      }, '{{ __("messages.ckeditor_required") }}');
 
       $('#create-job-form').validate({
-        errorPlacement: function(error, element) {
-          error.insertAfter(element);
-        },
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
@@ -122,10 +117,7 @@
             noSpace: true
           },
           description:{
-            required:  function() 
-                        {
-                         CKEDITOR.instances.description.updateElement();
-                        },
+            ckeditor_required: true,
             minlength: 5
           },
           qualification: {
@@ -165,6 +157,12 @@
             required: false,
             greaterThan: "#start_datetime"
           }
+        },
+        errorPlacement: function (error, element) {
+          if (element.attr("id") == "description") {
+            element = $("#cke_" + element.attr("id"));
+          }
+          error.insertAfter(element);
         },
         messages: {
           image: '{{ __("messages.valid_file_extension") }}'

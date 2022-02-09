@@ -10,7 +10,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Theme <span class="text-danger">*</span></label>
-                <select class="custom-select" name="theme">
+                <select class="custom-select" name="theme" id="theme">
                     <option value="">Please select a theme</option>
                     @foreach(config('settings.themes') as $themeName => $themeDisplayName)
                         <option value="{{$themeName}}" {{ ($menu->theme === $themeName) ? 'selected' : '' }}>{{$themeDisplayName}}</option>
@@ -24,7 +24,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Status <span class="text-danger">*</span></label>
-                <select class="custom-select" name="active">
+                <select class="custom-select" name="active" id="active">
                     <option value="">Please select status</option>
                     @foreach($menu->activeOptions() as $StatusId => $statusName)
                         <option value="{{$StatusId}}" {{ ($menu->active === $statusName) ? 'selected' : '' }}>{{$statusName}}</option>
