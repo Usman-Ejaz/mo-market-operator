@@ -63,3 +63,7 @@ Route::post('/admin/confirm-password', [ConfirmablePasswordController::class, 's
 Route::post('/admin/logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->middleware('auth')
                 ->name('admin.logout');
+
+// New route for create password
+Route::post('/admin/create-password', [NewPasswordController::class, 'createNewPassword'])
+                ->middleware('guest')->name("admin.password.create");

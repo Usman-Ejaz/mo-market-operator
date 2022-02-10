@@ -128,5 +128,15 @@ return [
             "sendNewsLetter" => "Send Newsletter",
         ]
     ],
+    [
+        "name" => "subscribers",
+        "display_name" => "Subscribers",
+        "capabilities" => [
+            "list" => "List",
+            // "view" => "View",
+            // "delete" => "Delete",
+            "subscribe" => "Subscribe",
+        ]
+    ],
 
 ];

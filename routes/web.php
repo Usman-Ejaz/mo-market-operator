@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SubscriberController;
 use Illuminate\Http\Request;
 
 /*
@@ -102,14 +103,21 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     // Routes for Newsletter Module
     Route::get('newsletters/list', [NewsletterController::class, 'list'])->name('newsletters.list');
-    Route::get('newsletters/sendNewsLetter/{newsletter}', [NewsletterController::class, 'sendNewsLetter'])->name('newsletters.sendNewsLetter');
+    Route::post('newsletters/sendNewsLetter/{newsletter}', [NewsletterController::class, 'sendNewsLetter'])->name('newsletters.sendNewsLetter');
     Route::resource('newsletters', NewsletterController::class);
+
+    // Routes for Subscribers
+    Route::get('subscribers/list', [SubscriberController::class, 'list'])->name('subscribers.list');
+    Route::post('subscribers/toggle-subscription/{subscriber}', [SubscriberController::class, 'toggleSubscription'])->name('subscribers.toggleSubscription');
+    Route::resource("subscribers", SubscriberController::class);
 });
 
 Route::get("create-password/{user}", function (Request $request, $user) {
     if (! $request->hasValidSignature()) {
         abort(401);
     }
-})->name("create-password")->middleware("guest");
+    $signature = $request->signature;
+    return view("admin.auth.create-password", compact('user', 'signature'));
+})->name("create-password")->middleware(["guest"]);
 
 require __DIR__.'/auth.php';

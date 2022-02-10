@@ -8,11 +8,11 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
 
-class UserCreated extends Mailable implements ShouldQueue
+class NewUserCreatePasswordEmail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    private $user = null;
+    public $user;
 
     /**
      * Create a new message instance.
@@ -31,9 +31,10 @@ class UserCreated extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $url = URL::temporarySignedRoute(
-            'create-password', now()->addMinutes(config("setting.createPassowrdLinkExpiryTime")), ['user' => $this->user->email]
-        );
-        return $this->markdown('mail.user-created', ['url' => $url]);
+        $signedURL = URL::temporarySignedRoute('create-password', 
+            now()->addMinutes(config("settings.createPassowrdLinkExpiryTime")), ['user' => $this->user->email]);
+
+        return $this->markdown('mail.new-user-create-password', ['url' => $signedURL])
+        ->subject("Welcome, Please create your password");
     }
 }

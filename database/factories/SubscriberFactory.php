@@ -14,7 +14,9 @@ class SubscriberFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'status' => $this->faker->randomElement([0, 1]),
         ];
     }
 }

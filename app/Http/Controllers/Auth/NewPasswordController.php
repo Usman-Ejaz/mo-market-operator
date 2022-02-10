@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -61,5 +62,28 @@ class NewPasswordController extends Controller
                     ? redirect()->route('admin.login')->with('status', __($status))
                     : back()->withInput($request->only('email'))
                             ->withErrors(['email' => __($status)]);
+    }
+
+    public function createNewPassword(Request $request) {
+        $request->validate([
+            'token' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $user = User::where(['email' => $request->get("email")])->first();
+
+        if ($user) {
+            
+            if ($user->active == "Active") {
+                $user->password = bcrypt($request->get("password"));
+                $user->save();
+                return redirect()->route("admin.login");
+            }
+
+            return redirect()->back()->withErrors("Your email has been blocked or temporarily disable.");
+        } else {
+            return redirect()->back()->withErrors("Email does not exists.");
+        }
     }
 }

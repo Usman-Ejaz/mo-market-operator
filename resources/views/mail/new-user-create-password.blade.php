@@ -4,7 +4,7 @@
 The body of your message.
 
 @component('mail::button', ['url' => $url])
-Verify Email Address
+Create Password
 @endcomponent
 
 Thanks,<br>

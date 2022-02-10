@@ -13,6 +13,7 @@ use App\Models\Page;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Settings;
+use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -104,6 +105,9 @@ class DatabaseSeeder extends Seeder
         
         // Create News Letters
         Newsletter::factory(20)->create();
+
+        // Create Subscribers
+        Subscriber::factory(10)->create();
     }
 
 

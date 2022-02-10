@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewUserCreatePasswordEmail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -57,8 +59,8 @@ class UserController extends Controller
 
         if ($user->exists) {
             $this->storeImage($user);
-            
-            // Mail::to($user->email)->send(new UserCreated($user));
+                        
+            Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
 
             $request->session()->flash('success', 'User Added Successfully!');
             return redirect()->route('admin.users.index');

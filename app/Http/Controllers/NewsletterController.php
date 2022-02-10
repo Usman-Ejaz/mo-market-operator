@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
+use App\Models\Subscriber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
 class NewsletterController extends Controller
@@ -142,9 +145,13 @@ class NewsletterController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if( Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter') ) {
-                        $options .= '<a href="'. route('admin.newsletters.sendNewsLetter',$row->id) .'" class="btn btn-secondary" title="send newsletter">
-                            <i class="fas fa-paper-plane"></i>
-                        </a>';
+                        $options .= '<form action="'. route('admin.newsletters.sendNewsLetter', $row->id ) .'" method="POST" style="display: inline-block;">
+                                '.csrf_field().'
+                                <button type="submit" class="btn btn-info"
+                                    onclick="return confirm(\'Are You Sure Want to send this newsletter to subscribers?\')" title="Send Newsletter">
+                                        <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>';
                     }
 
                     if( Auth::user()->role->hasPermission('newsletters', 'edit') ) {
@@ -181,13 +188,19 @@ class NewsletterController extends Controller
         });
     }
 
-    public function sendNewsLetter(Request $request,Newsletter $newsletter) {
+    public function sendNewsLetter(Request $request, Newsletter $newsletter) {
         
-        if( !Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter') ){
+        if (!Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter')) {
             return abort(403);
         }
-        $newsletter = Newsletter::find($newsletter->id);
-        $request->session()->flash('success', 'Newsletter Sended Successfully!');
+        
+        $subscribers = Subscriber::where(['status' => 1])->select("email")->get();
+
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)->send(new NewsletterEmail($newsletter));
+        }
+
+        $request->session()->flash('success', 'Newsletter Sent Successfully!');
         return redirect()->route('admin.newsletters.index');
     }
 }
