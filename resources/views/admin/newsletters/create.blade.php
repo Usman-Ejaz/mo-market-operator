@@ -45,15 +45,13 @@
         return this.optional(element) || isNaN(Number(value));
       }, '{{ __("messages.not_numeric") }}');
 
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
+      $.validator.addMethod("ckeditor_required", function(value, element) {
+        var editorId = $(element).attr('id');
+        var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
+        return messageLength !== 0;
+      }, '{{ __("messages.ckeditor_required") }}');
 
       $('#create-newsletter-form').validate({
-        errorPlacement: function(error, element) {
-            error.insertAfter(element);
-        },
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
@@ -66,13 +64,16 @@
             noSpace:true,
           },
           description:{
-            required:  function() 
-                        {
-                         CKEDITOR.instances.description.updateElement();
-                        },
-            minlength: 1
+            ckeditor_required: true,
+            maxlength: 50000
           },
-        }
+        },
+        errorPlacement: function (error, element) {
+          if (element.attr("id") == "description") {
+            element = $("#cke_" + element.attr("id"));
+          }
+          error.insertAfter(element);
+        },
       });
     });
   </script>
