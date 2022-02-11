@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-  <div class="container-fluid">
+  <!-- <div class="container-fluid">
           <div class="row">
             <div class="col-lg-6">
               <div class="card">
@@ -29,7 +29,6 @@
                       <span class="text-muted">Since last week</span>
                     </p>
                   </div>
-                  <!-- /.d-flex -->
 
                   <div class="position-relative mb-4">
                     <canvas id="visitors-chart" height="200"></canvas>
@@ -46,7 +45,6 @@
                   </div>
                 </div>
               </div>
-              <!-- /.card -->
 
               <div class="card">
                 <div class="card-header border-0">
@@ -152,9 +150,7 @@
                   </table>
                 </div>
               </div>
-              <!-- /.card -->
             </div>
-            <!-- /.col-md-6 -->
             <div class="col-lg-6">
               <div class="card">
                 <div class="card-header border-0">
@@ -176,7 +172,6 @@
                       <span class="text-muted">Since last month</span>
                     </p>
                   </div>
-                  <!-- /.d-flex -->
 
                   <div class="position-relative mb-4">
                     <canvas id="sales-chart" height="200"></canvas>
@@ -193,7 +188,6 @@
                   </div>
                 </div>
               </div>
-              <!-- /.card -->
 
               <div class="card">
                 <div class="card-header border-0">
@@ -219,7 +213,7 @@
                       <span class="text-muted">CONVERSION RATE</span>
                     </p>
                   </div>
-                  <!-- /.d-flex -->
+                  
                   <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
                     <p class="text-warning text-xl">
                       <i class="ion ion-ios-cart-outline"></i>
@@ -231,7 +225,7 @@
                       <span class="text-muted">SALES RATE</span>
                     </p>
                   </div>
-                  <!-- /.d-flex -->
+                  
                   <div class="d-flex justify-content-between align-items-center mb-0">
                     <p class="text-danger text-xl">
                       <i class="ion ion-ios-people-outline"></i>
@@ -243,17 +237,17 @@
                       <span class="text-muted">REGISTRATION RATE</span>
                     </p>
                   </div>
-                  <!-- /.d-flex -->
+                  
                 </div>
               </div>
             </div>
-            <!-- /.col-md-6 -->
+            
           </div>
-          <!-- /.row -->
+          
         </div>
-        <!-- /.container-fluid -->
+        
 
-    </div>
+    </div> -->
 @endsection
 
 

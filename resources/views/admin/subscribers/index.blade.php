@@ -22,6 +22,7 @@
                           <th>Id</th>
                           <th>Name</th>
                           <th>Email</th>
+                          <th>Status</th>
                           <th>Created date</th>
                           <th>Action</th>
                       </tr>
@@ -70,10 +71,11 @@
               }
             },
             columns: [
-                {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
-                {data: 'email', name: 'email'},
-                {data: 'created_at', name: 'created_at'},
+                { data: 'id', name: 'id' },
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email' },
+                { data: 'status', name: 'status' },
+                { data: 'created_at', name: 'created_at'},
                 {
                     data: 'action',
                     name: 'action',
