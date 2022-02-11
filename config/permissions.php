@@ -90,6 +90,17 @@ return [
         ]
     ],
     [
+        "name" => "document-categories",
+        "display_name" => "Document Categories",
+        "capabilities" => [
+            "list" => "List",
+            "view" => "View",    
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+        ]
+    ],
+    [
         "name" => "documents",
         "display_name" => "Documents",
         "capabilities" => [
@@ -137,6 +148,6 @@ return [
             // "delete" => "Delete",
             "subscribe" => "Subscribe",
         ]
-    ],
+    ],    
 
 ];

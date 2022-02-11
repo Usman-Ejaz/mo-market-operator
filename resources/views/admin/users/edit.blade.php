@@ -20,9 +20,10 @@
               <!-- form start -->
               @method('PATCH')
               @include('admin.users.form')
-
+              <input type="hidden" name="sendEmail" value="0" id="sendEmail">
               <div class="card-footer text-right">
                 <button type="submit" class="btn btn-primary draft_button">Update</button>
+                <button type="submit" class="btn btn-success mr-2 save-with-email">Update & Send Email</button>
               </div>
             </div>
           </div>
@@ -39,6 +40,10 @@
 
   <script>
     $(document).ready(function(){
+
+      $(".save-with-email").click(function () {
+        $("#sendEmail").val("1");
+      });
 
       $.validator.addMethod(
         "notNumericValues",

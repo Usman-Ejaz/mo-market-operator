@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Application;
 use App\Models\Document;
+use App\Models\DocumentCategory;
 use App\Models\Faq;
 use App\Models\Menu;
 use App\Models\Job;
@@ -73,6 +74,8 @@ class DatabaseSeeder extends Seeder
 
         // Create News
         News::factory(30)->create();
+
+        DocumentCategory::factory(10)->create();
 
         //Create Documents
         Document::factory(20)->create();

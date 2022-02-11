@@ -55,12 +55,14 @@ class UserController extends Controller
         }
 
         $user = new User();
-        $user = User::create( $this->validateRequest($user) );
+        $user = User::create( $this->validateRequest($user) );        
 
         if ($user->exists) {
             $this->storeImage($user);
-                        
-            Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
+
+            if ($request->get("sendEmail") == "1") {
+                Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
+            }
 
             $request->session()->flash('success', 'User Added Successfully!');
             return redirect()->route('admin.users.index');
@@ -115,6 +117,10 @@ class UserController extends Controller
 
         if ( $user->update($this->validateRequest($user)) ) {
             $this->storeImage($user);
+
+            if ($request->get("sendEmail") == "1") {
+                Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
+            }
 
             $request->session()->flash('success', 'User Updated Successfully!');
             return redirect()->route('admin.users.index');

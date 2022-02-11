@@ -16,6 +16,12 @@ class Document extends Model
 
     protected $attributes = [];
 
+    // Model Relation goes here
+
+    public function category() {
+        return $this->belongsTo(DocumentCategory::class, "category_id", "id");
+    }
+
     /********** Setters *********/
     public function setKeywordsAttribute($attribute){
 

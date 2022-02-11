@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
+use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\MenuController;
@@ -83,6 +84,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::patch('menus/{menu}/submenusupdate', [MenuController::class, 'submenusupdate'])->name('menus.submenusupdate');
     Route::get('menus/list', [MenuController::class, 'list'])->name('menus.list');
     Route::resource('menus', MenuController::class);
+
+    // Routes for Document Module
+    Route::get('document-categories/list', [DocumentCategoryController::class, 'list'])->name('document-categories.list');    
+    Route::resource('document-categories', DocumentCategoryController::class);
 
     // Routes for Document Module
     Route::get('documents/list', [DocumentController::class, 'list'])->name('documents.list');

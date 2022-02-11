@@ -1,16 +1,13 @@
 @extends('admin.layouts.app')
-@section('header', 'Documents')
+@section('header', 'Document Categories')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item active">Documents</li>
+  <li class="breadcrumb-item active">Document Categories</li>
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('documents', 'create') )
-  <a class="btn btn-primary float-right" href="{{ route('admin.documents.create') }}">Add New Document</a>
-@endif
-@if (Auth::user()->role->hasPermission('document-categories', 'list'))
-  <a class="btn btn-primary float-right mr-2" href="{{ route('admin.document-categories.index') }}">Document Categories</a>
+@if(Auth::user()->role->hasPermission('document-categories', 'create'))
+  <a class="btn btn-primary float-right" href="{{ route('admin.document-categories.create') }}">Add New Category</a>
 @endif
 @endsection
 
@@ -22,8 +19,7 @@
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Tittle</th>
-                          <th>Keywords</th>
+                          <th>Name</th>
                           <th>Created date</th>
                           <th>Action</th>
                       </tr>
@@ -59,7 +55,7 @@
             processing: true,
             serverSide: true,
             pageLength: 25,
-            ajax: "{{ route('admin.documents.list') }}",
+            ajax: "{{ route('admin.document-categories.list') }}",
             fnDrawCallback: function () {
               if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
                 const searchedRecods = this.fnSettings()._iRecordsDisplay;
@@ -71,8 +67,7 @@
             },
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'title', name: 'title'},
-                {data: 'keywords', name: 'keywords'},
+                {data: 'name', name: 'name'},
                 {data: 'created_at', name: 'created_at'},
                 {
                     data: 'action',
