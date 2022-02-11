@@ -64,9 +64,7 @@
 
 @push('optional-scripts')
   <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
-  <script src="https://cdn.ckeditor.com/4.17.1/full/ckeditor.js"></script>
   <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
@@ -110,11 +108,12 @@
 
       $.validator.addMethod("notNumericValues", function(value, element) {
           return this.optional(element) || isNaN(Number(value));
-        },
-        '{{ __("messages.not_numeric") }}'
-      );
+      }, '{{ __("messages.not_numeric") }}');
 
       $.validator.addMethod("greaterThan", function (value, element, params) {
+        // if there is no date in both fields, then bypass the validation
+        if (value.trim().length === 0 && $(params).val().trim().length === 0) return true;
+
         if (!/Invalid|NaN/.test(new Date(value))) {
             return new Date(value) > new Date($(params).val());
         }
@@ -124,15 +123,14 @@
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
 
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
+      $.validator.addMethod("ckeditor_required", function(value, element) {
+        var editorId = $(element).attr('id');
+        var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
+        return messageLength !== 0;
+      }, '{{ __("messages.ckeditor_required") }}');
 
         $('#update-news-form').validate({
-            errorPlacement: function(error, element) {
-             error.insertAfter(element);
-            },
+            ignore: [],
             errorElement: 'span',
             errorClass: "my-error-class",
             validClass: "my-valid-class",
@@ -144,10 +142,8 @@
                     noSpace:true
                 },
                 description:{
-                  required:  function() 
-                      {
-                       CKEDITOR.instances.description.updateElement();
-                      },
+                    ckeditor_required: true,
+                    maxlength: 50000
                 },
                 slug: {
                     required: true,
@@ -161,13 +157,18 @@
                     extension: "jpg|jpeg|png",
                 },
                 start_datetime: {
-                    required : false,
-                    // greaterThan : '#end_datetime'
+                    required : false
                 },
                 end_datetime: {
                     required : false,
                     greaterThan: "#start_datetime"
                 }
+            },
+            errorPlacement: function (error, element) {
+              if (element.attr("id") == "description") {
+                element = $("#cke_" + element.attr("id"));
+              }
+              error.insertAfter(element);
             },
             messages: {
               image: '{{ __("messages.valid_file_extension") }}'

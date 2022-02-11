@@ -11,7 +11,7 @@
 
   <div class="form-group">
     <label for="answer">Answer<span class="text-danger">*</span></label>
-    <textarea class="form-control ckeditor" id="answer" placeholder="Enter Answer" name="answer" rows="400" cols="50">{{ old('answer') ?? $faq->answer }}</textarea>
+    <textarea class="form-control ckeditor" id="answer" placeholder="Enter Answer" name="answer" rows="30" cols="50">{{ old('answer') ?? $faq->answer }}</textarea>
     <small class="form-text text-danger">{{ $errors->first('answer') }} </small>
   </div>
 </div>
