@@ -204,6 +204,7 @@ class DocumentController extends Controller
             'title' => 'required|min:3',
             'keywords' => 'nullable',
             'file' => 'nullable',
+            'category_id' => 'required',
             'created_by' => '',
             'modified_by' => ''
         ]), function(){
