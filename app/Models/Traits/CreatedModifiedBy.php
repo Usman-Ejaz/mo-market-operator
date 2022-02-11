@@ -15,7 +15,7 @@ trait CreatedModifiedBy
 
         // updating modified_by when model is updated
         static::updating(function ($model) {
-            if (!$model->isDirty('modified_by')) {
+            if (!$model->isDirty('modified_by') && auth()->check()) {
                 $model->modified_by = auth()->user()->id;
             }
         });
