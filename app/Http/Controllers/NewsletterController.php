@@ -194,7 +194,7 @@ class NewsletterController extends Controller
             return abort(403);
         }
         
-        $subscribers = Subscriber::where(['status' => 1])->select("email")->get();
+        $subscribers = Subscriber::active()->select("email")->get();
 
         foreach ($subscribers as $subscriber) {
             Mail::to($subscriber->email)->send(new NewsletterEmail($newsletter));

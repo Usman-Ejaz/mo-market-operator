@@ -16,6 +16,10 @@ class Subscriber extends Model
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
     }
 
+    public function scopeActive($query) {
+        return $query->where("status", 1);
+    }
+
     private function activeOptions() {
         return [
             0 => 'Unsubscribed',
