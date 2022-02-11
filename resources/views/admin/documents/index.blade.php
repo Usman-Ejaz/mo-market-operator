@@ -23,6 +23,7 @@
                       <tr>
                           <th>Id</th>
                           <th>Tittle</th>
+                          <th>Category</th>
                           <th>Keywords</th>
                           <th>Created date</th>
                           <th>Action</th>
@@ -72,6 +73,7 @@
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'title', name: 'title'},
+                {data: 'category', name: 'category'},
                 {data: 'keywords', name: 'keywords'},
                 {data: 'created_at', name: 'created_at'},
                 {

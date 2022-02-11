@@ -161,13 +161,16 @@ class DocumentController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = Document::latest()->get();
+            $data = Document::latest()->with('category')->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
                     return ($row->title) ? ( (strlen($row->title) > 50) ? substr($row->title,0,50).'...' : $row->title ) : '';
-                })               
+                })
+                ->addColumn('category', function ($row) {
+                    return ($row->category) ? ( (strlen($row->category->name) > 50) ? substr($row->category->name, 0, 50).'...' : $row->category->name ) : '';
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

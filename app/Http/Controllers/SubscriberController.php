@@ -34,6 +34,9 @@ class SubscriberController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->addColumn('status', function ($row) {
+                    return ($row->status) ? $row->status : '';
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
