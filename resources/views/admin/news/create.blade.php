@@ -104,10 +104,6 @@
         // Error Message for this field | Should put on the single quotes given below.
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
       }, '');
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
 
       $.validator.addMethod("ckeditor_required", function(value, element) {
         var editorId = $(element).attr('id');
