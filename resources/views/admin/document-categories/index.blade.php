@@ -1,30 +1,25 @@
 @extends('admin.layouts.app')
-@section('header', 'NewsLetters')
+@section('header', 'Document Categories')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item active">Newsletters</li>
+  <li class="breadcrumb-item active">Document Categories</li>
 @endsection
 
 @section('addButton')
-    @if( Auth::user()->role->hasPermission('newsletters', 'create') )
-        <a class="btn btn-primary float-right" href="{{ route('admin.newsletters.create') }}">Add Newsletter</a>
-    @endif
-
-    @if( Auth::user()->role->hasPermission('subscribers', 'list') )
-        <a class="btn btn-primary float-right mr-2" href="{{ route('admin.subscribers.index') }}">Subscribers</a>
-    @endif
+@if(Auth::user()->role->hasPermission('document-categories', 'create'))
+  <a class="btn btn-primary float-right" href="{{ route('admin.document-categories.create') }}">Add New Category</a>
+@endif
 @endsection
 
 @section('content')
   <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
-
               <table class="table table-bordered yajra-datatable">
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Subject</th>
+                          <th>Name</th>
                           <th>Created date</th>
                           <th>Action</th>
                       </tr>
@@ -50,8 +45,6 @@
 @endpush
 
 @push('optional-scripts')
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 
@@ -62,17 +55,19 @@
             processing: true,
             serverSide: true,
             pageLength: 25,
-            ajax: "{{ route('admin.newsletters.list') }}",
+            ajax: "{{ route('admin.document-categories.list') }}",
             fnDrawCallback: function () {
               if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
-                $('.dataTables_info').hide();
+                const searchedRecods = this.fnSettings()._iRecordsDisplay;
+                const totalRecords = this.fnSettings()._iRecordsTotal;
+                $('.dataTables_info').text(`Showing ${searchedRecods} to ${searchedRecods} of ${searchedRecods} entry ${"("}filtered from ${totalRecords} total entries${")"}`);
               } else {
                 $('.dataTables_info').show();
               }
             },
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'subject', name: 'subject'},
+                {data: 'name', name: 'name'},
                 {data: 'created_at', name: 'created_at'},
                 {
                     data: 'action',

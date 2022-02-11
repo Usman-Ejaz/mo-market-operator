@@ -35,13 +35,8 @@
     </div>
 @endsection
 
-@push('optional-styles')
-<link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
-@endpush
-
 @push('optional-scripts')
   <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 

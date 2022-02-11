@@ -66,6 +66,9 @@
             notNumericValues: true,
             noSpace: true          
           },
+          category: {
+            required: true,
+          },
           file: {
             required: true,
             extension: "doc|docx|txt|ppt|csv|xls|xlsx|pdf|odt"

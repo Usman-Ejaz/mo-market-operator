@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
+use App\Models\Subscriber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
 class NewsletterController extends Controller
@@ -141,17 +144,28 @@ class NewsletterController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
+                    if( Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter') ) {
+                        $options .= '<form action="'. route('admin.newsletters.sendNewsLetter', $row->id ) .'" method="POST" style="display: inline-block;">
+                                '.csrf_field().'
+                                <button type="submit" class="btn btn-info"
+                                    onclick="return confirm(\'Are You Sure Want to send this newsletter to subscribers?\')" title="Send Newsletter">
+                                        <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>';
+                    }
+
                     if( Auth::user()->role->hasPermission('newsletters', 'edit') ) {
-                        $options .= '<a href="' . route('admin.newsletters.edit', $row->id) . '" class="btn btn-primary" title="edit">
+                        $options .= ' <a href="'. route('admin.newsletters.edit',$row->id) .'" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
+
                     if( Auth::user()->role->hasPermission('newsletters', 'delete') ) {
                         $options .= ' <form action="'. route('admin.newsletters.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
@@ -172,6 +186,22 @@ class NewsletterController extends Controller
             'modified_by' => ''
         ]), function(){
         });
+    }
+
+    public function sendNewsLetter(Request $request, Newsletter $newsletter) {
+        
+        if (!Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter')) {
+            return abort(403);
+        }
+        
+        $subscribers = Subscriber::active()->select("email")->get();
+
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)->send(new NewsletterEmail($newsletter));
+        }
+
+        $request->session()->flash('success', 'Newsletter Sent Successfully!');
+        return redirect()->route('admin.newsletters.index');
     }
 }
 

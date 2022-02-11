@@ -8,6 +8,20 @@
       </div>
     </div>
   </div>
+  <div class="row">
+  <div class="col-md-12">
+            <div class="form-group">
+                <label>Category <span class="text-danger">*</span></label>
+                <select class="custom-select" name="category" id="category">
+                    <option value="">Please select a category</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                <small class="form-text text-danger">{{ $errors->first('category') }} </small>
+            </div>
+        </div>
+  </div>
 
   <div class="row">
     <div class="col-md-12">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\DocumentCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,8 @@ class DocumentController extends Controller
         }
 
         $document = new Document();
-        return view('admin.documents.create', compact('document'));
+        $categories = DocumentCategory::all();
+        return view('admin.documents.create', compact('document', 'categories'));
     }
 
     /**
@@ -93,11 +95,13 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        if( !Auth::user()->role->hasPermission('documents', 'edit') ){
+        if (!Auth::user()->role->hasPermission('documents', 'edit')) {
             return abort(403);
         }
 
-        return view('admin.documents.edit', compact('document'));
+        $categories = DocumentCategory::all();
+        
+        return view('admin.documents.edit', compact('document', 'categories'));
     }
 
     /**

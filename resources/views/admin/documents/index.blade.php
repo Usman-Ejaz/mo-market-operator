@@ -6,8 +6,11 @@
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('news', 'publish') )
+@if( Auth::user()->role->hasPermission('documents', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.documents.create') }}">Add New Document</a>
+@endif
+@if (Auth::user()->role->hasPermission('document-categories', 'list'))
+  <a class="btn btn-primary float-right mr-2" href="{{ route('admin.document-categories.index') }}">Document Categories</a>
 @endif
 @endsection
 

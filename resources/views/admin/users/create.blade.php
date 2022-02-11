@@ -23,9 +23,11 @@
                     </div>
                   </div>
 
+                    <input type="hidden" name="sendEmail" value="0" id="sendEmail">
                     <!-- /.card-body -->
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-success mr-2 save-with-email">Save & Send Email</button>
                     </div>
 
                   </div>
@@ -64,6 +66,11 @@
         this.value = $.trim(value);
         return this.value;
       });
+
+      $(".save-with-email").click(function () {
+        $("#sendEmail").val("1");
+      });
+
 
       $('#create-users-form').validate({
         errorElement: 'span',

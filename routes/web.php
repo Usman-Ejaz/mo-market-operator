@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
+use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\MenuController;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SubscriberController;
 use Illuminate\Http\Request;
 
 /*
@@ -84,6 +86,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('menus', MenuController::class);
 
     // Routes for Document Module
+    Route::get('document-categories/list', [DocumentCategoryController::class, 'list'])->name('document-categories.list');    
+    Route::resource('document-categories', DocumentCategoryController::class);
+
+    // Routes for Document Module
     Route::get('documents/list', [DocumentController::class, 'list'])->name('documents.list');
     Route::post('documents/deleteFile', [DocumentController::class, 'deleteFile'])->name('documents.deleteFile');
     Route::resource('documents', DocumentController::class);
@@ -99,15 +105,24 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     // Route for settings
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::patch('settings/update', [SettingsController::class, 'update'])->name('settings.update');
+
     // Routes for Newsletter Module
     Route::get('newsletters/list', [NewsletterController::class, 'list'])->name('newsletters.list');
+    Route::post('newsletters/sendNewsLetter/{newsletter}', [NewsletterController::class, 'sendNewsLetter'])->name('newsletters.sendNewsLetter');
     Route::resource('newsletters', NewsletterController::class);
+
+    // Routes for Subscribers
+    Route::get('subscribers/list', [SubscriberController::class, 'list'])->name('subscribers.list');
+    Route::post('subscribers/toggle-subscription/{subscriber}', [SubscriberController::class, 'toggleSubscription'])->name('subscribers.toggleSubscription');
+    Route::resource("subscribers", SubscriberController::class);
 });
 
 Route::get("create-password/{user}", function (Request $request, $user) {
     if (! $request->hasValidSignature()) {
         abort(401);
     }
-})->name("create-password")->middleware("guest");
+    $signature = $request->signature;
+    return view("admin.auth.create-password", compact('user', 'signature'));
+})->name("create-password")->middleware(["guest"]);
 
 require __DIR__.'/auth.php';

@@ -60,6 +60,9 @@
             notNumericValues: true, 
             noSpace: true            
           },
+          category: {
+            required: true,
+          },
           keywords: {
             minlength: 2,
             notNumericValues: true, 

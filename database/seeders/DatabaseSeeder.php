@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Application;
 use App\Models\Document;
+use App\Models\DocumentCategory;
 use App\Models\Faq;
 use App\Models\Menu;
 use App\Models\Job;
@@ -13,6 +14,7 @@ use App\Models\Page;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Settings;
+use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -73,6 +75,8 @@ class DatabaseSeeder extends Seeder
         // Create News
         News::factory(30)->create();
 
+        DocumentCategory::factory(10)->create();
+
         //Create Documents
         Document::factory(20)->create();
 
@@ -104,6 +108,9 @@ class DatabaseSeeder extends Seeder
         
         // Create News Letters
         Newsletter::factory(20)->create();
+
+        // Create Subscribers
+        Subscriber::factory(10)->create();
     }
 
 
