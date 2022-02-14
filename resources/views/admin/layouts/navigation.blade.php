@@ -97,6 +97,17 @@
           </li>
           @endif
 
+          @if( Auth::user()->role->hasPermission('contact-page-queries', 'list') )
+          <li class="nav-item">
+            <a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('admin/contact-page-queries*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-question-circle"></i>
+              <p>
+                Contact Page Queries
+              </p>
+            </a>
+          </li>
+          @endif
+
           <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>

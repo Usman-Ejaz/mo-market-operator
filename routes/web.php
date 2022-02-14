@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
+use App\Http\Controllers\ContactPageQueryController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
@@ -115,6 +116,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get('subscribers/list', [SubscriberController::class, 'list'])->name('subscribers.list');
     Route::post('subscribers/toggle-subscription/{subscriber}', [SubscriberController::class, 'toggleSubscription'])->name('subscribers.toggleSubscription');
     Route::resource("subscribers", SubscriberController::class);
+
+    // Routes for Document Module
+    Route::get('contact-page-queries/list', [ContactPageQueryController::class, 'list'])->name('contact-page-queries.list');
+    Route::resource('contact-page-queries', ContactPageQueryController::class);
 });
 
 Route::get("create-password/{user}", function (Request $request, $user) {

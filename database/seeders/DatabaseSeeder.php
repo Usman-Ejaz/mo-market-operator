@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Application;
+use App\Models\ContactPageQuery;
 use App\Models\Document;
 use App\Models\DocumentCategory;
 use App\Models\Faq;
@@ -111,6 +112,9 @@ class DatabaseSeeder extends Seeder
 
         // Create Subscribers
         Subscriber::factory(10)->create();
+
+        // Contact Page Queries
+        ContactPageQuery::factory(20)->create();
     }
 
 

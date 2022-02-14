@@ -149,5 +149,14 @@ return [
             "subscribe" => "Subscribe",
         ]
     ],    
+    [
+        "name" => "contact-page-queries",
+        "display_name" => "Contact Page Queries",
+        "capabilities" => [
+            "list" => "List",
+            "view" => "View",
+            "delete" => "Delete",
+        ]
+    ]
 
 ];
