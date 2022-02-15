@@ -50,7 +50,7 @@
 
           @if( Auth::user()->role->hasPermission('jobs', 'list') )
           <li class="nav-item">
-                <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ Request::is('admin/jobs*') ? 'active' : '' }}">
+                <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ (Request::is('admin/jobs*') || Request::is('admin/applications*')) ? 'active' : '' }}">
                     <i class="nav-icon fa fa-newspaper"></i>
                     <p>Jobs</p>
                 </a>
@@ -98,7 +98,7 @@
           @endif
 
           @if(Auth::user()->role->hasPermission('roles', 'list') || Auth::user()->role->hasPermission('permissions', 'view') || Auth::user()->role->hasPermission('menus', 'list') || Auth::user()->role->hasPermission('settings', 'list'))
-          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*')) ? 'menu-is-opening menu-open' : '' }}">
+          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/settings*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
                 <p>Management <i class="fas fa-angle-left right"></i></p>
@@ -133,7 +133,7 @@
 
                 @if( Auth::user()->role->hasPermission('settings', 'list') )
                     <li class="nav-item">
-                        <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings') ? 'active' : '' }}">
+                        <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings*') ? 'active' : '' }}">
                             <i class="fa fa-cog nav-icon"></i>
                             <p>Settings</p>
                         </a>

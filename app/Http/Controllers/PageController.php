@@ -144,10 +144,10 @@ class PageController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 35) ? substr($row->title,0,35).'...' : $row->title ) : '';
+                    return truncateWords($row->title, 35);
                 })
                 ->addColumn('slug', function ($row) {
-                    return ($row->slug) ? ( (strlen($row->slug) > 35) ? substr($row->slug,0,35).'...' : $row->slug ) : '';
+                    return truncateWords($row->slug, 35);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
