@@ -142,10 +142,13 @@ class NewsController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 27) ? substr($row->title,0,27).'...' : $row->title ) : '';
+                    return truncateWords($row->title, 27);
                 })
                 ->addColumn('slug', function ($row) {
-                    return ($row->slug) ? ( (strlen($row->slug) > 27) ? substr($row->slug,0,27).'...' : $row->slug ) : '';
+                    return truncateWords($row->slug, 27);
+                })
+                ->addColumn('keywords', function ($row) {
+                    return truncateWords($row->keywords, 27);
                 })
                 ->addColumn('news_category', function ($row) {
                     return ($row->news_category) ? $row->news_category : '';

@@ -59,7 +59,7 @@
 
           @if( Auth::user()->role->hasPermission('documents', 'list') )
           <li class="nav-item">
-          <a href="{{ route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents*') ? 'active' : '' }}">
+          <a href="{{ route('admin.documents.index') }}" class="nav-link {{ (Request()->is('admin/documents*') || Request()->is('admin/document-categories*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
               <p>ISMO Library</p>
             </a>
@@ -79,7 +79,7 @@
 
           @if( Auth::user()->role->hasPermission('newsletters', 'list') )
           <li class="nav-item">
-            <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ Request::is('admin/newsletters*') ? 'active' : '' }}">
+            <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ (Request::is('admin/newsletters*') || Request::is('admin/subscribers*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-envelope-open"></i>
               <p>Newsletters</p>
             </a>
@@ -97,10 +97,11 @@
           </li>
           @endif
 
+          @if(Auth::user()->role->hasPermission('roles', 'list') || Auth::user()->role->hasPermission('permissions', 'view') || Auth::user()->role->hasPermission('menus', 'list') || Auth::user()->role->hasPermission('settings', 'list'))
           <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
-                <p>Settings <i class="fas fa-angle-left right"></i></p>
+                <p>Management <i class="fas fa-angle-left right"></i></p>
             </a>
             <ul class="nav nav-treeview">
                 @if( Auth::user()->role->hasPermission('roles', 'list') )
@@ -140,7 +141,7 @@
                 @endif
             </ul>
           </li>
-
+          @endif
 
         </ul>
       </nav>

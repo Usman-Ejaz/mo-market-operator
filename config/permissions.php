@@ -59,7 +59,7 @@ return [
     ],
     [
         "name" => "applications",
-        "display_name" => "Applications",
+        "display_name" => "Applications of job",
         "capabilities" => [
             "view" => "View",
             "delete" => "Delete",

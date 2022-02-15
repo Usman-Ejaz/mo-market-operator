@@ -12,7 +12,7 @@
   <div class="col-md-12">
             <div class="form-group">
                 <label>Category <span class="text-danger">*</span></label>
-                <select class="custom-select" name="category" id="category">
+                <select class="custom-select" name="category_id" id="category_id">
                     <option value="">Please select a category</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
