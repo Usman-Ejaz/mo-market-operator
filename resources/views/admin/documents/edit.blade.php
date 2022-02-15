@@ -49,19 +49,18 @@
           title: {
             required: true,
             minlength: 2,
-            maclength: 255,
-            notNumericValues: true,            
-          },
-          keywords: {
-            minlength: 2,
-            notNumericValues: true,                      
+            maxlength: 255,
+            notNumericValues: true,                         
           },
           category_id: {
             required: true,
           },
+          keywords: {
+            notNumericValues: true
+          },
           file: {
-            required: true,
-            extension: "doc|docx|txt|ppt|csv|xls|xlsx|pdf|odt"
+            required:true,
+            extension: "doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt"
           }
         },
         messages: {
@@ -69,10 +68,10 @@
           title: {
             required: "This field is required.",
             minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
-            maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Title',  'limit' => 255]) }}"
           }
         }
-      });
+      });   
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $("#deleteFile").click(function(){
@@ -86,7 +85,8 @@
                     success: function (data) {
                         if(data.success){
                             alert('File Deleted Successfully');
-                            $('.fileExists').remove();
+                            window.location.reload();
+                            // $('.fileExists').remove();
                         }
                     }
                 });
@@ -94,6 +94,10 @@
         });
 
     });
+
+    function validateFileExtension(e) {
+      console.log(e.target.checked);
+    }
 
   </script>
 

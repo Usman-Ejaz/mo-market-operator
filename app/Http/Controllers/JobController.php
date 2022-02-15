@@ -290,17 +290,17 @@ class JobController extends Controller
             fputcsv($file, $columns);
 
             foreach ($data as $application) {
-                $row['id']  = $application->id;
-                $row['name']  = $application->name;
-                $row['email']    = $application->email;
-                $row['gender']    = $application->gender;
-                $row['phone']  = $application->phone;
-                $row['address']  = $application->address;
-                $row['city']  = $application->city;
-                $row['experience']    = $application->experience;
-                $row['degree_level']    = $application->degree_level;
-                $row['degree_title']  = $application->degree_title;
-                $row['created_at']  = $application->created_at;
+                $row['id'] = $application->id;
+                $row['name'] = $application->name;
+                $row['email'] = $application->email;
+                $row['gender'] = $application->gender;
+                $row['phone'] = $application->phone;
+                $row['address'] = $application->address;
+                $row['city'] = $application->city;
+                $row['experience'] = $application->experience;
+                $row['degree_level'] = $application->degree_level;
+                $row['degree_title'] = $application->degree_title;
+                $row['created_at'] = $application->created_at;
 
                 fputcsv($file, array($row['id'], $row['name'], $row['email'], $row['gender'], $row['phone'], $row['address'], $row['city'], $row['experience'], $row['degree_level'], $row['degree_title'], $row['created_at']));
             }

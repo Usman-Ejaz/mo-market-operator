@@ -194,6 +194,8 @@ class NewsController extends Controller
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
+        ], [
+            'slug.unique' => __('messages.unique', ['attribute' => 'Slug'])
         ]), function(){
             if( request()->hasFile('image') ){
                 request()->validate([

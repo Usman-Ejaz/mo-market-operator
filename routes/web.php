@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
 use App\Http\Controllers\DocumentCategoryController;
@@ -61,8 +62,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     // Routes for Application Module
     Route::get('jobs/{job}/applications', [JobController::class, 'getJobApplications'])->name('job.applications');
-    Route::get('jobs/{job}/applications/list', [JobController::class, 'getApplicationsList'])->name('job.applications.list');
-    Route::get('jobs/{job}/applications/export', [JobController::class, 'exportApplicationsList'])->name('job.applications.list.export');
+    Route::get('jobs/{job}/applications/list', [JobController::class, 'getApplicationsList'])->name('job.applications.list');    
     Route::get('applications/{application}', [ApplicationController::class, 'show'])->name('job.application.detail');
     Route::delete('applications/{application}', [ApplicationController::class, 'destroy'])->name('job.application.destroy');
 
@@ -116,13 +116,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::post('subscribers/toggle-subscription/{subscriber}', [SubscriberController::class, 'toggleSubscription'])->name('subscribers.toggleSubscription');
     Route::resource("subscribers", SubscriberController::class);
 });
+Route::middleware(['auth'])->prefix("admin")->name("admin.")->group(function () {
+    Route::get('jobs/{job}/applications/export', [JobController::class, 'exportApplicationsList'])->name('job.applications.list.export');
+});
 
-Route::get("create-password/{user}", function (Request $request, $user) {
-    if (! $request->hasValidSignature()) {
-        abort(401);
-    }
-    $signature = $request->signature;
-    return view("admin.auth.create-password", compact('user', 'signature'));
-})->name("create-password")->middleware(["guest"]);
+Route::get("create-password/{user}", [NewPasswordController::class, "createPassword"])->name("create-password")->middleware(["guest"]);
 
 require __DIR__.'/auth.php';

@@ -115,7 +115,7 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        if( !Auth::user()->role->hasPermission('news', 'delete') ){
+        if( !Auth::user()->role->hasPermission('roles', 'delete') ){
             return abort(403);
         }
 
@@ -125,7 +125,7 @@ class RoleController extends Controller
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('news', 'list') ){
+        if( !Auth::user()->role->hasPermission('roles', 'list') ){
             return abort(403);
         }
 

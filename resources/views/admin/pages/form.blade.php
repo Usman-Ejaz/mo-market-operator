@@ -4,7 +4,7 @@
       <div class="form-group">
           <label for="title">Title <span class="text-danger">*</span></label>
         <input type="input" class="form-control" id="title" placeholder="Enter Page Title" name="title" value="{{ old('title') ?? $page->title }}">
-        <small class="form-text text-danger">{{ $errors->first('title') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('title') }} </span>
       </div>
     </div>
 
@@ -12,7 +12,7 @@
       <div class="form-group">
         <label for="slug">Slug <span class="text-danger">*</span></label>
         <input type="input" class="form-control" id="slug" placeholder="Enter Page Slug"  name="slug" value="{{ old('slug') ?? $page->slug }}">
-        <small class="form-text text-danger">{{ $errors->first('slug') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('slug') }} </span>
       </div>
     </div>
   </div>

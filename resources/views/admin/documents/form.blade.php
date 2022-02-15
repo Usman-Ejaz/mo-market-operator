@@ -39,7 +39,7 @@
             <label for="file" class="form-label" >Document File <span class="text-danger">*</span></label>
             <input class="form-control" type="file" id="file" name="file">
             <small class="form-text text-danger">{{ $errors->first('file') }} </small>
-            @if( isset($document->file) )
+            @if(isset($document->file) && !empty($document->file))
                 <small class="fileExists">
                   <p>
                     Open Attachment Of - 
@@ -58,7 +58,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="convert" name="convert" value="1">
+          <input type="checkbox" class="form-check-input" id="convert" name="convert" value="1" onchange="validateFileExtension(event)">
           <label class="form-check-label" for="convert"> Convert File To PDF</label>
         </div>    
       </div>

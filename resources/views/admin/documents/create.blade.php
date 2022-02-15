@@ -74,6 +74,10 @@
       });
 
     });
+
+    function validateFileExtension(e) {
+      console.log(e.target.checked);
+    }
   </script>
 
 @endpush

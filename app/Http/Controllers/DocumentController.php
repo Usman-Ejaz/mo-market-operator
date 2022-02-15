@@ -113,6 +113,7 @@ class DocumentController extends Controller
      */
     public function update(Request $request, Document $document)
     {
+        // dd($request->all());
         if( !Auth::user()->role->hasPermission('documents', 'edit') ){
             return abort(403);
         }
@@ -121,13 +122,13 @@ class DocumentController extends Controller
 
         $document->update($data);
 
-        $fileName = $this->storeFile($document);
-
-        $extension = request()->file('file')->getClientOriginalExtension();
-        if(in_array($extension,$this->allowedFileExtensions)){
-            
-            if ( !$this->convertFile($document, $fileName) ) {
-                $request->session()->flash('success', 'Document Was Not Converted Successfully!');
+        if ($request->hasFile("file")) {
+            $fileName = $this->storeFile($document);
+            $extension = request()->file('file')->getClientOriginalExtension();
+            if (in_array($extension,$this->allowedFileExtensions)) {                
+                if ( !$this->convertFile($document, $fileName) ) {
+                    $request->session()->flash('success', 'Document Was Not Converted Successfully!');
+                }
             }
         }
 
