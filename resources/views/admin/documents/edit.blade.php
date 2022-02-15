@@ -37,18 +37,9 @@
 
   <script>
     $(document).ready(function(){
-      $.validator.addMethod(
-        "notNumericValues",
-        function(value, element) {
+      $.validator.addMethod("notNumericValues", function(value, element) {
           return this.optional(element) || isNaN(Number(value));
-        },
-        '{{ __("messages.not_numeric") }}'
-      );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
+      }, '{{ __("messages.not_numeric") }}');
 
       $('#update-document-form').validate({
         errorElement: 'span',
@@ -58,15 +49,14 @@
           title: {
             required: true,
             minlength: 2,
-            notNumericValues: true,
-            noSpace: true            
+            maclength: 255,
+            notNumericValues: true,            
           },
           keywords: {
             minlength: 2,
-            notNumericValues: true,
-            noSpace: true          
+            notNumericValues: true,                      
           },
-          category: {
+          category_id: {
             required: true,
           },
           file: {
@@ -75,7 +65,12 @@
           }
         },
         messages: {
-          file: '{{ __("messages.valid_file_extension") }}'
+          file: '{{ __("messages.valid_file_extension") }}',
+          title: {
+            required: "This field is required.",
+            minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
+          }
         }
       });
 

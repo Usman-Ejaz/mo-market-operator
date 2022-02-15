@@ -138,8 +138,9 @@
             rules:{
                 title: {
                     required: true,
-                    notNumericValues: true,
-                    noSpace:true
+                    maxlength: 255,
+                    minlength: 3,
+                    notNumericValues: true
                 },
                 description:{
                     ckeditor_required: true,
@@ -147,8 +148,7 @@
                 },
                 slug: {
                     required: true,
-                    notNumericValues: true,
-                    noSpace:true
+                    notNumericValues: true,                    
                 },
                 news_category: {
                     required: true,
@@ -171,7 +171,12 @@
               error.insertAfter(element);
             },
             messages: {
-              image: '{{ __("messages.valid_file_extension") }}'
+              image: '{{ __("messages.valid_file_extension") }}',
+              title: {
+                required: "This field is required.",
+                minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
+                maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
+              }
             }
         });
 

@@ -20,7 +20,7 @@
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Tittle</th>
+                          <th>Title</th>
                           <th>Slug</th>
                           <th>Category</th>
                           <th>Keywords</th>

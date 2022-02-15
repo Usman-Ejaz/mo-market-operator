@@ -56,7 +56,7 @@ class DocumentController extends Controller
         }
 
         $document = new Document();
-        $document = Document::create( $this->validateRequest($document) );
+        $document = Document::create($this->validateRequest($document));
 
         $fileName = $this->storeFile($document);
 
@@ -166,10 +166,13 @@ class DocumentController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 50) ? substr($row->title,0,50).'...' : $row->title ) : '';
+                    return truncateWords($row->title, 50);
+                })
+                ->addColumn('keywords', function ($row) {
+                    return truncateWords($row->keywords, 30);
                 })
                 ->addColumn('category', function ($row) {
-                    return ($row->category) ? ( (strlen($row->category->name) > 50) ? substr($row->category->name, 0, 50).'...' : $row->category->name ) : '';
+                    return truncateWords($row->category->name, 50);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
@@ -203,6 +206,7 @@ class DocumentController extends Controller
         return tap( request()->validate([
             'title' => 'required|min:3',
             'keywords' => 'nullable',
+            'category_id' => 'required',
             'file' => 'nullable',
             'created_by' => '',
             'modified_by' => ''

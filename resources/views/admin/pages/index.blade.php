@@ -19,7 +19,7 @@
                   <thead>
                       <tr>
                         <th>Id</th>
-                        <th>Tittle</th>
+                        <th>Title</th>
                         <th>Slug</th>
                         <th>Keywords</th>
                         <th>Created date</th>

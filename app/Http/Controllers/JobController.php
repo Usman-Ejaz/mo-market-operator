@@ -222,22 +222,22 @@ class JobController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return ($row->name) ? ( (strlen($row->name) > 30) ? substr($row->name,0,30).'...' : $row->name ) : '';
+                    return truncateWords($row->name, 30);
                 })
                 ->addColumn('email', function ($row) {
-                    return ($row->email) ? ( (strlen($row->email) > 30) ? substr($row->email,0,30).'...' : $row->email ) : '';
+                    return truncateWords($row->email, 30);
                 })
                 ->addColumn('gender', function ($row) {
-                    return ($row->gender) ? ( (strlen($row->gender) > 10) ? substr($row->gender,0,10).'...' : $row->gender ) : '';
+                    return truncateWords($row->gender, 10);
                 })
                 ->addColumn('phone', function ($row) {
-                    return ($row->phone) ? ( (strlen($row->phone) > 20) ? substr($row->phone,0,20).'...' : $row->phone ) : '';
+                    return truncateWords($row->phone, 20);
                 })
                 ->addColumn('city', function ($row) {
-                    return ($row->city) ? ( (strlen($row->city) > 25) ? substr($row->city,0,25).'...' : $row->city ) : '';
+                    return truncateWords($row->city, 25);
                 })
                 ->addColumn('experience', function ($row) {
-                    return ($row->experience) ? ( (strlen($row->experience) > 10) ? substr($row->experience,0,10).'...' : $row->experience ) : '';
+                    return truncateWords($row->experience, 10);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
@@ -245,7 +245,7 @@ class JobController extends Controller
                 ->addColumn('action', function ($row) {
                         $options = '';
                         if( Auth::user()->role->hasPermission('applications', 'view') ) {
-                            $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="edit">
+                            $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="View">
                                 <i class="fas fa-eye"></i>
                             </a>';
                         }
@@ -254,7 +254,7 @@ class JobController extends Controller
                                 '.csrf_field().'
                                 '.method_field("DELETE").'
                                 <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                    onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                         <i class="fas fa-trash"></i>
                                 </button>
                             </form>';
