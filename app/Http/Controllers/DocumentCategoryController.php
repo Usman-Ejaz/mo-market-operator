@@ -166,7 +166,7 @@ class DocumentCategoryController extends Controller
         return request()->validate([
             'name' => 'required|min:3|unique:document_categories,name'
         ], [
-            'name.unique' => 'Document categories name should be unique.'
+            'name.unique' => __('messages.unique', ['attribute' => 'Category name'])
         ]);
     }
 }

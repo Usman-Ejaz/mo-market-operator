@@ -195,7 +195,7 @@ class NewsController extends Controller
             'created_by' => '',
             'modified_by' => ''
         ], [
-            'slug.unique' => 'News Slug should be unique.',
+            'slug.unique' => __('messages.unique', ['attribute' => 'Slug'])
         ]), function(){
             if( request()->hasFile('image') ){
                 request()->validate([

@@ -180,7 +180,7 @@ class PageController extends Controller
 
         return tap( request()->validate([
             'title' => 'required|min:3',
-            'slug' => 'required',
+            'slug' => 'required|unique:pages,slug',
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
@@ -189,6 +189,8 @@ class PageController extends Controller
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
+        ], [
+            'slug.unique' => __('messages.unique', ['attribute' => 'Slug'])
         ]), function(){
             if( request()->hasFile('image') ){
                 request()->validate([
