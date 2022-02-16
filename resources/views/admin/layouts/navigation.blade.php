@@ -50,7 +50,7 @@
 
           @if( Auth::user()->role->hasPermission('jobs', 'list') )
           <li class="nav-item">
-                <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ Request::is('admin/jobs*') ? 'active' : '' }}">
+                <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ (Request::is('admin/jobs*') || Request::is('admin/applications*')) ? 'active' : '' }}">
                     <i class="nav-icon fa fa-newspaper"></i>
                     <p>Jobs</p>
                 </a>
@@ -59,7 +59,7 @@
 
           @if( Auth::user()->role->hasPermission('documents', 'list') )
           <li class="nav-item">
-          <a href="{{ route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents*') ? 'active' : '' }}">
+          <a href="{{ route('admin.documents.index') }}" class="nav-link {{ (Request()->is('admin/documents*') || Request()->is('admin/document-categories*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
               <p>ISMO Library</p>
             </a>
@@ -79,7 +79,7 @@
 
           @if( Auth::user()->role->hasPermission('newsletters', 'list') )
           <li class="nav-item">
-            <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ Request::is('admin/newsletters*') ? 'active' : '' }}">
+            <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ (Request::is('admin/newsletters*') || Request::is('admin/subscribers*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-envelope-open"></i>
               <p>Newsletters</p>
             </a>
@@ -107,11 +107,12 @@
             </a>
           </li>
           @endif
-
-          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*')) ? 'menu-is-opening menu-open' : '' }}">
+          
+          @if(Auth::user()->role->hasPermission('roles', 'list') || Auth::user()->role->hasPermission('permissions', 'view') || Auth::user()->role->hasPermission('menus', 'list') || Auth::user()->role->hasPermission('settings', 'list'))
+          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/settings*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
-                <p>Settings <i class="fas fa-angle-left right"></i></p>
+                <p>Management <i class="fas fa-angle-left right"></i></p>
             </a>
             <ul class="nav nav-treeview">
                 @if( Auth::user()->role->hasPermission('roles', 'list') )
@@ -143,7 +144,7 @@
 
                 @if( Auth::user()->role->hasPermission('settings', 'list') )
                     <li class="nav-item">
-                        <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings') ? 'active' : '' }}">
+                        <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings*') ? 'active' : '' }}">
                             <i class="fa fa-cog nav-icon"></i>
                             <p>Settings</p>
                         </a>
@@ -151,7 +152,7 @@
                 @endif
             </ul>
           </li>
-
+          @endif
 
         </ul>
       </nav>

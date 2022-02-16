@@ -19,7 +19,7 @@
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Tittle</th>
+                          <th>Title</th>
                           <th>Location</th>
                           <th>Experience</th>
                           <th>Total Positions</th>

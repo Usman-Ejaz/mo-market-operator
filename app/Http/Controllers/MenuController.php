@@ -230,8 +230,8 @@ class MenuController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('menus', 'edit') ) {
-                        $options .= '<a href="'. route('admin.menus.submenus',$row->id) .'" class="btn btn-secondary" title="sub menus">
+                    if( Auth::user()->role->hasPermission('menus', 'submenus') ) {
+                        $options .= '<a href="'. route('admin.menus.submenus',$row->id) .'" class="btn btn-secondary" title="Sub menus">
                             <i class="fas fa-bars"></i>
                         </a>';
                     }

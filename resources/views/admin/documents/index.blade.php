@@ -22,7 +22,7 @@
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Tittle</th>
+                          <th>Title</th>
                           <th>Category</th>
                           <th>Keywords</th>
                           <th>Created date</th>

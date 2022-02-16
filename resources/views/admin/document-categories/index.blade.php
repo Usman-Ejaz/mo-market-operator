@@ -2,6 +2,7 @@
 @section('header', 'Document Categories')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.documents.index') }}">Documents</a></li>
   <li class="breadcrumb-item active">Document Categories</li>
 @endsection
 

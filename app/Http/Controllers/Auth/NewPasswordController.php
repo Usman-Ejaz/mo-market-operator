@@ -64,6 +64,14 @@ class NewPasswordController extends Controller
                             ->withErrors(['email' => __($status)]);
     }
 
+    public function createPassword(Request $request, $user) {
+        if (! $request->hasValidSignature()) {
+            abort(401);
+        }
+        $signature = $request->signature;
+        return view("admin.auth.create-password", compact('user', 'signature'));
+    }
+
     public function createNewPassword(Request $request) {
         $request->validate([
             'token' => ['required'],

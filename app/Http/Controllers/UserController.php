@@ -160,6 +160,9 @@ class UserController extends Controller
 
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('name', function ($row) {
+                    return truncateWords($row->name, 25);
+                })
                 ->addColumn('role', function ($row) {
                     return ( isset($row->role->name)) ? $row->role->name : '';
                 })

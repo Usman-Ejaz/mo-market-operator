@@ -37,18 +37,9 @@
 
   <script>
     $(document).ready(function(){
-      $.validator.addMethod(
-        "notNumericValues",
-        function(value, element) {
+      $.validator.addMethod("notNumericValues", function(value, element) {
           return this.optional(element) || isNaN(Number(value));
-        },
-        '{{ __("messages.not_numeric") }}'
-      );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
+      }, '{{ __("messages.not_numeric") }}');
 
       $('#update-document-form').validate({
         errorElement: 'span',
@@ -58,26 +49,29 @@
           title: {
             required: true,
             minlength: 2,
-            notNumericValues: true,
-            noSpace: true            
+            maxlength: 255,
+            notNumericValues: true,                         
+          },
+          category_id: {
+            required: true,
           },
           keywords: {
-            minlength: 2,
-            notNumericValues: true,
-            noSpace: true          
-          },
-          category: {
-            required: true,
+            notNumericValues: true
           },
           file: {
-            required: true,
-            extension: "doc|docx|txt|ppt|csv|xls|xlsx|pdf|odt"
+            required:true,
+            extension: "doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt"
           }
         },
         messages: {
-          file: '{{ __("messages.valid_file_extension") }}'
+          file: '{{ __("messages.valid_file_extension") }}',
+          title: {
+            required: "This field is required.",
+            minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Title',  'limit' => 255]) }}"
+          }
         }
-      });
+      });   
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         $("#deleteFile").click(function(){
@@ -91,7 +85,8 @@
                     success: function (data) {
                         if(data.success){
                             alert('File Deleted Successfully');
-                            $('.fileExists').remove();
+                            window.location.reload();
+                            // $('.fileExists').remove();
                         }
                     }
                 });
@@ -99,6 +94,10 @@
         });
 
     });
+
+    function validateFileExtension(e) {
+      console.log(e.target.checked);
+    }
 
   </script>
 

@@ -80,9 +80,8 @@
           name: {
             required: true,
             maxlength: 64,
-            minlength: 2,
-            notNumericValues: true,
-            noSpace: true
+            minlength: 3,
+            notNumericValues: true
           },
           email:{
             required: true,
@@ -101,12 +100,17 @@
           image: {
             extension: "jpg|jpeg|png"
           },
-          status: {
+          active: {
             required : true,
           }
         },
         messages: {
-          image: '{{ __("messages.valid_file_extension") }}'
+          image: '{{ __("messages.valid_file_extension") }}',
+          name: {
+            minlength: "{{ __('messages.min_characters', ['field' => 'Username', 'limit' => 3]) }}",
+            required: "This field is required.",
+            maxlength: "{{ __('messages.max_characters', ['limit' => 64]) }}"
+          }
         }
       });
 

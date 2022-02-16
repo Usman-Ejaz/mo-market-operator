@@ -65,5 +65,10 @@ Route::post('/admin/logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('admin.logout');
 
 // New route for create password
+Route::get("create-password/{user}", [NewPasswordController::class, "createPassword"])
+                ->middleware('guest')
+                ->name("create-password");
+
 Route::post('/admin/create-password', [NewPasswordController::class, 'createNewPassword'])
-                ->middleware('guest')->name("admin.password.create");
+                ->middleware('guest')
+                ->name("admin.password.create");

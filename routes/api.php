@@ -23,8 +23,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [RegisterApiController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('sitemap', [SitemapApiController::class, 'index']);
+    Route::get('sitemap', [SitemapApiController::class, 'index']);    
+});
 
+Route::middleware('verifyToken')->group(function () {
     Route::post("submit-query", [ContactFormQueryController::class, "store"])->name("contact-form-query.store");
     Route::post("subscribe-to-newsletter", [NewsletterSubscriptionController::class, "subscribe"])->name("newsletters.subscribe");
     Route::get("faqs", [FaqApiController::class, "show"])->name("faqs.show");
