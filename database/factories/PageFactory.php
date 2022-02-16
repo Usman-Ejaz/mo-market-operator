@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class PageFactory extends Factory
 {
@@ -15,7 +16,7 @@ class PageFactory extends Factory
     public function definition()
     {
         $title = $this->faker->sentence;
-        $slug = str_replace(' ', '-', $title);
+        $slug = Str::slug($title);
         return [
             'title' => $title,
             'slug' => $slug,

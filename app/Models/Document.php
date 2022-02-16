@@ -31,4 +31,9 @@ class Document extends Model
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
+
+    // Scope Queries
+    public function scopePublished ($query) {
+        return $query->where("published_at", "!=", null)->select("");
+    }
 }

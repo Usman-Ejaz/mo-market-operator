@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\CareersApiController;
 use App\Http\Controllers\Api\ContactFormQueryController;
 use App\Http\Controllers\Api\FaqApiController;
 use App\Http\Controllers\Api\NewsletterSubscriptionController;
+use App\Http\Controllers\Api\PublishedNewsApiController;
 use App\Http\Controllers\Api\RegisterApiController;
 use App\Http\Controllers\Api\SitemapApiController;
 use Illuminate\Http\Request;
@@ -26,8 +28,15 @@ Route::middleware('auth:api')->group(function () {
     Route::get('sitemap', [SitemapApiController::class, 'index']);    
 });
 
-Route::middleware('verifyToken')->group(function () {
+Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::post("submit-query", [ContactFormQueryController::class, "store"])->name("contact-form-query.store");
     Route::post("subscribe-to-newsletter", [NewsletterSubscriptionController::class, "subscribe"])->name("newsletters.subscribe");
     Route::get("faqs", [FaqApiController::class, "show"])->name("faqs.show");
+
+    Route::get("get-news", [PublishedNewsApiController::class, "getPublishedNews"])->name("news.getPublishedNews");
+    Route::get("show-news/{slug}", [PublishedNewsApiController::class, "getSingleNews"])->name("news.getSingleNews");
+
+    Route::get("get-jobs", [CareersApiController::class, "getPublishedJobs"])->name("careers.getPublishedJobs");
+    Route::get("show-job/{slug}", [CareersApiController::class, "showSingleJob"])->name("careers.showSingleJob");
+    Route::post("submit-job-application", [CareersApiController::class, "submitApplication"])->name("careers.submitApplication");
 });

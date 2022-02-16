@@ -16,6 +16,7 @@ class CreateJobPostsTable extends Migration
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100);
+            $table->string('slug', 150);
             $table->text('description')->nullable();
             $table->text('location')->nullable();
             $table->text('qualification')->nullable();
@@ -24,6 +25,7 @@ class CreateJobPostsTable extends Migration
             $table->string('image')->nullable();
             $table->timestamp('start_datetime')->nullable();
             $table->timestamp('end_datetime')->nullable();
+            $table->timestamp('published_at')->nullable();
             $table->unsignedBigInteger('created_by')->default(0);
             $table->unsignedBigInteger('modified_by')->default(0);
             $table->integer('active')->default(0);

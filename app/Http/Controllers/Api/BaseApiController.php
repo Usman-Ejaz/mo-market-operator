@@ -8,10 +8,33 @@ use Illuminate\Http\Request;
 class BaseApiController extends Controller
 {
     /**
-     * success response method.
+     * @OA\Info(
+     *      version="1.0.0",
+     *      title="ISMO API Documentation",
+     *      description="Ismo Api documentation description",
+     *      @OA\Contact(
+     *          email="usman.ejaz@nxb.com.pk"
+     *      ),
+     *      @OA\License(
+     *          name="Apache 2.0",
+     *          url="http://www.apache.org/licenses/LICENSE-2.0.html"
+     *      )
+     * )
      *
-     * @return \Illuminate\Http\Response
+     * @OA\Server(
+     *      url=L5_SWAGGER_CONST_HOST,
+     *      description="Demo API Server"
+     * )
+     * 
+     * @OA\SecurityScheme(
+     *    securityScheme="BearerAppKey",
+     *    in="header",
+     *    name="Authorization",
+     *    type="apiKey"
+     * ),
      */
+
+     
     public function sendResponse($result, $message, $code = 200)
     {
         $response = [

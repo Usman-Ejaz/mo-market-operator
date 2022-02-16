@@ -14,10 +14,12 @@ class NewsletterSubscriptionController extends BaseApiController
         $validator = Validator::make($request->all(), [
             'name' => 'bail|required|string|min:3|max:100',
             'email' => 'bail|required|email|string|unique:subscribers,email'
+        ], [
+            'email.unique' => 'This email is already subscribed to newslettes.'
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError("Error", $validator->errors(), 401);
+            return $this->sendError("Error", ['errors' => $validator->errors()], 401);
         }
         
         Subscriber::create($request->all());

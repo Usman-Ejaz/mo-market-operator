@@ -19,7 +19,7 @@ class ContactFormQueryController extends BaseApiController
         ]);
  
         if ($validator->fails()) {
-            return $this->sendError("Error", $validator->errors(), 401);
+            return $this->sendError("Error", ['errors' => $validator->errors()], 401);
         }
         
         ContactPageQuery::create($request->all());

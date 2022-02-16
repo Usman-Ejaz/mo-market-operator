@@ -36,6 +36,10 @@ class Job extends Model
 
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+    }    
+
+    public function getImageAttribute ($value) {
+        return $value ? asset(config("filepaths.jobImagePath.public_path") . $value) : null;
     }
 
 
@@ -48,14 +52,20 @@ class Job extends Model
         $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
     }
 
-    public function applications(){
-        return $this->hasMany(Application::class);
-    }
-
     public function activeOptions(){
         return [
             0 => 'Draft',
             1 => 'Active'
         ];
+    }
+
+    // Relations
+    public function applications() {
+        return $this->hasMany(Application::class);
+    }
+
+    // Scope Queries
+    public function scopePublished ($query) {
+        return $query->where("published_at", "!=", null)->select("title", "slug", "description", "location", "qualification", "experience", "total_positions", "image", "start_datetime", "end_datetime");
     }
 }

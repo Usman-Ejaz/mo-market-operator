@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class JobFactory extends Factory
 {
@@ -16,6 +17,7 @@ class JobFactory extends Factory
     {
         return [
             'title' => $this->faker->name(),
+            'slug' => Str::slug($this->faker->name()),
             'description' => $this->faker->paragraph(10),
             'location' => implode(",", $this->faker->randomElements(['Lahore', 'Karachi', 'Islamabad', 'Quetta', 'Peshawar'], 2)),
             'experience' => implode(",", $this->faker->randomElements(['2 years', '3 years', '4 years', '5 years', '6 years'], 1)),

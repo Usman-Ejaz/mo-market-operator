@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ApiKey;
 use App\Models\Application;
 use App\Models\ContactPageQuery;
 use App\Models\Document;
@@ -115,6 +116,9 @@ class DatabaseSeeder extends Seeder
 
         // Contact Page Queries
         ContactPageQuery::factory(20)->create();
+
+        // ApiKey
+        ApiKey::factory(1)->create();
     }
 
 

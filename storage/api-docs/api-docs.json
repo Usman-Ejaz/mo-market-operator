@@ -1,0 +1,108 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ISMO API Documentation",
+        "description": "Ismo Api documentation description",
+        "contact": {
+            "email": "usman.ejaz@nxb.com.pk"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api/v1",
+            "description": "Demo API Server"
+        }
+    ],
+    "paths": {
+        "/get-jobs": {
+            "get": {
+                "tags": [
+                    "Jobs & Job Applications"
+                ],
+                "summary": "Get list of Published Jobs",
+                "description": "Returns list of Jobs",
+                "operationId": "getPublishedJobs",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/show-job/{slug}": {
+            "get": {
+                "tags": [
+                    "Jobs & Job Applications"
+                ],
+                "summary": "Get Specific Job against slug",
+                "description": "Returns list of Jobs",
+                "operationId": "showSingleJob",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Job slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAppKey": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Jobs & Job Applications",
+            "description": "API Endpoints of Jobs & Job Applications"
+        },
+        {
+            "name": "Jobs & Job Applications",
+            "description": "API Endpoints of Jobs & Job Applications"
+        }
+    ],
+    "security": [
+        []
+    ]
+}
