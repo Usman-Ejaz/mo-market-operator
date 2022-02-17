@@ -43,7 +43,7 @@
                 <small class="fileExists">
                   <p>
                     Open Attachment Of - 
-                    <a href="{{ asset( config('filepaths.documentsFilePath.internal_path') .$document->file) }}" target="_blank">
+                    <a href="{{ $document->file }}" target="_blank">
                       {{$document->title}}
                     </a>
                     <span class="btn-sm btn-danger float-right" id="deleteFile" title="Delete File"><i class="fa fa-trash"></i></span>

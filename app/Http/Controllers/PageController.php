@@ -56,6 +56,11 @@ class PageController extends Controller
 
         $this->storeImage($page);
 
+        if ($request->action === "Published") {
+            $page->published_at = now()->format("d/m/Y h:i A");
+            $page->save();
+        }
+
         $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
     }
@@ -107,6 +112,14 @@ class PageController extends Controller
             unlink($file_path);
         }
         $page->update($this->validateRequest($page));
+
+        if ($request->action === "Unpublished") {
+            $page->published_at = null;
+            $page->save();
+        } else if ($request->action === "Published") {
+            $page->published_at = now();
+            $page->save();
+        }
 
         $this->storeImage($page);
 

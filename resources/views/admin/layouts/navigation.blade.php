@@ -11,7 +11,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{url( config('filepaths.userProfileImagePath.public_path').Auth::user()->image ) }}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ Auth::user()->image }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
@@ -97,6 +97,17 @@
           </li>
           @endif
 
+          @if( Auth::user()->role->hasPermission('contact-page-queries', 'list') )
+          <li class="nav-item">
+            <a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('admin/contact-page-queries*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-question-circle"></i>
+              <p>
+                Contact Page Queries
+              </p>
+            </a>
+          </li>
+          @endif
+          
           @if(Auth::user()->role->hasPermission('roles', 'list') || Auth::user()->role->hasPermission('permissions', 'view') || Auth::user()->role->hasPermission('menus', 'list') || Auth::user()->role->hasPermission('settings', 'list'))
           <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/settings*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">

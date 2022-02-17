@@ -31,4 +31,13 @@ class Document extends Model
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
+
+    public function getFileAttribute ($value) {
+        return !empty($value) ? asset(config('filepaths.documentsFilePath.internal_path') . $value) : null;
+    }
+
+    // Scope Queries
+    public function scopePublished ($query) {
+        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id");
+    }
 }

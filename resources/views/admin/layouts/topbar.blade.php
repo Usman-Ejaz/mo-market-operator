@@ -52,16 +52,18 @@
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
+      <!-- <li class="nav-item">
+        <button type="submit" class="btn btn-default mr-2">
+          <i class="fas fa-sign-out-alt"></i> Change Password
+        </button>
+      </li> -->
       <li class="nav-item">
- 
         <form method="POST" action="{{ route('admin.logout') }}">
               @csrf
             <button type="submit" class="btn btn-default">
               <i class="fas fa-sign-out-alt"></i> Logout
             </button>
         </form>
-
-        
       </li>
     </ul>
   </nav>
