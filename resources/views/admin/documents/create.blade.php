@@ -19,9 +19,12 @@
 
             @include('admin.documents.form')
             <div class="card-footer">
-                <div class="float-right">
-                  <button type="submit" class="btn btn-primary draft_button">Save</button>
-                </div>
+              <input type="hidden" name="action" id="action">
+              
+              <button type="submit" class="btn btn-primary draft_button">Save</button>
+              @if (Auth::user()->role->hasPermission('documents', 'publish'))
+                <button type="submit" class="btn btn-success publish_button">Publish</button>
+              @endif
             </div>
           </div>
         </div>
@@ -36,6 +39,15 @@
 
   <script>
     $(document).ready(function(){
+
+      // Set hidden fields based on button click
+      $('.draft_button').click(function(e) {
+        $('#action').val("Added");
+      });
+
+      $('.publish_button').click(function(e) {
+        $('#action').val("Published");
+      });
 
       $.validator.addMethod("notNumericValues", function(value, element) {
           return this.optional(element) || isNaN(Number(value));

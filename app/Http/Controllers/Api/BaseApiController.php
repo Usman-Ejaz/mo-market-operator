@@ -23,7 +23,7 @@ class BaseApiController extends Controller
      *
      * @OA\Server(
      *      url=L5_SWAGGER_CONST_HOST,
-     *      description="Demo API Server"
+     *      description="API Base URL"
      * )
      * 
      * @OA\SecurityScheme(

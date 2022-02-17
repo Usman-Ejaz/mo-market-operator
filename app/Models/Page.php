@@ -36,6 +36,10 @@ class Page extends Model
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
+    public function getImageAttribute ($value) {
+        return !empty($value) ? asset(config("filepaths.pageImagePath.public_path") . $value) : null;
+    }
+
 
     /********** Setters *********/
     public function setStartDatetimeAttribute($attribute){

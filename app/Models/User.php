@@ -69,6 +69,10 @@ class User extends Authenticatable
         return Role::latest()->get();
     }
 
+    public function getImageAttribute($value) {
+        return !empty($value) ? asset(config("filepaths.userProfileImagePath.public_path") . $value) : null;
+    }
+
 //    public function departments(){
 //        return Role::latest()->get();
 //    }

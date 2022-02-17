@@ -17,6 +17,9 @@ class CareersApiController extends BaseApiController
      *     description="API Endpoints of Jobs & Job Applications"
      * )
      * 
+     */ 
+
+    /** 
      * @OA\Get(
      *      path="/get-jobs",
      *      operationId="getPublishedJobs",
@@ -26,10 +29,10 @@ class CareersApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Success"          
      *       ),
      *      @OA\Response(
-     *          response=402,
+     *          response=401,
      *          description="Unauthorized",
      *      ),
      *      @OA\Response(
@@ -49,16 +52,11 @@ class CareersApiController extends BaseApiController
                 return $this->sendError("Error", ['errors' => 'Could not found jobs'], 404);
             }
         } catch (\Exception $ex) {
-            return $this->sendError("Something went wrong.", ["errors" => $ex->getMessage()], 402);
+            return $this->sendError("Something went wrong.", ["errors" => $ex->getMessage()], 500);
         }         
     }
 
     /**
-     * 
-     * @OA\Tag(
-     *     name="Jobs & Job Applications",
-     *     description="API Endpoints of Jobs & Job Applications"
-     * )
      * 
      * @OA\Get(
      *      path="/show-job/{slug}",
@@ -105,6 +103,106 @@ class CareersApiController extends BaseApiController
         }
     }
 
+    /**
+     * 
+     * @OA\Post(
+     *      path="/submit-job-application",
+     *      operationId="submitApplication",
+     *      tags={"Jobs & Job Applications"},
+     *      summary="Submit Job Application",
+     *      description="Submit Job Application in the resource",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      title="Name",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      title="email",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="gender",
+     *                      title="gender",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="phone",
+     *                      title="phone",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="experience",
+     *                      title="experience",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="city",
+     *                      title="city",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="degree_level",
+     *                      title="degree_level",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="degree_title",
+     *                      title="degree_title",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address",
+     *                      title="address",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="slug",
+     *                      title="slug",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="resume",
+     *                      title="resume",
+     *                      type="file"
+     *                  ),
+     *                  required={"name", "email", "gender", "city", "experience", "phone", "degree_level", "degree_title", "address", "slug", "resume"},
+     *                  example={
+     *                      "name": "John Doe", 
+     *                      "email": "johndoe@email.com", 
+     *                      "gender": "male", 
+     *                      "experience": "2 Years", 
+     *                      "phone": "03001234567", 
+     *                      "degree_level": "Masters",
+     *                      "degree_title": "MSC",
+     *                      "address": "USA",
+     *                      "city": "California",
+     *                  }
+     *             )
+     *         )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
     public function submitApplication (Request $request) {
         $validator = Validator::make($request->all(), $this->getApplicationRules());
 

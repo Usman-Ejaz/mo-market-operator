@@ -24,6 +24,7 @@ class JobFactory extends Factory
             'qualification' => $this->faker->name(),
             'total_positions' => $this->faker->numberBetween(1,5),
             'image' => $this->faker->image( 'storage/app/' . config('filepaths.jobImagePath.internal_path'), 640, 480, 'cats', false),
+            'published_at' => $this->faker->randomElement([null, now()]),
             'start_datetime' => null,
             'end_datetime' => null,
             'created_by' => User::all()->random()->id,

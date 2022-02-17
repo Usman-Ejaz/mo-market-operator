@@ -67,8 +67,13 @@ class DocumentController extends Controller
                 $request->session()->flash('success', 'Document Was Not Converted Successfully!');
             }
         }
+
+        if ($request->action === "Published") {
+            $document->published_at = now();
+            $document->save();
+        }
         
-        $request->session()->flash('success', 'Document Added Successfully!');
+        $request->session()->flash('success', "Document {$request->action} Successfully!");
         return redirect()->route('admin.documents.index');
     }
 
@@ -132,7 +137,15 @@ class DocumentController extends Controller
             }
         }
 
-        $request->session()->flash('success', 'Document Updated Successfully!');
+        if ($request->action === "Published") {
+            $document->published_at = now();
+            $document->save();
+        } else if ($request->action === "Unublished") {
+            $document->published_at = null;
+            $document->save();
+        }
+
+        $request->session()->flash('success', "Document {$request->action} Successfully!");
         return redirect()->route('admin.documents.index');
     }
 
@@ -148,7 +161,7 @@ class DocumentController extends Controller
             return abort(403);
         }
 
-        $file_path = config('filepaths.documentsFilePath.internal_path').$document->file;
+        $file_path = config('filepaths.documentsFilePath.internal_path').basename($document->file);
         $document->delete();
         unlink($file_path);
 
@@ -260,7 +273,7 @@ class DocumentController extends Controller
             if( isset($request->document_id) ){
 
                 $document = Document::find($request->document_id);
-                $file_path = config('filepaths.documentsFilePath.internal_path').$document->file;
+                $file_path = config('filepaths.documentsFilePath.internal_path').basename($document->file);
 
                 if( unlink($file_path) ){
                     $document->file = null;

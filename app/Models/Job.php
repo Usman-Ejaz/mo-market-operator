@@ -66,6 +66,6 @@ class Job extends Model
 
     // Scope Queries
     public function scopePublished ($query) {
-        return $query->where("published_at", "!=", null)->select("title", "slug", "description", "location", "qualification", "experience", "total_positions", "image", "start_datetime", "end_datetime");
+        return $query->where("published_at", "!=", null)->select("title", "slug", "description", "location", "qualification", "experience", "published_at", "total_positions", "image");
     }
 }

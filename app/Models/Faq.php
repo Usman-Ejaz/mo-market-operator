@@ -31,4 +31,9 @@ class Faq extends Model
             1 => 'Active'
         ];
     }
+
+    // Scope Queries
+    public function scopePublished ($query) {
+        return $query->where("published_at", "!=", null)->select("question", "answer");
+    }
 }

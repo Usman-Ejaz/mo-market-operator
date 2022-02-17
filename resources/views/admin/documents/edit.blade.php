@@ -18,9 +18,22 @@
             @method('PATCH')
             @include('admin.documents.form')
 
-            <div class="card-footer">
+            <div class="card-footer">            
               <div class="float-right">
+
+              <input type="hidden" name="action" id="action">
+
+              @if ($document->published_at !== null)
+                <button type="submit" class="btn btn-primary publish_button">Update</button>
+                @if (Auth::user()->role->hasPermission('documents', 'publish'))
+                  <button type="submit" class="btn btn-danger unpublish_button">Unpublish</button>
+                @endif
+              @else
                 <button type="submit" class="btn btn-primary draft_button">Update</button>
+                @if( Auth::user()->role->hasPermission('documents', 'publish'))
+                  <button type="submit" class="btn btn-success publish_button">Publish</button>
+                @endif
+              @endif
               </div>
             </div>
 
@@ -37,6 +50,19 @@
 
   <script>
     $(document).ready(function(){
+
+      $('.draft_button').click(function(e) {
+        $('#action').val("Updated");
+      });
+
+      $('.publish_button').click(function(e) {
+        $('#action').val("Published");
+      });
+
+      $('.unpublish_button').click(function(e) {
+        $('#action').val("Unpublished");
+      });
+
       $.validator.addMethod("notNumericValues", function(value, element) {
           return this.optional(element) || isNaN(Number(value));
       }, '{{ __("messages.not_numeric") }}');
@@ -59,7 +85,11 @@
             notNumericValues: true
           },
           file: {
-            required:true,
+            required: {
+              depends: function () {
+                return $(".fileExists").length > 0 ? false : true;
+              }
+            },
             extension: "doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt"
           }
         },

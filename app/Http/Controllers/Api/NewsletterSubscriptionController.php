@@ -9,6 +9,64 @@ use Illuminate\Support\Facades\Validator;
 
 class NewsletterSubscriptionController extends BaseApiController
 {
+
+    /**
+     * 
+     * @OA\Tag(
+     *     name="Newsletters",
+     *     description="API Endpoints of Newsletters"
+     * )
+     * 
+     */ 
+
+    /**
+     * 
+     * @OA\Post(
+     *      path="/subscribe-to-newsletter",
+     *      operationId="subscribe",
+     *      tags={"Newsletters"},
+     *      summary="Subscribe Newsletter",
+     *      description="Subscribe to Newsletters",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      title="name",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      title="email",
+     *                      type="string"
+     *                  ),
+     *                  required={"name", "email"},
+     *                  example={
+     *                      "name": "John Doe", 
+     *                      "email": "johndoe@email.com"
+     *                  }
+     *             )
+     *         )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
     public function subscribe(Request $request)
     {
         $validator = Validator::make($request->all(), [

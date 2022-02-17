@@ -118,6 +118,9 @@ class NewsController extends Controller
         if ($request->action === "Unpublished") {
             $news->published_at = null;
             $news->save();
+        } else if ($request->action === "Published") {
+            $news->published_at = now();
+            $news->save();
         }
 
         $request->session()->flash('success', "News {$request->action} Successfully!");

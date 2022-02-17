@@ -107,6 +107,7 @@ return [
             "list" => "List",
             "create" => "Create",
             "edit" => "Edit",
+            "publish" => "Publish",
             "delete" => "Delete",
         ]
     ],
