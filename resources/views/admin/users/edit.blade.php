@@ -45,18 +45,9 @@
         $("#sendEmail").val("1");
       });
 
-      $.validator.addMethod(
-        "notNumericValues",
-        function(value, element) {
+      $.validator.addMethod("notNumericValues", function(value, element) {
           return this.optional(element) || isNaN(Number(value));
-        },
-        '{{ __("messages.not_numeric") }}'
-      );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
+      }, '{{ __("messages.not_numeric") }}');
 
         $('#update-users-form').validate({
             errorElement: 'span',
@@ -66,15 +57,13 @@
                 name: {
                     required: true,
                     maxlength: 64,
-                    minlength: 2,
-                    notNumericValues: true,
-                    noSpace: true
+                    minlength: 3,
+                    notNumericValues: true
                 },
                 email:{
                     required: true,
                     email: true,
-                    notNumericValues: true,
-                    noSpace: true
+                    notNumericValues: true,                    
                 },
                 role_id: {
                     required: true,
@@ -87,12 +76,17 @@
                 image: {
                     extension: "jpg|jpeg|png"
                 },
-                status: {
+                active: {
                     required : true,
                 }
             },
             messages: {
-              image: '{{ __("messages.valid_file_extension") }}'
+              image: '{{ __("messages.valid_file_extension") }}',
+              name: {
+                minlength: "{{ __('messages.min_characters', ['field' => 'Username', 'limit' => 3]) }}",
+                required: "This field is required.",
+                maxlength: "{{ __('messages.max_characters', ['limit' => 64]) }}"
+              }
             }
         });
 

@@ -146,9 +146,9 @@
         rules:{
           title: {
             required: true,
-            minlength: 2,
-            notNumericValues: true,
-            noSpace: true
+            minlength: 3,
+            maxlength: 255,
+            notNumericValues: true,            
           },
           description:{
             ckeditor_required: true,
@@ -157,20 +157,17 @@
           qualification: {
             required: true,
             minlength: 5,
-            notNumericValues: true,
-            noSpace: true          
+            notNumericValues: true,                      
           },
           experience: {
             required: true,
             minlength: 2,
-            notNumericValues: true,
-            noSpace: true           
+            notNumericValues: true,                       
           },
           location: {
             required: true,
             minlength: 5,
-            notNumericValues: true,
-            noSpace: true           
+            notNumericValues: true,                       
           },
           total_positions: {
             required: true,
@@ -197,7 +194,12 @@
           error.insertAfter(element);
         },
         messages: {
-          image: '{{ __("messages.valid_file_extension") }}'
+          image: '{{ __("messages.valid_file_extension") }}',
+          title: {
+            minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
+            required: "This field is required.",
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
+          }
         }
       });
     });

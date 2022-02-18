@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
 
         // 
         'preventBrowserHistory' => \App\Http\Middleware\PreventBrowserHistory::class,
+        'verifyApiKey' => \App\Http\Middleware\VerifyApiKey::class
     ];
 }

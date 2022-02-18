@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,6 +56,11 @@ class JobController extends Controller
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $job = Job::create($job);
         $this->storeImage($job);
+
+        if ($request->action === "Published") {
+            $job->published_at = Carbon::parse(now())->format(config("settings.datetime_format"));
+            $job->save();
+        }
 
         $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
@@ -113,6 +119,14 @@ class JobController extends Controller
 
         $job->update($data);
         $this->storeImage($job);
+
+        if ($request->action === "Unpublished") {
+            $job->published_at = null;
+            $job->save();
+        } else if ($request->action === "Published") {
+            $job->published_at = now();
+            $job->save();
+        }
 
         $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
@@ -222,22 +236,22 @@ class JobController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return ($row->name) ? ( (strlen($row->name) > 30) ? substr($row->name,0,30).'...' : $row->name ) : '';
+                    return truncateWords($row->name, 30);
                 })
                 ->addColumn('email', function ($row) {
-                    return ($row->email) ? ( (strlen($row->email) > 30) ? substr($row->email,0,30).'...' : $row->email ) : '';
+                    return truncateWords($row->email, 30);
                 })
                 ->addColumn('gender', function ($row) {
-                    return ($row->gender) ? ( (strlen($row->gender) > 10) ? substr($row->gender,0,10).'...' : $row->gender ) : '';
+                    return truncateWords($row->gender, 10);
                 })
                 ->addColumn('phone', function ($row) {
-                    return ($row->phone) ? ( (strlen($row->phone) > 20) ? substr($row->phone,0,20).'...' : $row->phone ) : '';
+                    return truncateWords($row->phone, 20);
                 })
                 ->addColumn('city', function ($row) {
-                    return ($row->city) ? ( (strlen($row->city) > 25) ? substr($row->city,0,25).'...' : $row->city ) : '';
+                    return truncateWords($row->city, 25);
                 })
                 ->addColumn('experience', function ($row) {
-                    return ($row->experience) ? ( (strlen($row->experience) > 10) ? substr($row->experience,0,10).'...' : $row->experience ) : '';
+                    return truncateWords($row->experience, 10);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
@@ -245,7 +259,7 @@ class JobController extends Controller
                 ->addColumn('action', function ($row) {
                         $options = '';
                         if( Auth::user()->role->hasPermission('applications', 'view') ) {
-                            $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="edit">
+                            $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="View">
                                 <i class="fas fa-eye"></i>
                             </a>';
                         }
@@ -254,7 +268,7 @@ class JobController extends Controller
                                 '.csrf_field().'
                                 '.method_field("DELETE").'
                                 <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="delete">
+                                    onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
                                         <i class="fas fa-trash"></i>
                                 </button>
                             </form>';
@@ -290,17 +304,17 @@ class JobController extends Controller
             fputcsv($file, $columns);
 
             foreach ($data as $application) {
-                $row['id']  = $application->id;
-                $row['name']  = $application->name;
-                $row['email']    = $application->email;
-                $row['gender']    = $application->gender;
-                $row['phone']  = $application->phone;
-                $row['address']  = $application->address;
-                $row['city']  = $application->city;
-                $row['experience']    = $application->experience;
-                $row['degree_level']    = $application->degree_level;
-                $row['degree_title']  = $application->degree_title;
-                $row['created_at']  = $application->created_at;
+                $row['id'] = $application->id;
+                $row['name'] = $application->name;
+                $row['email'] = $application->email;
+                $row['gender'] = $application->gender;
+                $row['phone'] = $application->phone;
+                $row['address'] = $application->address;
+                $row['city'] = $application->city;
+                $row['experience'] = $application->experience;
+                $row['degree_level'] = $application->degree_level;
+                $row['degree_title'] = $application->degree_title;
+                $row['created_at'] = $application->created_at;
 
                 fputcsv($file, array($row['id'], $row['name'], $row['email'], $row['gender'], $row['phone'], $row['address'], $row['city'], $row['experience'], $row['degree_level'], $row['degree_title'], $row['created_at']));
             }

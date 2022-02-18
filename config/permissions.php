@@ -59,7 +59,7 @@ return [
     ],
     [
         "name" => "applications",
-        "display_name" => "Applications",
+        "display_name" => "Applications of job",
         "capabilities" => [
             "view" => "View",
             "delete" => "Delete",
@@ -107,6 +107,7 @@ return [
             "list" => "List",
             "create" => "Create",
             "edit" => "Edit",
+            "publish" => "Publish",
             "delete" => "Delete",
         ]
     ],
@@ -149,5 +150,14 @@ return [
             "subscribe" => "Subscribe",
         ]
     ],    
+    [
+        "name" => "contact-page-queries",
+        "display_name" => "Contact Page Queries",
+        "capabilities" => [
+            "list" => "List",
+            "view" => "View",
+            "delete" => "Delete",
+        ]
+    ]
 
 ];

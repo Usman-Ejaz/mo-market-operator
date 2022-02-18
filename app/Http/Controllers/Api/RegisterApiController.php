@@ -17,12 +17,11 @@ class RegisterApiController extends BaseApiController
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
-            $success['token'] =  $user->createToken('MyApp')-> accessToken;
-            $success['name'] =  $user->name;
+            $success['token'] = $user->createToken('MyApp')->accessToken;
+            $success['name'] = $user->name;
 
             return $this->sendResponse($success, 'User login successfully.');
-        }
-        else{
+        } else {
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
         }
     }

@@ -43,7 +43,7 @@
     <div class="col-md-6">
             <div class="form-group">
                 <label>Status <span class="text-danger">*</span></label>
-                <select class="custom-select" name="active">
+                <select class="custom-select" name="active" id="active">
                     <option value="">Please select a status</option>
                     @foreach($user->activeOptions() as $statusId => $statusValue)
                         <option value="{{$statusId}}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
@@ -74,7 +74,7 @@
                     <input class="form-control" type="file" id="image" name="image">
                     <small class="form-text text-danger">{{ $errors->first('image') }} </small>
                     @if( isset($user->image) )
-                        <small class="text-primary imageExists"><a href="{{ asset( config('filepaths.userProfileImagePath.public_path') . $user->image) }}" target="_blank"><img src="{{ asset( config('filepaths.userProfileImagePath.public_path') .$user->image) }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
+                        <small class="text-primary imageExists"><a href="{{ $user->image }}" target="_blank"><img src="{{ $user->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
                     @endif
                 </div>
             </div>

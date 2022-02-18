@@ -137,7 +137,7 @@ class NewsletterController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('subject', function ($row) {
-                    return ($row->subject) ? ( (strlen($row->subject) > 80) ? substr($row->subject,0,80).'...' : $row->subject ) : '';
+                    return truncateWords($row->subject, 80);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';

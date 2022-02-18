@@ -59,6 +59,11 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
+        if ($request->action === "Published") {
+            $news->published_at = Carbon::parse(now())->format(config("settings.datetime_format"));
+            $news->save();
+        }
+
         $request->session()->flash('success', "News {$request->action} Successfully!");
         return redirect()->route('admin.news.index');
     }
@@ -110,6 +115,14 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
+        if ($request->action === "Unpublished") {
+            $news->published_at = null;
+            $news->save();
+        } else if ($request->action === "Published") {
+            $news->published_at = now();
+            $news->save();
+        }
+
         $request->session()->flash('success', "News {$request->action} Successfully!");
         return redirect()->route('admin.news.index');
     }
@@ -142,10 +155,13 @@ class NewsController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 27) ? substr($row->title,0,27).'...' : $row->title ) : '';
+                    return truncateWords($row->title, 27);
                 })
                 ->addColumn('slug', function ($row) {
-                    return ($row->slug) ? ( (strlen($row->slug) > 27) ? substr($row->slug,0,27).'...' : $row->slug ) : '';
+                    return truncateWords($row->slug, 27);
+                })
+                ->addColumn('keywords', function ($row) {
+                    return truncateWords($row->keywords, 27);
                 })
                 ->addColumn('news_category', function ($row) {
                     return ($row->news_category) ? $row->news_category : '';
@@ -191,6 +207,8 @@ class NewsController extends Controller
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
+        ], [
+            'slug.unique' => __('messages.unique', ['attribute' => 'Slug'])
         ]), function(){
             if( request()->hasFile('image') ){
                 request()->validate([

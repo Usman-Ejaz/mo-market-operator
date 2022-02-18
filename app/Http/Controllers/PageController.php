@@ -56,6 +56,11 @@ class PageController extends Controller
 
         $this->storeImage($page);
 
+        if ($request->action === "Published") {
+            $page->published_at = now()->format("d/m/Y h:i A");
+            $page->save();
+        }
+
         $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
     }
@@ -108,6 +113,14 @@ class PageController extends Controller
         }
         $page->update($this->validateRequest($page));
 
+        if ($request->action === "Unpublished") {
+            $page->published_at = null;
+            $page->save();
+        } else if ($request->action === "Published") {
+            $page->published_at = now();
+            $page->save();
+        }
+
         $this->storeImage($page);
 
         $request->session()->flash('success', "Page {$request->action} Successfully!");
@@ -144,10 +157,10 @@ class PageController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 35) ? substr($row->title,0,35).'...' : $row->title ) : '';
+                    return truncateWords($row->title, 35);
                 })
                 ->addColumn('slug', function ($row) {
-                    return ($row->slug) ? ( (strlen($row->slug) > 35) ? substr($row->slug,0,35).'...' : $row->slug ) : '';
+                    return truncateWords($row->slug, 35);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
@@ -180,7 +193,7 @@ class PageController extends Controller
 
         return tap( request()->validate([
             'title' => 'required|min:3',
-            'slug' => 'required',
+            'slug' => 'required|unique:pages,slug',
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
@@ -189,6 +202,8 @@ class PageController extends Controller
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
+        ], [
+            'slug.unique' => __('messages.unique', ['attribute' => 'Slug'])
         ]), function(){
             if( request()->hasFile('image') ){
                 request()->validate([
