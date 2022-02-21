@@ -35,9 +35,9 @@
                       <input type="hidden" name="active" id="status">
                       <input type="hidden" name="action" id="action">
 
-                      <button type="submit" class="btn btn-primary draft_button">Save</button>
+                      <button type="submit" class="btn width-120 btn-primary draft_button">Save</button>
                       @if( Auth::user()->role->hasPermission('jobs', 'publish') )
-                        <button type="submit" class="btn btn-success publish_button">Publish</button>
+                        <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                       @endif
 
                     </div>

@@ -24,14 +24,14 @@
               <input type="hidden" name="action" id="action">
 
               @if ($document->published_at !== null)
-                <button type="submit" class="btn btn-primary publish_button">Update</button>
+                <button type="submit" class="btn width-120 btn-primary publish_button">Update</button>
                 @if (Auth::user()->role->hasPermission('documents', 'publish'))
-                  <button type="submit" class="btn btn-danger unpublish_button">Unpublish</button>
+                  <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                 @endif
               @else
-                <button type="submit" class="btn btn-primary draft_button">Update</button>
+                <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
                 @if( Auth::user()->role->hasPermission('documents', 'publish'))
-                  <button type="submit" class="btn btn-success publish_button">Publish</button>
+                  <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                 @endif
               @endif
               </div>
