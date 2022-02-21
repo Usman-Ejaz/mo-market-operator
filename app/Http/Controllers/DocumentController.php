@@ -140,7 +140,7 @@ class DocumentController extends Controller
         if ($request->action === "Published") {
             $document->published_at = now();
             $document->save();
-        } else if ($request->action === "Unublished") {
+        } else if ($request->action === "Unpublished") {
             $document->published_at = null;
             $document->save();
         }

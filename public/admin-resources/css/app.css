@@ -50,3 +50,7 @@ ul.pagination li.active{
 #pages li {
     list-style-type: none;
 }
+
+.width-120 {
+    width: 120px;
+}

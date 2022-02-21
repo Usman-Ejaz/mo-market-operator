@@ -24,12 +24,12 @@
                                 <input type="hidden" name="action" id="action">
                                 
                                 @if($faq->active == 'Active')
-                                  <button type="submit" class="btn btn-primary publish_button">Update</button>
-                                  <button type="submit" class="btn btn-danger unpublish_button">Unpublish</button>
+                                  <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
+                                  <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                                 @elseif($faq->active == 'Draft')
-                                  <button type="submit" class="btn btn-primary draft_button">Update</button>
+                                  <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
                                   @if( Auth::user()->role->hasPermission('faqs', 'publish') )
-                                    <button type="submit" class="btn btn-success publish_button">Publish</button>
+                                    <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                   @endif
                                 @endif
                             </div>
@@ -48,6 +48,14 @@
 
   <script>
     $(document).ready(function(){
+
+      CKEDITOR.instances.answer.on('blur', function(e) {
+        var messageLength = CKEDITOR.instances.answer.getData().replace(/<[^>]*>/gi, '').length;
+        if (messageLength !== 0) {
+          $('#cke_answer').next().hasClass("my-error-class") && $('#cke_answer').next().remove();
+        }
+      });
+      
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
@@ -57,6 +65,11 @@
       $('.publish_button').click(function(e) {
         $('#status').val("1");  
         $('#action').val("Published");
+      }); 
+
+      $('.update_button').click(function(e) {
+        $('#status').val("1");  
+        $('#action').val("Updated");
       }); 
 
       $('.unpublish_button').click(function(e) {

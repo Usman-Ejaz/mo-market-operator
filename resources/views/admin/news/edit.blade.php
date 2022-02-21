@@ -39,12 +39,12 @@
               <input type="hidden" name="active" id="status">
               <input type="hidden" name="action" id="action">              
               @if($news->active == 'Active')
-                <button type="submit" class="btn btn-primary publish_button">Update</button>
-                <button type="submit" class="btn btn-danger unpublish_button">Unpublish</button>
+                <button type="submit" class="btn width-120 btn-primary publish_button">Update</button>
+                <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
               @elseif($news->active == 'Draft')
-                <button type="submit" class="btn btn-primary draft_button">Update</button>
+                <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
                 @if( Auth::user()->role->hasPermission('news', 'publish') )
-                    <button type="submit" class="btn btn-success publish_button">Publish</button>
+                    <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                 @endif
               @endif
             </div>
@@ -69,14 +69,16 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    // CKEDITOR.replace('editor1', {
-    //   height: 800,
-    //   baseFloatZIndex: 10005,
-    //   removeButtons: 'PasteFromWord'
-    // });
 
     //Date and time picker
     $(document).ready(function(){
+
+      CKEDITOR.instances.description.on('blur', function(e) {
+        var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
+        if (messageLength !== 0) {
+          $('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
+        }
+      });
 
     $('#start_datetime, #end_datetime').datetimepicker({
       format:'{{ config("settings.datetime_format") }}',
@@ -198,7 +200,7 @@
                 });
             }
         });
-
+        
     });
 
   </script>

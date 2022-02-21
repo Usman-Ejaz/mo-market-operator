@@ -73,6 +73,13 @@
 
     $(document).ready(function(){
 
+      CKEDITOR.instances.description.on('blur', function(e) {
+        var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
+        if (messageLength !== 0) {
+          $('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
+        }
+      });
+      
       //Date and time picker
       $('#start_datetime, #end_datetime').datetimepicker({
         format:'{{ config("settings.datetime_format") }}',

@@ -193,7 +193,7 @@ class PageController extends Controller
 
         return tap( request()->validate([
             'title' => 'required|min:3',
-            'slug' => 'required|unique:pages,slug',
+            'slug' => 'required|unique:pages,slug,'.$page->id,
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
