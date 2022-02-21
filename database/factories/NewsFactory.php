@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class NewsFactory extends Factory
 {
@@ -16,7 +17,7 @@ class NewsFactory extends Factory
     public function definition()
     {
         $title = $this->faker->sentence;
-        $slug = str_replace(' ', '-', $title);
+        $slug = Str::slug($title);
 
         return [
             'title' => $title,
@@ -26,6 +27,7 @@ class NewsFactory extends Factory
             'image' => $this->faker->image( 'storage/app/' . config('filepaths.newsImagePath.internal_path'), 640, 480, 'cats', false),
             'start_datetime' => null,
             'end_datetime' => null,
+            'published_at' => $this->faker->randomElement([null, now()]),
             'news_category' => $this->faker->numberBetween(1,3),
             'created_by' => User::all()->random()->id,
             'modified_by' => User::all()->random()->id,

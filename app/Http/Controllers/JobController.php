@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use Carbon\Carbon;
 use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +58,11 @@ class JobController extends Controller
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $job = Job::create($job);
         $this->storeImage($job);
+
+        if ($request->action === "Published") {
+            $job->published_at = Carbon::parse(now())->format(config("settings.datetime_format"));
+            $job->save();
+        }
 
         $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
@@ -115,6 +121,14 @@ class JobController extends Controller
         $data['slug'] = Str::slug($data['title']);
         $job->update($data);
         $this->storeImage($job);
+
+        if ($request->action === "Unpublished") {
+            $job->published_at = null;
+            $job->save();
+        } else if ($request->action === "Published") {
+            $job->published_at = now();
+            $job->save();
+        }
 
         $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
@@ -356,7 +370,7 @@ class JobController extends Controller
         if ($request->ajax()) {
             if( isset($request->job_id) ){
                 $job = Job::find($request->job_id);
-                $image_path = config('filepaths.jobImagePath.public_path').$job->image;
+                $image_path = config('filepaths.jobImagePath.public_path').basename($job->image);
                 if( unlink($image_path) ){
                     $job->image = null;
                     $job->update();

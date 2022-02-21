@@ -8,7 +8,7 @@
 
 @section('addButton')
     @if( Auth::user()->role->hasPermission('news', 'create') )
-        <button class="btn btn-primary float-right" id="addNewSubmenu" href="#">Add new submenu</button>
+        <button class="btn btn-primary float-right" id="addNewSubmenu" href="#">Add New Submenu</button>
     @endif
 @endsection
 

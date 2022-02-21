@@ -56,6 +56,11 @@ class PageController extends Controller
 
         $this->storeImage($page);
 
+        if ($request->action === "Published") {
+            $page->published_at = now()->format("d/m/Y h:i A");
+            $page->save();
+        }
+
         $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
     }
@@ -103,10 +108,18 @@ class PageController extends Controller
             return abort(403);
         }
         if (request()->has('image')) {
-            $file_path = config('filepaths.pageImagePath.public_path').$page->image; 
+            $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
             unlink($file_path);
         }
         $page->update($this->validateRequest($page));
+
+        if ($request->action === "Unpublished") {
+            $page->published_at = null;
+            $page->save();
+        } else if ($request->action === "Published") {
+            $page->published_at = now();
+            $page->save();
+        }
 
         $this->storeImage($page);
 
@@ -125,7 +138,7 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'delete') ){
             return abort(403);
         }
-        $file_path = config('filepaths.pageImagePath.public_path').$page->image;
+        $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
         unlink($file_path);
 
         $page->delete();
@@ -218,7 +231,7 @@ class PageController extends Controller
             if( isset($request->page_id) ){
 
                 $page = Page::find($request->page_id);
-                $image_path = config('filepaths.pageImagePath.public_path').$page->image;
+                $image_path = config('filepaths.pageImagePath.public_path').basename($page->image);
 
                 if( unlink($image_path) ){
                     $page->image = null;

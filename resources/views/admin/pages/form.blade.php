@@ -39,8 +39,8 @@
             <label for="page_image" class="form-label" >Page Image</label>
             <input class="form-control" type="file" id="page_image" name="image">
             <small class="form-text text-danger">{{ $errors->first('image') }} </small>
-            @if( isset($page->image) )
-                <small class="text-primary imageExists"><a href="{{ asset( config('filepaths.pageImagePath.public_path') .$page->image) }}" target="_blank"><img src="{{ asset( config('filepaths.pageImagePath.public_path') .$page->image) }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
+            @if (isset($page->image))
+                <small class="text-primary imageExists"><a href="{{ $page->image }}" target="_blank"><img src="{{ $page->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
             @endif
         </div>
     </div>

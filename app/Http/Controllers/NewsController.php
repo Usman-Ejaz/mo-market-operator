@@ -59,6 +59,11 @@ class NewsController extends Controller
 
         $this->storeImage($news);
 
+        if ($request->action === "Published") {
+            $news->published_at = Carbon::parse(now())->format(config("settings.datetime_format"));
+            $news->save();
+        }
+
         $request->session()->flash('success', "News {$request->action} Successfully!");
         return redirect()->route('admin.news.index');
     }
@@ -109,6 +114,14 @@ class NewsController extends Controller
         $news->update($this->validateRequest($news));
 
         $this->storeImage($news);
+
+        if ($request->action === "Unpublished") {
+            $news->published_at = null;
+            $news->save();
+        } else if ($request->action === "Published") {
+            $news->published_at = now();
+            $news->save();
+        }
 
         $request->session()->flash('success', "News {$request->action} Successfully!");
         return redirect()->route('admin.news.index');
@@ -223,7 +236,7 @@ class NewsController extends Controller
             if( isset($request->news_id) ){
 
                 $news = News::find($request->news_id);
-                $image_path = config('filepaths.newsImagePath.public_path').$news->image;
+                $image_path = config('filepaths.newsImagePath.public_path').basename($news->image);
 
                 if( unlink($image_path) ){
                     $news->image = null;
