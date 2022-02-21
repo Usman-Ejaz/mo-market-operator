@@ -40,7 +40,7 @@
               <input type="hidden" name="action" id="action">
 
               @if($page->active == 'Active')
-                <button type="submit" class="btn width-120 btn-primary publish_button">Update</button>
+                <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
                 @if( Auth::user()->role->hasPermission('pages', 'publish') )
                   <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                 @endif
@@ -100,6 +100,12 @@
         $('#action').val("Published");
       });
 
+      $('.update_button').click(function(e) {
+        $('#status').val("1");
+        $('#action').val("Updated");
+      });
+
+
       $('.unpublish_button').click(function(e) {
         $('#status').val("0");
         $('#action').val("Unpublished");
@@ -111,6 +117,11 @@
         Text = Text.toLowerCase().trim();
         Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
         $("#slug").val(Text);
+
+        if ($("#slug").val().length > 0 && $("#slug").next().hasClass("my-error-class")) {
+          $("#slug").next().remove();
+          $("#slug").removeClass("my-error-class");
+        }
       });
 
       $.validator.addMethod("notNumericValues", function (value, element) {

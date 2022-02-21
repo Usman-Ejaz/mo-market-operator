@@ -97,6 +97,11 @@
         Text = Text.toLowerCase().trim();
         Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
         $("#slug").val(Text);
+
+        if ($("#slug").val().length > 0 && $("#slug").next().hasClass("my-error-class")) {
+          $("#slug").next().remove();
+          $("#slug").removeClass("my-error-class");
+        }
       });
 
       $.validator.addMethod("notNumericValues", function (value, element) {
