@@ -7,7 +7,7 @@
 
 @section('addButton')
     @if( Auth::user()->role->hasPermission('menus', 'create') )
-        <a class="btn btn-primary float-right" href="{{ route('admin.menus.create') }}">Add main menu</a>
+        <a class="btn btn-primary float-right" href="{{ route('admin.menus.create') }}">Add Main Menu</a>
     @endif
 @endsection
 

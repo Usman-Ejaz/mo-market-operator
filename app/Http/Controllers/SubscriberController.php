@@ -46,7 +46,7 @@ class SubscriberController extends Controller
                         $options .= '<form action="'. route('admin.subscribers.toggleSubscription', $row->id) .'" method="POST" style="display: inline-block;">
                                 '.csrf_field().'
                                 <input type="hidden" name="status" value="' . ($row->status == 'Subscribed' ? 0 : 1) . '">
-                                <button type="submit" class="btn btn-primary"
+                                <button type="submit" class="btn btn-primary width-120"
                                     onclick="return confirm(\'Are You Sure Want to '.  ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'">
                                         '. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'
                                 </button>

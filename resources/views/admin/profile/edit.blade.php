@@ -1,29 +1,27 @@
 @extends('admin.layouts.app')
-@section('header', 'Users')
+@section('header', 'Update Profile')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Users</a></li>
-  <li class="breadcrumb-item active">Update</li>
+  <li class="breadcrumb-item active">Update Profile</li>
 @endsection
 
 @section('content')
   <div class="container-fluid">
 
-      <form method="POST" action="{{ route('admin.users.update', $user->id) }}" enctype="multipart/form-data" id="update-users-form">
+      <form method="POST" action="{{ route('admin.profile.update', $user->id) }}" enctype="multipart/form-data" id="update-users-form">
         <div class="row">
           <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Editing User - {{ $user->name }}</h3>
+                <h3 class="card-title">Updating Profile - {{ $user->name }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
               @method('PATCH')
-              @include('admin.users.form')
+              @include('admin.profile.form')
               <input type="hidden" name="sendEmail" value="0" id="sendEmail">
               <div class="card-footer text-right">
                 <button type="submit" class="btn btn-primary draft_button">Update</button>
-                <button type="submit" class="btn btn-success mr-2 save-with-email">Update & Send Email</button>
               </div>
             </div>
           </div>
@@ -83,9 +81,9 @@
             messages: {
               image: '{{ __("messages.valid_file_extension") }}',
               name: {
-                minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
+                minlength: "{{ __('messages.min_characters', ['field' => 'Username', 'limit' => 3]) }}",
                 required: "This field is required.",
-                maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
+                maxlength: "{{ __('messages.max_characters', ['field' => 'Username', 'limit' => 64]) }}"
               }
             }
         });
@@ -95,7 +93,7 @@
 
             if (confirm('Are you sure you want to this image?')) {
                 $.ajax({
-                    url: "{{ route('admin.users.deleteImage') }}",
+                    url: "{{ route('admin.profile.deleteImage') }}",
                     type: 'POST',
                     data: {_token: "{{ csrf_token() }}", user_id: "{{$user->id}}"},
                     dataType: 'JSON',

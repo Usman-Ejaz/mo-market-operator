@@ -44,6 +44,13 @@
     //Date and time picker
     $(document).ready(function(){
 
+      CKEDITOR.instances.description.on('blur', function(e) {
+        var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
+        if (messageLength !== 0) {
+          $('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
+        }
+      });
+      
       $.validator.addMethod("notNumericValues", function (value, element) {
         return this.optional(element) || isNaN(Number(value));
       }, '{{ __("messages.not_numeric") }}');

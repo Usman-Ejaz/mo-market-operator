@@ -36,7 +36,7 @@
 <script>
 	$(document).ready(function() {
 		$.validator.addMethod("notNumericValues", function(value, element) {
-				return this.optional(element) || isNaN(Number(value));
+			return this.optional(element) || isNaN(Number(value));
 		}, '{{ __("messages.not_numeric") }}');
 
 		$('#update-document-form').validate({

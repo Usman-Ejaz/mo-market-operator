@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [RegisterApiController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('sitemap', [SitemapApiController::class, 'index']);    
+    
 });
 
 Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
@@ -43,4 +43,6 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
 
     Route::get("get-documents", [DocumentsApiController::class, "getPublishedDocs"])->name("documents.published");
     Route::post("search-document", [DocumentsApiController::class, "search"])->name("documents.search");
+
+    Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
 });

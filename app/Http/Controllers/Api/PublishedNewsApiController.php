@@ -54,7 +54,7 @@ class PublishedNewsApiController extends BaseApiController
                 return $this->sendResponse([], "Could not find news.");
             }
         } catch (\Exception $e) {
-            return $this->sendError("Something went wrong.", ["errors" => $e->getMessage()], 402);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
         }
     }
 
@@ -100,7 +100,7 @@ class PublishedNewsApiController extends BaseApiController
                 return $this->sendResponse([], "Could not found news");
             }
         } catch (\Exception $e) {
-            return $this->sendError("Something went wrong.", ["errors" => $e->getMessage()], 402);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 402);
         }
     }
 }

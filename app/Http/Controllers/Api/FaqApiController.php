@@ -55,7 +55,7 @@ class FaqApiController extends BaseApiController
                 return $this->sendError("Could not found faqs.", ["errors" => "Could not found faqs."], 404);
             }
         } catch (\Exception $ex) {
-            return $this->sendError("Something went wrong.", ["errors" => $ex->getMessage()], 500);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }        
     }
 }

@@ -236,7 +236,7 @@ class NewsController extends Controller
             if( isset($request->news_id) ){
 
                 $news = News::find($request->news_id);
-                $image_path = config('filepaths.newsImagePath.public_path').$news->image;
+                $image_path = config('filepaths.newsImagePath.public_path').basename($news->image);
 
                 if( unlink($image_path) ){
                     $news->image = null;

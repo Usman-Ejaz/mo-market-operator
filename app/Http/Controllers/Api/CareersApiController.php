@@ -52,7 +52,7 @@ class CareersApiController extends BaseApiController
                 return $this->sendError("Error", ['errors' => 'Could not found jobs'], 404);
             }
         } catch (\Exception $ex) {
-            return $this->sendError("Something went wrong.", ["errors" => $ex->getMessage()], 500);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }         
     }
 
@@ -99,7 +99,7 @@ class CareersApiController extends BaseApiController
                 return $this->sendError("Could not found jobs", [], 404);
             }
         } catch (\Exception $ex) {
-            return $this->sendError("Something went wrong.", ["errors" => $ex->getMessage()], 402);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }
     }
 
@@ -164,8 +164,8 @@ class CareersApiController extends BaseApiController
      *                      type="string"
      *                  ),
      *                  @OA\Property(
-     *                      property="slug",
-     *                      title="slug",
+     *                      property="job_slug",
+     *                      title="job_slug",
      *                      type="string"
      *                  ),
      *                  @OA\Property(
@@ -173,7 +173,7 @@ class CareersApiController extends BaseApiController
      *                      title="resume",
      *                      type="file"
      *                  ),
-     *                  required={"name", "email", "gender", "city", "experience", "phone", "degree_level", "degree_title", "address", "slug", "resume"},
+     *                  required={"name", "email", "gender", "city", "experience", "phone", "degree_level", "degree_title", "address", "job_slug", "resume"},
      *                  example={
      *                      "name": "John Doe", 
      *                      "email": "johndoe@email.com", 
@@ -211,7 +211,7 @@ class CareersApiController extends BaseApiController
         }
 
         try {
-            $job = Job::published()->where("slug", "=", $request->slug)->select("id")->first();
+            $job = Job::published()->where("slug", "=", $request->job_slug)->select("id")->first();
 
             if ($job) {
                 $application = Application::create($validator->validate());
@@ -229,7 +229,7 @@ class CareersApiController extends BaseApiController
                 return $this->sendError("Error", ["errors" => "Could not find the job."], 404);
             }
         } catch (\Exception $ex) {
-            return $this->sendError("Something went wrong.", ["errors" => $ex->getMessage()], 402);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }
     }
 
@@ -244,7 +244,8 @@ class CareersApiController extends BaseApiController
             'degree_level' => 'required|string|min:3|max:255',
             'degree_title' => 'required|string|min:3|max:255',
             'address' => 'required|string|min:3|max:500',
-            'resume' => 'required|file|mimes:doc,docx,pdf|max:20000'
+            'resume' => 'required|file|mimes:doc,docx,pdf|max:20000',
+            'job_slug' => 'required|string|min:3'
         ];
     }
 }

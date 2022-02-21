@@ -80,18 +80,22 @@ class ContactFormQueryController extends BaseApiController
      */
     public function store(Request $request) 
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|min:3|max:100',
-            'email' => 'required|email',
-            'subject' => 'required|min:5|max:100',
-            'message' => 'required|min:5|max:255',
-        ]);
- 
-        if ($validator->fails()) {
-            return $this->sendError("Error", ['errors' => $validator->errors()], 401);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|min:3|max:100',
+                'email' => 'required|email',
+                'subject' => 'required|min:5|max:100',
+                'message' => 'required|min:5|max:255',
+            ]);
+     
+            if ($validator->fails()) {
+                return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+            }
+
+            ContactPageQuery::create($request->all());
+            return $this->sendResponse([], "Query Submitted Successfully");
+        } catch (\Exception $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }
-        
-        ContactPageQuery::create($request->all());
-        return $this->sendResponse([], "Query Submitted Successfully", 201);
     }
 }

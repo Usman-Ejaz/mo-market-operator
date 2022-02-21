@@ -69,18 +69,23 @@ class NewsletterSubscriptionController extends BaseApiController
      */
     public function subscribe(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'bail|required|string|min:3|max:100',
-            'email' => 'bail|required|email|string|unique:subscribers,email'
-        ], [
-            'email.unique' => 'This email is already subscribed to newslettes.'
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError("Error", ['errors' => $validator->errors()], 401);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'bail|required|string|min:3|max:100',
+                'email' => 'bail|required|email|string|unique:subscribers,email'
+            ], [
+                'email.unique' => 'This email is already subscribed to newslettes.'
+            ]);
+    
+            if ($validator->fails()) {
+                return $this->sendError("Error", ['errors' => $validator->errors()], 401);
+            }
+            
+            Subscriber::create($request->all());
+            return $this->sendResponse([], "Subscribed to Newsletters Successfully!");
+        } catch (\Exception $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }
         
-        Subscriber::create($request->all());
-        return $this->sendResponse([], "Subscribed to Newsletters Successfully!");
     }
 }

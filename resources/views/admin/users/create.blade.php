@@ -109,7 +109,7 @@
           name: {
             minlength: "{{ __('messages.min_characters', ['field' => 'Username', 'limit' => 3]) }}",
             required: "This field is required.",
-            maxlength: "{{ __('messages.max_characters', ['limit' => 64]) }}"
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Username', 'limit' => 64]) }}"
           }
         }
       });

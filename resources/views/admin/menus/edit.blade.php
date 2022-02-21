@@ -76,6 +76,13 @@
                 active: {
                     required: true,
                 }
+            },
+            messages: {
+              name: {
+                minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
+                required: "This field is required.",
+                maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
+              }
             }
         });
 

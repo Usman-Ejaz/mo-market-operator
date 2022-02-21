@@ -7,5 +7,6 @@ return [
     "ckeditor_required" => "This field is required.",
     "max_characters" => ":field should not exceed the max length than :limit.",
     "min_characters" => ":field must be at least :limit characters long.",
-    "unique" => ":attribute field should be unique."
+    "unique" => ":attribute field should be unique.",
+    "something_wrong" => "Something went wrong."
 ];

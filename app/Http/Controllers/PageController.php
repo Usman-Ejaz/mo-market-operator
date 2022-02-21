@@ -108,7 +108,7 @@ class PageController extends Controller
             return abort(403);
         }
         if (request()->has('image')) {
-            $file_path = config('filepaths.pageImagePath.public_path').$page->image; 
+            $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
             unlink($file_path);
         }
         $page->update($this->validateRequest($page));
@@ -138,7 +138,7 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'delete') ){
             return abort(403);
         }
-        $file_path = config('filepaths.pageImagePath.public_path').$page->image;
+        $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
         unlink($file_path);
 
         $page->delete();
@@ -193,7 +193,7 @@ class PageController extends Controller
 
         return tap( request()->validate([
             'title' => 'required|min:3',
-            'slug' => 'required|unique:pages,slug',
+            'slug' => 'required|unique:pages,slug,'.$page->id,
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
@@ -231,7 +231,7 @@ class PageController extends Controller
             if( isset($request->page_id) ){
 
                 $page = Page::find($request->page_id);
-                $image_path = config('filepaths.pageImagePath.public_path').$page->image;
+                $image_path = config('filepaths.pageImagePath.public_path').basename($page->image);
 
                 if( unlink($image_path) ){
                     $page->image = null;
