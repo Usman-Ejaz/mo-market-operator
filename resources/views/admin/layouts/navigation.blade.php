@@ -14,7 +14,7 @@
           <img src="{{url( config('filepaths.userProfileImagePath.public_path').Auth::user()->image ) }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          <a href="{{ route('admin.profile.show') }}" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -101,7 +101,7 @@
           <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/settings*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
-                <p>Management <i class="fas fa-angle-left right"></i></p>
+                <p>Settings <i class="fas fa-angle-left right"></i></p>
             </a>
             <ul class="nav nav-treeview">
                 @if( Auth::user()->role->hasPermission('roles', 'list') )
@@ -135,7 +135,7 @@
                     <li class="nav-item">
                         <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings*') ? 'active' : '' }}">
                             <i class="fa fa-cog nav-icon"></i>
-                            <p>Settings</p>
+                            <p>Site Configuration</p>
                         </a>
                     </li>
                 @endif

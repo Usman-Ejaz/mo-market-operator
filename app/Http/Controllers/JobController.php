@@ -6,6 +6,7 @@ use App\Models\Job;
 use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class JobController extends Controller
 {
@@ -52,6 +53,7 @@ class JobController extends Controller
 
         $job = new Job();
         $job = $this->validateRequest($job);
+        $job['slug'] = Str::slug($job['title']);
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $job = Job::create($job);
         $this->storeImage($job);
@@ -110,7 +112,7 @@ class JobController extends Controller
 
         $data = $this->validateRequest($job);
         $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
-
+        $data['slug'] = Str::slug($data['title']);
         $job->update($data);
         $this->storeImage($job);
 
