@@ -57,7 +57,7 @@ class PageController extends Controller
         $this->storeImage($page);
 
         if ($request->action === "Published") {
-            $page->published_at = now()->format("d/m/Y h:i A");
+            $page->published_at = now();
             $page->save();
         }
 
@@ -107,7 +107,7 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'edit') ){
             return abort(403);
         }
-        if (request()->has('image')) {
+        if ($request->has('image') && $page->image !== null) {
             $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
             unlink($file_path);
         }
@@ -138,11 +138,13 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'delete') ){
             return abort(403);
         }
-        $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
-        unlink($file_path);
+
+        if ($page->image !== null) {
+            $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
+            unlink($file_path);
+        }
 
         $page->delete();
-
         return redirect()->route('admin.pages.index')->with('success', 'Page Deleted Successfully!');
     }
 

@@ -136,6 +136,7 @@
           title: {
             required: true,
             minlength: 2,
+            maxlength: 255,
             notNumericValues: true,            
           },
           description:{
@@ -169,7 +170,12 @@
           error.insertAfter(element);
         },
         messages: {
-          image: '{{ __("messages.valid_file_extension") }}'
+          image: '{{ __("messages.valid_file_extension") }}',
+          title: {
+            required: '{{ __("messages.required") }}',
+            minlength: '{{ __("messages.min_characters", ["field" => "Title", "limit", 3]) }}',
+            minlength: '{{ __("messages.max_characters", ["field" => "Title", "limit", 255]) }}',
+          },
         }
       });
     });
