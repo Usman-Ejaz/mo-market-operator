@@ -222,8 +222,8 @@
           image: '{{ __("messages.valid_file_extension") }}',
           title: {
             required: '{{ __("messages.required") }}',
-            minlength: '{{ __("messages.min_characters", ["field" => "Title", "limit", 3]) }}',
-            minlength: '{{ __("messages.max_characters", ["field" => "Title", "limit", 255]) }}',
+            minlength: '{{ __("messages.min_characters", ["field" => "Title", "limit" => 3]) }}',
+            minlength: '{{ __("messages.max_characters", ["field" => "Title", "limit" => 255]) }}',
           },
         }
       });

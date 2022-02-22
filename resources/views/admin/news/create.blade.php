@@ -60,12 +60,15 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-
+    function ckEditorTextLength(element) {
+      var editorId = $(element).attr('id');
+      var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').trim().length;
+    }
     //Date and time picker
     $(document).ready(function(){
 
       CKEDITOR.instances.description.on('blur', function(e) {
-        var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
+        var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').trim().length;
         if (messageLength !== 0) {
           $('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
         }
@@ -144,12 +147,15 @@
 
         // Error Message for this field | Should put on the single quotes given below.
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
-      }, '');
+      }, '');      
 
       $.validator.addMethod("ckeditor_required", function(value, element) {
-        var editorId = $(element).attr('id');
-        var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-        return messageLength !== 0;
+        return ckEditorTextLength(element) !== 0;
+      }, '{{ __("messages.ckeditor_required") }}');
+
+      $.validator.addMethod("ckeditor_minlength", function(value, element) {
+        debugger;
+        return ckEditorTextLength(element) > value;
       }, '{{ __("messages.ckeditor_required") }}');
 
       $('#create-news-form').validate({
@@ -167,6 +173,7 @@
           },
           description:{
             ckeditor_required: true,
+            ckeditor_minlength: 3,
             maxlength: 50000
           },
           slug: {
