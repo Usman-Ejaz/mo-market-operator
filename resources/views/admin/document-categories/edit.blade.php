@@ -46,8 +46,16 @@
 			rules: {
 				name: {
 					required: true,
-					minlength: 2,
+					minlength: 3,
+					maxlength: 255,
 					notNumericValues: true
+				}
+			},
+			messages: {
+				name: {
+					required: '{{ __("messages.required") }}',
+					minlength: '{{ __("messages.min_characters", ["field" => "Name", "limit" => 3]) }}',
+					maxlength: '{{ __("messages.max_characters", ["field" => "Name", "limit" => 255]) }}'
 				}
 			}
 		});
