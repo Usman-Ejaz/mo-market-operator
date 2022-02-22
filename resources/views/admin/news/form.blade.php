@@ -40,7 +40,7 @@
         <select class="custom-select" name="news_category" id="news_category">
           <option value="">Please select an option</option>
           @foreach($news->newsCategoryOptions() as $categoryId => $categoryValue)
-            @if(old('news_category') && old('news_category') == $categoryId)
+            @if(old('news_category') == $categoryId)
               <option value="{{$categoryId}}" selected>{{ $categoryValue }}</option>
             @else
               <option value="{{$categoryId}}" {{ ($news->news_category === $categoryValue) ? 'selected' : '' }}>{{$categoryValue}}</option>
