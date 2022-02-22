@@ -199,8 +199,8 @@ class PageController extends Controller
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
-            'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
+            'start_datetime' => 'nullable',
+            'end_datetime' => 'nullable',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''

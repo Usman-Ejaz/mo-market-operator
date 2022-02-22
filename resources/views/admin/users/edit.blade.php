@@ -84,7 +84,7 @@
               image: '{{ __("messages.valid_file_extension") }}',
               name: {
                 minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
-                required: "This field is required.",
+                required: "{{ __('messages.required') }}",
                 maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
               }
             }

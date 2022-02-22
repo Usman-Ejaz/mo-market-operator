@@ -111,16 +111,16 @@ class ContactPageQueryController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return ($row->name) ? ( (strlen($row->name) > 50) ? substr($row->name, 0, 50).'...' : $row->name ) : '';
+                    return truncateWords($row->name, 20);
                 })  
                 ->addColumn('email', function ($row) {
                     return ($row->email) ? $row->email : '';
                 })
                 ->addColumn('subject', function ($row) {
-                    return ($row->subject) ? ((strlen($row->subject) > 50) ? substr($row->subject, 0, 50) . '...' : $row->subject) : '';
+                    return truncateWords($row->subject, 25);
                 })
                 ->addColumn('message', function ($row) {
-                    return ($row->message) ? ((strlen($row->message) > 50) ? substr($row->message, 0, 50) . '...' : $row->message) : '';
+                    return truncateWords($row->message, 25);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';

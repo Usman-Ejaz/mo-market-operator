@@ -84,9 +84,9 @@
         rules:{
           question: {
             required: true,
-            minlength: 2,
-            notNumericValues: true,
-            noSpace: true
+            minlength: 5,
+            maxlength: 255,
+            notNumericValues: true
           },
           answer:{
             ckeditor_required: true,
@@ -98,6 +98,13 @@
             element = $("#cke_" + element.attr("id"));
           }
           error.insertAfter(element);
+        },
+        messages: {
+          question: {
+            required: "{{ __('messages.required') }}",
+            minlength: "{{ __('messages.min_characters', ['field' => 'Question', 'limit' => 5]) }}",
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Question', 'limit' => 255]) }}"
+          }
         }
       });
     });    

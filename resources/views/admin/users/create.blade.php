@@ -86,8 +86,7 @@
           email:{
             required: true,
             email: true,
-            notNumericValues: true,
-            noSpace: true
+            notNumericValues: true
           },
           role_id: {
             required: true,
@@ -107,9 +106,9 @@
         messages: {
           image: '{{ __("messages.valid_file_extension") }}',
           name: {
-            minlength: "{{ __('messages.min_characters', ['field' => 'Username', 'limit' => 3]) }}",
-            required: "This field is required.",
-            maxlength: "{{ __('messages.max_characters', ['field' => 'Username', 'limit' => 64]) }}"
+            minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
+            required: "{{ __('messages.required') }}",
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
           }
         }
       });

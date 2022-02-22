@@ -13,7 +13,7 @@
                 <select class="custom-select" name="theme" id="theme">
                     <option value="">Please select a theme</option>
                     @foreach(config('settings.themes') as $themeName => $themeDisplayName)
-                        <option value="{{$themeName}}" {{ ($menu->theme === $themeName) ? 'selected' : '' }}>{{$themeDisplayName}}</option>
+                        <option value="{{$themeName}}" {{ ($menu->theme === $themeName) ? 'selected' : '' }}>{{ $themeDisplayName }}</option>
                     @endforeach
                 </select>
                 <small class="form-text text-danger">{{ $errors->first('theme') }} </small>

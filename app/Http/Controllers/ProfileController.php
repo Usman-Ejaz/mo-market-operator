@@ -97,6 +97,8 @@ class ProfileController extends Controller
         $request->validate([
             'old_password' => ['required'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ], [
+            'password.confirmed' => 'Password must be same.'
         ]);
 
         $user = User::where(['email' => auth()->user()->email])->first();
