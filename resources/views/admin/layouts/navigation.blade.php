@@ -11,10 +11,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{url( config('filepaths.userProfileImagePath.public_path').Auth::user()->image ) }}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ Auth::user()->image }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          <a href="{{ route('admin.profile.show') }}" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -50,7 +50,7 @@
 
           @if( Auth::user()->role->hasPermission('jobs', 'list') )
           <li class="nav-item">
-                <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ Request::is('admin/jobs*') ? 'active' : '' }}">
+                <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ (Request::is('admin/jobs*') || Request::is('admin/applications*')) ? 'active' : '' }}">
                     <i class="nav-icon fa fa-newspaper"></i>
                     <p>Jobs</p>
                 </a>
@@ -59,7 +59,7 @@
 
           @if( Auth::user()->role->hasPermission('documents', 'list') )
           <li class="nav-item">
-          <a href="{{ route('admin.documents.index') }}" class="nav-link {{ Request()->is('admin/documents*') ? 'active' : '' }}">
+          <a href="{{ route('admin.documents.index') }}" class="nav-link {{ (Request()->is('admin/documents*') || Request()->is('admin/document-categories*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
               <p>ISMO Library</p>
             </a>
@@ -79,7 +79,7 @@
 
           @if( Auth::user()->role->hasPermission('newsletters', 'list') )
           <li class="nav-item">
-            <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ Request::is('admin/newsletters*') ? 'active' : '' }}">
+            <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ (Request::is('admin/newsletters*') || Request::is('admin/subscribers*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-envelope-open"></i>
               <p>Newsletters</p>
             </a>
@@ -97,7 +97,19 @@
           </li>
           @endif
 
-          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*')) ? 'menu-is-opening menu-open' : '' }}">
+          @if( Auth::user()->role->hasPermission('contact-page-queries', 'list') )
+          <li class="nav-item">
+            <a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('admin/contact-page-queries*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-question-circle"></i>
+              <p>
+                Contact Page Queries
+              </p>
+            </a>
+          </li>
+          @endif
+          
+          @if(Auth::user()->role->hasPermission('roles', 'list') || Auth::user()->role->hasPermission('permissions', 'view') || Auth::user()->role->hasPermission('menus', 'list') || Auth::user()->role->hasPermission('settings', 'list'))
+          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/settings*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
                 <p>Settings <i class="fas fa-angle-left right"></i></p>
@@ -132,15 +144,15 @@
 
                 @if( Auth::user()->role->hasPermission('settings', 'list') )
                     <li class="nav-item">
-                        <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings') ? 'active' : '' }}">
+                        <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings*') ? 'active' : '' }}">
                             <i class="fa fa-cog nav-icon"></i>
-                            <p>Settings</p>
+                            <p>Site Configuration</p>
                         </a>
                     </li>
                 @endif
             </ul>
           </li>
-
+          @endif
 
         </ul>
       </nav>

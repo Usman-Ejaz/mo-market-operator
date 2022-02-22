@@ -19,6 +19,7 @@ class CreateFaqsTable extends Migration
             $table->text('answer')->nullable();
             $table->unsignedBigInteger('created_by')->default(0);
             $table->unsignedBigInteger('modified_by')->default(0);
+            $table->timestamp('published_at')->nullable();
             $table->integer('active')->default(0);
             $table->softDeletes();
             $table->timestamps();

@@ -19,6 +19,7 @@ class FaqFactory extends Factory
             'answer' => $this->faker->paragraph(8),
             'created_by' => User::all()->random()->id,
             'modified_by' => User::all()->random()->id,
+            'published_at' => $this->faker->randomElement([null, now()]),
             'active' => $this->faker->randomElement(['0','1']),
         ];
     }

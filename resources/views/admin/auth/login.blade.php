@@ -27,10 +27,10 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="{{__('Password')}}" name="password" required autocomplete="current-password">
+          <input type="password" class="form-control" placeholder="{{__('Password')}}" name="password" required autocomplete="current-password" id="password-input">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-eye"></span>
+              <span class="fas fa-eye" id="password-eye"></span>
             </div>
           </div>
         </div>
@@ -64,3 +64,17 @@
 </div>
 <!-- /.login-box -->
 @endsection
+
+@push("optional-scripts")
+<script>
+  $("#password-eye").click(function () {
+    if ($("#password-input").attr("type") === "password") {
+      $("#password-input").attr("type", "text");
+      $(this).attr("class", "fas fa-eye-slash");
+    } else {
+      $("#password-input").attr("type", "password");
+      $(this).attr("class", "fas fa-eye");
+    }
+  })
+</script>
+@endpush

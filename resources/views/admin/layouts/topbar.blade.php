@@ -52,6 +52,16 @@
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
+      <!-- <li class="nav-item">
+        <button type="submit" class="btn btn-default mr-2">
+          <i class="fas fa-sign-out-alt"></i> Change Password
+        </button>
+      </li> -->
+      <li class="nav-item">
+        <a href="{{ route('admin.update-password') }}" class="btn btn-default mr-2">
+          <i class="fas fa-key"></i> Change Password
+        </a>
+      </li>
       <li class="nav-item">
  
         <form method="POST" action="{{ route('admin.logout') }}">
@@ -60,8 +70,6 @@
               <i class="fas fa-sign-out-alt"></i> Logout
             </button>
         </form>
-
-        
       </li>
     </ul>
   </nav>

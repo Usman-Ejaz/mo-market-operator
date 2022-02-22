@@ -19,6 +19,7 @@ class CreateDocumentsTable extends Migration
             $table->string('file')->nullable();
             $table->mediumText('keywords')->nullable();
             $table->unsignedBigInteger('category_id');
+            $table->timestamp('published_at')->nullable();
             $table->unsignedBigInteger('created_by')->default(0);
             $table->unsignedBigInteger('modified_by')->default(0);
             $table->softDeletes();

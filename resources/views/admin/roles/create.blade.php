@@ -59,18 +59,9 @@
     //Date and time picker
     $(document).ready(function(){
 
-      $.validator.addMethod(
-        "notNumericValues",
-        function(value, element) {
-          return this.optional(element) || isNaN(Number(value));
-        },
-        '{{ __("messages.not_numeric") }}'
-      );
-
-      $.validator.addMethod("noSpace", function(value) { 
-        this.value = $.trim(value);
-        return this.value;
-      });
+      $.validator.addMethod("notNumericValues", function(value, element) {
+        return this.optional(element) || isNaN(Number(value));
+      }, '{{ __("messages.not_numeric") }}');
 
       $('#create-roles-form').validate({
         errorElement: 'span',
@@ -80,9 +71,15 @@
           name: {
             required: true,
             maxlength: 255,
-            minlength: 2,
-            notNumericValues: true,
-            noSpace: true
+            minlength: 3,
+            notNumericValues: true
+          }
+        },
+        messages: {
+          name: {
+            minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
+            required: "This field is required.",
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
           }
         }
       });

@@ -3,7 +3,7 @@
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
-  <li class="breadcrumb-item">Application/Details</li>
+  <li class="breadcrumb-item active">Application Details</li>
 @endsection
 @section('content')
   <div class="container-fluid">
@@ -86,16 +86,17 @@
                   </div>
                 </div>
 
+                @if(isset($application->resume) && !empty($application->resume))
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Resume</label>
-                      <p>Open Resume Of <a href="{{ asset('storage/'.$application->resume.'#page2' ) }}" target="_blank"> {{$application->name}}</a>.</p>
+                      <p>Open Resume Of <a href="{{ asset(config('filepaths.applicationsPath.public_path') . $application->resume) }}" target="_blank"> {{$application->name}}</a>.</p>
                       </iframe>
                     </div>
                   </div>
                 </div>
-
+                @endif
             </div>
             </div>
           </div>

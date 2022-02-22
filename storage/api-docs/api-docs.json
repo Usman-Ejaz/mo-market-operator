@@ -1,0 +1,514 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ISMO API Documentation",
+        "description": "Ismo Api documentation description",
+        "contact": {
+            "email": "usman.ejaz@nxb.com.pk"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api/v1",
+            "description": "API Base URL"
+        }
+    ],
+    "paths": {
+        "/get-jobs": {
+            "get": {
+                "tags": [
+                    "Jobs & Job Applications"
+                ],
+                "summary": "Get list of Published Jobs",
+                "description": "Returns list of Jobs",
+                "operationId": "getPublishedJobs",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/show-job/{slug}": {
+            "get": {
+                "tags": [
+                    "Jobs & Job Applications"
+                ],
+                "summary": "Get Specific Job against slug",
+                "description": "Returns list of Jobs",
+                "operationId": "showSingleJob",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Job slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/submit-job-application": {
+            "post": {
+                "tags": [
+                    "Jobs & Job Applications"
+                ],
+                "summary": "Submit Job Application",
+                "description": "Submit Job Application in the resource",
+                "operationId": "submitApplication",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "gender",
+                                    "city",
+                                    "experience",
+                                    "phone",
+                                    "degree_level",
+                                    "degree_title",
+                                    "address",
+                                    "job_slug",
+                                    "resume"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "title": "Name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "title": "email",
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "title": "gender",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "title": "phone",
+                                        "type": "string"
+                                    },
+                                    "experience": {
+                                        "title": "experience",
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "title": "city",
+                                        "type": "string"
+                                    },
+                                    "degree_level": {
+                                        "title": "degree_level",
+                                        "type": "string"
+                                    },
+                                    "degree_title": {
+                                        "title": "degree_title",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "title": "address",
+                                        "type": "string"
+                                    },
+                                    "job_slug": {
+                                        "title": "job_slug",
+                                        "type": "string"
+                                    },
+                                    "resume": {
+                                        "title": "resume",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "John Doe",
+                                    "email": "johndoe@email.com",
+                                    "gender": "male",
+                                    "experience": "2 Years",
+                                    "phone": "03001234567",
+                                    "degree_level": "Masters",
+                                    "degree_title": "MSC",
+                                    "address": "USA",
+                                    "city": "California"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/submit-query": {
+            "post": {
+                "tags": [
+                    "Contact Us"
+                ],
+                "summary": "Submit Constact Form Query",
+                "description": "Submit Constact Form Query in the resource",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "subject",
+                                    "message"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "title": "name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "title": "email",
+                                        "type": "string"
+                                    },
+                                    "subject": {
+                                        "title": "subject",
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "title": "message",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "John Doe",
+                                    "email": "johndoe@email.com",
+                                    "subject": "Query Subject",
+                                    "message": "Query Message"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/get-documents": {
+            "get": {
+                "tags": [
+                    "Documents"
+                ],
+                "summary": "Get list of Published Documents",
+                "description": "Returns list of Documents",
+                "operationId": "getPublishedDocs",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/search-document?key=": {
+            "post": {
+                "tags": [
+                    "Documents"
+                ],
+                "summary": "Search Document from the resource",
+                "description": "Search Document from the resource",
+                "operationId": "search",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "query",
+                        "description": "Search Key",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/faqs": {
+            "get": {
+                "tags": [
+                    "Faqs"
+                ],
+                "summary": "Get list of Published faqs",
+                "description": "Returns list of faqs",
+                "operationId": "show",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/subscribe-to-newsletter": {
+            "post": {
+                "tags": [
+                    "Newsletters"
+                ],
+                "summary": "Subscribe Newsletter",
+                "description": "Subscribe to Newsletters",
+                "operationId": "subscribe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "title": "name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "title": "email",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "John Doe",
+                                    "email": "johndoe@email.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/get-news": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get list of Published News",
+                "description": "Returns list of News",
+                "operationId": "getPublishedNews",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/show-news/{slug}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get Specific News against slug",
+                "description": "Returns single News",
+                "operationId": "getSingleNews",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "News slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/sitemap": {
+            "get": {
+                "tags": [
+                    "Sitemap"
+                ],
+                "summary": "Get list of Published Pages",
+                "description": "Returns list of Pages",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAppKey": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

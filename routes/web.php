@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
+use App\Http\Controllers\ContactPageQueryController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Http\Request;
 
@@ -49,6 +52,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::post('users/deleteImage', [UserController::class, 'deleteImage'])->name('users.deleteImage');
     Route::resource('users', UserController::class);
 
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::patch('update-profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('deleteImage', [ProfileController::class, 'deleteImage'])->name('profile.deleteImage');
+
     // Routes for News Module
     Route::get('news/list', [NewsController::class, 'list'])->name('news.list');
     Route::post('news/deleteImage', [NewsController::class, 'deleteImage'])->name('news.deleteImage');
@@ -61,8 +68,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     // Routes for Application Module
     Route::get('jobs/{job}/applications', [JobController::class, 'getJobApplications'])->name('job.applications');
-    Route::get('jobs/{job}/applications/list', [JobController::class, 'getApplicationsList'])->name('job.applications.list');
-    Route::get('jobs/{job}/applications/export', [JobController::class, 'exportApplicationsList'])->name('job.applications.list.export');
+    Route::get('jobs/{job}/applications/list', [JobController::class, 'getApplicationsList'])->name('job.applications.list');    
     Route::get('applications/{application}', [ApplicationController::class, 'show'])->name('job.application.detail');
     Route::delete('applications/{application}', [ApplicationController::class, 'destroy'])->name('job.application.destroy');
 
@@ -115,14 +121,16 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get('subscribers/list', [SubscriberController::class, 'list'])->name('subscribers.list');
     Route::post('subscribers/toggle-subscription/{subscriber}', [SubscriberController::class, 'toggleSubscription'])->name('subscribers.toggleSubscription');
     Route::resource("subscribers", SubscriberController::class);
-});
 
-Route::get("create-password/{user}", function (Request $request, $user) {
-    if (! $request->hasValidSignature()) {
-        abort(401);
-    }
-    $signature = $request->signature;
-    return view("admin.auth.create-password", compact('user', 'signature'));
-})->name("create-password")->middleware(["guest"]);
+    // Routes for Document Module
+    Route::get('contact-page-queries/list', [ContactPageQueryController::class, 'list'])->name('contact-page-queries.list');
+    Route::resource('contact-page-queries', ContactPageQueryController::class);
+
+    Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
+    Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");
+});
+Route::middleware(['auth'])->prefix("admin")->name("admin.")->group(function () {
+    Route::get('jobs/{job}/applications/export', [JobController::class, 'exportApplicationsList'])->name('job.applications.list.export');
+});
 
 require __DIR__.'/auth.php';

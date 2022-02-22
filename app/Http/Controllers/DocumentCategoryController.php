@@ -163,10 +163,10 @@ class DocumentCategoryController extends Controller
     }
 
     private function validateRequest($category) {
-        return tap( request()->validate([
-            'name' => 'required|min:3'
-        ]), function(){
-
-        });
+        return request()->validate([
+            'name' => 'required|min:3|unique:document_categories,name,'.$category->id
+        ], [
+            'name.unique' => __('messages.unique', ['attribute' => 'Category'])
+        ]);
     }
 }

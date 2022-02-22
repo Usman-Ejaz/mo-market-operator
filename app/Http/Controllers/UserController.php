@@ -160,6 +160,9 @@ class UserController extends Controller
 
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('name', function ($row) {
+                    return truncateWords($row->name, 25);
+                })
                 ->addColumn('role', function ($row) {
                     return ( isset($row->role->name)) ? $row->role->name : '';
                 })
@@ -233,10 +236,10 @@ class UserController extends Controller
 
         if ($request->ajax()) {
 
-            if( isset($request->user_id) ){
+            if (isset($request->user_id)) {
                 $user = User::find($request->user_id);
 
-                $image_path = config('filepaths.userProfileImagePath.public_path').$user->image;
+                $image_path = config('filepaths.userProfileImagePath.public_path').basename($user->image);
 
                 if( unlink($image_path) ){
                     $user->image = null;
@@ -245,8 +248,6 @@ class UserController extends Controller
                     return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
-
         }
-
     }
 }

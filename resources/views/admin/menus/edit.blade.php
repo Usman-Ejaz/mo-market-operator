@@ -65,8 +65,7 @@
                   required: true,
                   maxlength: 64,
                   minlength: 2,
-                  notNumericValues: true,
-                  noSpace: true
+                  notNumericValues: true
                 },
                 theme: {
                     required: true,
@@ -76,6 +75,13 @@
                 active: {
                     required: true,
                 }
+            },
+            messages: {
+              name: {
+                minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
+                required: "This field is required.",
+                maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
+              }
             }
         });
 

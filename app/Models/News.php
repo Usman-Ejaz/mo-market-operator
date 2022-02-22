@@ -44,6 +44,10 @@ class News extends Model
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
+    public function getImageAttribute ($value) {
+        return $value ? asset(config("filepaths.newsImagePath.public_path") . $value) : null;
+    }
+
 
     /********** Setters *********/
     public function setStartDatetimeAttribute($attribute){
@@ -68,9 +72,9 @@ class News extends Model
 
     public function newsCategoryOptions(){
         return [
-            0 => 'News',
-            1 => 'Blog',
-            2 => 'Press Release'
+            1 => 'News',
+            2 => 'Blog',
+            3 => 'Press Release'
         ];
     }
 
@@ -79,5 +83,10 @@ class News extends Model
             0 => 'Draft',
             1 => 'Active'
         ];
+    }
+
+    // Scope Queries
+    public function scopePublished($query) {
+        return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "news_category", "slug", "keywords");
     }
 }

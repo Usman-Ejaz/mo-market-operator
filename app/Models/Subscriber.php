@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\CreatedModifiedBy;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,10 @@ class Subscriber extends Model
 
     public function getStatusAttribute($attribute) {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
+    }
+
+    public function getCreatedAtAttribute($attribute){
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
     public function scopeActive($query) {

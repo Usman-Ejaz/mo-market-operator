@@ -18,8 +18,8 @@ class SettingsController extends Controller
         if( !Auth::user()->role->hasPermission('settings', 'list') ){
             return abort(403);
         }
-
-        return view('admin.settings.index');
+        $theme = Settings::where('name', 'current_theme')->first();
+        return view('admin.settings.index', compact('theme'));
     }
 
     /**

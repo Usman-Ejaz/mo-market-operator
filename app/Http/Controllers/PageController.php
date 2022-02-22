@@ -56,6 +56,11 @@ class PageController extends Controller
 
         $this->storeImage($page);
 
+        if ($request->action === "Published") {
+            $page->published_at = now();
+            $page->save();
+        }
+
         $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
     }
@@ -102,11 +107,19 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'edit') ){
             return abort(403);
         }
-        if (request()->has('image')) {
-            $file_path = config('filepaths.pageImagePath.public_path').$page->image; 
+        if ($request->has('image') && $page->image !== null) {
+            $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
             unlink($file_path);
         }
         $page->update($this->validateRequest($page));
+
+        if ($request->action === "Unpublished") {
+            $page->published_at = null;
+            $page->save();
+        } else if ($request->action === "Published") {
+            $page->published_at = now();
+            $page->save();
+        }
 
         $this->storeImage($page);
 
@@ -125,11 +138,13 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'delete') ){
             return abort(403);
         }
-        $file_path = config('filepaths.pageImagePath.public_path').$page->image;
-        unlink($file_path);
+
+        if ($page->image !== null) {
+            $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
+            unlink($file_path);
+        }
 
         $page->delete();
-
         return redirect()->route('admin.pages.index')->with('success', 'Page Deleted Successfully!');
     }
 
@@ -144,10 +159,10 @@ class PageController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 35) ? substr($row->title,0,35).'...' : $row->title ) : '';
+                    return truncateWords($row->title, 35);
                 })
                 ->addColumn('slug', function ($row) {
-                    return ($row->slug) ? ( (strlen($row->slug) > 35) ? substr($row->slug,0,35).'...' : $row->slug ) : '';
+                    return truncateWords($row->slug, 35);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
@@ -180,15 +195,17 @@ class PageController extends Controller
 
         return tap( request()->validate([
             'title' => 'required|min:3',
-            'slug' => 'required',
+            'slug' => 'required|unique:pages,slug,'.$page->id,
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
-            'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
+            'start_datetime' => 'nullable',
+            'end_datetime' => 'nullable',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
+        ], [
+            'slug.unique' => __('messages.unique', ['attribute' => 'Slug'])
         ]), function(){
             if( request()->hasFile('image') ){
                 request()->validate([
@@ -216,7 +233,7 @@ class PageController extends Controller
             if( isset($request->page_id) ){
 
                 $page = Page::find($request->page_id);
-                $image_path = config('filepaths.pageImagePath.public_path').$page->image;
+                $image_path = config('filepaths.pageImagePath.public_path').basename($page->image);
 
                 if( unlink($image_path) ){
                     $page->image = null;

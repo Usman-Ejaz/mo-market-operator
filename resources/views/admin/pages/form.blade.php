@@ -4,7 +4,7 @@
       <div class="form-group">
           <label for="title">Title <span class="text-danger">*</span></label>
         <input type="input" class="form-control" id="title" placeholder="Enter Page Title" name="title" value="{{ old('title') ?? $page->title }}">
-        <small class="form-text text-danger">{{ $errors->first('title') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('title') }} </span>
       </div>
     </div>
 
@@ -12,7 +12,7 @@
       <div class="form-group">
         <label for="slug">Slug <span class="text-danger">*</span></label>
         <input type="input" class="form-control" id="slug" placeholder="Enter Page Slug"  name="slug" value="{{ old('slug') ?? $page->slug }}">
-        <small class="form-text text-danger">{{ $errors->first('slug') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('slug') }} </span>
       </div>
     </div>
   </div>
@@ -39,8 +39,8 @@
             <label for="page_image" class="form-label" >Page Image</label>
             <input class="form-control" type="file" id="page_image" name="image">
             <small class="form-text text-danger">{{ $errors->first('image') }} </small>
-            @if( isset($page->image) )
-                <small class="text-primary imageExists"><a href="{{ asset( config('filepaths.pageImagePath.public_path') .$page->image) }}" target="_blank"><img src="{{ asset( config('filepaths.pageImagePath.public_path') .$page->image) }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
+            @if (isset($page->image))
+                <small class="text-primary imageExists"><a href="{{ $page->image }}" target="_blank"><img src="{{ $page->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
             @endif
         </div>
     </div>

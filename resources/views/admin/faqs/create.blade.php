@@ -21,9 +21,9 @@
                             <div class="float-right">
                                 <input type="hidden" name="active" id="status">
                                 <input type="hidden" name="action" id="action">
-                                <button type="submit" class="btn btn-primary draft_button">Save</button>
+                                <button type="submit" class="btn width-120 btn-primary draft_button">Save</button>
                                 @if( Auth::user()->role->hasPermission('faqs', 'publish') )
-                                  <button type="submit" class="btn btn-success publish_button">Publish</button>
+                                  <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                 @endif
                             </div>
                         </div>
@@ -41,6 +41,14 @@
   <script>
 
     $(document).ready(function(){
+
+      CKEDITOR.instances.answer.on('blur', function(e) {
+        var messageLength = CKEDITOR.instances.answer.getData().replace(/<[^>]*>/gi, '').length;
+        if (messageLength !== 0) {
+          $('#cke_answer').next().hasClass("my-error-class") && $('#cke_answer').next().remove();
+        }
+      });
+
       // Set hidden fields based on button click
       $('.draft_button').click(function(e) {
         $('#status').val("0");
@@ -76,9 +84,9 @@
         rules:{
           question: {
             required: true,
-            minlength: 2,
-            notNumericValues: true,
-            noSpace: true
+            minlength: 5,
+            maxlength: 255,
+            notNumericValues: true
           },
           answer:{
             ckeditor_required: true,
@@ -90,6 +98,13 @@
             element = $("#cke_" + element.attr("id"));
           }
           error.insertAfter(element);
+        },
+        messages: {
+          question: {
+            required: "{{ __('messages.required') }}",
+            minlength: "{{ __('messages.min_characters', ['field' => 'Question', 'limit' => 5]) }}",
+            maxlength: "{{ __('messages.max_characters', ['field' => 'Question', 'limit' => 255]) }}"
+          }
         }
       });
     });    

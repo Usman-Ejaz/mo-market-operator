@@ -115,17 +115,22 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        if( !Auth::user()->role->hasPermission('news', 'delete') ){
+        if( !Auth::user()->role->hasPermission('roles', 'delete') ){
             return abort(403);
         }
-
-        $role->delete();
+        try {
+            $role->delete();
+        } catch (\Illuminate\Database\QueryException $ex) {
+            return redirect()->route('admin.roles.index')->with('error', 'This role is assigned to user(s). Cannot delete parent record!');
+        } catch (\Exception $ex) {
+            return redirect()->route('admin.roles.index')->with('error', 'Could not delete role!');
+        }
         return redirect()->route('admin.roles.index')->with('success', 'Role Deleted Successfully!');
     }
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('news', 'list') ){
+        if( !Auth::user()->role->hasPermission('roles', 'list') ){
             return abort(403);
         }
 
