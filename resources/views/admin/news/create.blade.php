@@ -173,7 +173,7 @@
           },
           description:{
             ckeditor_required: true,
-            ckeditor_minlength: 3,
+            minlength: 3,
             maxlength: 50000
           },
           slug: {

@@ -72,9 +72,9 @@ class News extends Model
 
     public function newsCategoryOptions(){
         return [
-            0 => 'News',
-            1 => 'Blog',
-            2 => 'Press Release'
+            1 => 'News',
+            2 => 'Blog',
+            3 => 'Press Release'
         ];
     }
 
