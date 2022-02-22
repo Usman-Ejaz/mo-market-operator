@@ -59,16 +59,15 @@
       }, '{{ __("messages.ckeditor_required") }}');
 
       $('#create-newsletter-form').validate({
+        ignore: [],
         errorElement: 'span',
         errorClass: "my-error-class",
         validClass: "my-valid-class",
-        ignore: [],
         rules:{
           subject: {
             required: true,
             minlength: 2,
-            notNumericValues: true,
-            noSpace:true,
+            notNumericValues: true
           },
           description:{
             ckeditor_required: true,

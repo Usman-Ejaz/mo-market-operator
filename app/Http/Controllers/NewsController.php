@@ -53,14 +53,13 @@ class NewsController extends Controller
         if( !Auth::user()->role->hasPermission('news', 'create') ){
             return abort(403);
         }
-
         $news = new News();
         $news = News::create( $this->validateRequest($news) );
 
         $this->storeImage($news);
 
         if ($request->action === "Published") {
-            $news->published_at = Carbon::parse(now())->format(config("settings.datetime_format"));
+            $news->published_at = now();
             $news->save();
         }
 
@@ -201,8 +200,8 @@ class NewsController extends Controller
             'description' => 'required|min:10',
             'keywords' => 'nullable',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
-            'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
+            'start_datetime' => 'nullable',
+            'end_datetime' => 'nullable',
             'news_category' => 'required|integer',
             'active' => 'required',
             'created_by' => '',

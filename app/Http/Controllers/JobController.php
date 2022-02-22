@@ -60,7 +60,7 @@ class JobController extends Controller
         $this->storeImage($job);
 
         if ($request->action === "Published") {
-            $job->published_at = Carbon::parse(now())->format(config("settings.datetime_format"));
+            $job->published_at = now();
             $job->save();
         }
 
@@ -170,16 +170,16 @@ class JobController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return ($row->title) ? ( (strlen($row->title) > 30) ? substr($row->title,0,30).'...' : $row->title ) : '';
+                    return truncateWords($row->title, 30);
                 })
                 ->addColumn('location', function ($row) {
-                    return ($row->location) ? ( (strlen($row->location) > 25) ? substr($row->location,0,25).'...' : $row->location ) : '';
+                    return truncateWords($row->location, 25);
                 })
                 ->addColumn('applications', function ($row) {
                     return $row->applications->count();
                 })
                 ->addColumn('experience', function ($row) {
-                    return ($row->experience) ? ( (strlen($row->experience) > 15) ? substr($row->experience,0,15).'...' : $row->experience ) : '';
+                    return truncateWords($row->experience, 15);
                 })
                 ->addColumn('total_positions', function ($row) {
                     return ($row->total_positions) ? $row->total_positions : '';
@@ -337,8 +337,8 @@ class JobController extends Controller
             'experience' => 'required',
             'total_positions' => 'required',
             'image' => 'nullable',
-            'start_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
-            'end_datetime' => 'nullable|date_format:'.config('settings.datetime_format'),
+            'start_datetime' => 'nullable',
+            'end_datetime' => 'nullable',
             'active' => 'nullable',
             'enable' => 'nullable|boolean',
             'created_by' => '',

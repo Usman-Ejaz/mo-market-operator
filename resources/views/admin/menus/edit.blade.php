@@ -65,8 +65,7 @@
                   required: true,
                   maxlength: 64,
                   minlength: 2,
-                  notNumericValues: true,
-                  noSpace: true
+                  notNumericValues: true
                 },
                 theme: {
                     required: true,

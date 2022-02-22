@@ -162,11 +162,11 @@ class DocumentCategoryController extends Controller
         }
     }
 
-    private function validateRequest($category) {        
+    private function validateRequest($category) {
         return request()->validate([
             'name' => 'required|min:3|unique:document_categories,name,'.$category->id
         ], [
-            'name.unique' => __('messages.unique', ['attribute' => 'Category name'])
+            'name.unique' => __('messages.unique', ['attribute' => 'Category'])
         ]);
     }
 }

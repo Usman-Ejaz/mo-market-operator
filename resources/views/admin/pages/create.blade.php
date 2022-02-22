@@ -37,9 +37,9 @@
                       <input type="hidden" name="active" id="status">
                       <input type="hidden" name="action" id="action">
                       
-                      <button type="submit" class="btn btn-primary draft_button">Save</button>
+                      <button type="submit" class="btn width-120 btn-primary draft_button">Save</button>
                       @if (Auth::user()->role->hasPermission('pages', 'publish'))
-                        <button type="submit" class="btn btn-success publish_button">Publish</button>
+                        <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                       @endif
                     </div>
 
@@ -75,9 +75,38 @@
         }
       });
       
-      $('#start_datetime, #end_datetime').datetimepicker({
-        format:'{{ config("settings.datetime_format") }}',
+      $('#start_datetime').datetimepicker({
+        format: '{{ config("settings.datetime_format") }}',
+        step: 30,
+        roundTime: 'ceil',
+        minDate: new Date(),
         validateOnBlur: false,
+        onChangeDateTime: function (dp, $input) {
+          let endDate = $("#end_datetime").val();
+          if (endDate.trim().length > 0 && $input.val() > endDate) {
+            $input.val("");
+            $input.parent().next().text("Start Date cannot be less than end date");
+          } else {
+            $input.parent().next().text("");
+          }
+        } 
+      });
+
+      $('#end_datetime').datetimepicker({
+        format: '{{ config("settings.datetime_format") }}',
+        step: 30,
+        roundTime: 'ceil',
+        minDate: new Date(),
+        validateOnBlur: false,
+        onChangeDateTime: function (dp, $input) {
+          let startDate = $("#start_datetime").val();
+          if (startDate.trim().length > 0 && $input.val() < startDate) {
+            $input.val("");
+            $input.parent().next().text("{{ __('messages.min_date') }}");
+          } else {
+            $input.parent().next().text("");
+          }
+        }
       });
 
       // Set hidden fields based on button click
@@ -97,6 +126,11 @@
         Text = Text.toLowerCase().trim();
         Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
         $("#slug").val(Text);
+
+        if ($("#slug").val().length > 0 && $("#slug").next().hasClass("my-error-class")) {
+          $("#slug").next().remove();
+          $("#slug").removeClass("my-error-class");
+        }
       });
 
       $.validator.addMethod("notNumericValues", function (value, element) {
@@ -131,6 +165,7 @@
           title: {
             required: true,
             minlength: 2,
+            maxlength: 255,
             notNumericValues: true,            
           },
           description:{
@@ -164,7 +199,12 @@
           error.insertAfter(element);
         },
         messages: {
-          image: '{{ __("messages.valid_file_extension") }}'
+          image: '{{ __("messages.valid_file_extension") }}',
+          title: {
+            required: '{{ __("messages.required") }}',
+            minlength: '{{ __("messages.min_characters", ["field" => "Title", "limit", 3]) }}',
+            maxlength: '{{ __("messages.max_characters", ["field" => "Title", "limit", 255]) }}',
+          },
         }
       });
     });
