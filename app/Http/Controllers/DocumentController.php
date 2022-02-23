@@ -122,13 +122,13 @@ class DocumentController extends Controller
         if( !Auth::user()->role->hasPermission('documents', 'edit') ){
             return abort(403);
         }
-
+        $previousFile = $document->file;
         $data = $this->validateRequest($document);
 
         $document->update($data);
 
         if ($request->hasFile("file")) {
-            $fileName = $this->storeFile($document);
+            $fileName = $this->storeFile($document, $previousFile);
             $extension = $request->file('file')->getClientOriginalExtension();
             if (in_array($extension, $this->allowedFileExtensions)) {                
                 if (!$this->convertFile($document, $fileName)) {
@@ -161,9 +161,12 @@ class DocumentController extends Controller
             return abort(403);
         }
 
-        $file_path = config('filepaths.documentsFilePath.internal_path').basename($document->file);
+        if ($document->file !== null) {
+            $file_path = storage_path('app/' . config('filepaths.documentsFilePath.public_path')) . basename($document->file);
+            unlink($file_path);
+        }
+
         $document->delete();
-        unlink($file_path);
 
         return redirect()->route('admin.documents.index')->with('success', 'Document Deleted Successfully!');
     }
@@ -234,9 +237,15 @@ class DocumentController extends Controller
         });
     }
 
-    private function storeFile($document){
+    private function storeFile($document, $previousFile = null){
 
         if (request()->has('file')) {
+
+            if ($previousFile !== null) {
+                $file_path = storage_path('app/' .config('filepaths.documentsFilePath.public_path')) . basename($previousFile);
+                unlink($file_path);
+            }
+
             $uploadFile = request()->file('file');
             $file_name = $uploadFile->hashName();
             $uploadFile->storeAs(config('filepaths.documentsFilePath.public_path'), $file_name);
@@ -274,7 +283,7 @@ class DocumentController extends Controller
             if( isset($request->document_id) ){
 
                 $document = Document::find($request->document_id);
-                $file_path = config('filepaths.documentsFilePath.internal_path').basename($document->file);
+                $file_path = public_path(config('filepaths.documentsFilePath.internal_path')) . basename($document->file);
 
                 if( unlink($file_path) ){
                     $document->file = null;

@@ -4,7 +4,7 @@
             <div class="form-group">
                 <label for="name">Name <span class="text-danger">*</span></label>
                 <input type="input" class="form-control" id="name" placeholder="Enter full name" name="name" value="{{ old('name') ?? $role->name }}">
-                <small class="form-text text-danger">{{ $errors->first('name') }} </small>
+                <span class="form-text text-danger">{{ $errors->first('name') }} </span>
             </div>
         </div>
     </div>

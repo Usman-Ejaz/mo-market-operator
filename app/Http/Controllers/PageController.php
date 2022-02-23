@@ -107,10 +107,9 @@ class PageController extends Controller
         if( !Auth::user()->role->hasPermission('pages', 'edit') ){
             return abort(403);
         }
-        if ($request->has('image') && $page->image !== null) {
-            $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
-            unlink($file_path);
-        }
+
+        $previousImage = $page->image;
+
         $page->update($this->validateRequest($page));
 
         if ($request->action === "Unpublished") {
@@ -121,7 +120,7 @@ class PageController extends Controller
             $page->save();
         }
 
-        $this->storeImage($page);
+        $this->storeImage($page, $previousImage);
 
         $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
@@ -140,7 +139,7 @@ class PageController extends Controller
         }
 
         if ($page->image !== null) {
-            $file_path = config('filepaths.pageImagePath.public_path').basename($page->image);
+            $file_path = public_path(config('filepaths.pageImagePath.public_path')) . basename($page->image);
             unlink($file_path);
         }
 
@@ -196,7 +195,7 @@ class PageController extends Controller
         return tap( request()->validate([
             'title' => 'required|min:3',
             'slug' => 'required|unique:pages,slug,'.$page->id,
-            'description' => 'required|min:10',
+            'description' => 'required',
             'keywords' => 'nullable',
             'image' => 'nullable',
             'start_datetime' => 'nullable',
@@ -215,9 +214,15 @@ class PageController extends Controller
         });
     }
 
-    private function storeImage($page){
+    private function storeImage($page, $previousImage = null){
 
         if (request()->has('image')) {
+
+            if ($previousImage !== null) {
+                $file_path = public_path(config('filepaths.pageImagePath.public_path')) . basename($previousImage);
+                unlink($file_path);
+            }
+
             $uploadFile = request()->file('image');
             $file_name = $uploadFile->hashName();
             $uploadFile->storeAs(config('filepaths.pageImagePath.internal_path'), $file_name);

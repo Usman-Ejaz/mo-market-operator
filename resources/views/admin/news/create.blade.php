@@ -60,10 +60,6 @@
   <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
   <script>
-    function ckEditorTextLength(element) {
-      var editorId = $(element).attr('id');
-      var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').trim().length;
-    }
     //Date and time picker
     $(document).ready(function(){
 
@@ -147,15 +143,12 @@
 
         // Error Message for this field | Should put on the single quotes given below.
         // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
-      }, '');      
+      }, '{{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}');
 
       $.validator.addMethod("ckeditor_required", function(value, element) {
-        return ckEditorTextLength(element) !== 0;
-      }, '{{ __("messages.ckeditor_required") }}');
-
-      $.validator.addMethod("ckeditor_minlength", function(value, element) {
-        debugger;
-        return ckEditorTextLength(element) > value;
+        var editorId = $(element).attr('id');
+        var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').trim().length;
+        return messageLength !== 0;
       }, '{{ __("messages.ckeditor_required") }}');
 
       $('#create-news-form').validate({
@@ -167,9 +160,9 @@
         rules:{
           title: {
             required: true,
-            maxlength: 255,
             minlength: 3,
-            notNumericValues: true,            
+            maxlength: 255,
+            notNumericValues: true,
           },
           description:{
             ckeditor_required: true,
@@ -178,7 +171,7 @@
           },
           slug: {
             required: true,
-            notNumericValues: true,            
+            notNumericValues: true,
           },
           news_category: {
             required: true,
@@ -206,7 +199,7 @@
         messages: {
           image: '{{ __("messages.valid_file_extension") }}',
           title: {
-            required: "This field is required.",
+            required: "{{ __('messages.required') }}",
             minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
             maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
           }

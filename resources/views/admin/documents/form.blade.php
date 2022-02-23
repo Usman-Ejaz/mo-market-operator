@@ -4,7 +4,7 @@
       <div class="form-group">
           <label for="title">Title <span class="text-danger">*</span></label>
         <input type="input" class="form-control" id="title" placeholder="Enter Document Title" name="title" value="{{ old('title') ?? $document->title }}">
-        <small class="form-text text-danger">{{ $errors->first('title') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('title') }} </span>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@
                         <option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach
                 </select>
-                <small class="form-text text-danger">{{ $errors->first('category') }} </small>
+                <span class="form-text text-danger">{{ $errors->first('category') }} </span>
             </div>
         </div>
   </div>
@@ -28,7 +28,7 @@
       <div class="form-group">
         <label for="keywords">Keywords</label>
         <input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $document->keywords }}">
-        <small class="form-text text-danger">{{ $errors->first('keywords') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@
         <div class="form-group">
             <label for="file" class="form-label" >Document File <span class="text-danger">*</span></label>
             <input class="form-control" type="file" id="file" name="file">
-            <small class="form-text text-danger">{{ $errors->first('file') }} </small>
+            <span class="form-text text-danger">{{ $errors->first('file') }} </span>
             @if(isset($document->file) && !empty($document->file))
                 <small class="fileExists">
                   <p>
