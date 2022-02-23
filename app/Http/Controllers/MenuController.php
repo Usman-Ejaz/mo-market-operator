@@ -222,7 +222,7 @@ class MenuController extends Controller
                     return (isset($row->name)) ? $row->name : '';
                 })
                 ->addColumn('theme', function ($row) {
-                    return (isset($row->theme)) ? $row->theme : '';
+                    return (isset($row->theme)) ? config('settings.themes')[$row->theme] : '';
                 })
                 ->addColumn('active', function ($row) {
                     return (isset($row->active)) ? $row->active : '';
