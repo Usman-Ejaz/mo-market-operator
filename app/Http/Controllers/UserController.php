@@ -55,7 +55,7 @@ class UserController extends Controller
         }
 
         $user = new User();
-        $user = User::create( $this->validateRequest($user) );        
+        $user = User::create( $this->validateRequest($user) );
 
         if ($user->exists) {
             $this->storeImage($user);
@@ -114,9 +114,11 @@ class UserController extends Controller
         if( !Auth::user()->role->hasPermission('users', 'edit') ){
             return abort(403);
         }
+        
+        $previousImage = $user->image;
 
-        if ( $user->update($this->validateRequest($user)) ) {
-            $this->storeImage($user);
+        if ($user->update($this->validateRequest($user))) {
+            $this->storeImage($user, $previousImage);
 
             if ($request->get("sendEmail") == "1") {
                 Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
@@ -140,6 +142,11 @@ class UserController extends Controller
     {
         if( !Auth::user()->role->hasPermission('users', 'delete') ){
             return abort(403);
+        }
+
+        if ($user->image !== null) {
+            $file_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($user->image);
+            unlink($file_path);
         }
 
         if( $user->delete() ) {
@@ -219,9 +226,14 @@ class UserController extends Controller
         });
     }
 
-    private function storeImage($user){
-
+    private function storeImage($user, $previousImage = null) {
         if (request()->has('image')) {
+
+            if ($previousImage !== null) {
+                $file_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($previousImage);
+                unlink($file_path);
+            }
+            
             $uploadFile = request()->file('image');
             $file_name = $uploadFile->hashName();
             $uploadFile->storeAs(config('filepaths.userProfileImagePath.internal_path'), $file_name);
@@ -239,7 +251,7 @@ class UserController extends Controller
             if (isset($request->user_id)) {
                 $user = User::find($request->user_id);
 
-                $image_path = config('filepaths.userProfileImagePath.public_path').basename($user->image);
+                $image_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($user->image);
 
                 if( unlink($image_path) ){
                     $user->image = null;

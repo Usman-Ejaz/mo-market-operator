@@ -131,7 +131,7 @@ return [
     ],
     [
         "name" => "newsletters",
-        "display_name" => "News Letters",
+        "display_name" => "Newsletters",
         "capabilities" => [
             "list" => "List",
             "create" => "Create",

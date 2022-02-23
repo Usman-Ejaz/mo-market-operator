@@ -238,9 +238,9 @@
             $('#add_pages_to_menu').click(function(){
                 $("input[name^='page']:checkbox:checked").each(function () {
                     lastSubMenuId = lastSubMenuId + 1;
-                    $('ol#submenu').append('<li class="dd-item dd3-item" data-id="'+ lastSubMenuId +'" data-page="'+$(this).data('page')+'" data-title="'+$(this).data('title')+'">' +
+                    $('ol#submenu').append(`<li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-page="${$(this).data('page')}" data-title="${$(this).data('title')}">` +
                         '<div class="dd-handle dd3-handle"></div><div class="dd3-content">' +
-                            ' ( page ) ' + $(this).data('title') +
+                        lastSubMenuId + ' ( page ) ' + $(this).data('title') +
                         '</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>' +
                         '</li>'
                     );

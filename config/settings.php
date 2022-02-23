@@ -7,7 +7,8 @@ return [
     'datetime_format' => 'd/m/Y H:i A',
     'themes' => [
         'theme1' => 'Theme 1',
-        'theme2' => 'Theme 2'
+        'theme2' => 'Theme 2',
+        'theme3' => 'Theme 3'
     ],
     "createPassowrdLinkExpiryTime" => 30 // in mins
 ];

@@ -4,7 +4,7 @@
 			<div class="form-group">
 				<label for="name">Name <span class="text-danger">*</span></label>
 				<input type="input" class="form-control" id="name" placeholder="Enter Category Name" name="name" value="{{ old('title') ?? $documentCategory->name }}">
-				<small class="form-text text-danger">{{ $errors->first('name') }} </small>
+				<span class="form-text text-danger">{{ $errors->first('name') }} </span>
 			</div>
 		</div>
 	</div>

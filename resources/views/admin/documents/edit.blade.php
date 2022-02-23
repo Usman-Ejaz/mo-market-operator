@@ -24,7 +24,7 @@
 							<input type="hidden" name="action" id="action">
 
 							@if ($document->published_at !== null)
-							<button type="submit" class="btn width-120 btn-primary publish_button">Update</button>
+							<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
 							@if (Auth::user()->role->hasPermission('documents', 'publish'))
 							<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
 							@endif
@@ -57,6 +57,10 @@
 
 		$('.publish_button').click(function(e) {
 			$('#action').val("Published");
+		});
+
+		$('.update_button').click(function(e) {
+			$('#action').val("Updated");
 		});
 
 		$('.unpublish_button').click(function(e) {
