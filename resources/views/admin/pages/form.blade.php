@@ -20,7 +20,7 @@
   <div class="form-group">
     <label for="description">Description <span class="text-danger">*</span></label>
     <textarea class="form-control ckeditor" id="description" placeholder="Enter Page Description" name="description" rows="400" cols="50">{{ old('description') ?? $page->description }}</textarea>
-    <small class="form-text text-danger">{{ $errors->first('description') }} </small>
+    <span class="form-text text-danger">{{ $errors->first('description') }} </span>
   </div>
 
   <div class="row">
@@ -28,7 +28,7 @@
       <div class="form-group">
         <label for="keywords">Keywords</label>
         <input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $page->keywords }}">
-        <small class="form-text text-danger">{{ $errors->first('keywords') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@
         <div class="form-group">
             <label for="page_image" class="form-label" >Page Image</label>
             <input class="form-control" type="file" id="page_image" name="image">
-            <small class="form-text text-danger">{{ $errors->first('image') }} </small>
+            <span class="form-text text-danger">{{ $errors->first('image') }} </span>
             @if (isset($page->image))
                 <small class="text-primary imageExists"><a href="{{ $page->image }}" target="_blank"><img src="{{ $page->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
             @endif

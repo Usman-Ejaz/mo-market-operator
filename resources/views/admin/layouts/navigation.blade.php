@@ -51,7 +51,7 @@
           @if( Auth::user()->role->hasPermission('jobs', 'list') )
           <li class="nav-item">
                 <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ (Request::is('admin/jobs*') || Request::is('admin/applications*')) ? 'active' : '' }}">
-                    <i class="nav-icon fa fa-newspaper"></i>
+                    <i class="nav-icon fa fa-tasks"></i>
                     <p>Jobs</p>
                 </a>
           </li>

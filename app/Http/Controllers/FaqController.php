@@ -176,7 +176,7 @@ class FaqController extends Controller
                 'active' => 'nullable',
                 'created_by' => '',
                 'modified_by' => ''
-            ]), function(){              
+            ]), function(){
             }
         );
     }

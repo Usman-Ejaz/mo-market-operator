@@ -45,9 +45,16 @@
 				<label>Status <span class="text-danger">*</span></label>
 				<select class="custom-select" name="active" id="active">
 					<option value="">Please select a status</option>
-					@foreach($user->activeOptions() as $statusId => $statusValue)
-					<option value="{{$statusId}}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
-					@endforeach
+					@if(Request::route()->getName() == "admin.users.create") 
+						@foreach($user->activeOptions() as $statusId => $statusValue)
+							<option value="{{$statusId}}">{{$statusValue}}</option>
+						@endforeach
+					@else
+						@foreach($user->activeOptions() as $statusId => $statusValue)
+							<option value="{{$statusId}}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
+						@endforeach
+					@endif
+					
 				</select>
 				<span class="form-text text-danger">{{ $errors->first('active') }} </span>
 			</div>

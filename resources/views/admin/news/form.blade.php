@@ -20,7 +20,7 @@
   <div class="form-group">
     <label for="description">Description <span class="text-danger">*</span></label>
     <textarea class="form-control ckeditor" id="description" placeholder="Enter News Description" name="description" rows="400" cols="50">{{ old('description') ?? $news->description }}</textarea>
-    <small class="form-text text-danger">{{ $errors->first('description') }} </small>
+    <span class="form-text text-danger">{{ $errors->first('description') }} </span>
   </div>
 
   <div class="row">
@@ -28,7 +28,7 @@
       <div class="form-group">
         <label for="keywords">Keywords</label>
         <input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $news->keywords }}">
-        <small class="form-text text-danger">{{ $errors->first('keywords') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
       </div>
     </div>
   </div>
@@ -47,14 +47,14 @@
             @endif
           @endforeach
         </select>
-        <small class="form-text text-danger">{{ $errors->first('news_category') }} </small>
+        <span class="form-text text-danger">{{ $errors->first('news_category') }} </span>
       </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
             <label for="news_image" class="form-label" >News Image</label>
             <input class="form-control" type="file" id="news_image" name="image">
-            <small class="form-text text-danger">{{ $errors->first('image') }} </small>
+            <span class="form-text text-danger">{{ $errors->first('image') }} </span>
             @if( isset($news->image) )
                 <small class="text-primary imageExists"><a href="{{ $news->image }}" target="_blank"><img src="{{ $news->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
             @endif

@@ -156,6 +156,7 @@ class MenuController extends Controller
 
     private function recursilvelyGenerateSubmenuHtml($array, $depth = 0, $html = '')
     {
+        $counter = 1;
         foreach ($array as $item)
         {
             $title = ''; $dataAttribute = ''; $type ='';
@@ -168,7 +169,7 @@ class MenuController extends Controller
             }
 
             if( isset($item['title']) ){
-                $title = ' ('.$type.') '. $item['title'];
+                $title = $counter . ' ('.$type.') '. $item['title'];
 
                 if( isset($item['page']) ) {
                     $page = Page::where(['active' => 1, 'id' => $item['page']])->pluck('title', 'id')->first();
@@ -190,6 +191,7 @@ class MenuController extends Controller
             }
 
             $html .= '</li>';
+            $counter++;
         }
 
         return $html;
