@@ -109,10 +109,10 @@ class NewsController extends Controller
         if( !Auth::user()->role->hasPermission('news', 'edit') ){
             return abort(403);
         }
-
+        $previousImage = $news->image;
         $news->update($this->validateRequest($news));
-
-        $this->storeImage($news);
+        
+        $this->storeImage($news, $previousImage);
 
         if ($request->action === "Unpublished") {
             $news->published_at = null;
@@ -136,6 +136,11 @@ class NewsController extends Controller
     {
         if( !Auth::user()->role->hasPermission('news', 'delete') ){
             return abort(403);
+        }
+
+        if ($news->image !== null) {
+            $file_path = public_path(config('filepaths.newsImagePath.public_path')) . basename($news->image);
+            unlink($file_path);
         }
 
         $news->delete();
@@ -197,7 +202,7 @@ class NewsController extends Controller
         return tap( request()->validate([
             'title' => 'required|min:3',
             'slug' => 'required|unique:news,slug,'.$news->id,
-            'description' => 'required|min:10',
+            'description' => 'required',
             'keywords' => 'nullable',
             'image' => 'nullable',
             'start_datetime' => 'nullable',
@@ -217,16 +222,20 @@ class NewsController extends Controller
         });
     }
 
-    private function storeImage($news){
+    private function storeImage($news, $previousImage = null){
 
         if (request()->has('image')) {
+
+            if ($previousImage !== null) {
+                $file_path = public_path(config('filepaths.newsImagePath.public_path')) . basename($previousImage);
+                unlink($file_path);
+            }
+            
             $uploadFile = request()->file('image');
             $file_name = $uploadFile->hashName();
             $uploadFile->storeAs(config('filepaths.newsImagePath.internal_path'), $file_name);
 
-            $news->update([
-                'image' => $file_name,
-            ]);
+            $news->update(['image' => $file_name ]);
         }
     }
 
@@ -235,7 +244,7 @@ class NewsController extends Controller
             if( isset($request->news_id) ){
 
                 $news = News::find($request->news_id);
-                $image_path = config('filepaths.newsImagePath.public_path').basename($news->image);
+                $image_path = public_path(config('filepaths.newsImagePath.public_path')).basename($news->image);
 
                 if( unlink($image_path) ){
                     $news->image = null;

@@ -39,7 +39,7 @@
               <input type="hidden" name="action" id="action">
 
               @if($job->active == 'Active')
-                <button type="submit" class="btn width-120 btn-primary publish_button">Update</button>
+                <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
                 @if( Auth::user()->role->hasPermission('jobs', 'publish') )
                   <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                 @endif
@@ -124,6 +124,11 @@
       $('.publish_button').click(function(e) {
         $('#status').val("1");
         $('#action').val("Published");
+      });
+
+      $('.update_button').click(function(e) {
+        $('#status').val("1");
+        $('#action').val("Updated");
       });
 
       $('.unpublish_button').click(function(e) {

@@ -181,7 +181,7 @@ class NewsletterController extends Controller
 
         return tap( request()->validate([
             'subject' => 'required|min:3',
-            'description' => 'required|min:10',
+            'description' => 'required',
             'created_by' => '',
             'modified_by' => ''
         ]), function(){

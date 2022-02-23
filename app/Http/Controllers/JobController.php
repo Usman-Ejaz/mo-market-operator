@@ -110,17 +110,12 @@ class JobController extends Controller
         if( !Auth::user()->role->hasPermission('jobs', 'edit') ){
             return abort(403);
         }
-
-        if (request()->has('image')) {
-            $file_path = config('filepaths.jobImagePath.public_path').$job->image; 
-            unlink($file_path);
-        }
-
+        $previousImage = $job->image;
         $data = $this->validateRequest($job);
         $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $data['slug'] = Str::slug($data['title']);
         $job->update($data);
-        $this->storeImage($job);
+        $this->storeImage($job, $previousImage);
 
         if ($request->action === "Unpublished") {
             $job->published_at = null;
@@ -145,9 +140,10 @@ class JobController extends Controller
         if( !Auth::user()->role->hasPermission('jobs', 'delete') ){
             return abort(403);
         }
-
-        $file_path = config('filepaths.jobImagePath.public_path').$job->image;
-        unlink($file_path);
+        if ($job->image !== null) {
+            $file_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($job->image);
+            unlink($file_path);
+        }
 
         $job->delete();
         return redirect()->route('admin.jobs.index')->with('success', 'Job Deleted Successfully!');
@@ -331,7 +327,7 @@ class JobController extends Controller
         
         return tap( request()->validate([
             'title' => 'required|min:3',
-            'description' => 'required|min:10',
+            'description' => 'required',
             'location' => 'required',
             'qualification' => 'required',
             'experience' => 'required',
@@ -353,9 +349,16 @@ class JobController extends Controller
     }
 
 
-    private function storeImage($job){
+    private function storeImage($job, $previousImage = null){
 
         if(request()->has('image')){
+
+            // remove previous file
+            if ($previousImage !== null) {
+                $file_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($previousImage);
+                unlink($file_path);
+            }
+
             $uploadFile = request()->file('image');
             $file_name = $uploadFile->hashName();
             $uploadFile->storeAs(config('filepaths.jobImagePath.internal_path'), $file_name);
@@ -370,7 +373,7 @@ class JobController extends Controller
         if ($request->ajax()) {
             if( isset($request->job_id) ){
                 $job = Job::find($request->job_id);
-                $image_path = config('filepaths.jobImagePath.public_path').basename($job->image);
+                $image_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($job->image);
                 if( unlink($image_path) ){
                     $job->image = null;
                     $job->update();

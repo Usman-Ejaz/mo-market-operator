@@ -4,7 +4,7 @@
             <div class="form-group">
                 <label for="name">Name <span class="text-danger">*</span></label>
                 <input type="input" class="form-control" id="name" placeholder="Enter name" name="name" value="{{ old('name') ?? $menu->name }}">
-                <small class="form-text text-danger">{{ $errors->first('name') }} </small>
+                <span class="form-text text-danger">{{ $errors->first('name') }} </span>
             </div>
         </div>
         <div class="col-md-6">
@@ -16,7 +16,7 @@
                         <option value="{{$themeName}}" {{ ($menu->theme === $themeName) ? 'selected' : '' }}>{{ $themeDisplayName }}</option>
                     @endforeach
                 </select>
-                <small class="form-text text-danger">{{ $errors->first('theme') }} </small>
+                <span class="form-text text-danger">{{ $errors->first('theme') }} </span>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
                         <option value="{{$StatusId}}" {{ ($menu->active === $statusName) ? 'selected' : '' }}>{{$statusName}}</option>
                     @endforeach
                 </select>
-                <small class="form-text text-danger">{{ $errors->first('status') }} </small>
+                <span class="form-text text-danger">{{ $errors->first('status') }} </span>
             </div>
         </div>
     </div>

@@ -9,8 +9,8 @@
                 <div class="input-group-append">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
-                <small class="form-text text-danger">{{ $errors->first('start_datetime') }} </small>
             </div>
+            <span class="form-text text-danger">{{ $errors->first('start_datetime') }} </span>
         </div>
       </div>
     </div>
@@ -20,12 +20,12 @@
       <div class="form-group">
         <label for="endtime">End Date & Time</label>
           <div class="input-group">
-              <input type="text" autocomplete="off" class="form-control" id="end_datetime" name="end_datetime" value="{{ old('end_datetime') ?? $page->end_datetime }}" placeholder="{{  config('settings.datetime_placeholder') }}">
-              <div class="input-group-append">
-                  <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-              </div>
-              <small class="form-text text-danger">{{ $errors->first('end_datetime') }} </small>
+            <input type="text" autocomplete="off" class="form-control" id="end_datetime" name="end_datetime" value="{{ old('end_datetime') ?? $page->end_datetime }}" placeholder="{{  config('settings.datetime_placeholder') }}">
+            <div class="input-group-append">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
           </div>
+          <span class="form-text text-danger">{{ $errors->first('end_datetime') }} </span>
       </div>
     </div>
   </div>
