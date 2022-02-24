@@ -214,7 +214,9 @@ class CareersApiController extends BaseApiController
             $job = Job::published()->where("slug", "=", $request->job_slug)->select("id")->first();
 
             if ($job) {
-                $application = Application::create($validator->validate());
+                $data = $validator->validate();
+                unset($data['job_slug']);
+                $application = Application::create($data);
                 $application->job_id = $job->id;
                 if ($request->hasFile("resume")) {
                     $file = $request->file('resume');

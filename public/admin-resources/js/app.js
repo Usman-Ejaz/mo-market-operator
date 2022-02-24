@@ -1,5 +1,6 @@
 ;
 $('form').on("change paste", function (e) {
+    if (e.target.id.trim().length <= 0) return;
     const elemId = '#' + e.target.id;
     trimSpaces(e.target.id);
     if ($(elemId).val().length > 0) {
@@ -11,5 +12,5 @@ $('form').on("change paste", function (e) {
 
 // To remove spaces from start and end of a string
 function trimSpaces(elementId) {
-    $('#' + elementId).val($('#' + elementId).val().trim());
+    $('#' + elementId) && $('#' + elementId).val($('#' + elementId).val().trim());
 }
