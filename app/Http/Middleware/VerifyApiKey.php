@@ -18,7 +18,7 @@ class VerifyApiKey
     {        
         $authorizationKey = str_replace("Bearer ", "", $request->header("authorization"));
 
-        if (valiadteKey("app_key", $authorizationKey)) {
+        if (isValidKey("app_key", $authorizationKey)) {
             return $next($request);
         }
 

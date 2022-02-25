@@ -12,5 +12,6 @@ return [
     "min_characters" => ":field must be at least :limit characters long.",
     "unique" => ":attribute already exist.",
     "something_wrong" => "Something went wrong.",
-    "required" => "This field is required."
+    "required" => "This field is required.",
+    "max_image" => "The file is too large. Allowed max size is :limit."
 ];

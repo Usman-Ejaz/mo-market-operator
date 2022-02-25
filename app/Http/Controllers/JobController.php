@@ -325,27 +325,23 @@ class JobController extends Controller
 
     private function validateRequest($job){
         
-        return tap( request()->validate([
+        return request()->validate([
             'title' => 'required|min:3',
             'description' => 'required',
             'location' => 'required',
             'qualification' => 'required',
             'experience' => 'required',
             'total_positions' => 'required',
-            'image' => 'nullable',
+            'image' => 'sometimes|file|image|max:2000',
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'nullable',
             'enable' => 'nullable|boolean',
             'created_by' => '',
             'modified_by' => ''
-        ]), function(){
-            if( request()->hasFile('image') ){
-                request()->validate([
-                    'image' => 'file|image|max:2000'
-                ]);
-            }
-        });
+        ], [
+            "image.max" => __('messages.max_image', ['limit' => '2 MB']),
+        ]);
     }
 
 

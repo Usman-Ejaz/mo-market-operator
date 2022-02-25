@@ -192,26 +192,21 @@ class PageController extends Controller
 
     private function validateRequest($page){
 
-        return tap( request()->validate([
+        return request()->validate([
             'title' => 'required|min:3',
             'slug' => 'required|unique:pages,slug,'.$page->id,
             'description' => 'required',
             'keywords' => 'nullable',
-            'image' => 'nullable',
+            'image' => 'sometimes|file|image|max:2000',
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
         ], [
-            'slug.unique' => __('messages.unique', ['attribute' => 'Slug'])
-        ]), function(){
-            if( request()->hasFile('image') ){
-                request()->validate([
-                    'image' => 'file|image|max:2000'
-                ]);
-            }
-        });
+            "slug.unique" => __('messages.unique', ['attribute' => 'Slug']),
+            "image.max" => __('messages.max_image', ['limit' => '2 MB']),
+        ]);
     }
 
     private function storeImage($page, $previousImage = null){

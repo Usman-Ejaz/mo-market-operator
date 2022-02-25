@@ -220,21 +220,17 @@ class DocumentController extends Controller
 
     private function validateRequest($document){
 
-        return tap( request()->validate([
+        return request()->validate([
             'title' => 'required|min:3',
             'keywords' => 'nullable',
             'category_id' => 'required',
-            'file' => 'nullable',
+            'file' => 'required|file|max:5000',
             'category_id' => 'required',
             'created_by' => '',
             'modified_by' => ''
-        ]), function(){
-            if( request()->hasFile('file') ){
-                request()->validate([
-                    'file' => 'file|file'
-                ]);
-            }
-        });
+        ], [
+            'file.max' => __('messages.max_image', ['limit' => '5 MB'])
+        ]);
     }
 
     private function storeFile($document, $previousFile = null){

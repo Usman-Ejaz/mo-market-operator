@@ -6,10 +6,9 @@ use App\Models\News;
 use App\Models\NewsCategory;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Yajra\DataTables\DataTables;
 
 class NewsController extends Controller
 {
@@ -53,8 +52,9 @@ class NewsController extends Controller
         if( !Auth::user()->role->hasPermission('news', 'create') ){
             return abort(403);
         }
+
         $news = new News();
-        $news = News::create( $this->validateRequest($news) );
+        $news = News::create($this->validateRequest($news));
 
         $this->storeImage($news);
 
@@ -138,10 +138,7 @@ class NewsController extends Controller
             return abort(403);
         }
 
-        if ($news->image !== null) {
-            $file_path = public_path(config('filepaths.newsImagePath.public_path')) . basename($news->image);
-            unlink($file_path);
-        }
+        $news->image !== null && removeFile(News::STORAGE_DIRECTORY, $news->image);
 
         $news->delete();
         return redirect()->route('admin.news.index')->with('success', 'News Deleted Successfully!');
@@ -156,7 +153,7 @@ class NewsController extends Controller
         if ($request->ajax()) {
             $data = News::latest()->get();
 
-            return Datatables::of($data)
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
                     return truncateWords($row->title, 27);
@@ -199,12 +196,12 @@ class NewsController extends Controller
 
     private function validateRequest($news){
 
-        return tap( request()->validate([
+        return request()->validate([
             'title' => 'required|min:3',
             'slug' => 'required|unique:news,slug,'.$news->id,
             'description' => 'required',
             'keywords' => 'nullable',
-            'image' => 'nullable',
+            'image' => 'sometimes|file|image|max:2000',
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'news_category' => 'required|integer',
@@ -212,50 +209,27 @@ class NewsController extends Controller
             'created_by' => '',
             'modified_by' => ''
         ], [
-            'slug.unique' => __('messages.unique', ['attribute' => 'Slug'])
-        ]), function(){
-            if( request()->hasFile('image') ){
-                request()->validate([
-                    'image' => 'file|image|max:2000'
-                ]);
-            }
-        });
+            'slug.unique' => __('messages.unique', ['attribute' => 'Slug']),
+            'image.max' => __('messages.max_image', ['limit' => '2 MB']),
+        ]);
     }
 
-    private function storeImage($news, $previousImage = null){
-
-        if (request()->has('image')) {
-
-            if ($previousImage !== null) {
-                $file_path = public_path(config('filepaths.newsImagePath.public_path')) . basename($previousImage);
-                unlink($file_path);
-            }
-            
-            $uploadFile = request()->file('image');
-            $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.newsImagePath.internal_path'), $file_name);
-
-            $news->update(['image' => $file_name ]);
+    private function storeImage ($news, $oldFile = null) {
+        if (request()->hasFile('image')) {
+            $news->update(['image' => storeFile(News::STORAGE_DIRECTORY, request()->file('image'), $oldFile)]);
         }
     }
 
-    public function deleteImage(Request $request){
+    public function deleteImage(Request $request) {
         if ($request->ajax()) {
-            if( isset($request->news_id) ){
-
+            if (isset($request->news_id)) {
                 $news = News::find($request->news_id);
-                $image_path = public_path(config('filepaths.newsImagePath.public_path')).basename($news->image);
-
-                if( unlink($image_path) ){
+                if (removeFile(News::STORAGE_DIRECTORY, $news->image)) {
                     $news->image = null;
                     $news->update();
-
                     return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
-
         }
-
     }
-
 }
