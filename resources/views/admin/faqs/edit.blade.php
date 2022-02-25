@@ -25,10 +25,12 @@
                                 
                                 @if($faq->active == 'Active')
                                   <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
+                                  @if(Auth::user()->role->hasPermission('faqs', 'publish'))
                                   <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
+                                  @endif
                                 @elseif($faq->active == 'Draft')
                                   <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                                  @if( Auth::user()->role->hasPermission('faqs', 'publish') )
+                                  @if( Auth::user()->role->hasPermission('faqs', 'publish'))
                                     <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                   @endif
                                 @endif

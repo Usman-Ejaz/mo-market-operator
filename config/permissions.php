@@ -94,7 +94,7 @@ return [
         "display_name" => "Document Categories",
         "capabilities" => [
             "list" => "List",
-            "view" => "View",    
+            // "view" => "View",
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
