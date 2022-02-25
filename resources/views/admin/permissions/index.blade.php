@@ -121,10 +121,10 @@
               }
           });
 
-          let searchParams = new URLSearchParams(window.location.search)
-          if( searchParams.has('role_id') ){
-              $('#role').val( searchParams.get('role_id') ).change();
-          }
+          $('#role').val('{{ session()->get("role_id") }}').change();
+        //   let searchParams = new URLSearchParams(window.location.search)
+        //   if( searchParams.has('role_id') ){
+        //   }
       });
     </script>
 @endpush

@@ -124,7 +124,7 @@ return [
         ]
     ],    [
         "name" => "settings",
-        "display_name" => "Settings",
+        "display_name" => "Site Configurations",
         "capabilities" => [
             "list" => "List"
         ]
