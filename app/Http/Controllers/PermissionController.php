@@ -53,7 +53,8 @@ class PermissionController extends Controller
         Permission::insert( $records );
 
         $request->session()->flash('success', 'Permissions Updated Successfully!');
-        return redirect()->route('admin.permissions.index', ['role_id'=>$data['role_id']]);
+        $request->session()->flash('role_id', $data['role_id']);
+        return redirect()->route('admin.permissions.index');
     }
 
 
