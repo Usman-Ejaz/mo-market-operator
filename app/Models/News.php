@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\CreatedModifiedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Support\Facades\Storage;
 
 class News extends Model
 {
     use HasFactory;
 
     use CreatedModifiedBy;
+
+    public const STORAGE_DIRECTORY = 'news/';
 
     protected $guarded = [];
 
@@ -45,7 +47,7 @@ class News extends Model
     }
 
     public function getImageAttribute ($value) {
-        return $value ? asset(config("filepaths.newsImagePath.public_path") . $value) : null;
+        return serveFile(self::STORAGE_DIRECTORY, $value);
     }
 
 

@@ -56,22 +56,18 @@ class ProfileController extends Controller
 
     private function validateRequest($user){
 
-        return tap( request()->validate([
+        return request()->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email,'.$user->id,
             'role_id' => 'required|min:1',
             'department' => 'nullable',
-            'image' => 'nullable',
+            'image' => 'sometimes|file|image|max:2000',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
-        ]), function(){
-            if( request()->hasFile('image') ){
-                request()->validate([
-                    'image' => 'file|image|max:2000'
-                ]);
-            }
-        });
+        ], [
+            'image.max' => __('messages.max_image', ['limit' => '2 MB'])
+        ]);
     }
 
     public function deleteImage(Request $request){
