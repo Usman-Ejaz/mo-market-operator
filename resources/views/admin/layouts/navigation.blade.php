@@ -11,7 +11,9 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ Auth::user()->image }}" class="img-circle elevation-2" alt="User Image">
+          @if(auth()->user()->image !== null)
+          <img src="{{ Auth::user()->image }}" class="img-circle elevation-2" alt="{{ Auth::user()->name }} avatar">
+          @endif
         </div>
         <div class="info">
           <a href="{{ route('admin.profile.show') }}" class="d-block">{{ Auth::user()->name }}</a>
@@ -103,6 +105,28 @@
               <i class="nav-icon fa fa-question-circle"></i>
               <p>
                 Contact Page Queries
+              </p>
+            </a>
+          </li>
+          @endif
+
+          @if (Auth::user()->role->hasPermission('knowledge-base', 'list'))
+          <li class="nav-item">
+            <a href="{{ route('admin.knowledge-base.index') }}" class="nav-link {{ Request()->is('admin/knowledge-base*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-database"></i>
+              <p>
+                Knowledge Base
+              </p>
+            </a>
+          </li>
+          @endif
+
+          @if(Auth::user()->role->hasPermission('search-statistics', 'list'))
+          <li class="nav-item">
+            <a href="{{ route('admin.search-statistics.index') }}" class="nav-link {{ Request()->is('admin/search-statistics*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-chart-line"></i>
+              <p>
+                Search Statistics
               </p>
             </a>
           </li>
