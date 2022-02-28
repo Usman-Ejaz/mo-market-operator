@@ -204,7 +204,7 @@ class CareersApiController extends BaseApiController
      *  )
      */
     public function submitApplication (Request $request) {
-        $validator = Validator::make($request->all(), $this->getApplicationRules());
+        $validator = Validator::make($request->all(), $this->getApplicationRules(), $this->getApplicationMessages());
 
         if ($validator->fails()) {
             return $this->sendError("Error", ['errors' => $validator->errors()], 400);
@@ -246,8 +246,14 @@ class CareersApiController extends BaseApiController
             'degree_level' => 'required|string|min:3|max:255',
             'degree_title' => 'required|string|min:3|max:255',
             'address' => 'required|string|min:3|max:500',
-            'resume' => 'required|file|mimes:doc,docx,pdf|max:20000',
+            'resume' => 'required|file|mimes:doc,docx,pdf|max:5000',
             'job_slug' => 'required|string|min:3'
+        ];
+    }
+
+    private function getApplicationMessages() {
+        return [
+            'resume.max' => __('messages.max_image', ['limit' => '5 MB'])
         ];
     }
 }

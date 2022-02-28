@@ -24,7 +24,11 @@
 				<select class="custom-select" name="role_id" id="role_id">
 					<option value="">Please select an option</option>
 					@foreach($user->roles() as $role)
-						<option value="{{ $role->id }}" {{ ( isset($user->role->id) && $user->role->id === $role->id) ? 'selected' : '' }}>{{$role->name}}</option>
+						@if(old('role_id') == $role->id)
+							<option value="{{ $role->id }}" selected> {{ $role->name }} </option>
+						@else
+							<option value="{{ $role->id }}" {{ ( isset($user->role->id) && $user->role->id === $role->id) ? 'selected' : '' }}>{{$role->name}}</option>
+						@endif
 					@endforeach
 				</select>
 				<span class="form-text text-danger">{{ $errors->first('role_id') }} </span>

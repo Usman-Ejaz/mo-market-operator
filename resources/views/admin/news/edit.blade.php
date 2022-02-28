@@ -40,7 +40,9 @@
               <input type="hidden" name="action" id="action">              
               @if($news->active == 'Active')
                 <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
+                @if(Auth::user()->role->hasPermission('news', 'publish'))
                 <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
+                @endif
               @elseif($news->active == 'Draft')
                 <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
                 @if( Auth::user()->role->hasPermission('news', 'publish') )
