@@ -469,6 +469,58 @@
                 ]
             }
         },
+        "/search": {
+            "post": {
+                "tags": [
+                    "Site Search"
+                ],
+                "summary": "Search records from the whole site. (FAQs, Pages, Documents, News, Pages)",
+                "description": "Search records from the whole site. (FAQs, Pages, Documents, News, Pages)",
+                "operationId": "siteSearch",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "key"
+                                ],
+                                "properties": {
+                                    "key": {
+                                        "title": "key",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "title": "type",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "key": "John Doe"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
         "/sitemap": {
             "get": {
                 "tags": [

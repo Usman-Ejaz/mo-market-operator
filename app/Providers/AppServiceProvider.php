@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Search\SitewideSearch;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
 //        view()->composer('*', function ($view) {
 //            $view->with('websiteName', 'Pakainfo.com');
 //        });
+        SitewideSearch::bootSearchable();
     }
 }

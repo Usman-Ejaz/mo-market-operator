@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\ChatBotKnowledgeBaseController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
@@ -14,16 +13,13 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchStatisticController;
 use App\Http\Controllers\SubscriberController;
-use App\Models\ChatBotKnowledgeBase;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -141,5 +137,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");
 });
+
+Route::get('pages/{slug}', function ($slug) {
+    dd($slug);
+})->name('pages.show');
 
 require __DIR__.'/auth.php';
