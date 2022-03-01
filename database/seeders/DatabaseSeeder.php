@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\ApiKey;
 use App\Models\Application;
+use App\Models\ChatBotKnowledgeBase;
 use App\Models\ContactPageQuery;
 use App\Models\Document;
 use App\Models\DocumentCategory;
@@ -15,6 +16,7 @@ use App\Models\Newsletter;
 use App\Models\Page;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\SearchStatistic;
 use App\Models\Settings;
 use App\Models\Subscriber;
 use App\Models\User;
@@ -85,7 +87,7 @@ class DatabaseSeeder extends Seeder
         //Create CMS
         Page::factory(20)->create();
 
-        //Create Create FAQ
+        //Create FAQ
         Faq::factory(20)->create();
 
          //Create Job
@@ -114,11 +116,17 @@ class DatabaseSeeder extends Seeder
         // Create Subscribers
         Subscriber::factory(10)->create();
 
-        // Contact Page Queries
+        // Create Contact Page Queries
         ContactPageQuery::factory(20)->create();
 
         // ApiKey
         ApiKey::factory(1)->create(['value'=> 'vxPwTIcOAwUMU1rREvR1h8UPaHGnZtVZGuH7jzWRWaowXyW33tCxiRZfKM4PuXvC6RXWL7xrqTuXVQDCjzRKickhVE0EqP4maCn8vzt8JYQ9hoNuZoTxDVNBLLdP1r6MMMvxKbYknSa5bcD0rHbCU2oCA3419Y9LcfisDQugd8vmp6yUGkw6NEu9V9AsnxThZJNtn1vq']);
+
+        // Create Search Statistics
+        SearchStatistic::factory(20)->create();
+
+        // Create Knowledge Base
+        ChatBotKnowledgeBase::factory(20)->create();
     }
 
 

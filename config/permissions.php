@@ -122,7 +122,8 @@ return [
             "delete" => "Delete",
             "submenus" => "SubMenus"
         ]
-    ],    [
+    ],    
+    [
         "name" => "settings",
         "display_name" => "Site Configurations",
         "capabilities" => [
@@ -158,6 +159,27 @@ return [
             "view" => "View",
             "delete" => "Delete",
         ]
-    ]
-
+    ],
+    [
+        "name" => "search-statistics",
+        "display_name" => "Search Statistics",
+        "capabilities" => [
+            "list" => "List",
+            "view" => "View",
+            "delete" => "Delete",
+            "export_keywords" => "Export Keywords"
+        ]
+    ],
+    [
+        "name" => "knowledge-base",
+        "display_name" => "Knowledge Base",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            "view" => "View",
+            "publish" => "Publish"
+        ]
+    ],
 ];
