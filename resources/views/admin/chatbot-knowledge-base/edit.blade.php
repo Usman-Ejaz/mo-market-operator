@@ -1,36 +1,36 @@
 @extends('admin.layouts.app')
-@section('header', 'FAQ')
+@section('header', 'Knowledge Base')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQ</a></li>
-  <li class="breadcrumb-item active">Edit</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">Knowledge Base</a></li>
+  <li class="breadcrumb-item active">Update</li>
 @endsection
 
 @section('content')
     <div class="container-fluid">
-        <form method="POST" action="{{ route('admin.faqs.update', $faq->id) }}" enctype="multipart/form-data" id="update-faq-form">
+        <form method="POST" action="{{ route('admin.knowledge-base.update', $knowledge_base->id ) }}" enctype="multipart/form-data" id="update-knowledge-base-form">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Editing FAQ # {{$faq->id}}</h3>
+                            <h3 class="card-title">Editing Knowledge Base </h3>
                         </div>
                         <!-- form start -->
                         @method('PATCH')
-                        @include('admin.faqs.form')
+                        @include('admin.chatbot-knowledge-base.form')
                         <div class="card-footer">
                             <div class="float-right">
                                 <input type="hidden" name="active" id="status">
                                 <input type="hidden" name="action" id="action">
                                 
-                                @if($faq->active == 'Active')
+                                @if($knowledge_base->published_at !== null)
                                   <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-                                  @if(Auth::user()->role->hasPermission('faqs', 'publish'))
+                                  @if(Auth::user()->role->hasPermission('knowledge-base', 'publish'))
                                   <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                                   @endif
-                                @elseif($faq->active == 'Draft')
+                                @else
                                   <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                                  @if( Auth::user()->role->hasPermission('faqs', 'publish'))
+                                  @if( Auth::user()->role->hasPermission('knowledge-base', 'publish'))
                                     <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                   @endif
                                 @endif
@@ -89,7 +89,7 @@
         return messageLength !== 0;
       }, '{{ __("messages.ckeditor_required") }}');
 
-      $('#update-faq-form').validate({
+      $('#update-knowledge-base-form').validate({
         ignore: [],
         errorElement: 'span',
         errorClass: "my-error-class",

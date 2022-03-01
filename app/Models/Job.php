@@ -6,7 +6,6 @@ use App\Models\Traits\CreatedModifiedBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\Application;
 
 class Job extends Model
@@ -20,6 +19,8 @@ class Job extends Model
     protected $attributes = [
         // 'active' => 1
     ];
+
+    protected $appends = ['link'];
 
     /********* Getters ***********/
     public function getActiveAttribute($attribute){
@@ -40,6 +41,10 @@ class Job extends Model
 
     public function getImageAttribute ($value) {
         return $value ? asset(config("filepaths.jobImagePath.public_path") . $value) : null;
+    }
+
+    public function getLinkAttribute($value) {
+        return !empty($this->slug) ? route('pages.show', $this->slug) : null;
     }
 
 

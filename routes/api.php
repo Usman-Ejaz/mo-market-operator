@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\NewsletterSubscriptionController;
 use App\Http\Controllers\Api\PublishedNewsApiController;
 use App\Http\Controllers\Api\RegisterApiController;
 use App\Http\Controllers\Api\SitemapApiController;
+use App\Http\Controllers\Api\SiteSearchApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,8 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
 
     Route::get("get-documents", [DocumentsApiController::class, "getPublishedDocs"])->name("documents.published");
     Route::post("search-document", [DocumentsApiController::class, "search"])->name("documents.search");
+
+    Route::post("search", [SiteSearchApiController::class, "search"])->name("site-search.search");
 
     Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
 });
