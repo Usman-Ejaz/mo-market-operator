@@ -20,7 +20,6 @@
                       <tr>
                           <th>Id</th>
                           <th>Question</th>
-                          <th>Answer</th>
                           <th>Created date</th>
                           <th>Action</th>
                       </tr>
@@ -69,7 +68,6 @@
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'question', name: 'question'},
-                {data: 'answer', name: 'answer'},
                 {data: 'created_at', name: 'created_at'},
                 {
                     data: 'action', 

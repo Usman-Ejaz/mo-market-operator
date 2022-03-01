@@ -152,10 +152,7 @@ class ChatBotKnowledgeBaseController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('question', function ($row) {
-                    return truncateWords($row->question, 30);
-                })
-                ->addColumn('answer', function ($row) {
-                    return truncateWords($row->answer, 50);
+                    return truncateWords($row->question, 80);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
