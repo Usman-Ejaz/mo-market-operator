@@ -13,7 +13,11 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
+<<<<<<< HEAD
                             <h3 class="card-title">Edit Knowledge Base </h3>
+=======
+                            <h3 class="card-title">Editing Knowledge Base </h3>
+>>>>>>> 71ed2660a554914ac5449931f5ad518b610dc904
                         </div>
                         <!-- form start -->
                         @method('PATCH')

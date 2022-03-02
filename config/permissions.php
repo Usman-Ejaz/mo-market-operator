@@ -122,7 +122,8 @@ return [
             "delete" => "Delete",
             "submenus" => "SubMenus"
         ]
-    ],    [
+    ],    
+    [
         "name" => "settings",
         "display_name" => "Site Configurations",
         "capabilities" => [

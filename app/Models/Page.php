@@ -9,22 +9,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    use HasFactory;
-
-    use CreatedModifiedBy;
+    use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
 
-    protected $attributes = [
-        // 'active' => 1
-    ];
+    protected $attributes = [ /*'active' => 1*/];
 
-    /********* Getters ***********/
-    public function getActiveAttribute($attribute){
-        return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
+    protected $appends = ['link'];
+    
+    public function getActiveAttribute ($attribute) {
+        return isset($attribute) ? $this->activeOptions()[$attribute] : '';
     }
 
-    public function getStartDatetimeAttribute($attribute){
+    public function getStartDatetimeAttribute($attribute) {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
@@ -38,6 +35,10 @@ class Page extends Model
 
     public function getImageAttribute ($value) {
         return !empty($value) ? asset(config("filepaths.pageImagePath.public_path") . $value) : null;
+    }
+
+    public function getLinkAttribute ($value) {
+        return !empty($this->slug) ? route('pages.show', $this->slug) : null;
     }
 
 
