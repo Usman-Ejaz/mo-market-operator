@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @section('header', 'Knowledge Base')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">Knowledge Base</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">ChatBot Knowledge Base</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
 
@@ -13,7 +13,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Creating Knowledge Base</h3>
+                            <h3 class="card-title">Create Knowledge Base</h3>
                         </div>
                         <!-- form start -->
                         @include('admin.chatbot-knowledge-base.form')

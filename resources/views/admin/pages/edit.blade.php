@@ -1,254 +1,307 @@
 @extends('admin.layouts.app')
 @section('header', 'Pages')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.pages.index') }}">Pages</a></li>
-  <li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.pages.index') }}">Pages</a></li>
+<li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
-  <div class="container-fluid">
+<div class="container-fluid">
 
-      <form method="POST" action="{{ route('admin.pages.update', $page->id) }}" enctype="multipart/form-data" id="update-page-form">
-        <div class="row">
-          <div class="col-md-9">
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Editing Page - {{ $page->title }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              @method('PATCH')
-              @include('admin.pages.form')
+	<form method="POST" action="{{ route('admin.pages.update', $page->id) }}" enctype="multipart/form-data" id="update-page-form">
+		<div class="row">
+			<div class="col-md-9">
+				<div class="card card-primary">
+					<div class="card-header">
+						<h3 class="card-title">Edit Page - {{ $page->title }}</h3>
+					</div>
+					<!-- /.card-header -->
+					<!-- form start -->
+					@method('PATCH')
+					@include('admin.pages.form')
 
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Schedule Content</h3>
-              </div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-primary">
+					<div class="card-header">
+						<h3 class="card-title">Schedule Content</h3>
+					</div>
 
-                @include('admin.pages.publishform')
+					@include('admin.pages.publishform')
 
-            </div>
+				</div>
 
-            <!-- /.card-body -->
-            <div class="float-right">
+				<!-- /.card-body -->
+				<div class="float-right">
 
-              <input type="hidden" name="active" id="status">
-              <input type="hidden" name="action" id="action">
+					<input type="hidden" name="active" id="status">
+					<input type="hidden" name="action" id="action">
 
-              @if($page->active == 'Active')
-                <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-                @if( Auth::user()->role->hasPermission('pages', 'publish') )
-                  <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
-                @endif
-              @elseif($page->active == 'Draft')
-                <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                @if( Auth::user()->role->hasPermission('pages', 'publish') )
-                  <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
-                @endif
-              @endif
+					@if($page->active == 'Active')
+					<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
+					@if( Auth::user()->role->hasPermission('pages', 'publish') )
+					<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
+					<div class="form-group mt-3">
+						<div class="row text-center">
+							<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
+								<i class="fab fa-facebook social-share-icon" style="color: var(--facebook-color);"></i>
+							</div>
+							<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
+								<i class="fab fa-twitter social-share-icon" style="color: var(--twitter-color);"></i>
+							</div>
+							<div class="col-md-3 col-sm-4 p-2 text-center">
+								<i class="fab fa-linkedin social-share-icon" style="color: var(--linkedIn-color);"></i>
+							</div>
+						</div>
+					</div>
+					@endif
+					@elseif($page->active == 'Draft')
+					<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
+					@if( Auth::user()->role->hasPermission('pages', 'publish') )
+					<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
+					@endif
+					@endif
 
-            </div>
+				</div>
 
 
-          </div>
-        </div>
-      </form>
+			</div>
+		</div>
+	</form>
 
 
-    </div>
+</div>
 @endsection
 
 @push('optional-styles')
 <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
+<style>
+	.social-share-icon {
+		font-size: 40px;
+		cursor: pointer;
+	}
+</style>
 @endpush
 
 @push('optional-scripts')
-  <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
-  <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
-  <script>
-    //Date and time picker
-    $(document).ready(function(){
+<script>
+	//Date and time picker
+	$(document).ready(function() {
 
-      CKEDITOR.instances.description.on('blur', function(e) {
-        var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
-        if (messageLength !== 0) {
-          $('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
-        }
-      });
+		CKEDITOR.instances.description.on('blur', function(e) {
+			var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
+			if (messageLength !== 0) {
+				$('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
+			}
+		});
 
-      $('#start_datetime').datetimepicker({
-        format: '{{ config("settings.datetime_format") }}',
-        step: 30,
-        roundTime: 'ceil',
-        minDate: new Date(),
-        validateOnBlur: false,
-        onChangeDateTime: function (dp, $input) {
-          let endDate = $("#end_datetime").val();
-          if (endDate.trim().length > 0 && $input.val() > endDate) {
-            $input.val("");
-            $input.parent().next().text("Start Date cannot be less than end date");
-          } else {
-            $input.parent().next().text("");
-          }
-        } 
-      });
+		$('#start_datetime').datetimepicker({
+			format: '{{ config("settings.datetime_format") }}',
+			step: 30,
+			roundTime: 'ceil',
+			minDate: new Date(),
+			validateOnBlur: false,
+			onChangeDateTime: function(dp, $input) {
+				let endDate = $("#end_datetime").val();
+				if (endDate.trim().length > 0 && $input.val() > endDate) {
+					$input.val("");
+					$input.parent().next().text("Start Date cannot be less than end date");
+				} else {
+					$input.parent().next().text("");
+				}
+			}
+		});
 
-      $('#end_datetime').datetimepicker({
-        format: '{{ config("settings.datetime_format") }}',
-        step: 30,
-        roundTime: 'ceil',
-        minDate: new Date(),
-        validateOnBlur: false,
-        onChangeDateTime: function (dp, $input) {
-          let startDate = $("#start_datetime").val();
-          if (startDate.trim().length > 0 && $input.val() < startDate) {
-            $input.val("");
-            $input.parent().next().text("{{ __('messages.min_date') }}");
-          } else {
-            $input.parent().next().text("");
-          }
-        }
-      });
+		$('#end_datetime').datetimepicker({
+			format: '{{ config("settings.datetime_format") }}',
+			step: 30,
+			roundTime: 'ceil',
+			minDate: new Date(),
+			validateOnBlur: false,
+			onChangeDateTime: function(dp, $input) {
+				let startDate = $("#start_datetime").val();
+				if (startDate.trim().length > 0 && $input.val() < startDate) {
+					$input.val("");
+					$input.parent().next().text("{{ __('messages.min_date') }}");
+				} else {
+					$input.parent().next().text("");
+				}
+			}
+		});
 
-      // Set hidden fields based on button click
-      $('.draft_button').click(function(e) {
-        $('#status').val("0");
-        $('#action').val("Updated");
-      });
+		// Set hidden fields based on button click
+		$('.draft_button').click(function(e) {
+			$('#status').val("0");
+			$('#action').val("Updated");
+		});
 
-      $('.publish_button').click(function(e) {
-        $('#status').val("1");
-        $('#action').val("Published");
-      });
+		$('.publish_button').click(function(e) {
+			$('#status').val("1");
+			$('#action').val("Published");
+		});
 
-      $('.update_button').click(function(e) {
-        $('#status').val("1");
-        $('#action').val("Updated");
-      });
+		$('.update_button').click(function(e) {
+			$('#status').val("1");
+			$('#action').val("Updated");
+		});
 
 
-      $('.unpublish_button').click(function(e) {
-        $('#status').val("0");
-        $('#action').val("Unpublished");
-      });
+		$('.unpublish_button').click(function(e) {
+			$('#status').val("0");
+			$('#action').val("Unpublished");
+		});
 
-      // Slug generator
-      $("#title").keyup(function() {
-        var Text = $(this).val();
-        Text = Text.toLowerCase().trim();
-        Text = Text.replace(/[^a-zA-Z0-9]+/g,'-');
-        $("#slug").val(Text);
+		// Slug generator
+		$("#title").keyup(function() {
+			var Text = $(this).val();
+			Text = Text.toLowerCase().trim();
+			Text = Text.replace(/[^a-zA-Z0-9]+/g, '-');
+			$("#slug").val(Text);
 
-        if ($("#slug").val().length > 0 && $("#slug").next().hasClass("my-error-class")) {
-          $("#slug").next().remove();
-          $("#slug").removeClass("my-error-class");
-        }
-      });
+			if ($("#slug").val().length > 0 && $("#slug").next().hasClass("my-error-class")) {
+				$("#slug").next().remove();
+				$("#slug").removeClass("my-error-class");
+			}
+		});
 
-      $.validator.addMethod("notNumericValues", function (value, element) {
-          return this.optional(element) || isNaN(Number(value));
-      }, '{{ __("messages.not_numeric") }}');
+		$.validator.addMethod("notNumericValues", function(value, element) {
+			return this.optional(element) || isNaN(Number(value));
+		}, '{{ __("messages.not_numeric") }}');
 
-      $.validator.addMethod("greaterThan", function (value, element, params) {
-        // if there is no date in both fields, then bypass the validation
-        if (value.trim().length === 0 && $(params).val().trim().length === 0) return true;
-        
-        if (!/Invalid|NaN/.test(new Date(value))) {
-            return new Date(value) > new Date($(params).val());
-        }
-        return isNaN(value) && isNaN($(params).val()) || (Number(value) > Number($(params).val())); 
+		$.validator.addMethod("greaterThan", function(value, element, params) {
+			// if there is no date in both fields, then bypass the validation
+			if (value.trim().length === 0 && $(params).val().trim().length === 0) return true;
 
-        // Error Message for this field | Should put on the single quotes given below.
-        // {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
-      }, '');
+			if (!/Invalid|NaN/.test(new Date(value))) {
+				return new Date(value) > new Date($(params).val());
+			}
+			return isNaN(value) && isNaN($(params).val()) || (Number(value) > Number($(params).val()));
 
-      $.validator.addMethod("ckeditor_required", function(value, element) {        
-        var editorId = $(element).attr('id');
-        var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-        return messageLength !== 0;
-      }, '{{ __("messages.ckeditor_required") }}');
+			// Error Message for this field | Should put on the single quotes given below.
+			// {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
+		}, '');
 
-      $('#update-page-form').validate({
-        ignore: [],
-        errorElement: 'span',
-        errorClass: "my-error-class",
-        validClass: "my-valid-class",
-        rules:{
-          title: {
-            required: true,
-            minlength: 2,
-            maxlength: 255,
-            notNumericValues: true
-          },
-          description:{
-            ckeditor_required: true,
-            minlength: 5
-          },
-          slug: {
-            required: true,
-            minlength: 2,
-            notNumericValues: true        
-          },
-          keywords: {
-            minlength: 5,
-            notNumericValues: true         
-          },
-          image: {
-            extension: "jpg|jpeg|png|ico|bmp"
-          },
-          start_datetime: {
-            required: false
-          },
-          end_datetime: {
-            required: false,
-            greaterThan: "#start_datetime"
-          }
-        },
-        errorPlacement: function (error, element) {
-          if (element.attr("id") == "description") {
-            element = $("#cke_" + element.attr("id"));
-          }
-          error.insertAfter(element);
-        },
-        messages: {
-          image: '{{ __("messages.valid_file_extension") }}',
-          title: {
-            required: '{{ __("messages.required") }}',
-            minlength: '{{ __("messages.min_characters", ["field" => "Title", "limit" => 3]) }}',
-            minlength: '{{ __("messages.max_characters", ["field" => "Title", "limit" => 255]) }}',
-          },
-        }
-      });
+		$.validator.addMethod("ckeditor_required", function(value, element) {
+			var editorId = $(element).attr('id');
+			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
+			return messageLength !== 0;
+		}, '{{ __("messages.ckeditor_required") }}');
 
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        $("#deleteImage").click(function(){
+		$('#update-page-form').validate({
+			ignore: [],
+			errorElement: 'span',
+			errorClass: "my-error-class",
+			validClass: "my-valid-class",
+			rules: {
+				title: {
+					required: true,
+					minlength: 2,
+					maxlength: 255,
+					notNumericValues: true
+				},
+				description: {
+					ckeditor_required: true,
+					minlength: 5
+				},
+				slug: {
+					required: true,
+					minlength: 2,
+					notNumericValues: true
+				},
+				keywords: {
+					minlength: 5,
+					notNumericValues: true
+				},
+				image: {
+					extension: "jpg|jpeg|png|ico|bmp"
+				},
+				start_datetime: {
+					required: false
+				},
+				end_datetime: {
+					required: false,
+					greaterThan: "#start_datetime"
+				}
+			},
+			errorPlacement: function(error, element) {
+				if (element.attr("id") == "description") {
+					element = $("#cke_" + element.attr("id"));
+				}
+				error.insertAfter(element);
+			},
+			messages: {
+				image: '{{ __("messages.valid_file_extension") }}',
+				title: {
+					required: '{{ __("messages.required") }}',
+					minlength: '{{ __("messages.min_characters", ["field" => "Title", "limit" => 3]) }}',
+					minlength: '{{ __("messages.max_characters", ["field" => "Title", "limit" => 255]) }}',
+				},
+			}
+		});
 
-            if (confirm('Are you sure you want to this image?')) {
-                $.ajax({
-                    url: "{{ route('admin.pages.deleteImage') }}",
-                    type: 'POST',
-                    data: {_token: "{{ csrf_token() }}", page_id: "{{$page->id}}"},
-                    dataType: 'JSON',
-                    success: function (data) {
-                        if(data.success){
-                            alert('Image Deleted Successfully');
-                            $('.imageExists').remove();
-                        }
-                    }
-                });
-            }
-        });
+		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+		$("#deleteImage").click(function() {
 
-    });
+			if (confirm('Are you sure you want to this image?')) {
+				$.ajax({
+					url: "{{ route('admin.pages.deleteImage') }}",
+					type: 'POST',
+					data: {
+						_token: "{{ csrf_token() }}",
+						page_id: "{{$page->id}}"
+					},
+					dataType: 'JSON',
+					success: function(data) {
+						if (data.success) {
+							alert('Image Deleted Successfully');
+							$('.imageExists').remove();
+						}
+					}
+				});
+			}
+		});
 
-  </script>
+		// handle social share button clicks
+		$('.social-share-icon').click(function() {
+			let clickedElement = $(this).attr('class').replace('fab fa-', '').replace('social-share-icon', '').trim();
+
+			const FACEBOOK_SHARE_URL = 'https://www.facebook.com/sharer.php';
+			const TWITTER_SHARE_URL = 'https://twitter.com/intent/tweet';
+			const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle?mini=true';
+			let url = "";
+
+			switch (clickedElement) {
+				case 'facebook':
+					url = `${FACEBOOK_SHARE_URL}?u={{ $page->link }}`;
+					socialWindow(url);
+					break;
+				case 'twitter':
+					url = `${TWITTER_SHARE_URL}?url={{ $page->link }}`;
+					socialWindow(url);
+					break;
+				case 'linkedin':
+					url = `${LINKEDIN_SHARE_URL}&url={{ $page->link }}`;
+					socialWindow(url);
+					break;
+			}
+		});
+
+	});
+
+	function socialWindow(url) {
+		var left = (screen.width - 570) / 2;
+		var top = (screen.height - 570) / 2;
+		var params = "menubar=no,toolbar=no,status=no,width=570,height=570,top=" + top + ",left=" + left;
+		window.open(url, "NewWindow", params);
+	}
+</script>
 
 @endpush

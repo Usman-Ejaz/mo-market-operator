@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 @section('header', 'Knowledge Base')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">Knowledge Base</a></li>
-  <li class="breadcrumb-item active">Update</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">ChatBot Knowledge Base</a></li>
+  <li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
@@ -13,7 +13,11 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
+<<<<<<< HEAD
+                            <h3 class="card-title">Edit Knowledge Base </h3>
+=======
                             <h3 class="card-title">Editing Knowledge Base </h3>
+>>>>>>> 71ed2660a554914ac5449931f5ad518b610dc904
                         </div>
                         <!-- form start -->
                         @method('PATCH')

@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('header', 'Search Statistics')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item active">Search Statistics</li>
 @endsection
 
@@ -68,7 +68,7 @@
               }
             },
             columns: [
-                {data: 'id', name: 'id'},
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'keyword', name: 'keyword'},
                 {data: 'count', name: 'count'},
                 {data: 'created_at', name: 'created_at'},

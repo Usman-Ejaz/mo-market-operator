@@ -67,10 +67,15 @@ class SearchStatisticController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = SearchStatistic::orderByCount()->get();
+            $data = SearchStatistic::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->setTotalRecords($data->count())
+                ->orderColumn('created_at', 'created_at $1')
+                ->orderColumn('keyword', 'keyword $1')
+                ->orderColumn('count', 'count $1')
+                ->orderColumn('DT_RowIndex', 'id $1')
                 ->addColumn('keyword', function ($row) {
                     return truncateWords($row->keyword, 20);
                 })
