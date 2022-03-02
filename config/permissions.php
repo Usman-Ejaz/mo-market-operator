@@ -54,7 +54,9 @@ return [
             "delete" => "Delete",
             "publish" => "Publish",
             "view_applications" => "View Applications",
-            "export_applications" => "Export Applications"
+            "export_applications" => "Export Applications",
+            "view_job_application" => "View Job Application",
+            "delete_job_application" => "Delete Job Application",
         ]
     ],
     [
@@ -75,6 +77,17 @@ return [
             "edit" => "Edit",
             "delete" => "Delete",
             "publish" => "Publish"
+        ]
+    ],
+    [
+        "name" => "faq-categories",
+        "display_name" => "Faq Categories",
+        "capabilities" => [
+            "list" => "List",
+            // "view" => "View",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
         ]
     ],
     [

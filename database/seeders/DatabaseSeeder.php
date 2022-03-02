@@ -9,6 +9,7 @@ use App\Models\ContactPageQuery;
 use App\Models\Document;
 use App\Models\DocumentCategory;
 use App\Models\Faq;
+use App\Models\FaqCategory;
 use App\Models\Menu;
 use App\Models\Job;
 use App\Models\News;
@@ -86,6 +87,8 @@ class DatabaseSeeder extends Seeder
 
         //Create CMS
         Page::factory(20)->create();
+
+        FaqCategory::factory(10)->create();
 
         //Create FAQ
         Faq::factory(20)->create();

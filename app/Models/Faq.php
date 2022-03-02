@@ -16,6 +16,10 @@ class Faq extends Model
 
     protected $attributes = [];
 
+    public function category() {
+        return $this->belongsTo(FaqCategory::class, "category_id", "id");
+    }
+
     /********* Getters ***********/
     public function getActiveAttribute($attribute){
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';

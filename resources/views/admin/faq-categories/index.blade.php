@@ -1,13 +1,14 @@
 @extends('admin.layouts.app')
-@section('header', 'ChatBot Knowledge Base')
+@section('header', 'Faq Categories')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item active">ChatBot Knowledge Base</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQs</a></li>
+  <li class="breadcrumb-item active">Faq Categories</li>
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('knowledge-base', 'create') )
-  <a class="btn btn-primary float-right" href="{{ route('admin.knowledge-base.create') }}">Add Question</a>
+@if(Auth::user()->role->hasPermission('faq-categories', 'create'))
+  <a class="btn btn-primary float-right" href="{{ route('admin.faq-categories.create') }}">Add New Category</a>
 @endif
 @endsection
 
@@ -19,7 +20,7 @@
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Question</th>
+                          <th>Name</th>
                           <th>Created date</th>
                           <th>Action</th>
                       </tr>
@@ -41,21 +42,21 @@
 
 @push('optional-styles')
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">    
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 @endpush
 
 @push('optional-scripts')
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js" defer></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 
     <script type="text/javascript">
       $(function () {
-        
+
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
             pageLength: 25,
-            ajax: "{{ route('admin.knowledge-base.list') }}",
+            ajax: "{{ route('admin.faq-categories.list') }}",
             fnDrawCallback: function () {
               if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
                 const searchedRecods = this.fnSettings()._iRecordsDisplay;
@@ -67,12 +68,12 @@
             },
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'question', name: 'question'},
+                {data: 'name', name: 'name'},
                 {data: 'created_at', name: 'created_at'},
                 {
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: false, 
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
                     searchable: false
                 },
             ]

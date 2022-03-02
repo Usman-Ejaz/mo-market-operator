@@ -225,7 +225,6 @@ class DocumentController extends Controller
             'keywords' => 'nullable',
             'category_id' => 'required',
             'file' => 'required|file|max:5000',
-            'category_id' => 'required',
             'created_by' => '',
             'modified_by' => ''
         ], [

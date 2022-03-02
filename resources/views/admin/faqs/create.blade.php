@@ -88,6 +88,9 @@
             maxlength: 255,
             notNumericValues: true
           },
+          category_id: {
+            required: true,
+          },
           answer:{
             ckeditor_required: true,
             minlength: 5
