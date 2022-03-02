@@ -9,6 +9,9 @@
 @if( Auth::user()->role->hasPermission('faqs', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.faqs.create') }}">Add New FAQ</a>
 @endif
+@if (Auth::user()->role->hasPermission('faq-categories', 'list'))
+  <a class="btn btn-primary float-right mr-2" href="{{ route('admin.faq-categories.index') }}">Faq Categories</a>
+@endif
 @endsection
 
 @section('content')
@@ -20,6 +23,7 @@
                       <tr>
                           <th>Id</th>
                           <th>Question</th>
+                          <th>Category</th>
                           <th>Created date</th>
                           <th>Action</th>
                       </tr>
@@ -68,6 +72,7 @@
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'question', name: 'question'},
+                {data: 'category', name: 'category'},
                 {data: 'created_at', name: 'created_at'},
                 {
                     data: 'action', 

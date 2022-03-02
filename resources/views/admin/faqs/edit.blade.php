@@ -13,7 +13,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Editing FAQ # {{$faq->id}}</h3>
+                            <h3 class="card-title">Edit FAQ # {{ truncateWords($faq->question, 40) }}</h3>
                         </div>
                         <!-- form start -->
                         @method('PATCH')
@@ -101,6 +101,9 @@
             minlength: 5,
             maxlength: 255,
             notNumericValues: true,            
+          },
+          category_id: {
+            required: true,
           },
           answer:{
             ckeditor_required: true,

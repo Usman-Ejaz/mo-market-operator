@@ -72,41 +72,40 @@ class SearchStatisticController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->setTotalRecords($data->count())
-                ->orderColumn('created_at', 'created_at $1')
                 ->orderColumn('keyword', 'keyword $1')
                 ->orderColumn('count', 'count $1')
                 ->orderColumn('DT_RowIndex', 'id $1')
                 ->addColumn('keyword', function ($row) {
-                    return truncateWords($row->keyword, 20);
+                    return truncateWords($row->keyword, 70);
                 })
                 ->addColumn('count', function ($row) {
                     return $row->count;
                 })
-                ->addColumn('created_at', function ($row) {
-                    return $row->created_at;
-                })
-                ->addColumn('action', function ($row) {
-                    $options = '';
-                    if (Auth::user()->role->hasPermission('search-statistics', 'view')) {
-                        $options .= '<a href="'. route('admin.search-statistics.show',$row->id) .'" class="btn btn-primary" title="View">
-                            <i class="fas fa-eye"></i>
-                        </a>';
-                    }
+                // ->addColumn('created_at', function ($row) {
+                //     return $row->created_at;
+                // })
+                // ->addColumn('action', function ($row) {
+                //     $options = '';
+                //     if (Auth::user()->role->hasPermission('search-statistics', 'view')) {
+                //         $options .= '<a href="'. route('admin.search-statistics.show',$row->id) .'" class="btn btn-primary" title="View">
+                //             <i class="fas fa-eye"></i>
+                //         </a>';
+                //     }
 
-                    if (Auth::user()->role->hasPermission('search-statistics', 'delete')) {
-                        $options .= ' <form action="'. route('admin.search-statistics.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
-                    }
+                //     if (Auth::user()->role->hasPermission('search-statistics', 'delete')) {
+                //         $options .= ' <form action="'. route('admin.search-statistics.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                //             '.csrf_field().'
+                //             '.method_field("DELETE").'
+                //             <button type="submit" class="btn btn-danger"
+                //                 onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
+                //                     <i class="fas fa-trash"></i>
+                //             </button>
+                //         </form>';
+                //     }
 
-                    return $options;
-                })
-                ->rawColumns(['action'])
+                //     return $options;
+                // })
+                // ->rawColumns(['action'])
                 ->make(true);
         }
     }

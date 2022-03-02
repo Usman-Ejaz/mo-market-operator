@@ -255,23 +255,23 @@ class JobController extends Controller
                     return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
-                        $options = '';
-                        if( Auth::user()->role->hasPermission('applications', 'view') ) {
-                            $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </a>';
-                        }
-                        if( Auth::user()->role->hasPermission('applications', 'delete') ) {
-                            $options .= ' <form action="'. route('admin.job.application.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                                '.csrf_field().'
-                                '.method_field("DELETE").'
-                                <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                </button>
-                            </form>';
-                        }
-                        return $options;
+                    $options = '';
+                    if (Auth::user()->role->hasPermission('jobs', 'view_job_application')) {
+                        $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="View">
+                            <i class="fas fa-eye"></i>
+                        </a>';
+                    }
+                    if (Auth::user()->role->hasPermission('jobs', 'delete_job_application')) {
+                        $options .= ' <form action="'. route('admin.job.application.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                            '.csrf_field().'
+                            '.method_field("DELETE").'
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                            </button>
+                        </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])                
                 ->make(true);

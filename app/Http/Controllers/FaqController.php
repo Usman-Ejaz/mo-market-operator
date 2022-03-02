@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\FaqCategory;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,8 @@ class FaqController extends Controller
         }
 
         $faq = new Faq();
-        return view('admin.faqs.create', compact('faq'));
+        $categories = FaqCategory::all();
+        return view('admin.faqs.create', compact('faq', 'categories'));
     }
 
     /**
@@ -51,7 +53,7 @@ class FaqController extends Controller
         }
 
         $faq = new Faq();
-        $faq = Faq::create( $this->validateRequest($faq) );
+        $faq = Faq::create($this->validateRequest($faq) );
         
         $request->session()->flash('success', "Faq {$request->action} Successfully!");
         return redirect()->route('admin.faqs.index');
@@ -84,7 +86,9 @@ class FaqController extends Controller
             return abort(403);
         }
 
-        return view('admin.faqs.edit', compact('faq'));
+        $categories = FaqCategory::all();
+
+        return view('admin.faqs.edit', compact('faq', 'categories'));
     }
 
     /**
@@ -135,11 +139,14 @@ class FaqController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = Faq::latest()->get();
+            $data = Faq::latest()->with('category')->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('question', function ($row) {
-                    return ($row->question) ? ( (strlen($row->question) > 100) ? substr($row->question,0,100).'...' : $row->question ) : '';
+                    return truncateWords($row->question, 80);
+                })
+                ->addColumn('category', function ($row) {
+                    return truncateWords($row->category->name, 30);
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
@@ -172,6 +179,7 @@ class FaqController extends Controller
         
         return tap( request()->validate([
                 'question' => 'required|min:5',
+                'category_id' => 'required',
                 'answer' => 'required',
                 'active' => 'nullable',
                 'created_by' => '',

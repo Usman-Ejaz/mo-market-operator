@@ -6,6 +6,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
 use App\Http\Controllers\ContactPageQueryController;
 use App\Http\Controllers\DocumentCategoryController;
+use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\MenuController;
@@ -75,6 +76,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     // Routes for FAQ Module
     Route::get('faqs/list', [FaqController::class, 'list'])->name('faqs.list');
     Route::resource('faqs', FaqController::class);
+
+    Route::get('faq-categories/list', [FaqCategoryController::class, 'list'])->name('faq-categories.list');
+    Route::resource('faq-categories', FaqCategoryController::class);
     
     // Routes for Role Module
     Route::get('roles/list', [RoleController::class, 'list'])->name('roles.list');

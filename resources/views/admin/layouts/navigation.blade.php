@@ -115,7 +115,7 @@
             <a href="{{ route('admin.knowledge-base.index') }}" class="nav-link {{ Request()->is('admin/knowledge-base*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-database"></i>
               <p>
-                Knowledge Base
+                Chatbot Knowledge Base
               </p>
             </a>
           </li>

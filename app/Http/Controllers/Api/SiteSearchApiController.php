@@ -88,10 +88,12 @@ class SiteSearchApiController extends BaseApiController
             // Log search keywords
             event(new SiteSearchEvent($keyword));
 
+            // Searching for documents
             if ($request->has("type") && $request->type === self::SEARCH_TYPE_DOC) {
                 return $this->searchFromDocuments($keyword);
             }
 
+            // Searching with algolia search, upto 10k requests/month in FREE plan.
             $result = SitewideSearch::search($keyword)->get()->where('published_at', '!=', null);
 
             if ($result->count() > 0) {

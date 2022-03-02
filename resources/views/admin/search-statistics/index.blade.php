@@ -21,8 +21,8 @@
                           <th>Id</th>
                           <th>Keyword</th>
                           <th>Count</th>
-                          <th>Created date</th>
-                          <th>Action</th>
+                          <!-- <th>Created date</th>
+                          <th>Action</th> -->
                       </tr>
                   </thead>
                   <tbody>
@@ -71,13 +71,13 @@
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'keyword', name: 'keyword'},
                 {data: 'count', name: 'count'},
-                {data: 'created_at', name: 'created_at'},
-                {
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: false, 
-                    searchable: false
-                },
+                // {data: 'created_at', name: 'created_at'},
+                // {
+                //     data: 'action', 
+                //     name: 'action', 
+                //     orderable: false, 
+                //     searchable: false
+                // },
             ]
         });
 
