@@ -25,18 +25,18 @@
             <input type="hidden" name="email" value="{{ $user }}" required autofocus class="form-control" placeholder="{{ __('Email Address') }}">
             
             <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="{{ __('Create Password') }}" id="password" name="password" required>
+            <input type="password" class="form-control" placeholder="{{ __('New Password') }}" id="password" name="password" required>
             <div class="input-group-append">
                 <div class="input-group-text">
-                <span class="fas fa-eye"></span>
+                <span class="fas fa-eye" id="eye-new-password"></span>
                 </div>
             </div>
             </div>
             <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" name="password_confirmation" required>
+            <input type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" id="confirm_password" name="password_confirmation" required>
             <div class="input-group-append">
                 <div class="input-group-text">
-                <span class="fas fa-eye"></span>
+                <span class="fas fa-eye" id="eye-confirm-password"></span>
                 </div>
             </div>
             </div>
@@ -57,3 +57,27 @@
 </div>
 
 @endsection
+
+@push("optional-scripts")
+<script>
+  $("#eye-new-password").click(function () {
+    if ($("#password").attr("type") === "password") {
+      $("#password").attr("type", "text");
+      $(this).attr("class", "fas fa-eye-slash");
+    } else {
+      $("#password").attr("type", "password");
+      $(this).attr("class", "fas fa-eye");
+    }
+  })
+
+  $("#eye-confirm-password").click(function () {
+    if ($("#confirm_password").attr("type") === "password") {
+      $("#confirm_password").attr("type", "text");
+      $(this).attr("class", "fas fa-eye-slash");
+    } else {
+      $("#confirm_password").attr("type", "password");
+      $(this).attr("class", "fas fa-eye");
+    }
+  })
+</script>
+@endpush

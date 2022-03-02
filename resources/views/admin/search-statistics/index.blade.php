@@ -1,16 +1,14 @@
 @extends('admin.layouts.app')
-@section('header')
-  Viewing Applications Of - {{ $job->title }}
-@endsection
+@section('header', 'Search Statistics')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
-  <li class="breadcrumb-item active">Applications</li>
+  <li class="breadcrumb-item active">Search Statistics</li>
 @endsection
+
 @section('addButton')
-@if( Auth::user()->role->hasPermission('jobs', 'export_applications') )
-  <a role="button" class="btn btn-primary float-right" href="{{ route('admin.job.applications.list.export',$job->id) }}">Export Applications</a>
-@endif
+  @if(Auth::user()->role->hasPermission('search-statistics', 'export_keywords'))
+  <a role="button" class="btn btn-primary float-right" href="{{ route('admin.search-statistics.export-list') }}">Export Keywords</a>
+  @endif
 @endsection
 
 @section('content')
@@ -21,12 +19,8 @@
                   <thead>
                       <tr>
                           <th>Id</th>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th>Gender</th>
-                          <th>Phone</th>
-                          <th>City</th>
-                          <th>Experience</th>
+                          <th>Keyword</th>
+                          <th>Count</th>
                           <th>Created date</th>
                           <th>Action</th>
                       </tr>
@@ -48,7 +42,7 @@
 
 @push('optional-styles')
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">    
 @endpush
 
 @push('optional-scripts')
@@ -57,11 +51,13 @@
 
     <script type="text/javascript">
       $(function () {
+        
         var table = $('.yajra-datatable').DataTable({
+            order: [[ 2, 'desc' ]],
             processing: true,
             serverSide: true,
             pageLength: 25,
-            ajax: "{{ route('admin.job.applications.list',$job->id) }}",
+            ajax: "{{ route('admin.search-statistics.list') }}",
             fnDrawCallback: function () {
               if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
                 const searchedRecods = this.fnSettings()._iRecordsDisplay;
@@ -72,13 +68,9 @@
               }
             },
             columns: [
-                {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
-                {data: 'email', name: 'email'},
-                {data: 'gender', name: 'gender'},
-                {data: 'phone', name: 'phone'},
-                {data: 'city', name: 'city'},
-                {data: 'experience', name: 'experience'},
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                {data: 'keyword', name: 'keyword'},
+                {data: 'count', name: 'count'},
                 {data: 'created_at', name: 'created_at'},
                 {
                     data: 'action', 

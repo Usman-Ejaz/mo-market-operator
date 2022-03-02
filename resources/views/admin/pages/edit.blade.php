@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('header', 'Pages')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.pages.index') }}">Pages</a></li>
   <li class="breadcrumb-item active">Edit</li>
 @endsection
@@ -14,7 +14,7 @@
           <div class="col-md-9">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Editing Page - {{ $page->title }}</h3>
+                <h3 class="card-title">Edit Page - {{ $page->title }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -34,24 +34,37 @@
             </div>
 
             <!-- /.card-body -->
-            <div class="float-right">
+			<div class="float-right">
 
-              <input type="hidden" name="active" id="status">
-              <input type="hidden" name="action" id="action">
+			<input type="hidden" name="active" id="status">
+			<input type="hidden" name="action" id="action">
 
-              @if($page->active == 'Active')
-                <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-                @if( Auth::user()->role->hasPermission('pages', 'publish') )
-                  <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
-                @endif
-              @elseif($page->active == 'Draft')
-                <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                @if( Auth::user()->role->hasPermission('pages', 'publish') )
-                  <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
-                @endif
-              @endif
+			@if($page->active == 'Active')
+				<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
+				@if( Auth::user()->role->hasPermission('pages', 'publish') )
+				<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
+				<!-- <div class="form-group mt-3">
+					<div class="row text-center">
+						<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
+							<i class="fab fa-facebook social-share-icon" style="color: var(--facebook-color);"></i>
+						</div>
+						<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
+							<i class="fab fa-twitter social-share-icon" style="color: var(--twitter-color);"></i>
+						</div>
+						<div class="col-md-3 col-sm-4 p-2 text-center">
+							<i class="fab fa-linkedin social-share-icon" style="color: var(--linkedIn-color);"></i>
+						</div>
+					</div>
+				</div> -->
+				@endif
+			@elseif($page->active == 'Draft')
+				<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
+				@if( Auth::user()->role->hasPermission('pages', 'publish') )
+				<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
+				@endif
+			@endif
 
-            </div>
+			</div>
 
 
           </div>
@@ -64,6 +77,12 @@
 
 @push('optional-styles')
 <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
+<style>
+	.social-share-icon {
+		font-size: 40px;
+		cursor: pointer;
+	}
+</style>
 @endpush
 
 @push('optional-scripts')
@@ -247,7 +266,39 @@
             }
         });
 
+		// handle social share button clicks
+		$('.social-share-icon').click(function () {
+			let clickedElement = $(this).attr('class').replace('fab fa-', '').replace('social-share-icon', '').trim();
+			
+			const FACEBOOK_SHARE_URL = 'https://www.facebook.com/sharer.php';
+			const TWITTER_SHARE_URL = 'https://twitter.com/intent/tweet';
+			const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle?mini=true';
+			let url = "";
+
+			switch (clickedElement) {
+				case 'facebook':
+					url = `${FACEBOOK_SHARE_URL}?u='{{ $page->link }}'`;
+					socialWindow(url);
+					break;
+				case 'twitter':
+					url = `${TWITTER_SHARE_URL}?url='{{ $page->link }}'`;
+					socialWindow(url);
+					break;
+				case 'linkedin':
+					url = `${LINKEDIN_SHARE_URL}&url='{{ $page->link }}'`;
+					socialWindow(url);
+					break;
+			}
+		});
+
     });
+
+	function socialWindow(url) {
+		var left = (screen.width -570) / 2;
+		var top = (screen.height -570) / 2;
+		var params = "menubar=no,toolbar=no,status=no,width=570,height=570,top=" + top + ",left=" + left;
+		window.open(url, "NewWindow", params);
+	}
 
   </script>
 
