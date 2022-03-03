@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
-@section('header', 'Knowledge Base')
+@section('header', 'Chatbot Knowledge Base')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">ChatBot Knowledge Base</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">Chatbot Knowledge Base</a></li>
   <li class="breadcrumb-item active">Edit</li>
 @endsection
 
@@ -13,11 +13,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-<<<<<<< HEAD
-                            <h3 class="card-title">Edit Knowledge Base </h3>
-=======
-                            <h3 class="card-title">Editing Knowledge Base </h3>
->>>>>>> 71ed2660a554914ac5449931f5ad518b610dc904
+                            <h3 class="card-title">Edit Chatbot Knowledge Base - {{ truncateWords($knowledge_base->question, 50) }}</h3>
                         </div>
                         <!-- form start -->
                         @method('PATCH')
@@ -29,12 +25,12 @@
                                 
                                 @if($knowledge_base->published_at !== null)
                                   <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-                                  @if(Auth::user()->role->hasPermission('knowledge-base', 'publish'))
+                                  @if(hasPermission('knowledge-base', 'publish'))
                                   <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                                   @endif
                                 @else
                                   <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                                  @if( Auth::user()->role->hasPermission('knowledge-base', 'publish'))
+                                  @if(hasPermission('knowledge-base', 'publish'))
                                     <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                   @endif
                                 @endif

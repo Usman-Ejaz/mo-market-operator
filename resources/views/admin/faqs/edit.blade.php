@@ -2,7 +2,7 @@
 @section('header', 'FAQ')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQ</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQs</a></li>
   <li class="breadcrumb-item active">Edit</li>
 @endsection
 
@@ -25,12 +25,12 @@
                                 
                                 @if($faq->active == 'Active')
                                   <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-                                  @if(Auth::user()->role->hasPermission('faqs', 'publish'))
+                                  @if(hasPermission('faqs', 'publish'))
                                   <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                                   @endif
                                 @elseif($faq->active == 'Draft')
                                   <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                                  @if( Auth::user()->role->hasPermission('faqs', 'publish'))
+                                  @if( hasPermission('faqs', 'publish'))
                                     <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                   @endif
                                 @endif

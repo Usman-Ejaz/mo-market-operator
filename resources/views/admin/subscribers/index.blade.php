@@ -7,7 +7,7 @@
 @endsection
 
 @section('addButton')
-    <!-- @if( Auth::user()->role->hasPermission('subscribers', 'create') )
+    <!-- @if( hasPermission('subscribers', 'create') )
         <a class="btn btn-primary float-right" href="{{ route('admin.subscribers.create') }}">Add Subscribers</a>
     @endif -->
 @endsection

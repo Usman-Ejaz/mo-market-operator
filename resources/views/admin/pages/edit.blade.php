@@ -41,7 +41,7 @@
 
 					@if($page->active == 'Active')
 					<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-					@if( Auth::user()->role->hasPermission('pages', 'publish') )
+					@if( hasPermission('pages', 'publish') )
 					<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
 					<div class="form-group mt-3">
 						<div class="row text-center">
@@ -59,7 +59,7 @@
 					@endif
 					@elseif($page->active == 'Draft')
 					<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-					@if( Auth::user()->role->hasPermission('pages', 'publish') )
+					@if( hasPermission('pages', 'publish') )
 					<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
 					@endif
 					@endif

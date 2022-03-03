@@ -22,7 +22,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('menus', 'list') ){
+        if( !hasPermission('menus', 'list') ){
             return abort(403);
         }
 
@@ -36,7 +36,7 @@ class MenuController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('menus', 'create') ){
+        if( !hasPermission('menus', 'create') ){
             return abort(403);
         }
 
@@ -52,7 +52,7 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('menus', 'create') ){
+        if( !hasPermission('menus', 'create') ){
             return abort(403);
         }
 
@@ -71,7 +71,7 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        if( !Auth::user()->role->hasPermission('menus', 'view') ){
+        if( !hasPermission('menus', 'view') ){
             return abort(403);
         }
 
@@ -86,7 +86,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        if( !Auth::user()->role->hasPermission('menus', 'edit') ){
+        if( !hasPermission('menus', 'edit') ){
             return abort(403);
         }
 
@@ -102,7 +102,7 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
-        if( !Auth::user()->role->hasPermission('menus', 'edit') ){
+        if( !hasPermission('menus', 'edit') ){
             return abort(403);
         }
 
@@ -120,7 +120,7 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        if( !Auth::user()->role->hasPermission('menus', 'delete') ){
+        if( !hasPermission('menus', 'delete') ){
             return abort(403);
         }
 
@@ -135,7 +135,7 @@ class MenuController extends Controller
      */
     public function submenus(Menu $menu)
     {
-        if( !Auth::user()->role->hasPermission('menus', 'submenus') ){
+        if( !hasPermission('menus', 'submenus') ){
             return abort(403);
         }
 
@@ -209,7 +209,7 @@ class MenuController extends Controller
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('menus', 'list') ){
+        if( !hasPermission('menus', 'list') ){
             return abort(403);
         }
 
@@ -232,19 +232,19 @@ class MenuController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('menus', 'submenus') ) {
+                    if( hasPermission('menus', 'submenus') ) {
                         $options .= '<a href="'. route('admin.menus.submenus',$row->id) .'" class="btn btn-secondary" title="Sub menus">
                             <i class="fas fa-bars"></i>
                         </a>';
                     }
 
-                    if( Auth::user()->role->hasPermission('menus', 'edit') ) {
+                    if( hasPermission('menus', 'edit') ) {
                         $options .= ' <a href="'. route('admin.menus.edit',$row->id) .'" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
-                    if( Auth::user()->role->hasPermission('menus', 'delete') ) {
+                    if( hasPermission('menus', 'delete') ) {
                         $options .= ' <form action="'. route('admin.menus.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

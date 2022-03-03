@@ -17,7 +17,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('permissions', 'view') ){
+        if( !hasPermission('permissions', 'view') ){
             return abort(403);
         }
 
@@ -34,7 +34,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('permissions', 'edit') ){
+        if( !hasPermission('permissions', 'edit') ){
             return abort(403);
         }
 
@@ -65,7 +65,7 @@ class PermissionController extends Controller
      */
     public function getPermissions(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('permissions', 'view') ){
+        if( !hasPermission('permissions', 'view') ){
             return abort(403);
         }
 

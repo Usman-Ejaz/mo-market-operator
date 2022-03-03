@@ -2,8 +2,8 @@
     <!-- Brand Logo -->
 
     <a href="{{ route('admin.dashboard') }}" class="brand-link">
-      <img src="{{ asset('Ismo-designstyle-boots-m.png') }}" alt="{{ config('app.name', 'ISMO') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">{{ config('app.name', 'ISMO') }}</span>
+      <!-- <img src="{{ asset('Ismo-designstyle-boots-m.png') }}" alt="{{ config('app.name', 'ISMO') }}" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
+      <span class="ml-5 brand-text font-weight-light">{{ config('app.name', 'ISMO') }}</span>
     </a>
 
     <!-- Sidebar -->
@@ -30,18 +30,9 @@
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
-          </li>
+          </li>          
 
-          @if( Auth::user()->role->hasPermission('users', 'list') )
-              <li class="nav-item">
-                <a href="{{ route('admin.users.index') }}" class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}">
-                  <i class="nav-icon fa fa-users"></i>
-                  <p>Users</p>
-                </a>
-              </li>
-          @endif
-
-          @if( Auth::user()->role->hasPermission('news', 'list') )
+          @if( hasPermission('news', 'list') )
           <li class="nav-item">
             <a href="{{ route('admin.news.index') }}" class="nav-link {{ (Request::is('admin/news/*') || Request::is('admin/news') ) ? 'active' : '' }}">
               <i class="nav-icon fa fa-newspaper"></i>
@@ -50,7 +41,7 @@
           </li>
           @endif
 
-          @if( Auth::user()->role->hasPermission('jobs', 'list') )
+          @if( hasPermission('jobs', 'list') )
           <li class="nav-item">
                 <a href="{{ route('admin.jobs.index') }}" class="nav-link {{ (Request::is('admin/jobs*') || Request::is('admin/applications*')) ? 'active' : '' }}">
                     <i class="nav-icon fa fa-tasks"></i>
@@ -59,7 +50,7 @@
           </li>
           @endif
 
-          @if( Auth::user()->role->hasPermission('documents', 'list') )
+          @if( hasPermission('documents', 'list') )
           <li class="nav-item">
           <a href="{{ route('admin.documents.index') }}" class="nav-link {{ (Request()->is('admin/documents*') || Request()->is('admin/document-categories*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-file"></i>
@@ -68,7 +59,7 @@
           </li>
           @endif
 
-          @if( Auth::user()->role->hasPermission('pages', 'list') )
+          @if( hasPermission('pages', 'list') )
           <li class="nav-item">
             <a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-pager"></i>
@@ -79,7 +70,7 @@
           </li>
           @endif
 
-          @if( Auth::user()->role->hasPermission('newsletters', 'list') )
+          @if( hasPermission('newsletters', 'list') )
           <li class="nav-item">
             <a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ (Request::is('admin/newsletters*') || Request::is('admin/subscribers*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-envelope-open"></i>
@@ -88,18 +79,18 @@
           </li>
           @endif
 
-          @if( Auth::user()->role->hasPermission('faqs', 'list') )
+          @if( hasPermission('faqs', 'list') )
           <li class="nav-item">
-            <a href="{{ route('admin.faqs.index') }}" class="nav-link {{ Request()->is('admin/faqs*') ? 'active' : '' }}">
+            <a href="{{ route('admin.faqs.index') }}" class="nav-link {{ (Request()->is('admin/faqs*') || Request()->is('admin/faq-categories*')) ? 'active' : '' }}">
               <i class="nav-icon fa fa-question-circle"></i>
               <p>
-                FAQ
+                FAQs
               </p>
             </a>
           </li>
           @endif
 
-          @if( Auth::user()->role->hasPermission('contact-page-queries', 'list') )
+          @if( hasPermission('contact-page-queries', 'list') )
           <li class="nav-item">
             <a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('admin/contact-page-queries*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-question-circle"></i>
@@ -110,7 +101,7 @@
           </li>
           @endif
 
-          @if (Auth::user()->role->hasPermission('knowledge-base', 'list'))
+          @if (hasPermission('knowledge-base', 'list'))
           <li class="nav-item">
             <a href="{{ route('admin.knowledge-base.index') }}" class="nav-link {{ Request()->is('admin/knowledge-base*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-database"></i>
@@ -121,7 +112,7 @@
           </li>
           @endif
 
-          @if(Auth::user()->role->hasPermission('search-statistics', 'list'))
+          @if(hasPermission('search-statistics', 'list'))
           <li class="nav-item">
             <a href="{{ route('admin.search-statistics.index') }}" class="nav-link {{ Request()->is('admin/search-statistics*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-chart-line"></i>
@@ -132,14 +123,23 @@
           </li>
           @endif
           
-          @if(Auth::user()->role->hasPermission('roles', 'list') || Auth::user()->role->hasPermission('permissions', 'view') || Auth::user()->role->hasPermission('menus', 'list') || Auth::user()->role->hasPermission('settings', 'list'))
-          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/settings*')) ? 'menu-is-opening menu-open' : '' }}">
+          @if(hasPermission('roles', 'list') || hasPermission('permissions', 'view') || hasPermission('menus', 'list') || hasPermission('settings', 'list') || hasPermission('users', 'list'))
+          <li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/settings*') || request()->is('admin/users*')) ? 'menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-cogs"></i>
                 <p>Settings <i class="fas fa-angle-left right"></i></p>
             </a>
+            
             <ul class="nav nav-treeview">
-                @if( Auth::user()->role->hasPermission('roles', 'list') )
+                @if( hasPermission('users', 'list') )
+                  <li class="nav-item">
+                    <a href="{{ route('admin.users.index') }}" class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}">
+                      <i class="nav-icon fa fa-users"></i>
+                      <p>Users</p>
+                    </a>
+                  </li>
+                @endif
+                @if( hasPermission('roles', 'list') )
                     <li class="nav-item">
                         <a href="{{ route('admin.roles.index') }}" class="nav-link {{ Request()->is('admin/roles*') ? 'active' : '' }}">
                             <i class="fa fa-user-tag nav-icon"></i>
@@ -148,7 +148,7 @@
                     </li>
                 @endif
 
-                @if( Auth::user()->role->hasPermission('permissions', 'view') )
+                @if( hasPermission('permissions', 'view') )
                     <li class="nav-item">
                         <a href="{{ route('admin.permissions.index') }}" class="nav-link {{ Request()->is('admin/permissions*') ? 'active' : '' }}">
                             <i class="fa fa-lock nav-icon"></i>
@@ -157,7 +157,7 @@
                     </li>
                 @endif
 
-                @if( Auth::user()->role->hasPermission('menus', 'list') )
+                @if( hasPermission('menus', 'list') )
                     <li class="nav-item">
                         <a href="{{ route('admin.menus.index') }}" class="nav-link {{ Request()->is('admin/menus*') ? 'active' : '' }}">
                             <i class="fa fa-compass nav-icon"></i>
@@ -166,7 +166,7 @@
                     </li>
                 @endif
 
-                @if( Auth::user()->role->hasPermission('settings', 'list') )
+                @if( hasPermission('settings', 'list') )
                     <li class="nav-item">
                         <a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings*') ? 'active' : '' }}">
                             <i class="fa fa-cog nav-icon"></i>

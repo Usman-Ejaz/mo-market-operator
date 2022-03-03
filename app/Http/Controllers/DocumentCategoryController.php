@@ -16,7 +16,7 @@ class DocumentCategoryController extends Controller
      */
     public function index()
     {
-        if (!Auth::user()->role->hasPermission("document-categories", "list")) {
+        if (!hasPermission("document-categories", "list")) {
             return abort(403);
         }
 
@@ -30,7 +30,7 @@ class DocumentCategoryController extends Controller
      */
     public function create()
     {
-        if (!Auth::user()->role->hasPermission("document-categories", "create")) {
+        if (!hasPermission("document-categories", "create")) {
             return abort(403);
         }
         $documentCategory = new DocumentCategory();
@@ -45,7 +45,7 @@ class DocumentCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('document-categories', 'create')) {
+        if (!hasPermission('document-categories', 'create')) {
             return abort(403);
         }
         $category = new DocumentCategory();
@@ -63,7 +63,7 @@ class DocumentCategoryController extends Controller
      */
     public function show(DocumentCategory $documentCategory)
     {
-        if (!Auth::user()->role->hasPermission('document-categories', 'view')) {
+        if (!hasPermission('document-categories', 'view')) {
             return abort(403);
         }
 
@@ -78,7 +78,7 @@ class DocumentCategoryController extends Controller
      */
     public function edit(DocumentCategory $documentCategory)
     {
-        if (!Auth::user()->role->hasPermission('document-categories', 'edit')) {
+        if (!hasPermission('document-categories', 'edit')) {
             return abort(403);
         }
         return view('admin.document-categories.edit', compact('documentCategory'));
@@ -93,7 +93,7 @@ class DocumentCategoryController extends Controller
      */
     public function update(Request $request, DocumentCategory $documentCategory)
     {
-        if (!Auth::user()->role->hasPermission('document-categories', 'edit')) {
+        if (!hasPermission('document-categories', 'edit')) {
             return abort(403);
         }
 
@@ -112,7 +112,7 @@ class DocumentCategoryController extends Controller
      */
     public function destroy(DocumentCategory $documentCategory)
     {
-        if (!Auth::user()->role->hasPermission('document-categories', 'delete')) {
+        if (!hasPermission('document-categories', 'delete')) {
             return abort(403);
         }
 
@@ -123,7 +123,7 @@ class DocumentCategoryController extends Controller
 
     public function list(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('document-categories', 'list')) {
+        if (!hasPermission('document-categories', 'list')) {
             return abort(403);
         }
 
@@ -140,12 +140,12 @@ class DocumentCategoryController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';
-                    if (Auth::user()->role->hasPermission('document-categories', 'edit')) {
+                    if (hasPermission('document-categories', 'edit')) {
                         $options .= '<a href="' . route('admin.document-categories.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if (Auth::user()->role->hasPermission('document-categories', 'delete')) {
+                    if (hasPermission('document-categories', 'delete')) {
                         $options .= ' <form action="'. route('admin.document-categories.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

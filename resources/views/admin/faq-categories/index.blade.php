@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
-@section('header', 'Faq Categories')
+@section('header', 'FAQ Categories')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQs</a></li>
-  <li class="breadcrumb-item active">Faq Categories</li>
+  <li class="breadcrumb-item active">FAQ Categories</li>
 @endsection
 
 @section('addButton')
-@if(Auth::user()->role->hasPermission('faq-categories', 'create'))
+@if(hasPermission('faq-categories', 'create'))
   <a class="btn btn-primary float-right" href="{{ route('admin.faq-categories.create') }}">Add New Category</a>
 @endif
 @endsection

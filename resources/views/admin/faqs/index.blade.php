@@ -6,11 +6,11 @@
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('faqs', 'create') )
+@if( hasPermission('faqs', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.faqs.create') }}">Add New FAQ</a>
 @endif
-@if (Auth::user()->role->hasPermission('faq-categories', 'list'))
-  <a class="btn btn-primary float-right mr-2" href="{{ route('admin.faq-categories.index') }}">Faq Categories</a>
+@if (hasPermission('faq-categories', 'list'))
+  <a class="btn btn-primary float-right mr-2" href="{{ route('admin.faq-categories.index') }}">FAQ Categories</a>
 @endif
 @endsection
 

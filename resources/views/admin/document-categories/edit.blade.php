@@ -2,6 +2,7 @@
 @section('header', 'Document Categories')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.documents.index') }}">Documents</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.document-categories.index') }}">Document Categories</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
@@ -13,7 +14,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Editing Document Category - {{ $documentCategory->name }}</h3>
+						<h3 class="card-title">Edit Document Category - {{ $documentCategory->name }}</h3>
 					</div>
 					@method('PATCH')
 					@include('admin.document-categories.form')

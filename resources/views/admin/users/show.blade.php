@@ -13,7 +13,7 @@
   <button class="btn btn-danger">Delete</button>
 </form>
 
-@if( Auth::user()->role->hasPermission('users', 'edit') ){
+@if( hasPermission('users', 'edit') ){
     <a class="btn btn-primary float-right mr-2" href="{{ route('admin.users.edit', $user->id)}}">Edit User</a>
 @endif
 @endsection

@@ -1,8 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Faq Categories')
+@section('header', 'FAQ Categories')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-<li class="breadcrumb-item"><a href="{{ route('admin.faq-categories.index') }}">Faq Categories</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQs</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.faq-categories.index') }}">FAQ Categories</a></li>
 <li class="breadcrumb-item active">Create</li>
 @endsection
 
@@ -14,7 +15,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Create Faq Category</h3>
+						<h3 class="card-title">Create FAQ Category</h3>
 					</div>
 
 					@include('admin.faq-categories.form')

@@ -8,7 +8,7 @@
   <li class="breadcrumb-item active">Applications</li>
 @endsection
 @section('addButton')
-@if( Auth::user()->role->hasPermission('jobs', 'export_applications') )
+@if( hasPermission('jobs', 'export_applications') )
   <a role="button" class="btn btn-primary float-right" href="{{ route('admin.job.applications.list.export',$job->id) }}">Export Applications</a>
 @endif
 @endsection

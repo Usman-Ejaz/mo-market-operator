@@ -19,7 +19,7 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('documents', 'list') ){
+        if( !hasPermission('documents', 'list') ){
             return abort(403);
         }
 
@@ -33,7 +33,7 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('documents', 'create') ){
+        if( !hasPermission('documents', 'create') ){
             return abort(403);
         }
 
@@ -51,7 +51,7 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('documents', 'create') ){
+        if( !hasPermission('documents', 'create') ){
             return abort(403);
         }
 
@@ -85,7 +85,7 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
-        if( !Auth::user()->role->hasPermission('documents', 'view') ){
+        if( !hasPermission('documents', 'view') ){
             return abort(403);
         }
 
@@ -100,7 +100,7 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        if (!Auth::user()->role->hasPermission('documents', 'edit')) {
+        if (!hasPermission('documents', 'edit')) {
             return abort(403);
         }
 
@@ -119,7 +119,7 @@ class DocumentController extends Controller
     public function update(Request $request, Document $document)
     {
         // dd($request->all());
-        if( !Auth::user()->role->hasPermission('documents', 'edit') ){
+        if( !hasPermission('documents', 'edit') ){
             return abort(403);
         }
         $previousFile = $document->file;
@@ -157,7 +157,7 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
-        if( !Auth::user()->role->hasPermission('documents', 'delete') ){
+        if( !hasPermission('documents', 'delete') ){
             return abort(403);
         }
 
@@ -173,7 +173,7 @@ class DocumentController extends Controller
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('documents', 'list') ){
+        if( !hasPermission('documents', 'list') ){
             return abort(403);
         }
 
@@ -196,12 +196,12 @@ class DocumentController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';
-                    if( Auth::user()->role->hasPermission('documents', 'edit') ) {
+                    if( hasPermission('documents', 'edit') ) {
                         $options .= '<a href="' . route('admin.documents.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( Auth::user()->role->hasPermission('documents', 'delete') ) {
+                    if( hasPermission('documents', 'delete') ) {
                         $options .= ' <form action="'. route('admin.documents.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

@@ -19,7 +19,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('news', 'list') ){
+        if( !hasPermission('news', 'list') ){
             return abort(403);
         }
 
@@ -33,7 +33,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('news', 'create') ){
+        if( !hasPermission('news', 'create') ){
             return abort(403);
         }
 
@@ -49,7 +49,7 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('news', 'create') ){
+        if( !hasPermission('news', 'create') ){
             return abort(403);
         }
 
@@ -75,7 +75,7 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        if( !Auth::user()->role->hasPermission('news', 'view') ){
+        if( !hasPermission('news', 'view') ){
             return abort(403);
         }
 
@@ -90,7 +90,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        if( !Auth::user()->role->hasPermission('news', 'edit') ){
+        if( !hasPermission('news', 'edit') ){
             return abort(403);
         }
 
@@ -106,7 +106,7 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        if( !Auth::user()->role->hasPermission('news', 'edit') ){
+        if( !hasPermission('news', 'edit') ){
             return abort(403);
         }
         $previousImage = $news->image;
@@ -134,7 +134,7 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        if( !Auth::user()->role->hasPermission('news', 'delete') ){
+        if( !hasPermission('news', 'delete') ){
             return abort(403);
         }
 
@@ -146,7 +146,7 @@ class NewsController extends Controller
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('news', 'list') ){
+        if( !hasPermission('news', 'list') ){
             return abort(403);
         }
 
@@ -172,12 +172,12 @@ class NewsController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('news', 'edit') ) {
+                    if( hasPermission('news', 'edit') ) {
                         $options .= '<a href="' . route('admin.news.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( Auth::user()->role->hasPermission('news', 'delete') ) {
+                    if( hasPermission('news', 'delete') ) {
                         $options .= ' <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

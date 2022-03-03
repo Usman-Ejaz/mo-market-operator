@@ -22,7 +22,7 @@ class SearchStatisticController extends Controller
      */
     public function index()
     {
-        if (!Auth::user()->role->hasPermission('search-statistics', 'list')) {
+        if (!hasPermission('search-statistics', 'list')) {
             return abort(403);
         }
 
@@ -37,7 +37,7 @@ class SearchStatisticController extends Controller
      */
     public function show(SearchStatistic $searchStatistic)
     {
-        if (!Auth::user()->role->hasPermission('search-statistics', 'view')) {
+        if (!hasPermission('search-statistics', 'view')) {
             return abort(403);
         }
 
@@ -52,7 +52,7 @@ class SearchStatisticController extends Controller
      */
     public function destroy(SearchStatistic $searchStatistic)
     {
-        if (!Auth::user()->role->hasPermission('search-statistics', 'delete')) {
+        if (!hasPermission('search-statistics', 'delete')) {
             return abort(403);
         }
 
@@ -62,7 +62,7 @@ class SearchStatisticController extends Controller
 
     public function list(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('search-statistics', 'list')) {
+        if (!hasPermission('search-statistics', 'list')) {
             return abort(403);
         }
 
@@ -86,13 +86,13 @@ class SearchStatisticController extends Controller
                 // })
                 // ->addColumn('action', function ($row) {
                 //     $options = '';
-                //     if (Auth::user()->role->hasPermission('search-statistics', 'view')) {
+                //     if (hasPermission('search-statistics', 'view')) {
                 //         $options .= '<a href="'. route('admin.search-statistics.show',$row->id) .'" class="btn btn-primary" title="View">
                 //             <i class="fas fa-eye"></i>
                 //         </a>';
                 //     }
 
-                //     if (Auth::user()->role->hasPermission('search-statistics', 'delete')) {
+                //     if (hasPermission('search-statistics', 'delete')) {
                 //         $options .= ' <form action="'. route('admin.search-statistics.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                 //             '.csrf_field().'
                 //             '.method_field("DELETE").'
@@ -112,7 +112,7 @@ class SearchStatisticController extends Controller
 
     public function exportkeywords() {
 
-        if (!Auth::user()->role->hasPermission('search-statistics', 'export_keywords')) {
+        if (!hasPermission('search-statistics', 'export_keywords')) {
             return abort(403);
         }
 
