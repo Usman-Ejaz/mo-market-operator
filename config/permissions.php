@@ -185,14 +185,14 @@ return [
     ],
     [
         "name" => "knowledge-base",
-        "display_name" => "Knowledge Base",
+        "display_name" => "Chatbot Knowledge Base",
         "capabilities" => [
             "list" => "List",
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
             // "view" => "View",
-            "publish" => "Publish"
+            // "publish" => "Publish"
         ]
     ],
 ];

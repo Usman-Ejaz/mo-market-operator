@@ -14,7 +14,7 @@
           <div class="col-md-9">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Editing News - {{ $news->title }}</h3>
+                <h3 class="card-title">Edit News - {{ $news->title }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -40,12 +40,12 @@
               <input type="hidden" name="action" id="action">              
               @if($news->active == 'Active')
                 <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-                @if(Auth::user()->role->hasPermission('news', 'publish'))
+                @if(hasPermission('news', 'publish'))
                 <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                 @endif
               @elseif($news->active == 'Draft')
                 <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                @if( Auth::user()->role->hasPermission('news', 'publish') )
+                @if( hasPermission('news', 'publish') )
                     <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                 @endif
               @endif

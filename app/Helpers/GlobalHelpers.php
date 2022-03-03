@@ -60,3 +60,17 @@ if (!function_exists("removeFile")) {
         return false;
     }
 }
+
+if (!function_exists("hasPermission")) {
+
+    function hasPermission($capability, $permission) 
+    {
+        if ($capability === "" || $permission === "") return false;
+
+        if (auth()->check() && auth()->user()->role->hasPermission($capability, $permission)) {
+            return true;
+        }
+
+        return false;        
+    }
+}

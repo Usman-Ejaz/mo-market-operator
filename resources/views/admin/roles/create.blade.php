@@ -22,7 +22,7 @@
                       @include('admin.roles.form')
 
                         <div class="card-footer text-right">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary width-120">Save</button>
                         </div>
                     </div>
                   </div>

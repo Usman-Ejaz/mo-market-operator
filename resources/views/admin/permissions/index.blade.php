@@ -66,9 +66,9 @@
                     </tbody>
                 </table>
 
-                @if( Auth::user()->role->hasPermission('permissions', 'edit') )
+                @if( hasPermission('permissions', 'edit') )
                     <div class="text-right mb-5">
-                        <input type="submit" class="btn btn-primary" value="Update" />
+                        <input type="submit" class="btn btn-primary width-120" value="Update" />
                     </div>
                 @endif
 

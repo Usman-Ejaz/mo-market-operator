@@ -6,7 +6,7 @@
 <li class="breadcrumb-item active">Details</li>
 @endsection
 @section('addButton')
-@if(Auth::user()->role->hasPermission('contact-page-queries', 'delete'))
+@if(hasPermission('contact-page-queries', 'delete'))
 <form method="POST" action="{{ route('admin.contact-page-queries.destroy', $contactPageQuery->id) }}" class="float-right">
 	@method('DELETE')
 	@csrf

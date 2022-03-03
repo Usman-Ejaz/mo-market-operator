@@ -16,7 +16,7 @@ class ChatBotKnowledgeBaseController extends Controller
      */
     public function index()
     {
-        if (!Auth::user()->role->hasPermission('knowledge-base', 'list')) {
+        if (!hasPermission('knowledge-base', 'list')) {
             return abort(403);
         }
 
@@ -30,7 +30,7 @@ class ChatBotKnowledgeBaseController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('knowledge-base', 'create') ){
+        if( !hasPermission('knowledge-base', 'create') ){
             return abort(403);
         }
 
@@ -46,7 +46,7 @@ class ChatBotKnowledgeBaseController extends Controller
      */
     public function store(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('knowledge-base', 'create')) {
+        if (!hasPermission('knowledge-base', 'create')) {
             return abort(403);
         }
 
@@ -70,7 +70,7 @@ class ChatBotKnowledgeBaseController extends Controller
      */
     public function show(ChatBotKnowledgeBase $chatBotKnowledgeBase)
     {
-        if (!Auth::user()->role->hasPermission('knowledge-base', 'view')) {
+        if (!hasPermission('knowledge-base', 'view')) {
             return abort(403);
         }
 
@@ -85,7 +85,7 @@ class ChatBotKnowledgeBaseController extends Controller
      */
     public function edit(ChatBotKnowledgeBase $knowledge_base)
     {
-        if (!Auth::user()->role->hasPermission('knowledge-base', 'edit')) {
+        if (!hasPermission('knowledge-base', 'edit')) {
             return abort(403);
         }
 
@@ -101,7 +101,7 @@ class ChatBotKnowledgeBaseController extends Controller
      */
     public function update(Request $request, ChatBotKnowledgeBase $knowledge_base)
     {   
-        if (!Auth::user()->role->hasPermission('knowledge-base', 'edit')) {
+        if (!hasPermission('knowledge-base', 'edit')) {
             return abort(403);
         }
 
@@ -127,7 +127,7 @@ class ChatBotKnowledgeBaseController extends Controller
      */
     public function destroy(ChatBotKnowledgeBase $knowledge_base)
     {
-        if (!Auth::user()->role->hasPermission('knowledge-base', 'delete')) {
+        if (!hasPermission('knowledge-base', 'delete')) {
             return abort(403);
         }
 
@@ -143,7 +143,7 @@ class ChatBotKnowledgeBaseController extends Controller
      */
     public function list(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('knowledge-base', 'list')) {
+        if (!hasPermission('knowledge-base', 'list')) {
             return abort(403);
         }
 
@@ -159,12 +159,12 @@ class ChatBotKnowledgeBaseController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if (Auth::user()->role->hasPermission('knowledge-base', 'edit')) {
+                    if (hasPermission('knowledge-base', 'edit')) {
                         $options .= '<a href="' . route('admin.knowledge-base.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if (Auth::user()->role->hasPermission('knowledge-base', 'delete')) {
+                    if (hasPermission('knowledge-base', 'delete')) {
                         $options .= ' <form action="'. route('admin.knowledge-base.destroy', $row->id) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

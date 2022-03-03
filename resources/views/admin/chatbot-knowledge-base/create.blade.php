@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
-@section('header', 'Knowledge Base')
+@section('header', 'Chatbot Knowledge Base')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">ChatBot Knowledge Base</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">Chatbot Knowledge Base</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
 
@@ -13,7 +13,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Create Knowledge Base</h3>
+                            <h3 class="card-title">Create Chatbot Knowledge Base</h3>
                         </div>
                         <!-- form start -->
                         @include('admin.chatbot-knowledge-base.form')
@@ -22,7 +22,7 @@
                                 <input type="hidden" name="active" id="status">
                                 <input type="hidden" name="action" id="action">
                                 <button type="submit" class="btn width-120 btn-primary draft_button">Save</button>
-                                @if( Auth::user()->role->hasPermission('knowledge-base', 'publish') )
+                                @if( hasPermission('knowledge-base', 'publish') )
                                   <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                 @endif
                             </div>

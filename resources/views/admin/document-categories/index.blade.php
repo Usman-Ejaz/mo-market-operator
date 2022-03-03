@@ -7,7 +7,7 @@
 @endsection
 
 @section('addButton')
-@if(Auth::user()->role->hasPermission('document-categories', 'create'))
+@if(hasPermission('document-categories', 'create'))
   <a class="btn btn-primary float-right" href="{{ route('admin.document-categories.create') }}">Add New Category</a>
 @endif
 @endsection

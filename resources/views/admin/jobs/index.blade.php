@@ -6,7 +6,7 @@
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('jobs', 'create') )
+@if( hasPermission('jobs', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.jobs.create') }}">Add New Job</a>
 @endif
 @endsection

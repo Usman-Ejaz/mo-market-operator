@@ -6,11 +6,11 @@
 @endsection
 
 @section('addButton')
-    @if( Auth::user()->role->hasPermission('newsletters', 'create') )
+    @if( hasPermission('newsletters', 'create') )
         <a class="btn btn-primary float-right" href="{{ route('admin.newsletters.create') }}">Add Newsletter</a>
     @endif
 
-    @if( Auth::user()->role->hasPermission('subscribers', 'list') )
+    @if( hasPermission('subscribers', 'list') )
         <a class="btn btn-primary float-right mr-2" href="{{ route('admin.subscribers.index') }}">Subscribers</a>
     @endif
 @endsection

@@ -38,7 +38,7 @@
                       <input type="hidden" name="action" id="action">
                       
                       <button type="submit" class="btn width-120 btn-primary draft_button">Save</button>
-                      @if (Auth::user()->role->hasPermission('pages', 'publish'))
+                      @if (hasPermission('pages', 'publish'))
                         <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                       @endif
                     </div>

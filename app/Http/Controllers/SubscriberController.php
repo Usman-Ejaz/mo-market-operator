@@ -16,7 +16,7 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        if (!Auth::user()->role->hasPermission('subscribers', 'list')) {
+        if (!hasPermission('subscribers', 'list')) {
             return abort(403);
         }
 
@@ -25,7 +25,7 @@ class SubscriberController extends Controller
 
     public function list(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('subscribers', 'list')) {
+        if (!hasPermission('subscribers', 'list')) {
             return abort(403);
         }
 
@@ -42,7 +42,7 @@ class SubscriberController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if (Auth::user()->role->hasPermission('subscribers', 'subscribe')) {
+                    if (hasPermission('subscribers', 'subscribe')) {
                         $options .= '<form action="'. route('admin.subscribers.toggleSubscription', $row->id) .'" method="POST" style="display: inline-block;">
                                 '.csrf_field().'
                                 <input type="hidden" name="status" value="' . ($row->status == 'Subscribed' ? 0 : 1) . '">
@@ -61,7 +61,7 @@ class SubscriberController extends Controller
 
     public function toggleSubscription(Request $request, Subscriber $subscriber)
     {
-        if (!Auth::user()->role->hasPermission('subscribers', 'subscribe')) {
+        if (!hasPermission('subscribers', 'subscribe')) {
             return abort(403);
         }
         $status = intval($request->get("status"));

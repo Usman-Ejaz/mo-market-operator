@@ -20,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('users', 'list') ){
+        if( !hasPermission('users', 'list') ){
             return abort(403);
         }
 
@@ -34,7 +34,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('users', 'create') ){
+        if( !hasPermission('users', 'create') ){
             return abort(403);
         }
 
@@ -50,7 +50,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('users', 'create') ){
+        if( !hasPermission('users', 'create') ){
             return abort(403);
         }
 
@@ -80,7 +80,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if( !Auth::user()->role->hasPermission('users', 'view') ){
+        if( !hasPermission('users', 'view') ){
             return abort(403);
         }
 
@@ -95,7 +95,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if( !Auth::user()->role->hasPermission('users', 'edit') ){
+        if( !hasPermission('users', 'edit') ){
             return abort(403);
         }
 
@@ -111,7 +111,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if( !Auth::user()->role->hasPermission('users', 'edit') ){
+        if( !hasPermission('users', 'edit') ){
             return abort(403);
         }
         
@@ -140,7 +140,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if( !Auth::user()->role->hasPermission('users', 'delete') ){
+        if( !hasPermission('users', 'delete') ){
             return abort(403);
         }
 
@@ -158,7 +158,7 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('users', 'list') ){
+        if( !hasPermission('users', 'list') ){
             return abort(403);
         }
 
@@ -184,12 +184,12 @@ class UserController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('users', 'edit') ) {
+                    if( hasPermission('users', 'edit') ) {
                         $options .= '<a href="' . route('admin.users.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( Auth::user()->role->hasPermission('users', 'delete') ) {
+                    if( hasPermission('users', 'delete') ) {
                         $options .= ' <form action="' . route('admin.users.destroy', $row->id) . '" method="POST" style="display: inline-block;">
                             ' . csrf_field() . '
                             ' . method_field("DELETE") . '

@@ -16,7 +16,7 @@ class FaqCategoryController extends Controller
      */
     public function index()
     {
-        if (!Auth::user()->role->hasPermission("faq-categories", "list")) {
+        if (!hasPermission("faq-categories", "list")) {
             return abort(403);
         }
 
@@ -30,7 +30,7 @@ class FaqCategoryController extends Controller
      */
     public function create()
     {
-        if (!Auth::user()->role->hasPermission("faq-categories", "create")) {
+        if (!hasPermission("faq-categories", "create")) {
             return abort(403);
         }
         $faqCategory = new FaqCategory();
@@ -45,7 +45,7 @@ class FaqCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('faq-categories', 'create')) {
+        if (!hasPermission('faq-categories', 'create')) {
             return abort(403);
         }
         $category = new FaqCategory();
@@ -63,7 +63,7 @@ class FaqCategoryController extends Controller
      */
     public function show(FaqCategory $faqCategory)
     {
-        if (!Auth::user()->role->hasPermission('faq-categories', 'view')) {
+        if (!hasPermission('faq-categories', 'view')) {
             return abort(403);
         }
 
@@ -78,7 +78,7 @@ class FaqCategoryController extends Controller
      */
     public function edit(FaqCategory $faqCategory)
     {
-        if (!Auth::user()->role->hasPermission('faq-categories', 'edit')) {
+        if (!hasPermission('faq-categories', 'edit')) {
             return abort(403);
         }
         return view('admin.faq-categories.edit', compact('faqCategory'));
@@ -93,7 +93,7 @@ class FaqCategoryController extends Controller
      */
     public function update(Request $request, FaqCategory $faqCategory)
     {
-        if (!Auth::user()->role->hasPermission('faq-categories', 'edit')) {
+        if (!hasPermission('faq-categories', 'edit')) {
             return abort(403);
         }
 
@@ -112,7 +112,7 @@ class FaqCategoryController extends Controller
      */
     public function destroy(FaqCategory $faqCategory)
     {
-        if (!Auth::user()->role->hasPermission('faq-categories', 'delete')) {
+        if (!hasPermission('faq-categories', 'delete')) {
             return abort(403);
         }
 
@@ -123,7 +123,7 @@ class FaqCategoryController extends Controller
 
     public function list(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('faq-categories', 'list')) {
+        if (!hasPermission('faq-categories', 'list')) {
             return abort(403);
         }
 
@@ -140,12 +140,12 @@ class FaqCategoryController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';
-                    if (Auth::user()->role->hasPermission('faq-categories', 'edit')) {
+                    if (hasPermission('faq-categories', 'edit')) {
                         $options .= '<a href="' . route('admin.faq-categories.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if (Auth::user()->role->hasPermission('faq-categories', 'delete')) {
+                    if (hasPermission('faq-categories', 'delete')) {
                         $options .= ' <form action="'. route('admin.faq-categories.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

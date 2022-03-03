@@ -19,7 +19,7 @@ class NewsletterController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('newsletters', 'list') ){
+        if( !hasPermission('newsletters', 'list') ){
             return abort(403);
         }
 
@@ -33,7 +33,7 @@ class NewsletterController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('newsletters', 'create') ){
+        if( !hasPermission('newsletters', 'create') ){
             return abort(403);
         }
 
@@ -49,7 +49,7 @@ class NewsletterController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('newsletters', 'create') ){
+        if( !hasPermission('newsletters', 'create') ){
             return abort(403);
         }
 
@@ -68,7 +68,7 @@ class NewsletterController extends Controller
      */
     public function show(Newsletter $newsletter)
     {
-        if( !Auth::user()->role->hasPermission('newsletters', 'view') ){
+        if( !hasPermission('newsletters', 'view') ){
             return abort(403);
         }
 
@@ -83,7 +83,7 @@ class NewsletterController extends Controller
      */
     public function edit(Newsletter $newsletter)
     {
-        if( !Auth::user()->role->hasPermission('newsletters', 'edit') ){
+        if( !hasPermission('newsletters', 'edit') ){
             return abort(403);
         }
 
@@ -99,7 +99,7 @@ class NewsletterController extends Controller
      */
     public function update(Request $request, Newsletter $newsletter)
     {
-        if( !Auth::user()->role->hasPermission('newsletters', 'edit') ){
+        if( !hasPermission('newsletters', 'edit') ){
             return abort(403);
         }
 
@@ -117,7 +117,7 @@ class NewsletterController extends Controller
      */
     public function destroy(Newsletter $newsletter)
     {
-        if( !Auth::user()->role->hasPermission('newsletters', 'delete') ){
+        if( !hasPermission('newsletters', 'delete') ){
             return abort(403);
         }
 
@@ -127,7 +127,7 @@ class NewsletterController extends Controller
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('newsletters', 'list') ){
+        if( !hasPermission('newsletters', 'list') ){
             return abort(403);
         }
 
@@ -144,7 +144,7 @@ class NewsletterController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter') ) {
+                    if( hasPermission('newsletters', 'sendNewsLetter') ) {
                         $options .= '<form action="'. route('admin.newsletters.sendNewsLetter', $row->id ) .'" method="POST" style="display: inline-block;">
                                 '.csrf_field().'
                                 <button type="submit" class="btn btn-info"
@@ -154,13 +154,13 @@ class NewsletterController extends Controller
                             </form>';
                     }
 
-                    if( Auth::user()->role->hasPermission('newsletters', 'edit') ) {
+                    if( hasPermission('newsletters', 'edit') ) {
                         $options .= ' <a href="'. route('admin.newsletters.edit',$row->id) .'" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
-                    if( Auth::user()->role->hasPermission('newsletters', 'delete') ) {
+                    if( hasPermission('newsletters', 'delete') ) {
                         $options .= ' <form action="'. route('admin.newsletters.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
@@ -190,7 +190,7 @@ class NewsletterController extends Controller
 
     public function sendNewsLetter(Request $request, Newsletter $newsletter) {
         
-        if (!Auth::user()->role->hasPermission('newsletters', 'sendNewsLetter')) {
+        if (!hasPermission('newsletters', 'sendNewsLetter')) {
             return abort(403);
         }
         

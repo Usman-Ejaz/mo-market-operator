@@ -1,12 +1,12 @@
 @extends('admin.layouts.app')
-@section('header', 'ChatBot Knowledge Base')
+@section('header', 'Chatbot Knowledge Base')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item active">ChatBot Knowledge Base</li>
+  <li class="breadcrumb-item active">Chatbot Knowledge Base</li>
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('knowledge-base', 'create') )
+@if( hasPermission('knowledge-base', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.knowledge-base.create') }}">Add Question</a>
 @endif
 @endsection

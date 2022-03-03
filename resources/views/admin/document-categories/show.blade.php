@@ -6,14 +6,14 @@
   <li class="breadcrumb-item active">Details</li>
 @endsection
 @section('addButton')
-@if(Auth::user()->role->hasPermission('document-categories', 'delete'))
+@if(hasPermission('document-categories', 'delete'))
 <form method="POST" action="{{ route('admin.document-categories.destroy', $documentCategory->id) }}" class="float-right">
   @method('DELETE')
   @csrf
   <button class="btn btn-danger">Delete</button>
 </form>
 @endif
-@if(Auth::user()->role->hasPermission('document-categories', 'edit'))
+@if(hasPermission('document-categories', 'edit'))
   <a class="btn btn-primary float-right mr-2" href="{{ route('admin.document-categories.edit', $documentCategory->id)}}">Edit Document Category</a>
 @endif
 @endsection

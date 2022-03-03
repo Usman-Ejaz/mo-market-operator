@@ -10,7 +10,7 @@ class ApplicationController extends Controller
 {
     public function show(Application $application)
     {
-        if( !Auth::user()->role->hasPermission('applications', 'view') ){
+        if( !hasPermission('applications', 'view') ){
             return abort(403);
         }
 
@@ -20,7 +20,7 @@ class ApplicationController extends Controller
 
     public function destroy(Application $application)
     {
-        if( !Auth::user()->role->hasPermission('applications', 'delete') ){
+        if( !hasPermission('applications', 'delete') ){
             return abort(403);
         }
 
