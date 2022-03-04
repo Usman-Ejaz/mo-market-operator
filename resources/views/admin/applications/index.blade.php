@@ -3,12 +3,12 @@
   Viewing Applications Of - {{ $job->title }}
 @endsection
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
   <li class="breadcrumb-item active">Applications</li>
 @endsection
 @section('addButton')
-@if( Auth::user()->role->hasPermission('jobs', 'export_applications') )
+@if( hasPermission('jobs', 'export_applications') )
   <a role="button" class="btn btn-primary float-right" href="{{ route('admin.job.applications.list.export',$job->id) }}">Export Applications</a>
 @endif
 @endsection

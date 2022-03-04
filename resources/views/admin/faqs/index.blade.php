@@ -1,13 +1,16 @@
 @extends('admin.layouts.app')
 @section('header', 'FAQs')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item active">FAQs</li>
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('faqs', 'create') )
+@if( hasPermission('faqs', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.faqs.create') }}">Add New FAQ</a>
+@endif
+@if (hasPermission('faq-categories', 'list'))
+  <a class="btn btn-primary float-right mr-2" href="{{ route('admin.faq-categories.index') }}">FAQ Categories</a>
 @endif
 @endsection
 
@@ -20,6 +23,7 @@
                       <tr>
                           <th>Id</th>
                           <th>Question</th>
+                          <th>Category</th>
                           <th>Created date</th>
                           <th>Action</th>
                       </tr>
@@ -68,6 +72,7 @@
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'question', name: 'question'},
+                {data: 'category', name: 'category'},
                 {data: 'created_at', name: 'created_at'},
                 {
                     data: 'action', 

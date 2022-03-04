@@ -1,12 +1,12 @@
 @extends('admin.layouts.app')
 @section('header', 'Contact Page Query')
 @section('breadcrumbs')
-<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.contact-page-queries.index') }}">Contact Page Queries</a></li>
 <li class="breadcrumb-item active">Details</li>
 @endsection
 @section('addButton')
-@if(Auth::user()->role->hasPermission('contact-page-queries', 'delete'))
+@if(hasPermission('contact-page-queries', 'delete'))
 <form method="POST" action="{{ route('admin.contact-page-queries.destroy', $contactPageQuery->id) }}" class="float-right">
 	@method('DELETE')
 	@csrf

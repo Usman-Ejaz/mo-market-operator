@@ -1,22 +1,23 @@
 @extends('admin.layouts.app')
-@section('header', 'Document Categories')
+@section('header', 'FAQ Categories')
 @section('breadcrumbs')
-<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-<li class="breadcrumb-item"><a href="{{ route('admin.document-categories.index') }}">Document Categories</a></li>
-<li class="breadcrumb-item active">Update</li>
+<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQs</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.faq-categories.index') }}">FAQ Categories</a></li>
+<li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
 <div class="container-fluid">
-	<form method="POST" action="{{ route('admin.document-categories.update', $documentCategory->id) }}" enctype="multipart/form-data" id="update-document-form">
+	<form method="POST" action="{{ route('admin.faq-categories.update', $faqCategory->id) }}" enctype="multipart/form-data" id="update-faq-form">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Editing - {{ $documentCategory->name }}</h3>
+						<h3 class="card-title">Edit FAQ Category - {{ $faqCategory->name }}</h3>
 					</div>
 					@method('PATCH')
-					@include('admin.document-categories.form')
+					@include('admin.faq-categories.form')
 					<div class="card-footer">
 						<div class="float-right">
 							<button type="submit" class="btn btn-primary draft_button">Update</button>
@@ -36,18 +37,26 @@
 <script>
 	$(document).ready(function() {
 		$.validator.addMethod("notNumericValues", function(value, element) {
-				return this.optional(element) || isNaN(Number(value));
+			return this.optional(element) || isNaN(Number(value));
 		}, '{{ __("messages.not_numeric") }}');
 
-		$('#update-document-form').validate({
+		$('#update-faq-form').validate({
 			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
 			rules: {
 				name: {
 					required: true,
-					minlength: 2,
+					minlength: 3,
+					maxlength: 255,
 					notNumericValues: true
+				}
+			},
+			messages: {
+				name: {
+					required: '{{ __("messages.required") }}',
+					minlength: '{{ __("messages.min_characters", ["field" => "Name", "limit" => 3]) }}',
+					maxlength: '{{ __("messages.max_characters", ["field" => "Name", "limit" => 255]) }}'
 				}
 			}
 		});

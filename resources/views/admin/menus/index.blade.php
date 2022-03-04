@@ -1,12 +1,12 @@
 @extends('admin.layouts.app')
 @section('header', 'Main Menus')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item active">Main Menus</li>
 @endsection
 
 @section('addButton')
-    @if( Auth::user()->role->hasPermission('menus', 'create') )
+    @if( hasPermission('menus', 'create') )
         <a class="btn btn-primary float-right" href="{{ route('admin.menus.create') }}">Add Main Menu</a>
     @endif
 @endsection

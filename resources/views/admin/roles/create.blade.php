@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('header', 'Roles')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.roles.index') }}">Roles</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
@@ -22,7 +22,7 @@
                       @include('admin.roles.form')
 
                         <div class="card-footer text-right">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary width-120">Save</button>
                         </div>
                     </div>
                   </div>

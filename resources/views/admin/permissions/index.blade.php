@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('header', 'Permissions')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item active">Permissions</li>
 @endsection
 
@@ -26,59 +26,55 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-
                 <!-- /.card-header -->
-                <form method="POST" action="{{ route('admin.permissions.store')}}" enctype="multipart/form-data" id="role-permission-form" style="display:none;">
-                    <table class="table table-bordered card-body" style="margin-bottom:0px;">
-                        <thead>
-                        <tr>
-                            <th style="width:25%;">Module / Feature</th>
-                            <th style="width:75%;">Capabilities</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            <form method="POST" action="{{ route('admin.permissions.store')}}" enctype="multipart/form-data" id="role-permission-form" style="display:none;">
+                <table class="table table-bordered" style="background-color: var(--white)">
+                    <thead>
+                    <tr>
+                        <th style="width:25%;">Module / Feature</th>
+                        <th style="width:75%;">Capabilities</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                            @foreach( $permissions as $permission)
-                                <tr>
-                                    <td>{{ $permission['display_name'] }}</td>
-                                    <td>
-                                        <div class='row'>
-                                        @php $count = 0; @endphp
-                                        @foreach( $permission['capabilities'] as $capability_name => $capability_display_name)
-                                            @php $count++; @endphp
-                                            @if( $count == 1)
-                                                <div class='col-md-4'>
-                                            @endif
-                                                <div>
-                                                    <input type="checkbox" id="{{ $permission['name'].'-'.$capability_name }}" name="{{ 'permissions['.$permission['name'].']['.$capability_name.']' }}">
-                                                    <label for="{{ $permission['name'].'-'.$capability_name }}">{{ $capability_display_name }}</label>
+                        @foreach( $permissions as $permission)
+                            <tr>
+                                <td>{{ $permission['display_name'] }}</td>
+                                <td>
+                                    <div class='row'>
+                                    @php $count = 0; @endphp
+                                    @foreach( $permission['capabilities'] as $capability_name => $capability_display_name)
+                                        @php $count++; @endphp
+                                        @if( $count == 1)
+                                            <div class='col-md-4'>
+                                        @endif
+                                            <div>
+                                                <input type="checkbox" id="{{ $permission['name'].'-'.$capability_name }}" name="{{ 'permissions['.$permission['name'].']['.$capability_name.']' }}">
+                                                <label for="{{ $permission['name'].'-'.$capability_name }}">{{ $capability_display_name }}</label>
+                                            </div>
+                                        @if ($count == 2)
                                                 </div>
-                                            @if ($count == 2)
-                                                 </div>
-                                                @php $count = 0 @endphp
-                                            @endif
-                                        @endforeach
-                                        </div>
+                                            @php $count = 0 @endphp
+                                        @endif
+                                    @endforeach
+                                    </div>
 
-                                    </td>
-                                </tr>
-                            @endforeach
+                                </td>
+                            </tr>
+                        @endforeach
 
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                    @if( Auth::user()->role->hasPermission('permissions', 'edit') )
-                        <div class="card-footer text-right">
-                            <input type="submit" class="btn btn-primary" value="Update" />
-                        </div>
-                    @endif
+                @if( hasPermission('permissions', 'edit') )
+                    <div class="text-right mb-5">
+                        <input type="submit" class="btn btn-primary width-120" value="Update" />
+                    </div>
+                @endif
 
-                    <input type="hidden" id="role_id" name="role_id" value="">
-                    @csrf
-                </form>
-            </div>
-            <!-- /.card -->
+                <input type="hidden" id="role_id" name="role_id" value="">
+                @csrf
+            </form>
         </div>
     </div>
     <!-- /.container-fluid -->

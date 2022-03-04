@@ -16,7 +16,7 @@ class PageController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('pages', 'list') ){
+        if( !hasPermission('pages', 'list') ){
             return abort(403);
         }
 
@@ -31,7 +31,7 @@ class PageController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('pages', 'create') ){
+        if( !hasPermission('pages', 'create') ){
             return abort(403);
         }
 
@@ -47,7 +47,7 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('pages', 'create') ){
+        if( !hasPermission('pages', 'create') ){
             return abort(403);
         }
 
@@ -73,7 +73,7 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        if( !Auth::user()->role->hasPermission('pages', 'view') ){
+        if( !hasPermission('pages', 'view') ){
             return abort(403);
         }
 
@@ -88,7 +88,7 @@ class PageController extends Controller
      */
     public function edit(Page $page)
     {
-        if( !Auth::user()->role->hasPermission('pages', 'edit') ){
+        if( !hasPermission('pages', 'edit') ){
             return abort(403);
         }
 
@@ -104,7 +104,7 @@ class PageController extends Controller
      */
     public function update(Request $request, Page $page)
     {
-        if( !Auth::user()->role->hasPermission('pages', 'edit') ){
+        if( !hasPermission('pages', 'edit') ){
             return abort(403);
         }
 
@@ -134,7 +134,7 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {
-        if( !Auth::user()->role->hasPermission('pages', 'delete') ){
+        if( !hasPermission('pages', 'delete') ){
             return abort(403);
         }
 
@@ -149,7 +149,7 @@ class PageController extends Controller
 
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('pages', 'list') ){
+        if( !hasPermission('pages', 'list') ){
             return abort(403);
         }
         if ($request->ajax()) {
@@ -168,12 +168,12 @@ class PageController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('pages', 'edit') ) {
+                    if( hasPermission('pages', 'edit') ) {
                         $options .= '<a href="' . route('admin.pages.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( Auth::user()->role->hasPermission('pages', 'delete') ) {
+                    if( hasPermission('pages', 'delete') ) {
                         $options .= ' <form action="'. route('admin.pages.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

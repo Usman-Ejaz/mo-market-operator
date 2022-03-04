@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 @section('header', 'Documents')
 @section('breadcrumbs')
-<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.documents.index') }}">Documents</a></li>
-<li class="breadcrumb-item active">Update</li>
+<li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Editing - {{ $document->title }}</h3>
+						<h3 class="card-title">Edit Document - {{ $document->title }}</h3>
 					</div>
 					@method('PATCH')
 					@include('admin.documents.form')
@@ -25,12 +25,12 @@
 
 							@if ($document->published_at !== null)
 							<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-							@if (Auth::user()->role->hasPermission('documents', 'publish'))
+							@if (hasPermission('documents', 'publish'))
 							<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
 							@endif
 							@else
 							<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-							@if( Auth::user()->role->hasPermission('documents', 'publish'))
+							@if( hasPermission('documents', 'publish'))
 							<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
 							@endif
 							@endif

@@ -54,7 +54,9 @@ return [
             "delete" => "Delete",
             "publish" => "Publish",
             "view_applications" => "View Applications",
-            "export_applications" => "Export Applications"
+            "export_applications" => "Export Applications",
+            "view_job_application" => "View Job Application",
+            "delete_job_application" => "Delete Job Application",
         ]
     ],
     [
@@ -75,6 +77,17 @@ return [
             "edit" => "Edit",
             "delete" => "Delete",
             "publish" => "Publish"
+        ]
+    ],
+    [
+        "name" => "faq-categories",
+        "display_name" => "Faq Categories",
+        "capabilities" => [
+            "list" => "List",
+            // "view" => "View",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
         ]
     ],
     [
@@ -122,7 +135,8 @@ return [
             "delete" => "Delete",
             "submenus" => "SubMenus"
         ]
-    ],    [
+    ],    
+    [
         "name" => "settings",
         "display_name" => "Site Configurations",
         "capabilities" => [
@@ -158,6 +172,27 @@ return [
             "view" => "View",
             "delete" => "Delete",
         ]
-    ]
-
+    ],
+    [
+        "name" => "search-statistics",
+        "display_name" => "Search Statistics",
+        "capabilities" => [
+            "list" => "List",
+            "view" => "View",
+            "delete" => "Delete",
+            "export_keywords" => "Export Keywords"
+        ]
+    ],
+    [
+        "name" => "knowledge-base",
+        "display_name" => "Chatbot Knowledge Base",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            // "view" => "View",
+            // "publish" => "Publish"
+        ]
+    ],
 ];

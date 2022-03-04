@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('header', 'Users')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item">Users</li>
   <li class="breadcrumb-item active">Details</li>
 @endsection
@@ -13,7 +13,7 @@
   <button class="btn btn-danger">Delete</button>
 </form>
 
-@if( Auth::user()->role->hasPermission('users', 'edit') ){
+@if( hasPermission('users', 'edit') ){
     <a class="btn btn-primary float-right mr-2" href="{{ route('admin.users.edit', $user->id)}}">Edit User</a>
 @endif
 @endsection

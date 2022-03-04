@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\FaqCategory;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,6 +20,7 @@ class FaqFactory extends Factory
             'answer' => $this->faker->paragraph(8),
             'created_by' => User::all()->random()->id,
             'modified_by' => User::all()->random()->id,
+            'category_id' => FaqCategory::all()->random()->id,
             'published_at' => $this->faker->randomElement([null, now()]),
             'active' => $this->faker->randomElement(['0','1']),
         ];

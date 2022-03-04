@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 @section('header', 'Users')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Users</a></li>
-  <li class="breadcrumb-item active">Update</li>
+  <li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
           <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Editing User - {{ $user->name }}</h3>
+                <h3 class="card-title">Edit User - {{ $user->name }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -22,7 +22,7 @@
               @include('admin.users.form')
               <input type="hidden" name="sendEmail" value="0" id="sendEmail">
               <div class="card-footer text-right">
-                <button type="submit" class="btn btn-primary draft_button">Update</button>
+                <button type="submit" class="btn btn-primary draft_button width-120">Update</button>
                 <button type="submit" class="btn btn-success mr-2 save-with-email">Update & Send Email</button>
               </div>
             </div>

@@ -18,7 +18,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('jobs', 'list') ){
+        if( !hasPermission('jobs', 'list') ){
             return abort(403);
         }
 
@@ -32,7 +32,7 @@ class JobController extends Controller
      */
     public function create()
     {
-        if( !Auth::user()->role->hasPermission('jobs', 'create') ){
+        if( !hasPermission('jobs', 'create') ){
             return abort(403);
         }
 
@@ -48,7 +48,7 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('jobs', 'create') ){
+        if( !hasPermission('jobs', 'create') ){
             return abort(403);
         }
 
@@ -76,7 +76,7 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        if( !Auth::user()->role->hasPermission('jobs', 'view') ){
+        if( !hasPermission('jobs', 'view') ){
             return abort(403);
         }
 
@@ -91,7 +91,7 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        if( !Auth::user()->role->hasPermission('jobs', 'edit') ){
+        if( !hasPermission('jobs', 'edit') ){
             return abort(403);
         }
 
@@ -107,7 +107,7 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {      
-        if( !Auth::user()->role->hasPermission('jobs', 'edit') ){
+        if( !hasPermission('jobs', 'edit') ){
             return abort(403);
         }
         $previousImage = $job->image;
@@ -137,7 +137,7 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        if( !Auth::user()->role->hasPermission('jobs', 'delete') ){
+        if( !hasPermission('jobs', 'delete') ){
             return abort(403);
         }
         if ($job->image !== null) {
@@ -157,7 +157,7 @@ class JobController extends Controller
      */
     public function list(Request $request)
     {
-        if( !Auth::user()->role->hasPermission('jobs', 'list') ){
+        if( !hasPermission('jobs', 'list') ){
             return abort(403);
         }
 
@@ -185,17 +185,17 @@ class JobController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( Auth::user()->role->hasPermission('jobs', 'view_applications') ) {
+                    if( hasPermission('jobs', 'view_applications') ) {
                         $options .= '<a href="' . route('admin.job.applications', $row->id) . '" class="btn btn-primary" title="Applications">
                             <i class="fas fa-print"></i>
                         </a>';
                     }
-                    if( Auth::user()->role->hasPermission('jobs', 'edit') ) {
+                    if( hasPermission('jobs', 'edit') ) {
                         $options .= '<a href="' . route('admin.jobs.edit', $row->id) . '" class="btn btn-primary" title="Edit" style="margin-left: 3px;">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( Auth::user()->role->hasPermission('jobs', 'delete') ) {
+                    if( hasPermission('jobs', 'delete') ) {
                         $options .= ' <form action="'. route('admin.jobs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
@@ -214,7 +214,7 @@ class JobController extends Controller
 
     public function getJobApplications (Job $job) {
 
-        if( !Auth::user()->role->hasPermission('jobs', 'view_applications') ){
+        if (!hasPermission('jobs', 'view_applications')) {
             return abort(403);
         }
 
@@ -223,7 +223,7 @@ class JobController extends Controller
 
     public function getApplicationsList(Request $request,Job $job) {
 
-        if( !Auth::user()->role->hasPermission('jobs', 'view_applications') ){
+        if (!hasPermission('jobs', 'view_applications')) {
             return abort(403);
         }
 
@@ -255,23 +255,23 @@ class JobController extends Controller
                     return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {
-                        $options = '';
-                        if( Auth::user()->role->hasPermission('applications', 'view') ) {
-                            $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </a>';
-                        }
-                        if( Auth::user()->role->hasPermission('applications', 'delete') ) {
-                            $options .= ' <form action="'. route('admin.job.application.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                                '.csrf_field().'
-                                '.method_field("DELETE").'
-                                <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
-                                        <i class="fas fa-trash"></i>
-                                </button>
-                            </form>';
-                        }
-                        return $options;
+                    $options = '';
+                    if (hasPermission('jobs', 'view_job_application')) {
+                        $options .= '<a href="' . route('admin.job.application.detail', $row->id) . '" class="btn btn-primary" title="View">
+                            <i class="fas fa-eye"></i>
+                        </a>';
+                    }
+                    if (hasPermission('jobs', 'delete_job_application')) {
+                        $options .= ' <form action="'. route('admin.job.application.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                            '.csrf_field().'
+                            '.method_field("DELETE").'
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                            </button>
+                        </form>';
+                    }
+                    return $options;
                 })
                 ->rawColumns(['action'])                
                 ->make(true);
@@ -280,7 +280,7 @@ class JobController extends Controller
 
     public function exportApplicationsList(Request $request,Job $job) {
 
-        if( !Auth::user()->role->hasPermission('jobs', 'export_applications') ){
+        if (!hasPermission('jobs', 'export_applications')) {
             return abort(403);
         }
 

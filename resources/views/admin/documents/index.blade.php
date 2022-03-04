@@ -1,15 +1,15 @@
 @extends('admin.layouts.app')
 @section('header', 'Documents')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item active">Documents</li>
 @endsection
 
 @section('addButton')
-@if( Auth::user()->role->hasPermission('documents', 'create') )
+@if( hasPermission('documents', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.documents.create') }}">Add New Document</a>
 @endif
-@if (Auth::user()->role->hasPermission('document-categories', 'list'))
+@if (hasPermission('document-categories', 'list'))
   <a class="btn btn-primary float-right mr-2" href="{{ route('admin.document-categories.index') }}">Document Categories</a>
 @endif
 @endsection

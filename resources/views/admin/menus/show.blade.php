@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('header', 'Menus')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Home</a></li>
+  <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
   <li class="breadcrumb-item">Menus></li>
   <li class="breadcrumb-item active">Details</li>
 @endsection

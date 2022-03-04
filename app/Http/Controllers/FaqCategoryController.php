@@ -1,0 +1,172 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\FaqCategory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
+
+class FaqCategoryController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        if (!hasPermission("faq-categories", "list")) {
+            return abort(403);
+        }
+
+        return view("admin.faq-categories.index");
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        if (!hasPermission("faq-categories", "create")) {
+            return abort(403);
+        }
+        $faqCategory = new FaqCategory();
+        return view("admin.faq-categories.create", compact("faqCategory"));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        if (!hasPermission('faq-categories', 'create')) {
+            return abort(403);
+        }
+        $category = new FaqCategory();
+        $category = FaqCategory::create($this->validateRequest($category) );
+
+        $request->session()->flash('success', 'Category Added Successfully!');
+        return redirect()->route('admin.faq-categories.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\FaqCategory  $faqCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function show(FaqCategory $faqCategory)
+    {
+        if (!hasPermission('faq-categories', 'view')) {
+            return abort(403);
+        }
+
+        return view('admin.faq-categories.show', compact('faqCategory'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\FaqCategory  $faqCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(FaqCategory $faqCategory)
+    {
+        if (!hasPermission('faq-categories', 'edit')) {
+            return abort(403);
+        }
+        return view('admin.faq-categories.edit', compact('faqCategory'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\FaqCategory  $faqCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, FaqCategory $faqCategory)
+    {
+        if (!hasPermission('faq-categories', 'edit')) {
+            return abort(403);
+        }
+
+        $data = $this->validateRequest($faqCategory);
+        $faqCategory->update($data);
+
+        $request->session()->flash('success', 'Category Updated Successfully!');
+        return redirect()->route('admin.faq-categories.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\FaqCategory  $faqCategory
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(FaqCategory $faqCategory)
+    {
+        if (!hasPermission('faq-categories', 'delete')) {
+            return abort(403);
+        }
+
+        $faqCategory->delete();
+
+        return redirect()->route('admin.faq-categories.index')->with('success', 'Category Deleted Successfully!');
+    }
+
+    public function list(Request $request)
+    {
+        if (!hasPermission('faq-categories', 'list')) {
+            return abort(403);
+        }
+
+        if ($request->ajax()) {
+            $data = FaqCategory::latest()->get();
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('name', function ($row) {
+                    return truncateWords($row->name, 50);
+                })               
+                ->addColumn('created_at', function ($row) {
+                    return ($row->created_at) ? $row->created_at : '';
+                })
+                ->addColumn('action', function ($row) {
+                   $options = '';
+                    if (hasPermission('faq-categories', 'edit')) {
+                        $options .= '<a href="' . route('admin.faq-categories.edit', $row->id) . '" class="btn btn-primary" title="Edit">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>';
+                    }
+                    if (hasPermission('faq-categories', 'delete')) {
+                        $options .= ' <form action="'. route('admin.faq-categories.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                            '.csrf_field().'
+                            '.method_field("DELETE").'
+                            <button type="submit" class="btn btn-danger"
+                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                            </button>
+                        </form>';
+                    }
+                    return $options;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    private function validateRequest($category) {
+        return request()->validate([
+            'name' => 'required|min:3|unique:faq_categories,name,'.$category->id
+        ], [
+            'name.unique' => __('messages.unique', ['attribute' => 'Category'])
+        ]);
+    }
+}

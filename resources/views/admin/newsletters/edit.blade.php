@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 @section('header', 'NewsLetters')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.newsletters.index') }}">Newsletters</a></li>
-  <li class="breadcrumb-item active">Update</li>
+  <li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
           <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Editing - {{ $newsletter->subject }}</h3>
+                <h3 class="card-title">Edit Newsletter - {{ $newsletter->subject }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

@@ -15,7 +15,7 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        if( !Auth::user()->role->hasPermission('settings', 'list') ){
+        if( !hasPermission('settings', 'list') ){
             return abort(403);
         }
         $theme = Settings::where('name', 'current_theme')->first();

@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
 @section('header', 'FAQ')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQ</a></li>
-  <li class="breadcrumb-item active">Update</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQs</a></li>
+  <li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Editing FAQ # {{$faq->id}}</h3>
+                            <h3 class="card-title">Edit FAQ # {{ truncateWords($faq->question, 40) }}</h3>
                         </div>
                         <!-- form start -->
                         @method('PATCH')
@@ -25,12 +25,12 @@
                                 
                                 @if($faq->active == 'Active')
                                   <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-                                  @if(Auth::user()->role->hasPermission('faqs', 'publish'))
+                                  @if(hasPermission('faqs', 'publish'))
                                   <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                                   @endif
                                 @elseif($faq->active == 'Draft')
                                   <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                                  @if( Auth::user()->role->hasPermission('faqs', 'publish'))
+                                  @if( hasPermission('faqs', 'publish'))
                                     <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                   @endif
                                 @endif
@@ -101,6 +101,9 @@
             minlength: 5,
             maxlength: 255,
             notNumericValues: true,            
+          },
+          category_id: {
+            required: true,
           },
           answer:{
             ckeditor_required: true,

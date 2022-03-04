@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 @section('header', 'Pages')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.pages.index') }}">Pages</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
@@ -38,7 +38,7 @@
                       <input type="hidden" name="action" id="action">
                       
                       <button type="submit" class="btn width-120 btn-primary draft_button">Save</button>
-                      @if (Auth::user()->role->hasPermission('pages', 'publish'))
+                      @if (hasPermission('pages', 'publish'))
                         <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                       @endif
                     </div>

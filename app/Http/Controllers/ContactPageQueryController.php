@@ -17,7 +17,7 @@ class ContactPageQueryController extends Controller
      */
     public function index()
     {
-        if (!Auth::user()->role->hasPermission("contact-page-queries", "list")) {
+        if (!hasPermission("contact-page-queries", "list")) {
             return abort(403);
         }
 
@@ -53,7 +53,7 @@ class ContactPageQueryController extends Controller
      */
     public function show(ContactPageQuery $contactPageQuery)
     {
-        if (!Auth::user()->role->hasPermission('contact-page-queries', 'view')) {
+        if (!hasPermission('contact-page-queries', 'view')) {
             return abort(403);
         }
 
@@ -91,7 +91,7 @@ class ContactPageQueryController extends Controller
      */
     public function destroy(ContactPageQuery $contactPageQuery)
     {
-        if (!Auth::user()->role->hasPermission('contact-page-queries', 'delete')) {
+        if (!hasPermission('contact-page-queries', 'delete')) {
             return abort(403);
         }
 
@@ -101,7 +101,7 @@ class ContactPageQueryController extends Controller
 
     public function list(Request $request)
     {
-        if (!Auth::user()->role->hasPermission('contact-page-queries', 'list')) {
+        if (!hasPermission('contact-page-queries', 'list')) {
             return abort(403);
         }
 
@@ -127,17 +127,17 @@ class ContactPageQueryController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';
-                    if (Auth::user()->role->hasPermission('contact-page-queries', 'edit')) {
+                    if (hasPermission('contact-page-queries', 'edit')) {
                         $options .= '<a href="' . route('admin.contact-page-queries.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if (Auth::user()->role->hasPermission('contact-page-queries', 'view')) {
+                    if (hasPermission('contact-page-queries', 'view')) {
                         $options .= '<a href="' . route('admin.contact-page-queries.show', $row->id) . '" class="btn btn-primary" title="View">
                             <i class="fas fa-eye"></i>
                         </a>';
                     }
-                    if (Auth::user()->role->hasPermission('contact-page-queries', 'delete')) {
+                    if (hasPermission('contact-page-queries', 'delete')) {
                         $options .= ' <form action="'. route('admin.contact-page-queries.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

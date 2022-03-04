@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 @section('header', 'Subscribers')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.newsletters.index') }}">Newsletters</a></li>
   <li class="breadcrumb-item active">Subscribers</li>
 @endsection
 
 @section('addButton')
-    <!-- @if( Auth::user()->role->hasPermission('subscribers', 'create') )
+    <!-- @if( hasPermission('subscribers', 'create') )
         <a class="btn btn-primary float-right" href="{{ route('admin.subscribers.create') }}">Add Subscribers</a>
     @endif -->
 @endsection

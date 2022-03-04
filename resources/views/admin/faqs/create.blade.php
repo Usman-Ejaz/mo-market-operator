@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @section('header', 'FAQs')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
-  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQ</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQs</a></li>
   <li class="breadcrumb-item active">Create</li>
 @endsection
 
@@ -22,7 +22,7 @@
                                 <input type="hidden" name="active" id="status">
                                 <input type="hidden" name="action" id="action">
                                 <button type="submit" class="btn width-120 btn-primary draft_button">Save</button>
-                                @if( Auth::user()->role->hasPermission('faqs', 'publish') )
+                                @if( hasPermission('faqs', 'publish') )
                                   <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                 @endif
                             </div>
@@ -87,6 +87,9 @@
             minlength: 5,
             maxlength: 255,
             notNumericValues: true
+          },
+          category_id: {
+            required: true,
           },
           answer:{
             ckeditor_required: true,

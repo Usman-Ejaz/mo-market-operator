@@ -109,7 +109,7 @@ class DocumentsApiController extends BaseApiController
                 return $this->sendError("Could not found documents", ["errors" => "Could not found documents"], 404);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 402);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }
     }
 }
