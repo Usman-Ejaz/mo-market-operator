@@ -11,7 +11,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing Application - {{ $application->name }}</h3>
+                <h3 class="card-title">View Application - {{ $application->name }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

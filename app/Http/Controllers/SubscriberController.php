@@ -30,13 +30,14 @@ class SubscriberController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = Subscriber::latest()->get();
+            $data = Subscriber::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('status', function ($row) {
                     return ($row->status) ? $row->status : '';
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

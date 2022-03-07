@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Carbon\Carbon;
-use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 
 class JobController extends Controller
 {
@@ -162,8 +162,9 @@ class JobController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = Job::latest()->get();
-            return Datatables::of($data)
+            $data = Job::query();
+
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
                     return truncateWords($row->title, 30);
@@ -180,6 +181,7 @@ class JobController extends Controller
                 ->addColumn('total_positions', function ($row) {
                     return ($row->total_positions) ? $row->total_positions : '';
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

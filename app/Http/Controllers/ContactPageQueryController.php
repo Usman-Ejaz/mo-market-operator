@@ -106,7 +106,7 @@ class ContactPageQueryController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = ContactPageQuery::latest()->get();
+            $data = ContactPageQuery::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -122,6 +122,7 @@ class ContactPageQueryController extends Controller
                 ->addColumn('message', function ($row) {
                     return truncateWords($row->message, 25);
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

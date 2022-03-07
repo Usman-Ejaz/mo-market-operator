@@ -81,31 +81,6 @@ class SearchStatisticController extends Controller
                 ->addColumn('count', function ($row) {
                     return $row->count;
                 })
-                // ->addColumn('created_at', function ($row) {
-                //     return $row->created_at;
-                // })
-                // ->addColumn('action', function ($row) {
-                //     $options = '';
-                //     if (hasPermission('search-statistics', 'view')) {
-                //         $options .= '<a href="'. route('admin.search-statistics.show',$row->id) .'" class="btn btn-primary" title="View">
-                //             <i class="fas fa-eye"></i>
-                //         </a>';
-                //     }
-
-                //     if (hasPermission('search-statistics', 'delete')) {
-                //         $options .= ' <form action="'. route('admin.search-statistics.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                //             '.csrf_field().'
-                //             '.method_field("DELETE").'
-                //             <button type="submit" class="btn btn-danger"
-                //                 onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
-                //                     <i class="fas fa-trash"></i>
-                //             </button>
-                //         </form>';
-                //     }
-
-                //     return $options;
-                // })
-                // ->rawColumns(['action'])
                 ->make(true);
         }
     }
@@ -126,19 +101,19 @@ class SearchStatisticController extends Controller
             "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
             "Expires"             => "0"
         );
-        $columns = array('ID' ,'Keyword', 'Count', 'Created Date');
+        $columns = array('ID' ,'Keyword', 'Count');
 
         $callback = function() use ($searchStatistics, $columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
-
+            $counter = 1;
             foreach ($searchStatistics as $item) {
-                $row['id'] = $item->id;
+                $row['id'] = $counter;
                 $row['keyword'] = $item->keyword;
                 $row['count'] = $item->count;
-                $row['created_at'] = $item->created_at;
 
-                fputcsv($file, array($row['id'], $row['keyword'], $row['count'], $row['created_at']));
+                fputcsv($file, array($row['id'], $row['keyword'], $row['count']));
+                $counter++;
             }
 
             fclose($file);

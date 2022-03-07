@@ -151,7 +151,7 @@ class NewsController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = News::latest()->get();
+            $data = News::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -167,6 +167,7 @@ class NewsController extends Controller
                 ->addColumn('news_category', function ($row) {
                     return ($row->news_category) ? $row->news_category : '';
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

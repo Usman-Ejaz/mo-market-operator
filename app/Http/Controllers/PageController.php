@@ -153,7 +153,7 @@ class PageController extends Controller
             return abort(403);
         }
         if ($request->ajax()) {
-            $data = Page::latest()->get();
+            $data = Page::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -163,6 +163,7 @@ class PageController extends Controller
                 ->addColumn('slug', function ($row) {
                     return truncateWords($row->slug, 35);
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

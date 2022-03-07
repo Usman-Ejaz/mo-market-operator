@@ -148,12 +148,14 @@ class ChatBotKnowledgeBaseController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = ChatBotKnowledgeBase::latest()->get();
+            $data = ChatBotKnowledgeBase::query();
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('question', function ($row) {
                     return truncateWords($row->question, 80);
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
