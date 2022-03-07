@@ -32,6 +32,15 @@
             </a>
           </li>          
 
+          @if( hasPermission('clients', 'list'))
+          <li class="nav-item">
+            <a href="{{ route('admin.clients.index') }}" class="nav-link {{ Request::is('admin/clients*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-user"></i>
+              <p>Clients</p>
+            </a>
+          </li>
+          @endif
+
           @if( hasPermission('news', 'list') )
           <li class="nav-item">
             <a href="{{ route('admin.news.index') }}" class="nav-link {{ (Request::is('admin/news/*') || Request::is('admin/news') ) ? 'active' : '' }}">

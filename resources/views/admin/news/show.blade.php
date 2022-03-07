@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @section('header', 'News')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-  <li class="breadcrumb-item">News</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.news.index') }}">News</a></li>
   <li class="breadcrumb-item active">Details</li>
 @endsection
 
@@ -10,7 +10,7 @@
 <form method="POST" action="{{ route('admin.news', $news->id) }}" class="float-right">
   @method('DELETE')
   @csrf
-  <button class="btn btn-danger">Delete</button>
+  <button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
 </form>
 
 <a class="btn btn-primary float-right mr-2" href="{{ route('admin.news.edit', $news->id)}}">Edit News</a>
@@ -23,7 +23,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing News - {{ $news->title }}</h3>
+                <h3 class="card-title">View News - {{ $news->title }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

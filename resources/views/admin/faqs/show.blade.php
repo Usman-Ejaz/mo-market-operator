@@ -10,7 +10,7 @@
 <form method="POST" action="/admin/jobs/{{$faq->id}}" class="float-right">
   @method('DELETE')
   @csrf
-  <button class="btn btn-danger">Delete</button>
+  <button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
 </form>
 
 <a class="btn btn-primary float-right mr-2" href="{{ route('admin.faqs.edit', $faq->id)}}">Edit FAQ</a>
@@ -23,7 +23,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing FAQ - {{ $faq->id }}</h3>
+                <h3 class="card-title">View FAQ - {{ $faq->id }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

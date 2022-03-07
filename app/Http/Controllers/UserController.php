@@ -158,12 +158,10 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        if( !hasPermission('users', 'list') ){
-            return abort(403);
-        }
+        abort_if(! hasPermission('users', 'list'), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = User::with(['Role'])->latest()->get();
+            $data = User::query();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -179,6 +177,7 @@ class UserController extends Controller
                 ->addColumn('status', function ($row) {
                     return ($row->active) ? $row->active : '';
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

@@ -34,5 +34,5 @@ return [
     "error" => "",
     "not_found" => "",
     "something_wrong" => "Something went wrong.",
-
+    "unauthorized_action" => "Unauthorized Action"
 ];

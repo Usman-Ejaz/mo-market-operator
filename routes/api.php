@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CareersApiController;
+use App\Http\Controllers\Api\Client\ClientRegistrationController;
 use App\Http\Controllers\Api\ContactFormQueryController;
 use App\Http\Controllers\Api\DocumentsApiController;
 use App\Http\Controllers\Api\FaqApiController;
@@ -23,6 +24,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::prefix('auth')->group(function() {
+    Route::post('register', [ClientRegistrationController::class, 'register'])->name('client.register');
+});
 //Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterApiController::class, 'login']);
 

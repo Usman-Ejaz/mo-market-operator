@@ -135,13 +135,14 @@ class RoleController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = Role::latest()->get();
+            $data = Role::query();
 
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
                     return ( isset($row->name)) ? $row->name : '';
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

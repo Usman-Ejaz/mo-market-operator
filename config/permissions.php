@@ -178,8 +178,8 @@ return [
         "display_name" => "Search Statistics",
         "capabilities" => [
             "list" => "List",
-            "view" => "View",
-            "delete" => "Delete",
+            // "view" => "View",
+            // "delete" => "Delete",
             "export_keywords" => "Export Keywords"
         ]
     ],
@@ -195,4 +195,13 @@ return [
             // "publish" => "Publish"
         ]
     ],
+    // [
+    //     "name" => "clients",
+    //     "display_name" => "Clients",
+    //     "capabilities" => [
+    //         "list" => "List",
+    //         "delete" => "Delete",
+    //         "view" => "View"
+    //     ]
+    // ],
 ];

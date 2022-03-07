@@ -128,13 +128,14 @@ class DocumentCategoryController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = DocumentCategory::latest()->get();
+            $data = DocumentCategory::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
                     return ($row->name) ? ( (strlen($row->name) > 50) ? substr($row->name, 0, 50).'...' : $row->name ) : '';
-                })               
+                })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

@@ -214,7 +214,7 @@ class MenuController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = Menu::latest()->get();
+            $data = Menu::query();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -227,6 +227,7 @@ class MenuController extends Controller
                 ->addColumn('active', function ($row) {
                     return (isset($row->active)) ? $row->active : '';
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

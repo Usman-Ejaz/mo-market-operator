@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\ChatBotKnowledgeBaseController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactPageQueryController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
@@ -137,6 +138,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     Route::get('knowledge-base/list', [ChatBotKnowledgeBaseController::class, 'list'])->name('knowledge-base.list');
     Route::resource('knowledge-base', ChatBotKnowledgeBaseController::class);
+
+    Route::get('clients/list', [ClientController::class, 'list'])->name('clients.list');
+    Route::resource('clients', ClientController::class);
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");

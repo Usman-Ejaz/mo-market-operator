@@ -10,7 +10,7 @@
 <form method="POST" action="{{ route('admin.document-categories.destroy', $documentCategory->id) }}" class="float-right">
   @method('DELETE')
   @csrf
-  <button class="btn btn-danger">Delete</button>
+  <button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
 </form>
 @endif
 @if(hasPermission('document-categories', 'edit'))
@@ -24,7 +24,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing Category - {{ $documentCategory->name }}</h3>
+                <h3 class="card-title">View Category - {{ $documentCategory->name }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

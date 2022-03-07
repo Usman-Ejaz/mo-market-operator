@@ -139,7 +139,8 @@ class FaqController extends Controller
         }
 
         if ($request->ajax()) {
-            $data = Faq::latest()->with('category')->get();
+            $data = Faq::query();
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('question', function ($row) {
@@ -148,6 +149,7 @@ class FaqController extends Controller
                 ->addColumn('category', function ($row) {
                     return truncateWords($row->category->name, 30);
                 })
+                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
