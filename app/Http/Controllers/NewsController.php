@@ -196,7 +196,7 @@ class NewsController extends Controller
             'modified_by' => ''
         ], [
             'slug.unique' => __('messages.unique', ['attribute' => 'Slug']),
-            'image.max' => __('messages.max_image', ['limit' => '2 MB']),
+            'image.max' => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }
 

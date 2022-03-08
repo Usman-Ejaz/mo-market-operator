@@ -27,12 +27,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function() {
     Route::post('register', [ClientRegistrationController::class, 'register'])->name('client.register');
+    Route::post('login', [RegisterApiController::class, 'login']);
 });
 //Route::post('register', [RegisterController::class, 'register']);
-Route::post('login', [RegisterApiController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
-    
+    Route::post('upload-attachments', [ClientRegistrationController::class, 'uploadAttachment'])->name('client.uploadAttachment');
+    Route::post('remove-attachments', [ClientRegistrationController::class, 'removeAttachment'])->name('client.removeAttachment');
 });
 
 Route::prefix("v1")->middleware('verifyApiKey')->group(function () {

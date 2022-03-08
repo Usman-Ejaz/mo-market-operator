@@ -212,7 +212,7 @@ class DocumentController extends Controller
             'created_by' => '',
             'modified_by' => ''
         ], [
-            'file.max' => __('messages.max_image', ['limit' => '5 MB'])
+            'file.max' => __('messages.max_file', ['limit' => '5 MB'])
         ]);
     }
 

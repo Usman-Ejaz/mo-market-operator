@@ -253,7 +253,7 @@ class CareersApiController extends BaseApiController
 
     private function getApplicationMessages() {
         return [
-            'resume.max' => __('messages.max_image', ['limit' => '5 MB'])
+            'resume.max' => __('messages.max_file', ['limit' => '5 MB'])
         ];
     }
 }

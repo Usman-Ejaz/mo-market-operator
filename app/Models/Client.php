@@ -14,7 +14,9 @@ class Client extends Authenticatable
 
     protected $appends = ['category_labels'];
 
-    const ATTACHMENT_DIR = 'attachments/';    
+    protected $guarded = [];
+
+    const SIGNATURE_DIR = 'clients/signatures/';
 
     const TYPE = [
         'market_participant', 
@@ -45,17 +47,17 @@ class Client extends Authenticatable
      * @param  array $value
      * @return void
      */
-    public function setCategoriesAttribute($value)
-    {
-        $ids = '';
-        foreach (self::REGISTER_CATEGORIES as $key => $category) {
-            if (in_array($category, $value)) {
-                $ids .= $key . ',';
-            }
-        }
-        $ids = trim($ids, ',');
-        $this->categories = $ids;
-    }
+    // public function setCategoriesAttribute($value)
+    // {
+    //     $ids = '';
+    //     foreach (self::REGISTER_CATEGORIES as $key => $category) {
+    //         if (in_array($category, $value)) {
+    //             $ids .= $key . ',';
+    //         }
+    //     }
+    //     $ids = trim($ids, ',');
+    //     $this->categories = $ids;
+    // }
         
     /**
      * Mutates the comma separated ids into comma separated category names.
@@ -94,15 +96,14 @@ class Client extends Authenticatable
      *
      * @return boolean true|false
      */
-    public function isApproved()
-    {
+    public function isApproved() {
         return $this->approved == 1;
     }
     
     /**
-     * status
+     * returns the client status either it is approved|pending
      *
-     * @return string
+     * @return string Approved|Pending
      */
     public function status()
     {
