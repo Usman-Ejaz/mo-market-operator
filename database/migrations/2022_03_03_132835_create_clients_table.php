@@ -16,8 +16,9 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique()->index();
-            $table->string('password');
+            // $table->string('email')->unique()->index();
+            $table->string('username')->nullable()->unique()->index();
+            $table->string('password')->nullable();
             $table->string('type')->index();
             $table->string('image')->nullable();
             $table->text('address');
@@ -35,6 +36,7 @@ class CreateClientsTable extends Migration
             $table->string('sec_facsimile_telephone');
             $table->string('sec_email');
             $table->string('sec_signature');
+            $table->timestamp('last_login_at')->nullable();
             $table->timestamps();
         });
     }

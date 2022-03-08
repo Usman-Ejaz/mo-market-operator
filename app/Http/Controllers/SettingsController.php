@@ -15,9 +15,8 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('settings', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("settings", "list"), 401, __('messages.unauthorized_action'));
+        
         $theme = Settings::where('name', 'current_theme')->first();
         return view('admin.settings.index', compact('theme'));
     }

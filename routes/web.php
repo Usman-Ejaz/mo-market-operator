@@ -147,7 +147,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 });
 
 Route::get('pages/{slug}', function ($slug) {
-    dd($slug);
+    return '<html><body><h1>'. $slug . '</h1></body></html>';
 })->name('pages.show');
 
 require __DIR__.'/auth.php';

@@ -16,9 +16,7 @@ class FaqCategoryController extends Controller
      */
     public function index()
     {
-        if (!hasPermission("faq-categories", "list")) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("faq-categories", "list"), 401, __('messages.unauthorized_action'));
 
         return view("admin.faq-categories.index");
     }
@@ -30,9 +28,8 @@ class FaqCategoryController extends Controller
      */
     public function create()
     {
-        if (!hasPermission("faq-categories", "create")) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("faq-categories", "create"), 401, __('messages.unauthorized_action'));
+
         $faqCategory = new FaqCategory();
         return view("admin.faq-categories.create", compact("faqCategory"));
     }
@@ -45,11 +42,10 @@ class FaqCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        if (!hasPermission('faq-categories', 'create')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("faq-categories", "create"), 401, __('messages.unauthorized_action'));
+
         $category = new FaqCategory();
-        $category = FaqCategory::create($this->validateRequest($category) );
+        $category = FaqCategory::create($this->validateRequest($category));
 
         $request->session()->flash('success', 'Category Added Successfully!');
         return redirect()->route('admin.faq-categories.index');
@@ -63,9 +59,7 @@ class FaqCategoryController extends Controller
      */
     public function show(FaqCategory $faqCategory)
     {
-        if (!hasPermission('faq-categories', 'view')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("faq-categories", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.faq-categories.show', compact('faqCategory'));
     }
@@ -78,9 +72,8 @@ class FaqCategoryController extends Controller
      */
     public function edit(FaqCategory $faqCategory)
     {
-        if (!hasPermission('faq-categories', 'edit')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("faq-categories", "edit"), 401, __('messages.unauthorized_action'));
+
         return view('admin.faq-categories.edit', compact('faqCategory'));
     }
 
@@ -93,9 +86,7 @@ class FaqCategoryController extends Controller
      */
     public function update(Request $request, FaqCategory $faqCategory)
     {
-        if (!hasPermission('faq-categories', 'edit')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("faq-categories", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($faqCategory);
         $faqCategory->update($data);
@@ -112,20 +103,15 @@ class FaqCategoryController extends Controller
      */
     public function destroy(FaqCategory $faqCategory)
     {
-        if (!hasPermission('faq-categories', 'delete')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("faq-categories", "delete"), 401, __('messages.unauthorized_action'));
 
         $faqCategory->delete();
-
         return redirect()->route('admin.faq-categories.index')->with('success', 'Category Deleted Successfully!');
     }
 
     public function list(Request $request)
     {
-        if (!hasPermission('faq-categories', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("faq-categories", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = FaqCategory::latest()->get();

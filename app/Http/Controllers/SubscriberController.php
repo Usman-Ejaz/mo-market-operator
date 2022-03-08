@@ -16,18 +16,14 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        if (!hasPermission('subscribers', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("subscribers", "list"), 401, __('messages.unauthorized_action'));
 
         return view("admin.subscribers.index");
     }
 
     public function list(Request $request)
     {
-        if (!hasPermission('subscribers', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("subscribers", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Subscriber::query();
@@ -62,9 +58,8 @@ class SubscriberController extends Controller
 
     public function toggleSubscription(Request $request, Subscriber $subscriber)
     {
-        if (!hasPermission('subscribers', 'subscribe')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("subscribers", "subscribe"), 401, __('messages.unauthorized_action'));
+        
         $status = intval($request->get("status"));
         $subscriber->status = $status;
         $subscriber->save();

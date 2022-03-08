@@ -19,9 +19,7 @@ class NewsletterController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('newsletters', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("newsletters", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.newsletters.index');
     }
@@ -33,9 +31,7 @@ class NewsletterController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('newsletters', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("newsletters", "create"), 401, __('messages.unauthorized_action'));
 
         $newsletter = new Newsletter();
         return view('admin.newsletters.create', compact('newsletter'));
@@ -49,9 +45,7 @@ class NewsletterController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('newsletters', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("newsletters", "create"), 401, __('messages.unauthorized_action'));
 
         $newsletter = new Newsletter();
         $newsletter = Newsletter::create( $this->validateRequest($newsletter) );
@@ -68,9 +62,7 @@ class NewsletterController extends Controller
      */
     public function show(Newsletter $newsletter)
     {
-        if( !hasPermission('newsletters', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("newsletters", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.newsletters.show', compact('newsletter'));
     }
@@ -83,9 +75,7 @@ class NewsletterController extends Controller
      */
     public function edit(Newsletter $newsletter)
     {
-        if( !hasPermission('newsletters', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("newsletters", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.newsletters.edit', compact('newsletter'));
     }
@@ -99,9 +89,7 @@ class NewsletterController extends Controller
      */
     public function update(Request $request, Newsletter $newsletter)
     {
-        if( !hasPermission('newsletters', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("newsletters", "edit"), 401, __('messages.unauthorized_action'));
 
         $newsletter->update($this->validateRequest($newsletter));
 
@@ -117,9 +105,7 @@ class NewsletterController extends Controller
      */
     public function destroy(Newsletter $newsletter)
     {
-        if( !hasPermission('newsletters', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("newsletters", "delete"), 401, __('messages.unauthorized_action'));
 
         $newsletter->delete();
         return redirect()->route('admin.newsletters.index')->with('success', 'Newsletter Deleted Successfully!');
@@ -127,9 +113,7 @@ class NewsletterController extends Controller
 
     public function list(Request $request)
     {
-        if( !hasPermission('newsletters', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("newsletters", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Newsletter::query();
@@ -189,11 +173,9 @@ class NewsletterController extends Controller
         });
     }
 
-    public function sendNewsLetter(Request $request, Newsletter $newsletter) {
-        
-        if (!hasPermission('newsletters', 'sendNewsLetter')) {
-            return abort(403);
-        }
+    public function sendNewsLetter(Request $request, Newsletter $newsletter) 
+    {
+        abort_if(!hasPermission("newsletters", "sendNewsLetter"), 401, __('messages.unauthorized_action'));
         
         $subscribers = Subscriber::active()->select("email")->get();
 

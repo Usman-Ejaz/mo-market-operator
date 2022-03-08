@@ -20,9 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('users', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("users", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.users.index');
     }
@@ -34,9 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('users', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("users", "create"), 401, __('messages.unauthorized_action'));
 
         $user = new User();
         return view('admin.users.create', compact('user'));
@@ -50,9 +46,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('users', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("users", "create"), 401, __('messages.unauthorized_action'));
 
         $user = new User();
         $user = User::create( $this->validateRequest($user) );
@@ -80,9 +74,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if( !hasPermission('users', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("users", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.users.show', compact('user'));
     }
@@ -95,9 +87,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if( !hasPermission('users', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("users", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.users.edit', compact('user'));
     }
@@ -111,9 +101,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if( !hasPermission('users', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("users", "edit"), 401, __('messages.unauthorized_action'));
         
         $previousImage = $user->image;
 
@@ -140,9 +128,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if( !hasPermission('users', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("users", "delete"), 401, __('messages.unauthorized_action'));
 
         if ($user->image !== null) {
             $file_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($user->image);
@@ -217,7 +203,7 @@ class UserController extends Controller
             'created_by' => '',
             'modified_by' => ''
         ], [
-            "image.max" => __('messages.max_image', ['limit' => '2 MB'])
+            "image.max" => __('messages.max_file', ['limit' => '2 MB'])
         ]);
     }
 

@@ -22,9 +22,7 @@ class SearchStatisticController extends Controller
      */
     public function index()
     {
-        if (!hasPermission('search-statistics', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search-statistics", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.search-statistics.index');
     }
@@ -37,9 +35,7 @@ class SearchStatisticController extends Controller
      */
     public function show(SearchStatistic $searchStatistic)
     {
-        if (!hasPermission('search-statistics', 'view')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search-statistics", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.search-statistics.show', compact('searchStatistic'));
     }
@@ -52,9 +48,7 @@ class SearchStatisticController extends Controller
      */
     public function destroy(SearchStatistic $searchStatistic)
     {
-        if (!hasPermission('search-statistics', 'delete')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search-statistics", "delete"), 401, __('messages.unauthorized_action'));
 
         $searchStatistic->delete();
         return redirect()->route('admin.search-statistics.index')->with('success', 'Search Keyword Deleted Successfully!');
@@ -62,9 +56,7 @@ class SearchStatisticController extends Controller
 
     public function list(Request $request)
     {
-        if (!hasPermission('search-statistics', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search-statistics", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = SearchStatistic::query();
@@ -87,9 +79,7 @@ class SearchStatisticController extends Controller
 
     public function exportkeywords() {
 
-        if (!hasPermission('search-statistics', 'export_keywords')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search-statistics", "export_keywords"), 401, __('messages.unauthorized_action'));
 
         $searchStatistics = SearchStatistic::orderByCount()->get();
         

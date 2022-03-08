@@ -10,9 +10,7 @@ class ApplicationController extends Controller
 {
     public function show(Application $application)
     {
-        if( !hasPermission('applications', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission('applications', 'view'), 401, __('messages.unauthorized_action'));
 
         $application = Application::find($application->id);
         return view('admin.applications.show', compact('application'));
@@ -20,9 +18,7 @@ class ApplicationController extends Controller
 
     public function destroy(Application $application)
     {
-        if( !hasPermission('applications', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission('applications', 'delete'), 401, __('messages.unauthorized_action'));
 
         $application = Application::find($application->id);
         $application->delete();

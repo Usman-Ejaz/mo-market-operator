@@ -19,9 +19,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('news', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("news", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.news.index');
     }
@@ -33,9 +31,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('news', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("news", "create"), 401, __('messages.unauthorized_action'));
 
         $news = new News();
         return view('admin.news.create', compact('news'));
@@ -49,9 +45,7 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('news', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("news", "create"), 401, __('messages.unauthorized_action'));
 
         $news = new News();
         $news = News::create($this->validateRequest($news));
@@ -75,9 +69,7 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        if( !hasPermission('news', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("news", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.news.show', compact('news'));
     }
@@ -90,9 +82,7 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        if( !hasPermission('news', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("news", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.news.edit', compact('news'));
     }
@@ -106,9 +96,8 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        if( !hasPermission('news', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("news", "edit"), 401, __('messages.unauthorized_action'));
+
         $previousImage = $news->image;
         $news->update($this->validateRequest($news));
         
@@ -134,9 +123,7 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        if( !hasPermission('news', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("news", "delete"), 401, __('messages.unauthorized_action'));
 
         $news->image !== null && removeFile(News::STORAGE_DIRECTORY, $news->image);
 
@@ -146,9 +133,7 @@ class NewsController extends Controller
 
     public function list(Request $request)
     {
-        if( !hasPermission('news', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("news", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = News::query();
@@ -211,7 +196,7 @@ class NewsController extends Controller
             'modified_by' => ''
         ], [
             'slug.unique' => __('messages.unique', ['attribute' => 'Slug']),
-            'image.max' => __('messages.max_image', ['limit' => '2 MB']),
+            'image.max' => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }
 

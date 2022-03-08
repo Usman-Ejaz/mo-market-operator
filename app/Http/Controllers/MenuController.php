@@ -22,9 +22,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('menus', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.menus.index');
     }
@@ -36,9 +34,7 @@ class MenuController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('menus', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "create"), 401, __('messages.unauthorized_action'));
 
         $menu = new Menu();
         return view('admin.menus.create', compact('menu'));
@@ -52,9 +48,7 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('menus', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "create"), 401, __('messages.unauthorized_action'));
 
         $menu = new Menu();
         $menu = Menu::create( $this->validateRequest($menu) );
@@ -71,9 +65,7 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        if( !hasPermission('menus', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.menus.show', compact('menu'));
     }
@@ -86,9 +78,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        if( !hasPermission('menus', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.menus.edit', compact('menu'));
     }
@@ -102,9 +92,7 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
-        if( !hasPermission('menus', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "edit"), 401, __('messages.unauthorized_action'));
 
         $menu->update($this->validateRequest($menu));
 
@@ -120,9 +108,7 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        if( !hasPermission('menus', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "delete"), 401, __('messages.unauthorized_action'));
 
         $menu->delete();
         return redirect()->route('admin.menus.index')->with('success', 'Menu Deleted Successfully!');
@@ -135,9 +121,7 @@ class MenuController extends Controller
      */
     public function submenus(Menu $menu)
     {
-        if( !hasPermission('menus', 'submenus') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "submenus"), 401, __('messages.unauthorized_action'));
 
         $pages = Page::where('active', 1)->pluck('title', 'id')->all();
 
@@ -209,9 +193,7 @@ class MenuController extends Controller
 
     public function list(Request $request)
     {
-        if( !hasPermission('menus', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Menu::query();

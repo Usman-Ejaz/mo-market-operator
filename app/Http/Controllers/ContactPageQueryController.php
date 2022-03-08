@@ -17,9 +17,7 @@ class ContactPageQueryController extends Controller
      */
     public function index()
     {
-        if (!hasPermission("contact-page-queries", "list")) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("contact-page-queries", "list"), 401, __('messages.unauthorized_action'));
 
         return view("admin.contact-page-queries.index");
     }
@@ -53,9 +51,7 @@ class ContactPageQueryController extends Controller
      */
     public function show(ContactPageQuery $contactPageQuery)
     {
-        if (!hasPermission('contact-page-queries', 'view')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("contact-page-queries", "view"), 401, __('messages.unauthorized_action'));
 
         return view("admin.contact-page-queries.show", compact('contactPageQuery'));
     }
@@ -91,9 +87,7 @@ class ContactPageQueryController extends Controller
      */
     public function destroy(ContactPageQuery $contactPageQuery)
     {
-        if (!hasPermission('contact-page-queries', 'delete')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("contact-page-queries", "delete"), 401, __('messages.unauthorized_action'));
 
         $contactPageQuery->delete();
         return redirect()->route('admin.contact-page-queries.index')->with('success', 'Query Deleted Successfully!');
@@ -101,9 +95,7 @@ class ContactPageQueryController extends Controller
 
     public function list(Request $request)
     {
-        if (!hasPermission('contact-page-queries', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("contact-page-queries", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = ContactPageQuery::query();
@@ -153,15 +145,5 @@ class ContactPageQueryController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-    }
-
-    private function validateRequest($request) {
-
-        return $request->validate([
-            'name' => 'required|min:3|max:100',
-            'email' => 'required|email',
-            'subject' => 'required|min:5|max:100',
-            'message' => 'required|min:5|max:255',
-        ]);
     }
 }
