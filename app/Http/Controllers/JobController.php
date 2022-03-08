@@ -18,9 +18,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('jobs', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.jobs.index');
     }
@@ -32,9 +30,7 @@ class JobController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('jobs', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "create"), 401, __('messages.unauthorized_action'));
 
         $job = new Job();
         return view('admin.jobs.create', compact('job'));
@@ -48,9 +44,7 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('jobs', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "create"), 401, __('messages.unauthorized_action'));
 
         $job = new Job();
         $job = $this->validateRequest($job);
@@ -76,9 +70,7 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        if( !hasPermission('jobs', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.jobs.show', compact('job'));
     }
@@ -91,9 +83,7 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        if( !hasPermission('jobs', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.jobs.edit', compact('job'));
     }
@@ -107,9 +97,8 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {      
-        if( !hasPermission('jobs', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "edit"), 401, __('messages.unauthorized_action'));
+
         $previousImage = $job->image;
         $data = $this->validateRequest($job);
         $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
@@ -137,9 +126,8 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        if( !hasPermission('jobs', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "delete"), 401, __('messages.unauthorized_action'));
+
         if ($job->image !== null) {
             $file_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($job->image);
             unlink($file_path);
@@ -157,9 +145,7 @@ class JobController extends Controller
      */
     public function list(Request $request)
     {
-        if( !hasPermission('jobs', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Job::query();
@@ -216,18 +202,14 @@ class JobController extends Controller
 
     public function getJobApplications (Job $job) {
 
-        if (!hasPermission('jobs', 'view_applications')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
         return view('admin.applications.index',compact('job'));
     }
 
     public function getApplicationsList(Request $request,Job $job) {
 
-        if (!hasPermission('jobs', 'view_applications')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
         $job = Job::find($job->id);
         $data = $job->applications;
@@ -282,9 +264,7 @@ class JobController extends Controller
 
     public function exportApplicationsList(Request $request,Job $job) {
 
-        if (!hasPermission('jobs', 'export_applications')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "export_applications"), 401, __('messages.unauthorized_action'));
 
         $job = Job::find($job->id);
         $data = $job->applications;
@@ -375,13 +355,9 @@ class JobController extends Controller
                 if( unlink($image_path) ){
                     $job->image = null;
                     $job->update();
-
                     return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
-
         }
-
     }
-
 }

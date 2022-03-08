@@ -9,13 +9,25 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
 class ProfileController extends Controller
-{
+{    
+    /**
+     * show
+     *
+     * @return void
+     */
     public function show()
     {
         $user = auth()->user();
         return view('admin.profile.edit', compact('user'));
     }
-
+    
+    /**
+     * update
+     *
+     * @param  mixed $request
+     * @param  mixed $user
+     * @return void
+     */
     public function update(Request $request, User $user)
     {
         // if (!hasPermission('profile', 'edit')) {
@@ -34,7 +46,14 @@ class ProfileController extends Controller
         $request->session()->flash('error', 'User was not updated, please try again');
         return redirect()->route('admin.dashboard');
     }
-
+    
+    /**
+     * storeImage
+     *
+     * @param  mixed $user
+     * @param  mixed $previousImage
+     * @return void
+     */
     private function storeImage($user, $previousImage = null) {
 
         if (request()->has('image')) {
@@ -53,7 +72,13 @@ class ProfileController extends Controller
             ]);
         }
     }
-
+    
+    /**
+     * validateRequest
+     *
+     * @param  mixed $user
+     * @return void
+     */
     private function validateRequest($user){
 
         return request()->validate([
@@ -69,7 +94,13 @@ class ProfileController extends Controller
             'image.max' => __('messages.max_image', ['limit' => '2 MB'])
         ]);
     }
-
+    
+    /**
+     * deleteImage
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function deleteImage(Request $request){
 
         if ($request->ajax()) {
@@ -88,12 +119,23 @@ class ProfileController extends Controller
         }
 
     }
-
+    
+    /**
+     * updatePasswordView
+     *
+     * @return void
+     */
     public function updatePasswordView()
     {
         return view("admin.auth.update-password");
     }
-
+    
+    /**
+     * updatePassword
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function updatePassword(Request $request) {
         
         $request->validate([

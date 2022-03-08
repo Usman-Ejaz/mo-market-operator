@@ -16,9 +16,7 @@ class PageController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('pages', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.pages.index');
     }
@@ -31,9 +29,7 @@ class PageController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('pages', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "create"), 401, __('messages.unauthorized_action'));
 
         $page = new Page();
         return view('admin.pages.create', compact('page'));
@@ -47,9 +43,7 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('pages', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "create"), 401, __('messages.unauthorized_action'));
 
         $page = new Page();
         $page = Page::create( $this->validateRequest($page) );
@@ -73,9 +67,7 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        if( !hasPermission('pages', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.pages.show', compact('page'));
     }
@@ -88,9 +80,7 @@ class PageController extends Controller
      */
     public function edit(Page $page)
     {
-        if( !hasPermission('pages', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.pages.edit', compact('page'));
     }
@@ -104,9 +94,7 @@ class PageController extends Controller
      */
     public function update(Request $request, Page $page)
     {
-        if( !hasPermission('pages', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
 
         $previousImage = $page->image;
 
@@ -134,9 +122,7 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {
-        if( !hasPermission('pages', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "delete"), 401, __('messages.unauthorized_action'));
 
         if ($page->image !== null) {
             $file_path = public_path(config('filepaths.pageImagePath.public_path')) . basename($page->image);
@@ -149,9 +135,8 @@ class PageController extends Controller
 
     public function list(Request $request)
     {
-        if( !hasPermission('pages', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "list"), 401, __('messages.unauthorized_action'));
+
         if ($request->ajax()) {
             $data = Page::query();
 
@@ -243,8 +228,6 @@ class PageController extends Controller
                     return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
-
         }
-
     }
 }

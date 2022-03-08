@@ -19,9 +19,7 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('documents', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("documents", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.documents.index');
     }
@@ -33,9 +31,7 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('documents', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("documents", "create"), 401, __('messages.unauthorized_action'));
 
         $document = new Document();
         $categories = DocumentCategory::all();
@@ -51,9 +47,7 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('documents', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("documents", "create"), 401, __('messages.unauthorized_action'));
 
         $document = new Document();
         $document = Document::create($this->validateRequest($document));
@@ -85,9 +79,7 @@ class DocumentController extends Controller
      */
     public function show(Document $document)
     {
-        if( !hasPermission('documents', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("documents", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.documents.show', compact('document'));
     }
@@ -100,9 +92,7 @@ class DocumentController extends Controller
      */
     public function edit(Document $document)
     {
-        if (!hasPermission('documents', 'edit')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
 
         $categories = DocumentCategory::all();
         
@@ -117,11 +107,9 @@ class DocumentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Document $document)
-    {
-        // dd($request->all());
-        if( !hasPermission('documents', 'edit') ){
-            return abort(403);
-        }
+    {        
+        abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
+
         $previousFile = $document->file;
         $data = $this->validateRequest($document);
 
@@ -157,9 +145,7 @@ class DocumentController extends Controller
      */
     public function destroy(Document $document)
     {
-        if( !hasPermission('documents', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("documents", "delete"), 401, __('messages.unauthorized_action'));
 
         if ($document->file !== null) {
             $file_path = storage_path('app/' . config('filepaths.documentsFilePath.public_path')) . basename($document->file);
@@ -167,15 +153,12 @@ class DocumentController extends Controller
         }
 
         $document->delete();
-
         return redirect()->route('admin.documents.index')->with('success', 'Document Deleted Successfully!');
     }
 
     public function list(Request $request)
     {
-        if( !hasPermission('documents', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("documents", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Document::query();
@@ -288,10 +271,7 @@ class DocumentController extends Controller
                     return response()->json(['success' => 'true', 'message' => 'File Deleted Successfully'], 200);
                 }
             }
-
         }
-
     }
-
 }
 
