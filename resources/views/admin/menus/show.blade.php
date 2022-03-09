@@ -3,7 +3,7 @@
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.menus.index') }}">Menus</a></li>
-  <li class="breadcrumb-item active">Details</li>
+  <li class="breadcrumb-item active">View</li>
 @endsection
 
 @section('addButton')
@@ -23,7 +23,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing Menu - {{ $menu->name }}</h3>
+                <h3 class="card-title">View Menu - {{ $menu->name }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

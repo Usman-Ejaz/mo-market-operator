@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
-use Lcobucci\Clock\Clock;
 use Yajra\DataTables\DataTables;
 
 class ClientController extends Controller
@@ -89,6 +88,7 @@ class ClientController extends Controller
         abort_if(! hasPermission("clients", "delete"), 401, __('messages.unauthorized_action'));
 
         $_client = $client;
+        // $this->removeSignatures($client);
         $client->delete();
 
         // event(new ClientHasDeletedEvent($_client));
@@ -107,6 +107,9 @@ class ClientController extends Controller
             ->addIndexColumn()
             ->addColumn('name', function ($row) {
                 return ( isset($row->name)) ? $row->name : '';
+            })
+            ->addColumn('pri_email', function ($row) {
+                return ( isset($row->pri_email)) ? $row->pri_email : '';
             })
             ->addColumn('type', function ($row) {
                 return ( isset($row->type)) ? ucwords(str_replace("_", " ", $row->type)) : '';

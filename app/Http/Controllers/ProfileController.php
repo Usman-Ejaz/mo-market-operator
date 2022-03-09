@@ -149,6 +149,9 @@ class ProfileController extends Controller
 
         if ($user) {
             if (Hash::check($request->old_password, $user->password)) {
+                if (Hash::check($request->password, $user->password)) {
+                    return redirect()->back()->withErrors("New Password should be different from Old Password.");
+                }
                 $user->password = bcrypt($request->get("password"));
                 $user->save();
                 $request->session()->flash("success", "Password Updated Successfully");

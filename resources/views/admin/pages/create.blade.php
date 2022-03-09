@@ -196,6 +196,9 @@
           if (element.attr("id") == "description") {
             element = $("#cke_" + element.attr("id"));
           }
+          if (element.attr("id") == "page_image") {
+            element.next().text('');
+          }
           error.insertAfter(element);
         },
         messages: {
