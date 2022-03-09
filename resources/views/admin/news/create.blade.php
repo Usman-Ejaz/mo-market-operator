@@ -202,6 +202,9 @@
 				if (element.attr("id") == "start_datetime" || element.attr("id") == "end_datetime") {
 					element = $('#' + element.attr("id")).parent();
 				}
+				if (element.attr("id") == "news_image") {
+					element.next().text('');
+				}
 				error.insertAfter(element);
 			},
 			messages: {
