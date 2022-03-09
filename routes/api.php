@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CareersApiController;
+use App\Http\Controllers\Api\Client\ClientAttachmentController;
 use App\Http\Controllers\Api\Client\ClientRegistrationController;
 use App\Http\Controllers\Api\ContactFormQueryController;
 use App\Http\Controllers\Api\DocumentsApiController;
@@ -32,8 +33,8 @@ Route::prefix('auth')->group(function() {
 //Route::post('register', [RegisterController::class, 'register']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('upload-attachments', [ClientRegistrationController::class, 'uploadAttachment'])->name('client.uploadAttachment');
-    Route::post('remove-attachments', [ClientRegistrationController::class, 'removeAttachment'])->name('client.removeAttachment');
+    Route::post('upload-attachments', [ClientAttachmentController::class, 'store'])->name('client.attachment.store');
+    Route::post('remove-attachments', [ClientAttachmentController::class, 'destroy'])->name('client.attachment.delete');
 });
 
 Route::prefix("v1")->middleware('verifyApiKey')->group(function () {

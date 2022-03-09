@@ -3,7 +3,7 @@
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
-  <li class="breadcrumb-item active">Details</li>
+  <li class="breadcrumb-item active">View</li>
 @endsection
 
 @section('addButton')

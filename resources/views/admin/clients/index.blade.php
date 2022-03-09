@@ -23,7 +23,7 @@
                       <tr>
                           <th>Id</th>
                           <th>Name</th>
-                          <th>Email</th>
+                          <th>Primary Email</th>
                           <th>Type</th>
                           <th>Status</th>
                           <th>Created at</th>
@@ -76,7 +76,7 @@
             columns: [
                 {data: 'id', name: 'id'},
                 {data: 'name', name: 'name'},
-                {data: 'email', name: 'email'},
+                {data: 'pri_email', name: 'pri_email'},
                 {data: 'type', name: 'type'},
                 {data: 'status', name: 'status'},
                 {data: 'created_at', name: 'created_at'},

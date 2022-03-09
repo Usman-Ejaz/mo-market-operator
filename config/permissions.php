@@ -195,13 +195,13 @@ return [
             // "publish" => "Publish"
         ]
     ],
-    // [
-    //     "name" => "clients",
-    //     "display_name" => "Clients",
-    //     "capabilities" => [
-    //         "list" => "List",
-    //         "delete" => "Delete",
-    //         "view" => "View"
-    //     ]
-    // ],
+    [
+        "name" => "clients",
+        "display_name" => "Clients",
+        "capabilities" => [
+            "list" => "List",
+            "delete" => "Delete",
+            "view" => "View"
+        ]
+    ],
 ];

@@ -52,15 +52,15 @@ class News extends Model
 
 
     /********** Setters *********/
-    public function setStartDatetimeAttribute($attribute){
+    // public function setStartDatetimeAttribute($attribute){
+    //     $attribute = str_replace(' PM', '', str_replace(' AM', '', $attribute)) . ":00";
+    //     $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
+    // }
 
-        $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    }
+    // public function setEndDatetimeAttribute($attribute){
 
-    public function setEndDatetimeAttribute($attribute){
-
-        $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    }
+    //     $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
+    // }
 
     public function setKeywordsAttribute($attribute){
 
@@ -69,7 +69,7 @@ class News extends Model
 
     public function setSlugAttribute($attribute){
 
-        $this->attributes['slug'] = ($attribute) ? trim($attribute, '- ') : NULL;
+        $this->attributes['slug'] = ($attribute) ? strtolower(trim($attribute, '- ')) : NULL;
     }
 
     public function newsCategoryOptions(){

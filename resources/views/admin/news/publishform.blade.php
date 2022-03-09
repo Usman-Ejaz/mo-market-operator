@@ -6,6 +6,7 @@
             <label>Start Date & Time:</label>
             <div class="input-group">
                 <input type="text" autocomplete="off" class="form-control" id="start_datetime" name="start_datetime" value="{{ old('start_datetime') ?? $news->start_datetime }}" placeholder="{{  config('settings.datetime_placeholder') }}">
+                <input type="hidden" name="start_date" id="start_date">
                 <div class="input-group-append">
                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                 </div>
@@ -21,6 +22,7 @@
         <label for="endtime">End Date & Time:</label>
           <div class="input-group">
               <input type="text" autocomplete="off" class="form-control" id="end_datetime" name="end_datetime" value="{{ old('end_datetime') ?? $news->end_datetime }}" placeholder="{{  config('settings.datetime_placeholder') }}">
+              <input type="hidden" name="end_date" id="end_date">
               <div class="input-group-append">
                   <div class="input-group-text"><i class="fa fa-calendar"></i></div>
               </div>
