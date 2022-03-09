@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
-use App\Models\NewsCategory;
+use App\Models\Post;
+use App\Models\postCategory;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
-class NewsController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,9 +19,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        abort_if(!hasPermission("news", "list"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("posts", "list"), 401, __('messages.unauthorized_action'));
 
-        return view('admin.news.index');
+        return view('admin.posts.index');
     }
 
     /**
@@ -31,10 +31,10 @@ class NewsController extends Controller
      */
     public function create()
     {
-        abort_if(!hasPermission("news", "create"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("posts", "create"), 401, __('messages.unauthorized_action'));
 
-        $news = new News();
-        return view('admin.news.create', compact('news'));
+        $post = new Post;
+        return view('admin.posts.create', compact('post'));
     }
 
     /**
@@ -45,105 +45,105 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(!hasPermission("news", "create"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("posts", "create"), 401, __('messages.unauthorized_action'));
 
-        $news = new News();
-        $data = $this->validateRequest($news);
+        $post = new Post;
+        $data = $this->validateRequest($post);
         $data['start_datetime'] = $request->start_date ?? null;
         $data['end_datetime'] = $request->end_date ?? null;
-        $news = News::create($data);
+        $post = Post::create($data);
 
-        $this->storeImage($news);
+        $this->storeImage($post);
 
         if ($request->action === "Published") {
-            $news->published_at = now();
-            $news->save();
+            $post->published_at = now();
+            $post->save();
         }
 
-        $request->session()->flash('success', "News {$request->action} Successfully!");
-        return redirect()->route('admin.news.index');
+        $request->session()->flash('success', "Post {$request->action} Successfully!");
+        return redirect()->route('admin.posts.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(News $news)
+    public function show(Post $post)
     {
-        abort_if(!hasPermission("news", "view"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("posts", "view"), 401, __('messages.unauthorized_action'));
 
-        return view('admin.news.show', compact('news'));
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(News $news)
+    public function edit(Post $post)
     {
-        abort_if(!hasPermission("news", "edit"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("posts", "edit"), 401, __('messages.unauthorized_action'));
 
-        return view('admin.news.edit', compact('news'));
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, Post $post)
     {
-        abort_if(!hasPermission("news", "edit"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("posts", "edit"), 401, __('messages.unauthorized_action'));
 
-        $previousImage = $news->image;
-        $data = $this->validateRequest($news);
+        $previousImage = $post->image;
+        $data = $this->validateRequest($post);
         $data['start_datetime'] = $request->start_date ?? null;
         $data['end_datetime'] = $request->end_date ?? null;
 
-        $news->update($data);
+        $post->update($data);
         
-        $this->storeImage($news, $previousImage);
+        $this->storeImage($post, $previousImage);
 
         if ($request->action === "Unpublished") {
-            $news->published_at = null;
-            $news->save();
+            $post->published_at = null;
+            $post->save();
         } else if ($request->action === "Published") {
-            $news->published_at = now();
-            $news->save();
+            $post->published_at = now();
+            $post->save();
         }
 
-        $request->session()->flash('success', "News {$request->action} Successfully!");
-        return redirect()->route('admin.news.index');
+        $request->session()->flash('success', "Post {$request->action} Successfully!");
+        return redirect()->route('admin.posts.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\News  $news
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(News $news)
+    public function destroy(Post $post)
     {
-        abort_if(!hasPermission("news", "delete"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("posts", "delete"), 401, __('messages.unauthorized_action'));
 
-        $news->image !== null && removeFile(News::STORAGE_DIRECTORY, $news->image);
+        $post->image !== null && removeFile(Post::STORAGE_DIRECTORY, $post->image);
 
-        $news->delete();
-        return redirect()->route('admin.news.index')->with('success', 'News Deleted Successfully!');
+        $post->delete();
+        return redirect()->route('admin.posts.index')->with('success', 'Post Deleted Successfully!');
     }
 
     public function list(Request $request)
     {
-        abort_if(!hasPermission("news", "list"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("posts", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = News::query();
+            $data = Post::query();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -156,8 +156,8 @@ class NewsController extends Controller
                 ->addColumn('keywords', function ($row) {
                     return truncateWords($row->keywords, 27);
                 })
-                ->addColumn('news_category', function ($row) {
-                    return ($row->news_category) ? $row->news_category : '';
+                ->addColumn('post_category', function ($row) {
+                    return ($row->post_category) ? $row->post_category : '';
                 })
                 ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
@@ -165,13 +165,13 @@ class NewsController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( hasPermission('news', 'edit') ) {
-                        $options .= '<a href="' . route('admin.news.edit', $row->id) . '" class="btn btn-primary" title="Edit">
+                    if( hasPermission('posts', 'edit') ) {
+                        $options .= '<a href="' . route('admin.posts.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( hasPermission('news', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.news.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                    if( hasPermission('posts', 'delete') ) {
+                        $options .= ' <form action="'. route('admin.posts.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
@@ -187,17 +187,17 @@ class NewsController extends Controller
         }
     }
 
-    private function validateRequest($news){
+    private function validateRequest($post){
 
         return request()->validate([
             'title' => 'required|min:3',
-            'slug' => 'required|unique:news,slug,'.$news->id,
+            'slug' => 'required|unique:post,slug,'.$post->id,
             'description' => 'required',
             'keywords' => 'nullable',
             'image' => 'sometimes|file|image|max:2000',
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
-            'news_category' => 'required|integer',
+            'post_category' => 'required|integer',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
@@ -207,19 +207,19 @@ class NewsController extends Controller
         ]);
     }
 
-    private function storeImage ($news, $oldFile = null) {
+    private function storeImage ($post, $oldFile = null) {
         if (request()->hasFile('image')) {
-            $news->update(['image' => storeFile(News::STORAGE_DIRECTORY, request()->file('image'), $oldFile)]);
+            $post->update(['image' => storeFile(Post::STORAGE_DIRECTORY, request()->file('image'), $oldFile)]);
         }
     }
 
     public function deleteImage(Request $request) {
         if ($request->ajax()) {
-            if (isset($request->news_id)) {
-                $news = News::find($request->news_id);
-                if (removeFile(News::STORAGE_DIRECTORY, $news->image)) {
-                    $news->image = null;
-                    $news->update();
+            if (isset($request->post_id)) {
+                $post = Post::find($request->post_id);
+                if (removeFile(Post::STORAGE_DIRECTORY, $post->image)) {
+                    $post->image = null;
+                    $post->update();
                     return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }

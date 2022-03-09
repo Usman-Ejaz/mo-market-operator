@@ -12,7 +12,7 @@ use App\Models\Faq;
 use App\Models\FaqCategory;
 use App\Models\Menu;
 use App\Models\Job;
-use App\Models\News;
+use App\Models\Post;
 use App\Models\Newsletter;
 use App\Models\Page;
 use App\Models\Permission;
@@ -77,8 +77,8 @@ class DatabaseSeeder extends Seeder
         Menu::factory()->create(['name' => 'Menu footer']);
         Menu::factory(2)->create();
 
-        // Create News
-        News::factory(30)->create();
+        // Create Posts
+        Post::factory(30)->create();
 
         DocumentCategory::factory(10)->create();
 
@@ -150,9 +150,9 @@ class DatabaseSeeder extends Seeder
             mkdir(storage_path('app/' . config('filepaths.pageImagePath.internal_path')), 0777, true);
         }
 
-        // For News Images
-        if (!is_dir(storage_path('app/' . config('filepaths.newsImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.newsImagePath.internal_path')), 0777, true);
+        // For Posts Images
+        if (!is_dir(storage_path('app/' . config('filepaths.postImagePath.internal_path')))) {
+            mkdir(storage_path('app/' . config('filepaths.postImagePath.internal_path')), 0777, true);
         }
 
         // For Job Images

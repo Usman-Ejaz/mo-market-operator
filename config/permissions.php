@@ -32,8 +32,8 @@ return [
         ]
     ],
     [
-        "name" => "news",
-        "display_name" => "News",
+        "name" => "posts",
+        "display_name" => "Posts",
         "capabilities" => [
             "list" => "List",
             //"view" => "View",

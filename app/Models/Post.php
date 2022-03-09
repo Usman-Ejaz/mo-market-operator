@@ -3,21 +3,17 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Models\NewsCategory;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\CreatedModifiedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Storage;
 
-class News extends Model
+class Post extends Model
 {
     use HasFactory;
 
     use CreatedModifiedBy;
 
-    public const STORAGE_DIRECTORY = 'news/';
+    public const STORAGE_DIRECTORY = 'posts/';
 
     protected $guarded = [];
 
@@ -30,8 +26,8 @@ class News extends Model
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
 
-    public function getNewsCategoryAttribute($attribute){
-        return ( isset($attribute) && isset( $this->newsCategoryOptions()[$attribute] ) ) ? $this->newsCategoryOptions()[$attribute] : '';
+    public function getPostCategoryAttribute($attribute){
+        return ( isset($attribute) && isset( $this->postCategoryOptions()[$attribute] ) ) ? $this->postCategoryOptions()[$attribute] : '';
     }
 
     public function getStartDatetimeAttribute($attribute){
@@ -86,7 +82,7 @@ class News extends Model
         $this->attributes['slug'] = ($attribute) ? strtolower(trim($attribute, '- ')) : NULL;
     }
 
-    public function newsCategoryOptions(){
+    public function postCategoryOptions(){
         return [
             1 => 'News',
             2 => 'Blog',
@@ -103,6 +99,6 @@ class News extends Model
 
     // Scope Queries
     public function scopePublished($query) {
-        return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "news_category", "slug", "keywords");
+        return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords");
     }
 }
