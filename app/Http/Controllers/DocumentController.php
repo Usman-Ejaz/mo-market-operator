@@ -203,15 +203,20 @@ class DocumentController extends Controller
     }
 
     private function validateRequest($document){
-
-        return request()->validate([
+        $rule = [
             'title' => 'required|min:3',
             'keywords' => 'nullable',
             'category_id' => 'required',
             'file' => 'required|file|max:5000',
             'created_by' => '',
             'modified_by' => ''
-        ], [
+        ];
+
+        if ($document->file != "" &&  $document->file != null) {
+            unset($rule['file']);
+        }
+
+        return request()->validate($rule, [
             'file.max' => __('messages.max_file', ['limit' => '5 MB'])
         ]);
     }

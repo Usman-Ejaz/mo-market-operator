@@ -48,7 +48,10 @@ class NewsController extends Controller
         abort_if(!hasPermission("news", "create"), 401, __('messages.unauthorized_action'));
 
         $news = new News();
-        $news = News::create($this->validateRequest($news));
+        $data = $this->validateRequest($news);
+        $data['start_datetime'] = $request->start_date ?? null;
+        $data['end_datetime'] = $request->end_date ?? null;
+        $news = News::create($data);
 
         $this->storeImage($news);
 
@@ -99,7 +102,11 @@ class NewsController extends Controller
         abort_if(!hasPermission("news", "edit"), 401, __('messages.unauthorized_action'));
 
         $previousImage = $news->image;
-        $news->update($this->validateRequest($news));
+        $data = $this->validateRequest($news);
+        $data['start_datetime'] = $request->start_date ?? null;
+        $data['end_datetime'] = $request->end_date ?? null;
+
+        $news->update($data);
         
         $this->storeImage($news, $previousImage);
 

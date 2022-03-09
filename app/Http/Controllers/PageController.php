@@ -46,7 +46,10 @@ class PageController extends Controller
         abort_if(!hasPermission("pages", "create"), 401, __('messages.unauthorized_action'));
 
         $page = new Page();
-        $page = Page::create( $this->validateRequest($page) );
+        $data = $this->validateRequest($page);
+        $data['start_datetime'] = $request->start_date ?? null;
+        $data['end_datetime'] = $request->end_date ?? null;
+        $page = Page::create($data);
 
         $this->storeImage($page);
 
@@ -97,8 +100,10 @@ class PageController extends Controller
         abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
 
         $previousImage = $page->image;
-
-        $page->update($this->validateRequest($page));
+        $data = $this->validateRequest($page);
+        $data['start_datetime'] = $request->start_date ?? null;
+        $data['end_datetime'] = $request->end_date ?? null;
+        $page->update($data);
 
         if ($request->action === "Unpublished") {
             $page->published_at = null;

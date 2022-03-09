@@ -50,6 +50,20 @@ class News extends Model
         return serveFile(self::STORAGE_DIRECTORY, $value);
     }
 
+    public function parseStartDate() {
+        if ($this->start_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
+        }
+        return "";
+    }
+
+    public function parseEndDate() {
+        if ($this->end_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
+        }
+        return "";
+    }
+
 
     /********** Setters *********/
     // public function setStartDatetimeAttribute($attribute){

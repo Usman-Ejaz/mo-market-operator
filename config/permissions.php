@@ -59,14 +59,14 @@ return [
             "delete_job_application" => "Delete Job Application",
         ]
     ],
-    [
-        "name" => "applications",
-        "display_name" => "Applications of job",
-        "capabilities" => [
-            "view" => "View",
-            "delete" => "Delete",
-        ]
-    ],
+    // [
+    //     "name" => "applications",
+    //     "display_name" => "Applications of job",
+    //     "capabilities" => [
+    //         "view" => "View",
+    //         "delete" => "Delete",
+    //     ]
+    // ],
     [
         "name" => "pages",
         "display_name" => "Pages",
