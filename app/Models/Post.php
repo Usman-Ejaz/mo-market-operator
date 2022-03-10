@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\CreatedModifiedBy;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
@@ -14,6 +14,8 @@ class Post extends Model
     use CreatedModifiedBy;
 
     public const STORAGE_DIRECTORY = 'posts/';
+
+    protected $table = "posts";
 
     protected $guarded = [];
 

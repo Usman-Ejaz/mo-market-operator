@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\postCategory;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class PostController extends Controller
@@ -33,7 +29,7 @@ class PostController extends Controller
     {
         abort_if(!hasPermission("posts", "create"), 401, __('messages.unauthorized_action'));
 
-        $post = new Post;
+        $post = new Post();
         return view('admin.posts.create', compact('post'));
     }
 
@@ -191,7 +187,7 @@ class PostController extends Controller
 
         return request()->validate([
             'title' => 'required|min:3',
-            'slug' => 'required|unique:post,slug,'.$post->id,
+            'slug' => 'required|unique:posts,slug,'.$post->id,
             'description' => 'required',
             'keywords' => 'nullable',
             'image' => 'sometimes|file|image|max:2000',

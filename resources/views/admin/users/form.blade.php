@@ -81,7 +81,7 @@
 
 		<div class="col-md-6">
 			<div class="form-group">
-				<label for="news_image" class="form-label">User Profile Image</label>
+				<label for="image" class="form-label">User Profile Image</label>
 				<input class="form-control" type="file" id="image" name="image">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if( isset($user->image) )

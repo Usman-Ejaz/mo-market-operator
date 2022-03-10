@@ -7,9 +7,7 @@
 @endsection
 
 @section('addButton')
-    @if( hasPermission('news', 'create') )
-        <button class="btn btn-primary float-right" id="addNewSubmenu" href="#">Add New Submenu</button>
-    @endif
+    <button class="btn btn-primary float-right" id="addNewSubmenu" href="#">Add New Submenu</button>
 @endsection
 
 @section('content')
@@ -52,17 +50,18 @@
                         <div class="card-body">
 
                             @if( is_array($pages) && count($pages) )
-                                <ul id="pages">
+                                <input type="text" name="search-pages" id="page-search" class="form-control mb-3 search-box" placeholder="Search Page">
+                                <ul id="pages" class="page-list">
                                 @foreach($pages as $id => $title)
-                                        <li>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="pages[{{ $id }}]" value="" data-page="{{ $id }}" data-title="{{ $title }}">
-                                                    {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}
-                                                    <a href="{{ route('admin.pages.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a>
-                                                </label>
-                                            </div>
-                                        </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="pages[{{ $id }}]" value="" data-page="{{ $id }}" data-title="{{ $title }}">
+                                                {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}
+                                                <a href="{{ route('admin.pages.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a>
+                                            </label>
+                                        </div>
+                                    </li>
                                 @endforeach
                                 </ul>
                             @endif
@@ -72,8 +71,66 @@
                             <button type="button" class="btn btn-secondary" id="add_pages_to_menu">Add to menu</button>
                         </div>
                     </div>
-                </div>
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Post Categories</h3>
+                        </div>
 
+                        <div class="card-body">
+
+                            @if( is_array($postCategories) && count($postCategories) )
+                                <input type="text" name="search-categories" id="post-categories" class="form-control mb-3 search-box" placeholder="Search Categories">
+                                <ul id="pages" class="post-category-list">
+                                @foreach($postCategories as $id => $title)
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="postCategories[{{ $id }}]" value="" data-post="{{ $id }}" data-title="{{ $title }}">
+                                                {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}
+                                                <!-- <a href="{{ route('admin.pages.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a> -->
+                                            </label>
+                                        </div>
+                                    </li>
+                                @endforeach
+                                </ul>
+                            @endif
+                        </div>
+
+                        <div class="card-footer text-right">
+                            <button type="button" class="btn btn-secondary" id="add_post_categories_to_menu">Add to menu</button>
+                        </div>
+                    </div>
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Document Categories</h3>
+                        </div>
+
+                        <div class="card-body">
+
+                            @if( is_array($documentCategories) && count($documentCategories) )
+                                <input type="text" name="search-categories" id="document-categories" class="form-control mb-3 search-box" placeholder="Search Categories">
+                                <ul id="pages" class="document-category-list">
+                                @foreach($documentCategories as $name => $id)
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-doc="{{ $id }}" data-title="{{ $name }}">
+                                                {{ \Illuminate\Support\Str::limit($name, 35, $end='...') }}
+                                                <a href="{{ route('admin.document-categories.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a>
+                                            </label>
+                                        </div>
+                                    </li>
+                                @endforeach
+                                </ul>
+                            @endif
+                        </div>
+
+                        <div class="card-footer text-right">
+                            <button type="button" class="btn btn-secondary" id="add_doc_categories_to_menu">Add to menu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
 
         <!-- Edit Modal -->
@@ -195,8 +252,8 @@
             // Update json for submenu order
             var updateOutput = function(e)
             {
-                var list   = e.length ? e : $(e.target),
-                    output = list.data('output');
+                var list = e.length ? e : $(e.target),
+                output = list.data('output');
                 if (window.JSON) {
                     output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
                 } else {
@@ -215,13 +272,32 @@
 
             // Activate button based on page checkboxes
             $('#add_pages_to_menu').prop("disabled", true);
-            $("input[name^='page']:checkbox").click(function() {
+            $('#add_post_categories_to_menu').prop("disabled", true);
+            $('#add_doc_categories_to_menu').prop("disabled", true);
+
+            $(document).on('click', "input[name^='page']:checkbox", (function() {
                 if ($(this).is(':checked')) {
                     $('#add_pages_to_menu').prop("disabled", false);
                 } else if ( $("input[name^='page']:checkbox:checked").length < 1){
                     $('#add_pages_to_menu').attr('disabled',true);
                 }
-            });
+            }));
+
+            $(document).on('click', "input[name^='postCategories']:checkbox", (function() {
+                if ($(this).is(':checked')) {
+                    $('#add_post_categories_to_menu').prop("disabled", false);
+                } else if ( $("input[name^='postCategories']:checkbox:checked").length < 1){
+                    $('#add_post_categories_to_menu').attr('disabled',true);
+                }
+            }));
+
+            $(document).on('click', "input[name^='documentCategories']:checkbox", (function() {
+                if ($(this).is(':checked')) {
+                    $('#add_doc_categories_to_menu').prop("disabled", false);
+                } else if ( $("input[name^='documentCategories']:checkbox:checked").length < 1){
+                    $('#add_doc_categories_to_menu').attr('disabled',true);
+                }
+            }));
 
             // Stop form to submit by clicking the enter button
             $(window).keydown(function(event){
@@ -248,6 +324,46 @@
                     //$('#nestable').nestable();
                 });
                 $('#add_pages_to_menu').prop('disabled', true);
+                $('#nestable').trigger('change');
+            });
+
+            // Add Post categories to menu functionality
+            $('#add_post_categories_to_menu').click(function(){
+                $("input[name^='postCategories']:checkbox:checked").each(function () {
+                    lastSubMenuId = lastSubMenuId + 1;
+                    $('ol#submenu').append(`
+                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-post="${$(this).data('post')}" data-title="${$(this).data('title')}">
+                            <div class="dd-handle dd3-handle"></div>
+                            <div class="dd3-content">
+                                ${lastSubMenuId} ${'('} post category ${')'} ${$(this).data('title')}
+                            </div>
+                            <div class="dd3-edit"><i class="fa fa-trash"></i></div>
+                        </li>`
+                    );
+                    $("input[name^='postCategories']:checkbox:checked").prop('checked', false);
+                    //$('#nestable').nestable();
+                });
+                $('#add_post_categories_to_menu').prop('disabled', true);
+                $('#nestable').trigger('change');
+            });
+
+            // Add Document categories to menu functionality
+            $('#add_doc_categories_to_menu').click(function(){
+                $("input[name^='documentCategories']:checkbox:checked").each(function () {
+                    lastSubMenuId = lastSubMenuId + 1;
+                    $('ol#submenu').append(`
+                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}">
+                            <div class="dd-handle dd3-handle"></div>
+                            <div class="dd3-content">
+                                ${lastSubMenuId} ${'('} document category ${')'} ${$(this).data('title')}
+                            </div>
+                            <div class="dd3-edit"><i class="fa fa-trash"></i></div>
+                        </li>`
+                    );
+                    $("input[name^='documentCategories']:checkbox:checked").prop('checked', false);
+                    //$('#nestable').nestable();
+                });
+                $('#add_doc_categories_to_menu').prop('disabled', true);
                 $('#nestable').trigger('change');
             });
 
@@ -414,6 +530,39 @@
                 $('#nestable').trigger('change');
             });
 
+            $('.search-box').on('keyup', debounce((e) => {
+                let targetId = '';
+                switch(e.target.id) {
+                    case 'page-search':
+                        targetId = 'page-list';
+                        break;
+                    case 'document-categories':
+                        searchModel = '';
+                        targetId = 'document-category-list';
+                        break;
+                    case 'post-categories':
+                        targetId = 'post-category-list';
+                        break;
+                }
+
+                jQuery.post('{{ route("admin.menus.search") }}', {
+                    id: (e.target.id).trim(),
+                    searchKey: (e.target.value).trim(),
+                    _token: "{{ csrf_token() }}",
+                }, function (data, status) {
+                    if (status == 'success') {
+                        jQuery(`.${targetId}`).html(data);
+                    }
+                });
+            }, 1000));
+
+            function debounce(func, timeout = 300){
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+                };
+            }
         });
     </script>
 

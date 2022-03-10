@@ -7,7 +7,7 @@
 
 @section('addButton')
     @if( hasPermission('posts', 'create') )
-        <a class="btn btn-primary float-right" href="{{ route('admin.posts.create') }}">Add Posts</a>
+        <a class="btn btn-primary float-right" href="{{ route('admin.posts.create') }}">Add Post</a>
     @endif
 @endsection
 
