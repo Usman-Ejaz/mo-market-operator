@@ -32,8 +32,8 @@ return [
         ]
     ],
     [
-        "name" => "news",
-        "display_name" => "News",
+        "name" => "posts",
+        "display_name" => "Posts",
         "capabilities" => [
             "list" => "List",
             //"view" => "View",
@@ -59,14 +59,14 @@ return [
             "delete_job_application" => "Delete Job Application",
         ]
     ],
-    [
-        "name" => "applications",
-        "display_name" => "Applications of job",
-        "capabilities" => [
-            "view" => "View",
-            "delete" => "Delete",
-        ]
-    ],
+    // [
+    //     "name" => "applications",
+    //     "display_name" => "Applications of job",
+    //     "capabilities" => [
+    //         "view" => "View",
+    //         "delete" => "Delete",
+    //     ]
+    // ],
     [
         "name" => "pages",
         "display_name" => "Pages",

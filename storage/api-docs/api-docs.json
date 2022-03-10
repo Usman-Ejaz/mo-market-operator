@@ -403,14 +403,14 @@
                 ]
             }
         },
-        "/get-news": {
+        "/get-posts": {
             "get": {
                 "tags": [
-                    "News"
+                    "Posts"
                 ],
-                "summary": "Get list of Published News",
-                "description": "Returns list of News",
-                "operationId": "getPublishedNews",
+                "summary": "Get list of Published Posts",
+                "description": "Returns list of Posts",
+                "operationId": "getPublishedPosts",
                 "responses": {
                     "200": {
                         "description": "Success"
@@ -432,19 +432,19 @@
                 ]
             }
         },
-        "/show-news/{slug}": {
+        "/show-post/{slug}": {
             "get": {
                 "tags": [
-                    "News"
+                    "Posts"
                 ],
-                "summary": "Get Specific News against slug",
-                "description": "Returns single News",
-                "operationId": "getSingleNews",
+                "summary": "Get Specific Post against slug",
+                "description": "Returns single Post",
+                "operationId": "getSinglePost",
                 "parameters": [
                     {
                         "name": "slug",
                         "in": "path",
-                        "description": "News slug",
+                        "description": "Post slug",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -474,8 +474,8 @@
                 "tags": [
                     "Site Search"
                 ],
-                "summary": "Search records from the whole site. (FAQs, Pages, Documents, News, Pages)",
-                "description": "Search records from the whole site. (FAQs, Pages, Documents, News, Pages)",
+                "summary": "Search records from the whole site. (FAQs, Jobs, Documents, News, Pages)",
+                "description": "This search API will work for FAQs, News, Jobs and Pages when 'type' property is not set or 'type' property is set to 'web_content'. If the 'type' property is set to 'document' then the API will only search from the Documents Module",
                 "operationId": "siteSearch",
                 "requestBody": {
                     "required": true,
@@ -497,7 +497,8 @@
                                 },
                                 "type": "object",
                                 "example": {
-                                    "key": "John Doe"
+                                    "key": "John Doe",
+                                    "type": ""
                                 }
                             }
                         }

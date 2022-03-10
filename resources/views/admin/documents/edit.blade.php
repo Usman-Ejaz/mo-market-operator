@@ -104,7 +104,10 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				file: '{{ __("messages.valid_file_extension") }}',
+				file: {
+					required: "{{ __('messages.required') }}",
+					extension: '{{ __("messages.valid_file_extension") }}'
+				},
 				title: {
 					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",

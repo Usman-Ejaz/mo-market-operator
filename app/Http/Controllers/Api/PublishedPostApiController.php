@@ -3,28 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\News;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
-class PublishedNewsApiController extends BaseApiController
+class PublishedPostApiController extends BaseApiController
 {
 
     /**
      * 
      * @OA\Tag(
-     *     name="News",
-     *     description="API Endpoints of News"
+     *     name="Posts",
+     *     description="API Endpoints of Posts"
      * )
      * 
      */ 
 
     /** 
      * @OA\Get(
-     *      path="/get-news",
-     *      operationId="getPublishedNews",
-     *      tags={"News"},
-     *      summary="Get list of Published News",
-     *      description="Returns list of News",
+     *      path="/get-posts",
+     *      operationId="getPublishedPosts",
+     *      tags={"Posts"},
+     *      summary="Get list of Published Posts",
+     *      description="Returns list of Posts",
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
@@ -44,14 +44,14 @@ class PublishedNewsApiController extends BaseApiController
      *      ),
      *  )
      */
-    public function getPublishedNews() {
+    public function getPublishedPosts() {
         try {
-            $posts = News::published()->latest()->get();
+            $posts = Post::published()->latest()->get();
 
             if ($posts->count() > 0) {
                 return $this->sendResponse($posts, "Success");
             } else {
-                return $this->sendResponse([], "Could not find news.");
+                return $this->sendResponse([], "Could not find posts.");
             }
         } catch (\Exception $e) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
@@ -61,15 +61,15 @@ class PublishedNewsApiController extends BaseApiController
     /**
      * 
      * @OA\Get(
-     *      path="/show-news/{slug}",
-     *      operationId="getSingleNews",
-     *      tags={"News"},
-     *      summary="Get Specific News against slug",
-     *      description="Returns single News",
+     *      path="/show-post/{slug}",
+     *      operationId="getSinglePost",
+     *      tags={"Posts"},
+     *      summary="Get Specific Post against slug",
+     *      description="Returns single Post",
      *      security={{"BearerAppKey": {}}},
      *      @OA\Parameter(
      *          name="slug",
-     *          description="News slug",
+     *          description="Post slug",
      *          required=true,
      *          in="path",
      *          @OA\Schema(
@@ -90,14 +90,14 @@ class PublishedNewsApiController extends BaseApiController
      *      )
      *  )
      */
-    public function getSingleNews ($slug) {
+    public function getSinglePost ($slug) {
         try {
-            $post = News::published()->where("slug", "=", $slug)->first();
+            $post = Post::published()->where("slug", "=", $slug)->first();
 
             if ($post) {
                 return $this->sendResponse($post, "Success");
             } else {
-                return $this->sendResponse([], "Could not found news");
+                return $this->sendResponse([], "Could not found post");
             }
         } catch (\Exception $e) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 402);

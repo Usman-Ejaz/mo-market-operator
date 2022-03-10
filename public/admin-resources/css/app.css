@@ -54,6 +54,10 @@ ul.pagination li.active{
 .width-120 {
     width: 120px;
 }
+.bg-white {
+    background-color: #fff;
+}
+
 :root {
     --facebook-color: #1877f2;
     --twitter-color: #1d9bf0;

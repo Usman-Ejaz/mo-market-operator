@@ -87,13 +87,19 @@
 			minDate: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
+				$('#start_date').val(mapDate(dp));
 				let endDate = $("#end_datetime").val();
-				if (endDate.trim().length > 0 && $input.val() > endDate) {
+				if (endDate.trim().length > 0 && $input.val() >= endDate) {
 					$input.val("");
 					$input.parent().next().text("Start Date cannot be less than end date");
 				} else {
 					$input.parent().next().text("");
 				}
+			},
+			onShow: function () {
+				this.setOptions({
+					maxDate: $('#end_date').val() ? $('#end_date').val() : false
+				})
 			}
 		});
 
@@ -104,13 +110,19 @@
 			minDate: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
+				$('#end_date').val(mapDate(dp));
 				let startDate = $("#start_datetime").val();
-				if (startDate.trim().length > 0 && $input.val() < startDate) {
+				if (startDate.trim().length > 0 && $input.val() <= startDate) {
 					$input.val("");
 					$input.parent().next().text("{{ __('messages.min_date') }}");
 				} else {
 					$input.parent().next().text("");
 				}
+			},
+			onShow: function () {
+				this.setOptions({
+					minDate: $('#start_date').val() ? $('#start_date').val() : false
+				})
 			}
 		});
 
@@ -160,19 +172,6 @@
 		$.validator.addMethod("notNumericValues", function(value, element) {
 			return this.optional(element) || isNaN(Number(value));
 		}, '{{ __("messages.not_numeric") }}');
-
-		$.validator.addMethod("greaterThan", function(value, element, params) {
-			// if there is no date in both fields, then bypass the validation
-			if (value.trim().length === 0 && $(params).val().trim().length === 0) return true;
-
-			if (!/Invalid|NaN/.test(new Date(value))) {
-				return new Date(value) > new Date($(params).val());
-			}
-			return isNaN(value) && isNaN($(params).val()) || (Number(value) > Number($(params).val()));
-
-			// Error Message for this field | Should put on the single quotes given below.
-			// {{ __("messages.valid_date", ["first" => "End", "second" => "Start"]) }}
-		}, '');
 
 		$.validator.addMethod("ckeditor_required", function(value, element) {
 			var editorId = $(element).attr('id');
@@ -224,10 +223,6 @@
 				enable: {
 					required: false,
 				},
-				start_datetime: {},
-				end_datetime: {
-					greaterThan: "#start_datetime"
-				}
 			},
 			errorPlacement: function(error, element) {
 				if (element.attr("id") == "description") {
@@ -248,6 +243,10 @@
 			}
 		});
 	});
+
+	function mapDate(date) {
+		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
+	}
 </script>
 
 @endpush

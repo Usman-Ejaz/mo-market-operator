@@ -2,22 +2,20 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use App\Models\NewsCategory;
-use Illuminate\Routing\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\CreatedModifiedBy;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Model;
 
-class News extends Model
+class Post extends Model
 {
     use HasFactory;
 
     use CreatedModifiedBy;
 
-    public const STORAGE_DIRECTORY = 'news/';
+    public const STORAGE_DIRECTORY = 'posts/';
+
+    protected $table = "posts";
 
     protected $guarded = [];
 
@@ -30,8 +28,8 @@ class News extends Model
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
 
-    public function getNewsCategoryAttribute($attribute){
-        return ( isset($attribute) && isset( $this->newsCategoryOptions()[$attribute] ) ) ? $this->newsCategoryOptions()[$attribute] : '';
+    public function getPostCategoryAttribute($attribute){
+        return ( isset($attribute) && isset( $this->postCategoryOptions()[$attribute] ) ) ? $this->postCategoryOptions()[$attribute] : '';
     }
 
     public function getStartDatetimeAttribute($attribute){
@@ -48,6 +46,20 @@ class News extends Model
 
     public function getImageAttribute ($value) {
         return serveFile(self::STORAGE_DIRECTORY, $value);
+    }
+
+    public function parseStartDate() {
+        if ($this->start_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
+        }
+        return "";
+    }
+
+    public function parseEndDate() {
+        if ($this->end_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
+        }
+        return "";
     }
 
 
@@ -72,7 +84,7 @@ class News extends Model
         $this->attributes['slug'] = ($attribute) ? strtolower(trim($attribute, '- ')) : NULL;
     }
 
-    public function newsCategoryOptions(){
+    public function postCategoryOptions(){
         return [
             1 => 'News',
             2 => 'Blog',
@@ -89,6 +101,6 @@ class News extends Model
 
     // Scope Queries
     public function scopePublished($query) {
-        return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "news_category", "slug", "keywords");
+        return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords");
     }
 }

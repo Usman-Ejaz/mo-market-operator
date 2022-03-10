@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\ContactFormQueryController;
 use App\Http\Controllers\Api\DocumentsApiController;
 use App\Http\Controllers\Api\FaqApiController;
 use App\Http\Controllers\Api\NewsletterSubscriptionController;
-use App\Http\Controllers\Api\PublishedNewsApiController;
+use App\Http\Controllers\Api\PublishedPostApiController;
 use App\Http\Controllers\Api\RegisterApiController;
 use App\Http\Controllers\Api\SitemapApiController;
 use App\Http\Controllers\Api\SiteSearchApiController;
@@ -42,8 +42,8 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::post("subscribe-to-newsletter", [NewsletterSubscriptionController::class, "subscribe"])->name("newsletters.subscribe");
     Route::get("faqs", [FaqApiController::class, "show"])->name("faqs.show");
 
-    Route::get("get-news", [PublishedNewsApiController::class, "getPublishedNews"])->name("news.published");
-    Route::get("show-news/{slug}", [PublishedNewsApiController::class, "getSingleNews"])->name("news.show");
+    Route::get("get-posts", [PublishedPostApiController::class, "getPublishedPosts"])->name("posts.published");
+    Route::get("show-post/{slug}", [PublishedPostApiController::class, "getSinglePost"])->name("posts.show");
 
     Route::get("get-jobs", [CareersApiController::class, "getPublishedJobs"])->name("careers.published");
     Route::get("show-job/{slug}", [CareersApiController::class, "showSingleJob"])->name("careers.show");

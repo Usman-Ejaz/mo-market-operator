@@ -5,9 +5,9 @@ return [
         'internal_path' => 'public/uploads/users/',
         'public_path' => 'storage/uploads/users/',
     ],
-    'newsImagePath' => [
-        'internal_path' => 'public/uploads/news/',
-        'public_path' => 'storage/uploads/news/',
+    'postImagePath' => [
+        'internal_path' => 'public/uploads/posts/',
+        'public_path' => 'storage/uploads/posts/',
     ],
     'jobImagePath' => [
         'internal_path' => 'public/uploads/jobs/',

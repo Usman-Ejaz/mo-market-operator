@@ -16,6 +16,11 @@ class PreventBrowserHistory
      */
     public function handle(Request $request, Closure $next)
     {
+        if (auth()->check() && auth()->user()->active !== 'Active') {
+            auth()->logout();
+            return redirect()->route('admin.login')->withMessage(__('auth.blocked'));
+        }
+        
         $response = $next($request);
         return $response->header('Cache-Control','no-cache, no-store, max-age=0, must-revalidate') 
                         ->header('Pragma','no-cache')

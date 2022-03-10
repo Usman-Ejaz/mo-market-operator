@@ -41,11 +41,11 @@
           </li>
           @endif
 
-          @if( hasPermission('news', 'list') )
+          @if( hasPermission('posts', 'list') )
           <li class="nav-item">
-            <a href="{{ route('admin.news.index') }}" class="nav-link {{ (Request::is('admin/news/*') || Request::is('admin/news') ) ? 'active' : '' }}">
+            <a href="{{ route('admin.posts.index') }}" class="nav-link {{ (Request::is('admin/posts/*') || Request::is('admin/posts') ) ? 'active' : '' }}">
               <i class="nav-icon fa fa-newspaper"></i>
-              <p>News</p>
+              <p>Posts</p>
             </a>
           </li>
           @endif

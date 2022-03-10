@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
-@section('header', 'News')
+@section('header', 'Posts')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item active">News</li>
+  <li class="breadcrumb-item active">Posts</li>
 @endsection
 
 @section('addButton')
-    @if( hasPermission('news', 'create') )
-        <a class="btn btn-primary float-right" href="{{ route('admin.news.create') }}">Add News</a>
+    @if( hasPermission('posts', 'create') )
+        <a class="btn btn-primary float-right" href="{{ route('admin.posts.create') }}">Add Post</a>
     @endif
 @endsection
 
@@ -61,7 +61,7 @@
             processing: true,
             serverSide: true,
             pageLength: 25,
-            ajax: "{{ route('admin.news.list') }}",
+            ajax: "{{ route('admin.posts.list') }}",
             fnDrawCallback: function () {
               if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
                 const searchedRecods = this.fnSettings()._iRecordsDisplay;
@@ -75,7 +75,7 @@
                 {data: 'id', name: 'id'},
                 {data: 'title', name: 'title'},
                 {data: 'slug', name: 'slug'},
-                {data: 'news_category', name: 'news_category'},
+                {data: 'post_category', name: 'post_category'},
                 {data: 'keywords', name: 'keywords'},
                 {data: 'created_at', name: 'created_at'},
                 {

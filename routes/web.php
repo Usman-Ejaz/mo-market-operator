@@ -15,9 +15,9 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchStatisticController;
 use App\Http\Controllers\SubscriberController;
@@ -57,10 +57,10 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::patch('update-profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('deleteImage', [ProfileController::class, 'deleteImage'])->name('profile.deleteImage');
     
-    // Routes for News Module
-    Route::get('news/list', [NewsController::class, 'list'])->name('news.list');
-    Route::post('news/deleteImage', [NewsController::class, 'deleteImage'])->name('news.deleteImage');
-    Route::resource('news', NewsController::class);
+    // Routes for Posts Module
+    Route::get('posts/list', [PostController::class, 'list'])->name('posts.list');
+    Route::post('posts/deleteImage', [PostController::class, 'deleteImage'])->name('posts.deleteImage');
+    Route::resource('posts', PostController::class);
     
     // Routes for Job Module
     Route::get('jobs/list', [JobController::class, 'list'])->name('jobs.list');
@@ -91,6 +91,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::post('permissions/store', [PermissionController::class, 'store'])->name('permissions.store');
     
     // Routes for Menu Module
+    Route::post('menus/search', [MenuController::class, 'search'])->name('menus.search');
     Route::get('menus/{menu}/submenus', [MenuController::class, 'submenus'])->name('menus.submenus');
     Route::patch('menus/{menu}/submenusupdate', [MenuController::class, 'submenusupdate'])->name('menus.submenusupdate');
     Route::get('menus/list', [MenuController::class, 'list'])->name('menus.list');
