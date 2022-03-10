@@ -50,8 +50,9 @@ class JobController extends Controller
         $job = $this->validateRequest($job);
         $job['slug'] = Str::slug($job['title']);
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
-        $data['start_datetime'] = $request->start_date ?? null;
-        $data['end_datetime'] = $request->end_date ?? null;
+        $job['start_datetime'] = $request->start_date ?? null;
+        $job['end_datetime'] = $request->end_date ?? null;
+        
         $job = Job::create($job);
         $this->storeImage($job);
 
