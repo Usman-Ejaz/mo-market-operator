@@ -114,14 +114,13 @@ class DocumentCategoryController extends Controller
         abort_if(!hasPermission("document-categories", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = DocumentCategory::query();
+            $data = DocumentCategory::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
                     return ($row->name) ? ( (strlen($row->name) > 50) ? substr($row->name, 0, 50).'...' : $row->name ) : '';
                 })
-                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

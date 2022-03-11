@@ -139,7 +139,7 @@ class PostController extends Controller
         abort_if(!hasPermission("posts", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = Post::query();
+            $data = Post::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -155,8 +155,7 @@ class PostController extends Controller
                 ->addColumn('post_category', function ($row) {
                     return ($row->post_category) ? $row->post_category : '';
                 })
-                ->orderColumn('created_at', 'created_at $1')
-                ->addColumn('created_at', function ($row) {
+                ->editColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
                 ->addColumn('action', function ($row) {

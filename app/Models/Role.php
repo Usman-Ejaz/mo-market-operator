@@ -33,4 +33,8 @@ class Role extends Model
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
+
+    public function scopeOrderByName($query) {
+        return $query->orderBy('name', 'asc');
+    }
 }

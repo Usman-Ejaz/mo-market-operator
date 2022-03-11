@@ -49,6 +49,7 @@
     <script type="text/javascript">
       $(function () {
         var table = $('.yajra-datatable').DataTable({
+            order: [[ 1, 'asc' ]],
             processing: true,
             serverSide: true,
             pageLength: 25,
@@ -63,7 +64,7 @@
               }
             },
             columns: [
-                {data: 'id', name: 'id'},
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'name', name: 'name'},
                 {data: 'created_at', name: 'created_at'},
                 {
