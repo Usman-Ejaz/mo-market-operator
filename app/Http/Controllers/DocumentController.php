@@ -161,7 +161,7 @@ class DocumentController extends Controller
         abort_if(!hasPermission("documents", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = Document::query();
+            $data = Document::with('category')->latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -174,7 +174,6 @@ class DocumentController extends Controller
                 ->addColumn('category', function ($row) {
                     return truncateWords($row->category->name, 50);
                 })
-                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

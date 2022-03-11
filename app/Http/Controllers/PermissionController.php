@@ -19,7 +19,7 @@ class PermissionController extends Controller
     {
         abort_if(!hasPermission("permissions", "view"), 401, __('messages.unauthorized_action'));
 
-        $roles = Role::all();
+        $roles = Role::orderByName()->get();
         $permissions = config('permissions');
         return view('admin.permissions.index', compact('roles', 'permissions'));
     }

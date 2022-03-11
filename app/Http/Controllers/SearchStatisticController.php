@@ -59,14 +59,10 @@ class SearchStatisticController extends Controller
         abort_if(!hasPermission("search-statistics", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = SearchStatistic::query();
+            $data = SearchStatistic::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->setTotalRecords($data->count())
-                ->orderColumn('keyword', 'keyword $1')
-                ->orderColumn('count', 'count $1')
-                ->orderColumn('DT_RowIndex', 'id $1')
                 ->addColumn('keyword', function ($row) {
                     return truncateWords($row->keyword, 70);
                 })
