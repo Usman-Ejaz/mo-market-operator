@@ -26,14 +26,19 @@ class SubscriberController extends Controller
         abort_if(!hasPermission("subscribers", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = Subscriber::query();
+            $data = Subscriber::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->addColumn('name', function ($row) {
+                    return ($row->name) ? $row->name : '';
+                })
+                ->addColumn('email', function ($row) {
+                    return ($row->email) ? $row->email : '';
+                })
                 ->addColumn('status', function ($row) {
                     return ($row->status) ? $row->status : '';
                 })
-                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

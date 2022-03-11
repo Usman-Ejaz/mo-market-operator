@@ -505,7 +505,9 @@
 
                     // check if valid url
                     var regex = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
-                    if( regex.test(anchor)){
+                    if (anchor === '#') {
+                        // do nothing, just bypass for # sign, don't check any URL validation
+                    } else if( regex.test(anchor)){
                         $('#myModal #editUrlError').hide();
                     } else {
                         $('#myModal #editUrlError').show();
@@ -554,7 +556,7 @@
                         jQuery(`.${targetId}`).html(data);
                     }
                 });
-            }, 1000));
+            }, 200));
 
             function debounce(func, timeout = 300){
                 let timer;

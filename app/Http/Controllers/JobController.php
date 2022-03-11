@@ -153,7 +153,7 @@ class JobController extends Controller
         abort_if(!hasPermission("jobs", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = Job::query();
+            $data = Job::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -172,7 +172,6 @@ class JobController extends Controller
                 ->addColumn('total_positions', function ($row) {
                     return ($row->total_positions) ? $row->total_positions : '';
                 })
-                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

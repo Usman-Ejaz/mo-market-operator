@@ -132,14 +132,13 @@ class ChatBotKnowledgeBaseController extends Controller
         abort_if(!hasPermission('knowledge-base', 'list'), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = ChatBotKnowledgeBase::query();
+            $data = ChatBotKnowledgeBase::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('question', function ($row) {
                     return truncateWords($row->question, 80);
                 })
-                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

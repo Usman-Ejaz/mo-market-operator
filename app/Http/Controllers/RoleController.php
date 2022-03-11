@@ -120,14 +120,13 @@ class RoleController extends Controller
         abort_if(!hasPermission("roles", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = Role::query();
+            $data = Role::latest()->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
                     return ( isset($row->name)) ? $row->name : '';
                 })
-                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

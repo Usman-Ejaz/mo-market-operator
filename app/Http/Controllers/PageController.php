@@ -143,7 +143,7 @@ class PageController extends Controller
         abort_if(!hasPermission("pages", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = Page::query();
+            $data = Page::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -153,7 +153,6 @@ class PageController extends Controller
                 ->addColumn('slug', function ($row) {
                     return truncateWords($row->slug, 35);
                 })
-                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

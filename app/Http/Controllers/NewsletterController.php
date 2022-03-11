@@ -116,14 +116,13 @@ class NewsletterController extends Controller
         abort_if(!hasPermission("newsletters", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = Newsletter::query();
+            $data = Newsletter::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('subject', function ($row) {
                     return truncateWords($row->subject, 80);
                 })
-                ->orderColumn('created_at', 'created_at $1')
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
