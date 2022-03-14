@@ -16,7 +16,7 @@ class FaqCategoryController extends Controller
      */
     public function index()
     {
-        abort_if(!hasPermission("faq-categories", "list"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("faq_categories", "list"), 401, __('messages.unauthorized_action'));
 
         return view("admin.faq-categories.index");
     }
@@ -28,7 +28,7 @@ class FaqCategoryController extends Controller
      */
     public function create()
     {
-        abort_if(!hasPermission("faq-categories", "create"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("faq_categories", "create"), 401, __('messages.unauthorized_action'));
 
         $faqCategory = new FaqCategory();
         return view("admin.faq-categories.create", compact("faqCategory"));
@@ -42,7 +42,7 @@ class FaqCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(!hasPermission("faq-categories", "create"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("faq_categories", "create"), 401, __('messages.unauthorized_action'));
 
         $category = new FaqCategory();
         $category = FaqCategory::create($this->validateRequest($category));
@@ -59,7 +59,7 @@ class FaqCategoryController extends Controller
      */
     public function show(FaqCategory $faqCategory)
     {
-        abort_if(!hasPermission("faq-categories", "view"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("faq_categories", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.faq-categories.show', compact('faqCategory'));
     }
@@ -72,7 +72,7 @@ class FaqCategoryController extends Controller
      */
     public function edit(FaqCategory $faqCategory)
     {
-        abort_if(!hasPermission("faq-categories", "edit"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("faq_categories", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.faq-categories.edit', compact('faqCategory'));
     }
@@ -86,7 +86,7 @@ class FaqCategoryController extends Controller
      */
     public function update(Request $request, FaqCategory $faqCategory)
     {
-        abort_if(!hasPermission("faq-categories", "edit"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("faq_categories", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($faqCategory);
         $faqCategory->update($data);
@@ -103,7 +103,7 @@ class FaqCategoryController extends Controller
      */
     public function destroy(FaqCategory $faqCategory)
     {
-        abort_if(!hasPermission("faq-categories", "delete"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("faq_categories", "delete"), 401, __('messages.unauthorized_action'));
 
         $faqCategory->delete();
         return redirect()->route('admin.faq-categories.index')->with('success', 'Category Deleted Successfully!');
@@ -111,7 +111,7 @@ class FaqCategoryController extends Controller
 
     public function list(Request $request)
     {
-        abort_if(!hasPermission("faq-categories", "list"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("faq_categories", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = FaqCategory::latest()->get();
@@ -126,12 +126,12 @@ class FaqCategoryController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';
-                    if (hasPermission('faq-categories', 'edit')) {
+                    if (hasPermission('faq_categories', 'edit')) {
                         $options .= '<a href="' . route('admin.faq-categories.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if (hasPermission('faq-categories', 'delete')) {
+                    if (hasPermission('faq_categories', 'delete')) {
                         $options .= ' <form action="'. route('admin.faq-categories.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

@@ -18,6 +18,7 @@ class UserFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
+            'designation' => $this->faker->name(),
             'role_id' => Role::factory()->create()->id,
             'department' => 1,
             'active' => $this->faker->numberBetween(0,1),

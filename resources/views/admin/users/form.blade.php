@@ -37,13 +37,35 @@
 		<input type="hidden" class="form-control" id="department" placeholder="Enter Department" name="department" value="1">
 
 		<!-- <div class="col-md-6">
-      <div class="form-group">
-          <label for="department">Department <span class="text-danger">*</span> </label>
-          <input type="input" class="form-control" id="department" placeholder="Enter Department" name="department" value="{{ old('department') ?? $user->department }}">
-          <span class="form-text text-danger">{{ $errors->first('department') }} </span>
-      </div>
-    </div> -->
+		<div class="form-group">
+			<label for="department">Department <span class="text-danger">*</span> </label>
+			<input type="input" class="form-control" id="department" placeholder="Enter Department" name="department" value="{{ old('department') ?? $user->department }}">
+			<span class="form-text text-danger">{{ $errors->first('department') }} </span>
+		</div>
+		</div> -->
 
+		<div class="col-md-6">
+			<div class="form-group">
+				<label for="designation">Designation <span class="text-danger">*</span></label>
+				<input type="input" class="form-control" id="designation" placeholder="Enter Designation" name="designation" value="{{ old('designation') ?? $user->designation }}">
+				<span class="form-text text-danger">{{ $errors->first('designation') }} </span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<!-- <div class="col-md-6">
+            <div class="form-group">
+                <label>Status <span class="text-danger">*</span></label>
+                <select class="custom-select" name="active" id="active">
+                    <option value="">Please select a status</option>
+                    @foreach($user->activeOptions() as $statusId => $statusValue)
+                        <option value="{{$statusId}}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
+                    @endforeach
+                </select>
+                <span class="form-text text-danger">{{ $errors->first('active') }} </span>
+            </div>
+        </div> -->
 		<div class="col-md-6">
 			<div class="form-group">
 				<label>Status <span class="text-danger">*</span></label>
@@ -63,21 +85,6 @@
 				<span class="form-text text-danger">{{ $errors->first('active') }} </span>
 			</div>
 		</div>
-	</div>
-
-	<div class="row">
-		<!-- <div class="col-md-6">
-            <div class="form-group">
-                <label>Status <span class="text-danger">*</span></label>
-                <select class="custom-select" name="active" id="active">
-                    <option value="">Please select a status</option>
-                    @foreach($user->activeOptions() as $statusId => $statusValue)
-                        <option value="{{$statusId}}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
-                    @endforeach
-                </select>
-                <span class="form-text text-danger">{{ $errors->first('active') }} </span>
-            </div>
-        </div> -->
 
 		<div class="col-md-6">
 			<div class="form-group">

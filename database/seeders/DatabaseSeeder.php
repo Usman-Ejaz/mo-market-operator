@@ -19,6 +19,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\SearchStatistic;
 use App\Models\Settings;
+use App\Models\StaticBlock;
 use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -130,6 +131,8 @@ class DatabaseSeeder extends Seeder
 
         // Create Knowledge Base
         ChatBotKnowledgeBase::factory(20)->create();
+
+        StaticBlock::factory(2)->create();
     }
 
 
@@ -140,6 +143,9 @@ class DatabaseSeeder extends Seeder
      */
     private function makeDirectories()
     {
+
+        $basePath = config('filesystems.disks.app.root');
+
         // For User Profile
         if (!is_dir(storage_path('app/' . config('filepaths.userProfileImagePath.internal_path')))) {
             mkdir(storage_path('app/' . config('filepaths.userProfileImagePath.internal_path')), 0777, true);
@@ -156,8 +162,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // For Job Images
-        if (!is_dir(storage_path('app/' . config('filepaths.jobImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.jobImagePath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Job::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Job::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Documents Images

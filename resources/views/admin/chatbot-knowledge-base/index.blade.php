@@ -6,7 +6,7 @@
 @endsection
 
 @section('addButton')
-@if( hasPermission('knowledge-base', 'create') )
+@if( hasPermission('knowledge_base', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.knowledge-base.create') }}">Add Question</a>
 @endif
 @endsection

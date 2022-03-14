@@ -9,7 +9,7 @@
 @if( hasPermission('documents', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.documents.create') }}">Add New Document</a>
 @endif
-@if (hasPermission('document-categories', 'list'))
+@if (hasPermission('document_categories', 'list'))
   <a class="btn btn-primary float-right mr-2" href="{{ route('admin.document-categories.index') }}">Document Categories</a>
 @endif
 @endsection

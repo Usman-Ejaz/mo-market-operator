@@ -1,10 +1,35 @@
 @extends('admin.layouts.app')
-@section('header', 'Pages')
+@section('header', 'CMS Pages')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-<li class="breadcrumb-item"><a href="{{ route('admin.pages.index') }}">Pages</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.pages.index') }}">CMS Pages</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
+
+@push('optional-styles')
+<link rel="stylesheet" href="{{ asset('admin-resources/css/bootstrap-tagsinput.css') }}" />
+<style type="text/css">
+        .bootstrap-tagsinput{
+            width: 100%;
+        }
+        .label-info{
+            background-color: #17a2b8;
+        }
+        .label {
+            display: inline-block;
+            padding: .25em .4em;
+            font-size: 85%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,
+            border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+    </style>
+@endpush
 
 @section('content')
 <div class="container-fluid">
@@ -91,6 +116,7 @@
 <script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
 
 <script>
 	//Date and time picker

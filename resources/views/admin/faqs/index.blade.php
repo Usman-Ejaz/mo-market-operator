@@ -9,7 +9,7 @@
 @if( hasPermission('faqs', 'create') )
   <a class="btn btn-primary float-right" href="{{ route('admin.faqs.create') }}">Add New FAQ</a>
 @endif
-@if (hasPermission('faq-categories', 'list'))
+@if (hasPermission('faq_categories', 'list'))
   <a class="btn btn-primary float-right mr-2" href="{{ route('admin.faq-categories.index') }}">FAQ Categories</a>
 @endif
 @endsection

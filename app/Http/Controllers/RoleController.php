@@ -46,10 +46,10 @@ class RoleController extends Controller
         abort_if(!hasPermission("roles", "create"), 401, __('messages.unauthorized_action'));
 
         $role = new Role();
-        $role = Role::create( $this->validateRequest($role) );
+        $role = Role::create($this->validateRequest($role));
 
         $request->session()->flash('success', 'Role Added Successfully!');
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('admin.permissions.index');
     }
 
     /**

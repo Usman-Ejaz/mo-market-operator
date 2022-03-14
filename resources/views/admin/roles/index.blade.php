@@ -5,9 +5,13 @@
   <li class="breadcrumb-item active">Roles</li>
 @endsection
 
-@section('addButton')
+@section('addButton')   
     @if( hasPermission('roles', 'create') )
-        <a class="btn btn-primary float-right" href="{{ route('admin.roles.create') }}">Add Role</a>
+      <a class="btn btn-primary float-right" href="{{ route('admin.roles.create') }}">Add Role</a>
+    @endif
+
+    @if( hasPermission('permissions', 'view') )
+      <a class="btn btn-primary float-right mr-2" href="{{ route('admin.permissions.index') }}">Permissions</a>
     @endif
 @endsection
 

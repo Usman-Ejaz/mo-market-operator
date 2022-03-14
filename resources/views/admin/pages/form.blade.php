@@ -11,7 +11,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="slug">Slug <span class="text-danger">*</span></label>
-        <input type="input" class="form-control" id="slug" placeholder="Enter Page Slug"  name="slug" value="{{ old('slug') ?? $page->slug }}">
+        <input type="input" class="form-control" id="slug" placeholder="Page Slug"  name="slug" value="{{ old('slug') ?? $page->slug }}" readonly>
         <span class="form-text text-danger">{{ $errors->first('slug') }} </span>
       </div>
     </div>
@@ -27,7 +27,7 @@
     <div class="col-md-12">
       <div class="form-group">
         <label for="keywords">Keywords</label>
-        <input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $page->keywords }}">
+        <input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $page->keywords }}" data-role="tagsinput">
         <span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
       </div>
     </div>

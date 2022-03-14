@@ -80,7 +80,7 @@ return [
         ]
     ],
     [
-        "name" => "faq-categories",
+        "name" => "faq_categories",
         "display_name" => "Faq Categories",
         "capabilities" => [
             "list" => "List",
@@ -103,7 +103,7 @@ return [
         ]
     ],
     [
-        "name" => "document-categories",
+        "name" => "document_categories",
         "display_name" => "Document Categories",
         "capabilities" => [
             "list" => "List",
@@ -165,7 +165,7 @@ return [
         ]
     ],    
     [
-        "name" => "contact-page-queries",
+        "name" => "contact_page_queries",
         "display_name" => "Contact Page Queries",
         "capabilities" => [
             "list" => "List",
@@ -174,7 +174,7 @@ return [
         ]
     ],
     [
-        "name" => "search-statistics",
+        "name" => "search_statistics",
         "display_name" => "Search Statistics",
         "capabilities" => [
             "list" => "List",
@@ -184,7 +184,7 @@ return [
         ]
     ],
     [
-        "name" => "knowledge-base",
+        "name" => "knowledge_base",
         "display_name" => "Chatbot Knowledge Base",
         "capabilities" => [
             "list" => "List",
@@ -204,4 +204,15 @@ return [
             "view" => "View"
         ]
     ],
+    // [
+    //     "name" => "static_block",
+    //     "display_name" => "Static Block",
+    //     "capabilities" => [
+    //         "list" => "List",
+    //         "create" => "Create",
+    //         "edit" => "Edit",
+    //         "delete" => "Delete",
+    //         "view" => "View"
+    //     ]
+    // ],
 ];

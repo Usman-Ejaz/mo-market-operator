@@ -195,6 +195,7 @@ class UserController extends Controller
         return request()->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email,'.$user->id,
+            'designation' => 'required|min:3',
             'role_id' => 'required|min:1',
             'department' => 'nullable',
             'image' => 'sometimes|file|image|max:2000',
