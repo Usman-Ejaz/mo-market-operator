@@ -16,7 +16,7 @@
 						<th>Name</th>
 						<th>Email</th>
 						<th>Subject</th>
-						<th>Message</th>
+						<!-- <th>Message</th> -->
 						<th>Created date</th>
 						<th>Action</th>
 					</tr>
@@ -34,7 +34,6 @@
 @endsection
 
 @push('optional-styles')
-<link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 @endpush
 
@@ -64,7 +63,7 @@
 				{ data: 'name', name: 'name' },
 				{ data: 'email', name: 'email' },
 				{ data: 'subject', name: 'subject' },
-				{ data: 'message', name: 'message' },
+				// { data: 'message', name: 'message' },
 				{ data: 'created_at', name: 'created_at' },
 				{
 					data: 'action',

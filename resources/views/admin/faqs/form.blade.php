@@ -19,7 +19,7 @@
                         <option value="{{ $category->id }}" {{ ($category->id === $faq->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach
                 </select>
-        <span class="form-text text-danger">{{ $errors->first('question') }} </span>
+        <span class="form-text text-danger">{{ $errors->first('category_id') }} </span>
       </div>
     </div>
   </div>

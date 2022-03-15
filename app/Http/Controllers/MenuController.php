@@ -204,9 +204,9 @@ class MenuController extends Controller
     public function list(Request $request)
     {
         abort_if(!hasPermission("menus", "list"), 401, __('messages.unauthorized_action'));
-
+        
         if ($request->ajax()) {
-            $data = Menu::latest()->get();
+            $data = Menu::byTheme($request->query('theme'))->latest()->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()

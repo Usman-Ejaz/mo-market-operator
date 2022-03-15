@@ -160,7 +160,7 @@ class FaqController extends Controller
         }
     }
 
-    private function validateRequest($faq){        
+    private function validateRequest($faq){
         return request()->validate([
             'question' => 'required|min:5',
             'category_id' => 'required',
@@ -168,7 +168,7 @@ class FaqController extends Controller
             'active' => 'nullable',
             'created_by' => '',
             'modified_by' => ''
-        ]);
+        ],[], ['category_id' => 'category']);
     }
 }
 
