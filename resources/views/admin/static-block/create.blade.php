@@ -71,6 +71,12 @@
 					minlength: 3
 				}
 			},
+			errorPlacement: function(error, element) {
+				if (element.attr("id") == "contents") {
+					element = $("#cke_" + element.attr("id"));
+				}
+				error.insertAfter(element);
+			},
 			messages: {
 				name: {
 					minlength: "{{ __('messages.min_characters', ['field' => 'Contents', 'limit' => 3]) }}",

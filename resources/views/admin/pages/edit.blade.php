@@ -327,13 +327,7 @@
 		var left = (screen.width - 570) / 2;
 		var top = (screen.height - 570) / 2;
 		var params = "menubar=no,toolbar=no,status=no,width=570,height=570,top=" + top + ",left=" + left;
-		const w = window.open(url, "NewWindow", params);
-
-		w.addEventListener('unload', function (e) {
-			if (url.includes('facebook')) {
-				alert('Page posted successfully!');
-			}
-		})
+		window.open(url, "NewWindow", params);
 	}
 
 	function mapDate(date) {
