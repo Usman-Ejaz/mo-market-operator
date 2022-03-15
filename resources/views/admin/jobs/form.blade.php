@@ -37,7 +37,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="location">Location <span class="text-danger">*</span></label>
-        <input type="input" class="form-control" id="location" placeholder="Enter Job Location"  name="location" value="{{ old('location') ?? $job->location }}">
+        <input type="input" class="form-control" id="location" placeholder="Enter Job Location"  name="location" value="{{ old('location') ?? $job->location }}" data-role="tagsinput">
         <span class="form-text text-danger">{{ $errors->first('location') }} </span>
       </div>
     </div>

@@ -9,12 +9,12 @@
 @section('content')
 <div class="container-fluid">
 
-  <form method="POST" action="{{ route('admin.static-block.update', $static_block->id) }}" enctype="multipart/form-data" id="update-static-block-form">
+  <form method="POST" action="{{ route('admin.static-block.update', $staticBlock->id) }}" enctype="multipart/form-data" id="update-static-block-form">
     <div class="row">
       <div class="col-md-12">
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">Edit Static Block - {{ truncateWords($static_block->contents, 30) }}</h3>
+            <h3 class="card-title">Edit Static Block - {{ truncateWords($staticBlock->contents, 30) }}</h3>
           </div>
           <!-- /.card-header -->
           <!-- form start -->

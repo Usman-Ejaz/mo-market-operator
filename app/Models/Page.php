@@ -16,6 +16,8 @@ class Page extends Model
     protected $attributes = [ /*'active' => 1*/];
 
     protected $appends = ['link'];
+
+    public const STORAGE_DIRECTORY = 'pages/';
     
     public function getActiveAttribute ($attribute) {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';

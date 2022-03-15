@@ -4,7 +4,7 @@
             <div class="form-group">
                 <label for="contents">Contents <span class="text-danger">*</span></label>
                 <textarea class="form-control" id="contents" rows="40" cols="50" placeholder="Enter Block Contents" name="contents">
-                    {{ old('contents') ?? $static_block->contents }}
+                    {{ old('contents') ?? $staticBlock->contents }}
                 </textarea>
                 <span class="form-text text-danger">{{ $errors->first('contents') }} </span>
             </div>

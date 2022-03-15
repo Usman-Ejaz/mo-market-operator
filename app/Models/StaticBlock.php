@@ -10,6 +10,8 @@ class StaticBlock extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
         
     /**
      * getCreatedAtAttribute

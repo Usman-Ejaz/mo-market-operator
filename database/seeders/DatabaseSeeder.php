@@ -95,18 +95,10 @@ class DatabaseSeeder extends Seeder
         Faq::factory(20)->create();
 
          //Create Job
-        $sampleJob = Job::factory(20)->create();
+        Job::factory(20)->create();
 
         //Create Job Applications
-        Application::factory(5)->create([
-            'job_id' => $sampleJob[0]->id,
-        ]);
-
-        Application::factory(5)->create([
-            'job_id' => $sampleJob[1]->id,
-        ]);
-
-        Application::factory(10)->create();
+        Application::factory(15)->create();
 
         // Set current theme
         Settings::factory(1)->create([
@@ -147,18 +139,18 @@ class DatabaseSeeder extends Seeder
         $basePath = config('filesystems.disks.app.root');
 
         // For User Profile
-        if (!is_dir(storage_path('app/' . config('filepaths.userProfileImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.userProfileImagePath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . User::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . User::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Page Images
-        if (!is_dir(storage_path('app/' . config('filepaths.pageImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.pageImagePath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Page::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Page::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Posts Images
-        if (!is_dir(storage_path('app/' . config('filepaths.postImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.postImagePath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Post::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Post::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Job Images
@@ -167,8 +159,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // For Documents Images
-        if (!is_dir(storage_path('app/' . config('filepaths.documentsFilePath.public_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.documentsFilePath.public_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Document::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Document::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For CK-Editor Images
@@ -177,8 +169,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // For Applications
-        if (!is_dir(storage_path('app/' . config('filepaths.applicationsPath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.applicationsPath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Application::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Application::STORAGE_DIRECTORY, 0777, true);
         }
     }
 }

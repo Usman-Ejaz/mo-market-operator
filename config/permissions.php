@@ -59,14 +59,6 @@ return [
             "delete_job_application" => "Delete Job Application",
         ]
     ],
-    // [
-    //     "name" => "applications",
-    //     "display_name" => "Applications of job",
-    //     "capabilities" => [
-    //         "view" => "View",
-    //         "delete" => "Delete",
-    //     ]
-    // ],
     [
         "name" => "pages",
         "display_name" => "Pages",
@@ -204,15 +196,15 @@ return [
             "view" => "View"
         ]
     ],
-    // [
-    //     "name" => "static_block",
-    //     "display_name" => "Static Block",
-    //     "capabilities" => [
-    //         "list" => "List",
-    //         "create" => "Create",
-    //         "edit" => "Edit",
-    //         "delete" => "Delete",
-    //         "view" => "View"
-    //     ]
-    // ],
+    [
+        "name" => "static_block",
+        "display_name" => "Static Block",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            "view" => "View"
+        ]
+    ],
 ];

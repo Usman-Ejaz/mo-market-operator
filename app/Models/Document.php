@@ -16,6 +16,8 @@ class Document extends Model
 
     protected $attributes = [];
 
+    public const STORAGE_DIRECTORY = 'documents/';
+
     // Model Relation goes here
 
     public function category() {

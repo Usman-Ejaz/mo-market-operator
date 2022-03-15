@@ -57,6 +57,8 @@ class User extends Authenticatable
          'active' => 1
     ];
 
+    public const STORAGE_DIRECTORY = 'users/';
+
     /********* Getters ***********/
     public function getActiveAttribute($attribute){
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';

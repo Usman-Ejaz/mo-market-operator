@@ -27,7 +27,7 @@
     <div class="col-md-12">
       <div class="form-group">
         <label for="keywords">Keywords</label>
-        <input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $post->keywords }}">
+        <input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $post->keywords }}" data-role="tagsinput">
         <span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
       </div>
     </div>

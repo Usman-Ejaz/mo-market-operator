@@ -50,7 +50,7 @@ class StaticBlockController extends Controller
         $staticBlock = StaticBlock::create($this->validateRequest($staticBlock));
 
         $request->session()->flash('success', 'Static Block Added Successfully!');
-        return redirect()->route('admin.permissions.index');
+        return redirect()->route('admin.static-block.index');
     }
 
     /**
