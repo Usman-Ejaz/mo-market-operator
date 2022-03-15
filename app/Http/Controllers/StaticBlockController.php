@@ -119,8 +119,8 @@ class StaticBlockController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('contents', function ($row) {
-                    return ( isset($row->contents)) ? $row->contents : '';
+                ->addColumn('name', function ($row) {
+                    return ( isset($row->name)) ? $row->name : '';
                 })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
@@ -152,6 +152,9 @@ class StaticBlockController extends Controller
     }
 
     private function validateRequest($staticBlock){
-        return request()->validate(['contents' => 'required']);
+        return request()->validate([
+            'name' => 'required|string|min:3',
+            'contents' => 'required'
+        ]);
     }
 }

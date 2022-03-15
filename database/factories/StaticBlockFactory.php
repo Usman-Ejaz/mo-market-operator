@@ -14,6 +14,7 @@ class StaticBlockFactory extends Factory
     public function definition()
     {
         return [
+            'name' => $this->faker->userName,
             'contents' => $this->faker->sentence(10)
         ];
     }

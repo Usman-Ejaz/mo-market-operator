@@ -20,7 +20,7 @@
 				<thead>
 					<tr>
 						<th>Id</th>
-						<th>Contents</th>
+						<th>Name</th>
 						<th>Created at</th>
 						<th>Action</th>
 					</tr>
@@ -66,8 +66,8 @@
 					name: 'id'
 				},
 				{
-					data: 'contents',
-					name: 'contents'
+					data: 'name',
+					name: 'name'
 				},
 				{
 					data: 'created_at',

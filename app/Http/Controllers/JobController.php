@@ -50,8 +50,8 @@ class JobController extends Controller
         $job = $this->validateRequest($job);
         $job['slug'] = Str::slug($job['title']);
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
-        $job['start_datetime'] = $request->start_date ?? null;
-        $job['end_datetime'] = $request->end_date ?? null;
+        $job['start_datetime'] = $this->parseDate($request->start_datetime);
+        $job['end_datetime'] = $this->parseDate($request->end_datetime);
         
         $job = Job::create($job);
         $this->storeImage($job);
@@ -106,8 +106,8 @@ class JobController extends Controller
         $data = $this->validateRequest($job);
         $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $data['slug'] = Str::slug($data['title']);
-        $data['start_datetime'] = $request->start_date ?? null;
-        $data['end_datetime'] = $request->end_date ?? null;
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
         $job->update($data);
         $this->storeImage($job, $previousImage);
 
@@ -344,5 +344,12 @@ class JobController extends Controller
                 }
             }
         }
+    }
+
+    private function parseDate($date) {
+        if ($date) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $date))));
+        }
+        return null;
     }
 }
