@@ -100,7 +100,7 @@
 		});
 		$('#DataTables_Table_0_filter').parent().css({display: 'flex', flexDirection: 'row-reverse'});
 		$('#DataTables_Table_0_filter').parent().append(`
-			<select name="" id="" class="form-control col-md-4 mr-4" onchange="setCurrentTheme(event)">
+			<select name="" id="" class="form-control form-control-sm col-md-4 mr-4" onchange="setCurrentTheme(event)">
 				<option value="" ${theme === "" ? "selected" : ""}>Select any theme</option>
 				${html}
 			</select>

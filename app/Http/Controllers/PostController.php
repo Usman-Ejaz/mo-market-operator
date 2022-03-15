@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -45,8 +46,8 @@ class PostController extends Controller
 
         $post = new Post;
         $data = $this->validateRequest($post);
-        $data['start_datetime'] = $request->start_date ?? null;
-        $data['end_datetime'] = $request->end_date ?? null;
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
         $post = Post::create($data);
 
         $this->storeImage($post);
@@ -99,8 +100,8 @@ class PostController extends Controller
 
         $previousImage = $post->image;
         $data = $this->validateRequest($post);
-        $data['start_datetime'] = $request->start_date ?? null;
-        $data['end_datetime'] = $request->end_date ?? null;
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
 
         $post->update($data);
         
@@ -219,5 +220,12 @@ class PostController extends Controller
                 }
             }
         }
+    }
+
+    private function parseDate($date) {
+        if ($date) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $date))));
+        }
+        return null;
     }
 }

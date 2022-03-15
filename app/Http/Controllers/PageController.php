@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -47,8 +48,8 @@ class PageController extends Controller
 
         $page = new Page();
         $data = $this->validateRequest($page);
-        $data['start_datetime'] = $request->start_date ?? null;
-        $data['end_datetime'] = $request->end_date ?? null;
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
         $page = Page::create($data);
 
         $this->storeImage($page);
@@ -101,8 +102,8 @@ class PageController extends Controller
 
         $previousImage = $page->image;
         $data = $this->validateRequest($page);
-        $data['start_datetime'] = $request->start_date ?? null;
-        $data['end_datetime'] = $request->end_date ?? null;
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
         $page->update($data);
 
         if ($request->action === "Unpublished") {
@@ -233,5 +234,12 @@ class PageController extends Controller
                 }
             }
         }
+    }
+
+    private function parseDate($date) {
+        if ($date) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $date))));
+        }
+        return null;
     }
 }
