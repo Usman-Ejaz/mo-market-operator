@@ -6,7 +6,7 @@
 <li class="breadcrumb-item active">View</li>
 @endsection
 @section('addButton')
-@if(hasPermission('contact-page-queries', 'delete'))
+@if(hasPermission('contact_page_queries', 'delete'))
 <form method="POST" action="{{ route('admin.contact-page-queries.destroy', $contactPageQuery->id) }}" class="float-right">
 	@method('DELETE')
 	@csrf

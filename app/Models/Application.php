@@ -15,6 +15,8 @@ class Application extends Model
 
     protected $attributes = [];
 
+    public const STORAGE_DIRECTORY = 'applications/';
+
     /********* Getters ***********/
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';

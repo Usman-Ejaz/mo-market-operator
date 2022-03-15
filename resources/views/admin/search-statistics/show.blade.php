@@ -7,7 +7,7 @@
 @endsection
 
 @section('addButton')
-@if(hasPermission('search-statistics', 'delete'))
+@if(hasPermission('search_statistics', 'delete'))
   <form method="POST" action="{{ route('admin.search-statistics.destroy', $searchStatistic->id) }}" class="float-right">
     @method('DELETE')
     @csrf

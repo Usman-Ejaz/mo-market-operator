@@ -6,7 +6,7 @@
 @endsection
 
 @section('addButton')
-  @if(hasPermission('search-statistics', 'export_keywords'))
+  @if(hasPermission('search_statistics', 'export_keywords'))
   <a role="button" class="btn btn-primary float-right" href="{{ route('admin.search-statistics.export-list') }}">Export Keywords</a>
   @endif
 @endsection

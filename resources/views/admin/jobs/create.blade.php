@@ -6,6 +6,31 @@
 <li class="breadcrumb-item active">Create</li>
 @endsection
 
+@push('optional-styles')
+<link rel="stylesheet" href="{{ asset('admin-resources/css/bootstrap-tagsinput.css') }}" />
+<style type="text/css">
+        .bootstrap-tagsinput{
+            width: 100%;
+        }
+        .label-info{
+            background-color: #17a2b8;
+        }
+        .label {
+            display: inline-block;
+            padding: .25em .4em;
+            font-size: 85%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,
+            border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        }
+    </style>
+@endpush
+
 @section('content')
 <div class="container-fluid">
 	<form method="POST" action="{{ route('admin.jobs.store') }}" enctype="multipart/form-data" id="create-job-form">
@@ -61,6 +86,7 @@
 <script src="{{ asset('admin-resources/js/moment.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
 
 <script>
 	//Date and time picker

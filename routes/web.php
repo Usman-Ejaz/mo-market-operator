@@ -20,6 +20,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchStatisticController;
+use App\Http\Controllers\StaticBlockController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
 
@@ -124,6 +125,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('newsletters', NewsletterController::class);
     
     // Routes for Subscribers
+    Route::post('subscribers/bulk-action', [SubscriberController::class, 'bulkToggle'])->name('subscribers.bulkToggle');
     Route::get('subscribers/list', [SubscriberController::class, 'list'])->name('subscribers.list');
     Route::post('subscribers/toggle-subscription/{subscriber}', [SubscriberController::class, 'toggleSubscription'])->name('subscribers.toggleSubscription');
     Route::resource("subscribers", SubscriberController::class);
@@ -142,6 +144,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     Route::get('clients/list', [ClientController::class, 'list'])->name('clients.list');
     Route::resource('clients', ClientController::class);
+
+    Route::get('static-block/list', [StaticBlockController::class, 'list'])->name('static-block.list');
+    Route::resource('static-block', StaticBlockController::class);
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");

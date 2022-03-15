@@ -20,6 +20,8 @@ class Job extends Model
         // 'active' => 1
     ];
 
+    const STORAGE_DIRECTORY = 'jobs/';
+
     protected $appends = ['link'];
 
     /********* Getters ***********/
@@ -40,7 +42,7 @@ class Job extends Model
     }    
 
     public function getImageAttribute ($value) {
-        return $value ? asset(config("filepaths.jobImagePath.public_path") . $value) : null;
+        return serveFile(self::STORAGE_DIRECTORY, $value);
     }
 
     public function getLinkAttribute($value) {

@@ -22,7 +22,7 @@
                                 <input type="hidden" name="active" id="status">
                                 <input type="hidden" name="action" id="action">
                                 <button type="submit" class="btn width-120 btn-primary draft_button">Save</button>
-                                @if( hasPermission('knowledge-base', 'publish') )
+                                @if( hasPermission('knowledge_base', 'publish') )
                                   <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                 @endif
                             </div>

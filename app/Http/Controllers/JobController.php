@@ -73,7 +73,7 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        abort_if(!hasPermission("jobs", "view"), 401, __('messages.unauthorized_action'));
+        // abort_if(!hasPermission("jobs", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.jobs.show', compact('job'));
     }
@@ -133,10 +133,7 @@ class JobController extends Controller
     {
         abort_if(!hasPermission("jobs", "delete"), 401, __('messages.unauthorized_action'));
 
-        if ($job->image !== null) {
-            $file_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($job->image);
-            unlink($file_path);
-        }
+        $job->image !== null && removeFile(Job::STORAGE_DIRECTORY, $job->image);
 
         $job->delete();
         return redirect()->route('admin.jobs.index')->with('success', 'Job Deleted Successfully!');
@@ -206,12 +203,12 @@ class JobController extends Controller
 
     public function getJobApplications (Job $job) {
 
-        abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
+        // abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
         return view('admin.applications.index',compact('job'));
     }
 
-    public function getApplicationsList(Request $request,Job $job) {
+    public function getApplicationsList(Request $request, Job $job) {
 
         abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
@@ -331,34 +328,18 @@ class JobController extends Controller
     }
 
 
-    private function storeImage($job, $previousImage = null){
-
-        if(request()->has('image')){
-
-            // remove previous file
-            if ($previousImage !== null) {
-                $file_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($previousImage);
-                unlink($file_path);
-            }
-
-            $uploadFile = request()->file('image');
-            $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.jobImagePath.internal_path'), $file_name);
-
-            $job->update([
-                'image' => $file_name,
-            ]);
+    private function storeImage($job, $oldFile = null) {
+        if (request()->hasFile('image')) {
+            $job->update(['image' => storeFile(Job::STORAGE_DIRECTORY, request()->file('image'), $oldFile)]);
         }
     }
 
-    public function deleteImage(Request $request){
+    public function deleteImage(Request $request) {
         if ($request->ajax()) {
-            if( isset($request->job_id) ){
+            if (isset($request->job_id)) {
                 $job = Job::find($request->job_id);
-                $image_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($job->image);
-                if( unlink($image_path) ){
-                    $job->image = null;
-                    $job->update();
+                if ($job && removeFile(Job::STORAGE_DIRECTORY, $job->image)) {
+                    $job->update(['image' => null]);
                     return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }

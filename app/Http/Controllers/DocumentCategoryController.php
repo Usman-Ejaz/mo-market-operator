@@ -16,7 +16,7 @@ class DocumentCategoryController extends Controller
      */
     public function index()
     {
-        abort_if(!hasPermission("document-categories", "list"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("document_categories", "list"), 401, __('messages.unauthorized_action'));
 
         return view("admin.document-categories.index");
     }
@@ -28,7 +28,7 @@ class DocumentCategoryController extends Controller
      */
     public function create()
     {
-        abort_if(!hasPermission("document-categories", "create"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("document_categories", "create"), 401, __('messages.unauthorized_action'));
 
         $documentCategory = new DocumentCategory();
         return view("admin.document-categories.create", compact("documentCategory"));
@@ -42,7 +42,7 @@ class DocumentCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(!hasPermission("document-categories", "create"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("document_categories", "create"), 401, __('messages.unauthorized_action'));
 
         $category = new DocumentCategory();
         $category = DocumentCategory::create( $this->validateRequest($category) );
@@ -59,7 +59,7 @@ class DocumentCategoryController extends Controller
      */
     public function show(DocumentCategory $documentCategory)
     {
-        abort_if(!hasPermission("document-categories", "view"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("document_categories", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.document-categories.show', compact('documentCategory'));
     }
@@ -72,7 +72,7 @@ class DocumentCategoryController extends Controller
      */
     public function edit(DocumentCategory $documentCategory)
     {
-        abort_if(!hasPermission("document-categories", "edit"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("document_categories", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.document-categories.edit', compact('documentCategory'));
     }
@@ -86,7 +86,7 @@ class DocumentCategoryController extends Controller
      */
     public function update(Request $request, DocumentCategory $documentCategory)
     {
-        abort_if(!hasPermission("document-categories", "edit"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("document_categories", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($documentCategory);
         $documentCategory->update($data);
@@ -103,7 +103,7 @@ class DocumentCategoryController extends Controller
      */
     public function destroy(DocumentCategory $documentCategory)
     {
-        abort_if(!hasPermission("document-categories", "delete"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("document_categories", "delete"), 401, __('messages.unauthorized_action'));
 
         $documentCategory->delete();
         return redirect()->route('admin.document-categories.index')->with('success', 'Category Deleted Successfully!');
@@ -111,7 +111,7 @@ class DocumentCategoryController extends Controller
 
     public function list(Request $request)
     {
-        abort_if(!hasPermission("document-categories", "list"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("document_categories", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = DocumentCategory::latest()->get();
@@ -126,12 +126,12 @@ class DocumentCategoryController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';
-                    if (hasPermission('document-categories', 'edit')) {
+                    if (hasPermission('document_categories', 'edit')) {
                         $options .= '<a href="' . route('admin.document-categories.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if (hasPermission('document-categories', 'delete')) {
+                    if (hasPermission('document_categories', 'delete')) {
                         $options .= ' <form action="'. route('admin.document-categories.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'

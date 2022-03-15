@@ -25,12 +25,12 @@
                                 
                                 @if($knowledge_base->published_at !== null)
                                   <button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-                                  @if(hasPermission('knowledge-base', 'publish'))
+                                  @if(hasPermission('knowledge_base', 'publish'))
                                   <button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
                                   @endif
                                 @else
                                   <button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-                                  @if(hasPermission('knowledge-base', 'publish'))
+                                  @if(hasPermission('knowledge_base', 'publish'))
                                     <button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
                                   @endif
                                 @endif
