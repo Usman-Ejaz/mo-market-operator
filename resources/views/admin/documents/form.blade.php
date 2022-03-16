@@ -36,7 +36,7 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group">
-				<label for="file" class="form-label">Document File <span class="text-danger">*</span></label>
+				<label for="file" class="form-label">Document File <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, txt, ppt, pptx, csv, xls, xlsx, pdf, odt)</small> </label>
 				<input class="form-control" type="file" id="file" name="file">
 				<span class="form-text text-danger">{{ $errors->first('file') }} </span>
 				@if(isset($document->file) && !empty($document->file))
@@ -59,7 +59,7 @@
 			<div class="form-group">
 				<div class="form-check">
 					<input type="checkbox" class="form-check-input" id="convert" name="convert" value="1" onchange="validateFileExtension(event)">
-					<label class="form-check-label" for="convert"> Convert File To PDF</label>
+					<label class="form-check-label" for="convert"> Convert File To PDF <small>(Allowed conversion types are doc, docx, txt, ppt, pptx, odt)</small></label>
 				</div>
 			</div>
 		</div>

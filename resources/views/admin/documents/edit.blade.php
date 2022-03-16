@@ -94,7 +94,7 @@
 		});
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
-			return isNaN(Number(value)) || value.indexOf('e') !== -1;
+			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
 		$('#update-document-form').validate({
