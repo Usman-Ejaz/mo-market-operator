@@ -54,7 +54,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
-          <label for="image">Job Image</label>
+          <label for="image">Job Image <small>(Max allowed size is 2MB. Allowed types are jpg, jpeg, png, ico, bmp)</small> </label>
             <input type="file" class="form-control" id="image"  name="image">
             <span class="form-text text-danger">{{ $errors->first('image') }} </span>
             @if( isset($job->image) )
