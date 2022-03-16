@@ -268,7 +268,6 @@
 		$('.bootstrap-tagsinput > input').on('blur', function (e) {
 			if (document.getElementsByClassName('label-info').length > 0) {
 				$(this).attr('placeholder', '');
-				$(this).focus();
 			}
 		});
 
