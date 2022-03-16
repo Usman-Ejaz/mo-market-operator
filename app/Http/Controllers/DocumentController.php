@@ -211,7 +211,7 @@ class DocumentController extends Controller
             'modified_by' => ''
         ];
 
-        if ($document->file != "" &&  $document->file != null) {
+        if ($document->file != "" && $document->file != null) {
             unset($rule['file']);
         }
 

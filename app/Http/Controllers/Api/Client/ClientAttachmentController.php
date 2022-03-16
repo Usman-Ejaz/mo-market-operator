@@ -8,38 +8,63 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ClientAttachmentController extends BaseApiController
-{
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+{    
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 
+     * @OA\Post(
+     *      path="/upload-attachments",
+     *      operationId="store",
+     *      tags={"Clients"},
+     *      summary="Upload Client's Document",
+     *      description="Upload document in the resource",
+     *      security={{"BearerToken": {}}},
+     * 
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                      property="category",
+     *                      title="category",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="phrase",
+     *                      title="phrase",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="attachment",
+     *                      title="attachment",
+     *                      type="file"
+     *                  ),
+     *                  required={"category", "phrase", "attachment"}
+     *             )
+     *         )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
      */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'attachment' => 'required|file|max:5000',
             'category' => 'required|string',
+            'phrase' => 'required|string'
         ], [
             'attachment.max' => __('messages.max_file', ['limit' => '5 MB'])
         ]);
@@ -52,7 +77,8 @@ class ClientAttachmentController extends BaseApiController
             $filename = storeFile(ClientAttachment::DIR, $request->file('attachment'), null);
             ClientAttachment::create([
                 'file' => $filename,
-                'category_id' => $request->category,
+                'category_id' => $request->category ?? null,
+                'phrase' => strtolower($request->phrase),
                 'client_id' => $request->user()->id
             ]);
             return $this->sendResponse([], "Attachment uploaded successfully");
@@ -62,49 +88,58 @@ class ClientAttachmentController extends BaseApiController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ClientAttachment  $clientAttachment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ClientAttachment $clientAttachment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ClientAttachment  $clientAttachment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ClientAttachment $clientAttachment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ClientAttachment  $clientAttachment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ClientAttachment $clientAttachment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 
+     * @OA\Post(
+     *      path="/remove-attachments",
+     *      operationId="destroy",
+     *      tags={"Clients"},
+     *      summary="Remove Client's Document",
+     *      description="Remove document in the resource",
+     *      security={{"BearerToken": {}}},
+     * 
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                      property="category",
+     *                      title="category",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="phrase",
+     *                      title="phrase",
+     *                      type="string"
+     *                  ),
+     *                  required={"category", "phrase"},
+     *                  example={
+     *                      "category": "2",
+     *                      "phrase": "test"
+     *                  }
+     *             )
+     *         )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
      */
     public function destroy(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category' => 'required|string'
+            'category' => 'required|string',
+            'phrase' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -112,11 +147,14 @@ class ClientAttachmentController extends BaseApiController
         }
 
         try {
-            $attachment = ClientAttachment::where(['client_id' => $request->user()->id, 'category_id' => $request->category])->first();
+            $attachment = ClientAttachment::findRecord($request->user()->id, $request->category, $request->phrase)->first();
 
-            if ($attachment && removeFile(ClientAttachment::DIR, $attachment->file)) {
+            if ($attachment) {
+                removeFile(ClientAttachment::DIR, $attachment->file);
                 $attachment->delete();
                 return $this->sendResponse([], "Attachment removed successfully");
+            } else {
+                return $this->sendError('Error', ["errors" => 'Could not find the record'], 404);
             }
             
         } catch (\Exception $ex) {

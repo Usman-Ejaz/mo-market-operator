@@ -72,11 +72,11 @@ class Client extends Authenticatable
             $value = explode(',', $value);
             foreach (self::REGISTER_CATEGORIES as $key => $category) {
                 if (in_array($key, $value)) {
-                    $categories .= $category . ',';
+                    $categories .= $category . ', ';
                 }
             }
-            $categories = trim($categories, ',');
-            return $categories;
+            $categories = trim($categories, ', ');
+            return ucwords($categories);
         }
         return "";
     }
@@ -89,6 +89,26 @@ class Client extends Authenticatable
      */
     public function getCreatedAtAttribute($value): string {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : "";
+    }
+    
+    /**
+     * getPriSignatureAttribute
+     *
+     * @param  mixed $value
+     * @return string
+     */
+    public function getPriSignatureAttribute($value): string {
+        return serveFile(self::SIGNATURE_DIR, $value);
+    }
+    
+    /**
+     * getSecSignatureAttribute
+     *
+     * @param  mixed $value
+     * @return string
+     */
+    public function getSecSignatureAttribute($value): string {
+        return serveFile(self::SIGNATURE_DIR, $value);
     }
     
     /**
@@ -112,5 +132,36 @@ class Client extends Authenticatable
         }
 
         return __('Pending');
+    }
+    
+    /**
+     * attachments
+     * 
+     */
+    public function attachments() 
+    {
+        return $this->hasMany(ClientAttachment::class);
+    }
+    
+    /**
+     * generalAttachments
+     *
+     */
+    public function generalAttachments() 
+    {
+        return $this->attachments()->where('category_id', '=', null)->get();
+    }
+    
+    /**
+     * categoryAttachments
+     *
+     */
+    public function categoryAttachments() 
+    {
+        return $this->attachments()
+            ->where('category_id', '!=', null)
+            ->orderBy('category_id', 'ASC')
+            ->get()
+            ->groupBy('category_id');
     }
 }

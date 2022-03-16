@@ -76,7 +76,7 @@
 		});
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value));
+			return isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
 		$('#create-document-form').validate({
@@ -117,6 +117,12 @@
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Title',  'limit' => 255]) }}"
 				}
+			}
+		});
+
+		$('.bootstrap-tagsinput > input').on('blur', function (e) {
+			if (document.getElementsByClassName('label-info').length > 0) {
+				$(this).attr('placeholder', '');
 			}
 		});
 	});

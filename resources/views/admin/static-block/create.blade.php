@@ -45,7 +45,7 @@
 	$(document).ready(function() {
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value));
+			return isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
 		$.validator.addMethod("ckeditor_required", function(value, element) {
@@ -79,9 +79,9 @@
 			},
 			messages: {
 				name: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'Contents', 'limit' => 3]) }}",
+					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Contents', 'limit' => 64]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
 				},
 				contents: {
 					minlength: "{{ __('messages.min_characters', ['field' => 'Contents', 'limit' => 3]) }}",

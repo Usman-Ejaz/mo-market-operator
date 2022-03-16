@@ -166,7 +166,7 @@
 		});
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value));
+			return isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
 		$.validator.addMethod("ckeditor_required", function(value, element) {
@@ -180,7 +180,6 @@
 			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
-			ignore: [],
 			rules: {
 				title: {
 					required: true,
@@ -229,6 +228,12 @@
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
 				}
+			}
+		});
+
+		$('.bootstrap-tagsinput > input').on('blur', function (e) {
+			if (document.getElementsByClassName('label-info').length > 0) {
+				$(this).attr('placeholder', '');
 			}
 		});
 	});

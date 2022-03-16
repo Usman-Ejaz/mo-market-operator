@@ -156,7 +156,7 @@
 		});
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value));
+			return isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
 		$.validator.addMethod("ckeditor_required", function(value, element) {
@@ -234,6 +234,11 @@
 			}
 		});
 
+		$('.bootstrap-tagsinput > input').on('blur', function (e) {
+			if (document.getElementsByClassName('label-info').length > 0) {
+				$(this).attr('placeholder', '');
+			}
+		});
 	});
 
 	function mapDate(date) {
