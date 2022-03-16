@@ -90,4 +90,8 @@ class Page extends Model
     public function scopePublished($query) {
         return $query->where('published_at', '!=', null)->select('title', 'slug', 'keywords', 'description');
     }
+
+    public function isPublished() {
+        return $this->published_at !== null;
+    }
 }

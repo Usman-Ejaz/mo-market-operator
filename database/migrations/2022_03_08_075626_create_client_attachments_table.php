@@ -16,8 +16,9 @@ class CreateClientAttachmentsTable extends Migration
         Schema::create('client_attachments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->string('file');
+            $table->text('phrase');
             // $table->string('filename');
             $table->timestamps();
         });

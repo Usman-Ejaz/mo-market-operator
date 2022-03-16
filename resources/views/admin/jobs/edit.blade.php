@@ -63,23 +63,21 @@
 					<input type="hidden" name="active" id="status">
 					<input type="hidden" name="action" id="action">
 
-					@if($job->active == 'Active')
-					<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-					@if( hasPermission('jobs', 'publish') )
-					<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
-					@endif
-					@elseif($job->active == 'Draft')
-					<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-					@if( hasPermission('jobs', 'publish') )
-					<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
-					@endif
+					@if($job->isPublished())
+						<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
+						@if(hasPermission('jobs', 'publish'))
+							<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
+						@endif
+					@else
+						<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
+						@if(hasPermission('jobs', 'publish'))
+							<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
+						@endif
 					@endif
 				</div>
 			</div>
 		</div>
 	</form>
-
-
 </div>
 @endsection
 
@@ -195,7 +193,7 @@
 		});
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value));
+			return isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
 		$.validator.addMethod("ckeditor_required", function(value, element) {
@@ -209,7 +207,6 @@
 			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
-			ignore: [],
 			rules: {
 				title: {
 					required: true,
@@ -267,6 +264,17 @@
 				}
 			}
 		});
+
+		$('.bootstrap-tagsinput > input').on('blur', function (e) {
+			if (document.getElementsByClassName('label-info').length > 0) {
+				$(this).attr('placeholder', '');
+				$(this).focus();
+			}
+		});
+
+		if (document.getElementsByClassName('label-info').length > 0) {
+			$('.bootstrap-tagsinput > input').attr('placeholder', '');
+		}
 	});
 
 	function mapDate(date) {

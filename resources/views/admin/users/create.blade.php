@@ -53,23 +53,13 @@
 	//Date and time picker
 	$(document).ready(function() {
 
-		$.validator.addMethod(
-			"notNumericValues",
-			function(value, element) {
-				return this.optional(element) || isNaN(Number(value));
-			},
-			'{{ __("messages.not_numeric") }}'
-		);
-
-		$.validator.addMethod("noSpace", function(value) {
-			this.value = $.trim(value);
-			return this.value;
-		});
+		$.validator.addMethod("notNumericValues", function(value, element) {
+			return isNaN(Number(value)) || value.indexOf('e') !== -1;
+		}, '{{ __("messages.not_numeric") }}');
 
 		$(".save-with-email").click(function() {
 			$("#sendEmail").val("1");
 		});
-
 
 		$('#create-users-form').validate({
 			errorElement: 'span',

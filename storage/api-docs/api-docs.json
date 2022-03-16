@@ -188,6 +188,246 @@
                 ]
             }
         },
+        "/upload-attachments": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Upload Client's Document",
+                "description": "Upload document in the resource",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "category",
+                                    "phrase",
+                                    "attachment"
+                                ],
+                                "properties": {
+                                    "category": {
+                                        "title": "category",
+                                        "type": "string"
+                                    },
+                                    "phrase": {
+                                        "title": "phrase",
+                                        "type": "string"
+                                    },
+                                    "attachment": {
+                                        "title": "attachment",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
+            }
+        },
+        "/remove-attachments": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Remove Client's Document",
+                "description": "Remove document in the resource",
+                "operationId": "destroy",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category",
+                                    "phrase"
+                                ],
+                                "properties": {
+                                    "category": {
+                                        "title": "category",
+                                        "type": "string"
+                                    },
+                                    "phrase": {
+                                        "title": "phrase",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "category": "2",
+                                    "phrase": "test"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Register Client",
+                "description": "This API will register the client in the resource and will return a token, This token will be used to proceed next API calls for succesfull client registration.",
+                "operationId": "register",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "address",
+                                    "type",
+                                    "categories",
+                                    "pri_name",
+                                    "pri_email",
+                                    "pri_address",
+                                    "pri_telephone",
+                                    "pri_facsimile_telephone",
+                                    "sec_name",
+                                    "sec_email",
+                                    "sec_address",
+                                    "sec_telephone",
+                                    "sec_facsimile_telephone",
+                                    "pri_signature",
+                                    "sec_signature"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "title": "Name",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "title": "Address",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "title": "Type",
+                                        "type": "string"
+                                    },
+                                    "categories": {
+                                        "title": "Categories",
+                                        "type": "string"
+                                    },
+                                    "pri_name": {
+                                        "title": "Primary Name",
+                                        "type": "string"
+                                    },
+                                    "pri_email": {
+                                        "title": "Primary Email",
+                                        "type": "string"
+                                    },
+                                    "pri_address": {
+                                        "title": "Primary Address",
+                                        "type": "string"
+                                    },
+                                    "pri_telephone": {
+                                        "title": "Primary Telephone",
+                                        "type": "string"
+                                    },
+                                    "pri_facsimile_telephone": {
+                                        "title": "Primary Facsimile Telephone",
+                                        "type": "string"
+                                    },
+                                    "sec_name": {
+                                        "title": "Secondary Name",
+                                        "type": "string"
+                                    },
+                                    "sec_email": {
+                                        "title": "Secondary Email",
+                                        "type": "string"
+                                    },
+                                    "sec_address": {
+                                        "title": "Secondary Address",
+                                        "type": "string"
+                                    },
+                                    "sec_telephone": {
+                                        "title": "Secondary Telephone",
+                                        "type": "string"
+                                    },
+                                    "sec_facsimile_telephone": {
+                                        "title": "Secondary Facsimile Telephone",
+                                        "type": "string"
+                                    },
+                                    "pri_signature": {
+                                        "title": "Primary Signature",
+                                        "type": "file"
+                                    },
+                                    "sec_signature": {
+                                        "title": "Secondary Signature",
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "John Doe",
+                                    "address": "USA",
+                                    "type": "service_provider",
+                                    "categories": "2,3,4",
+                                    "pri_name": "John",
+                                    "pri_email": "johndoe@gmail.com",
+                                    "pri_address": "USA, California",
+                                    "pri_telephone": "03001234567",
+                                    "pri_facsimile_telephone": "03001234567",
+                                    "sec_name": "Doe",
+                                    "sec_email": "johndoe@gmail.com",
+                                    "sec_address": "USA, California",
+                                    "sec_telephone": "03001234567",
+                                    "sec_facsimile_telephone": "03001234567"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "/submit-query": {
             "post": {
                 "tags": [
@@ -474,8 +714,8 @@
                 "tags": [
                     "Site Search"
                 ],
-                "summary": "Search records from the whole site. (FAQs, Jobs, Documents, News, Pages)",
-                "description": "This search API will work for FAQs, News, Jobs and Pages when 'type' property is not set or 'type' property is set to 'web_content'. If the 'type' property is set to 'document' then the API will only search from the Documents Module",
+                "summary": "Search records from the whole site. (FAQs, Jobs, Documents, Posts, Pages)",
+                "description": "This search API will work for FAQs, Posts, Jobs and Pages when 'type' property is not set or 'type' property is set to 'web_content'. If the 'type' property is set to 'document' then the API will only search from the Documents Module",
                 "operationId": "siteSearch",
                 "requestBody": {
                     "required": true,
@@ -555,6 +795,11 @@
     "components": {
         "securitySchemes": {
             "BearerAppKey": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            },
+            "BearerToken": {
                 "type": "apiKey",
                 "name": "Authorization",
                 "in": "header"

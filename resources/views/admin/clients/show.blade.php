@@ -30,14 +30,54 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Name</label>
+								<label>Name: </label>
 								<span>{{ $client->name }}</span>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
+								<label>Address: </label>
+								<span>{{ $client->address }}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Type: </label>
+								<span>{{ ucwords(str_replace("_", " ", $client->type)) }}</span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Categories: </label>
+								<span>{{ $client->category_labels }}</span>
+							</div>
+						</div>
+					</div>
+
+					<h4 class="mt-3">Primary Details</h4>
+					<hr />
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Name</label>
+								<span>{{ $client->pri_name }}</span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
 								<label>Email</label>
-								<span>{{$client->email}}</span>
+								<span>{{ $client->pri_email }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Address</label>
+								<span>{{ $client->pri_address }}</span>
 							</div>
 						</div>
 					</div>
@@ -45,40 +85,105 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Role</label>
-								<br />
-								<div>{{$client->role}}</div>
+								<label>Telephone</label>
+								<span>{{ $client->pri_telephone }}</span>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Department</label>
-								<span>{{$client->department ?? 'None'}}</span>
+								<label>Facsimile Telephone</label>
+								<span>{{ $client->pri_facsimile_telephone }}</span>
 							</div>
 						</div>
 					</div>
 
 					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Signature: </label>
+								<img src="{{ $client->pri_signature }}" class="img-thumbnail" style="width: 23%; display: block;">
+							</div>
+						</div>
+					</div>
+
+					<h4 class="mt-3">Secondary Details</h4>
+					<hr />
+					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Status</label>
-								<span>{{$client->active}}</span>
+								<label>Name</label>
+								<span>{{ $client->sec_name }}</span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Email</label>
+								<span>{{ $client->sec_email }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>Address</label>
+								<span>{{ $client->sec_address }}</span>
+							</div>
+						</div>
+					</div>					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Telephone</label>
+								<span>{{ $client->sec_telephone }}</span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Facsimile Telephone</label>
+								<span>{{ $client->sec_facsimile_telephone }}</span>
 							</div>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<div class="form-group">
-								<label>Image</label>
-								@if( isset($client->image) )
-								<img src="{{ asset( config('filepaths.clientProfileImagePath.public_path') . $client->image ) }}" class="img-fluid">
-								@else
-								<span>None</span>
-								@endif
+								<label>Signature: </label>
+								<img src="{{ $client->sec_signature }}" class="img-thumbnail" style="width: 23%; display: block;">
 							</div>
 						</div>
 					</div>
+
+					@if ($client->attachments->count() > 0)
+						<h4 class="mt-3">Attachments</h4>
+						<hr />
+
+						@foreach($client->generalAttachments() as $attachment)
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label>{{ $attachment->phrase }}: </label>
+										<a href="{{ $attachment->file }}" target="_blank">View</a>
+									</div>
+								</div>
+							</div>
+						@endforeach
+
+						@foreach($client->categoryAttachments() as $categoryId => $attachments)
+							<h4 class="mt-3">{{ ucwords(\App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}</h4>
+							<hr />
+							@foreach($attachments as $attachment)
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label>{{ $attachment->phrase }}: </label>
+											<a href="{{ $attachment->file }}" target="_blank">View</a>
+										</div>
+									</div>
+								</div>
+							@endforeach
+						@endforeach
+					@endif
 				</div>
 			</div>
 		</div>

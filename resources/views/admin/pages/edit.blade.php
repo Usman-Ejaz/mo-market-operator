@@ -64,39 +64,34 @@
 					<input type="hidden" name="active" id="status">
 					<input type="hidden" name="action" id="action">
 
-					@if($page->active == 'Active')
-					<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
-					@if( hasPermission('pages', 'publish') )
-					<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
-					<div class="form-group mt-3">
-						<div class="row text-center">
-							<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
-								<i class="fab fa-facebook social-share-icon" style="color: var(--facebook-color);"></i>
-							</div>
-							<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
-								<i class="fab fa-twitter social-share-icon" style="color: var(--twitter-color);"></i>
-							</div>
-							<div class="col-md-3 col-sm-4 p-2 text-center">
-								<i class="fab fa-linkedin social-share-icon" style="color: var(--linkedIn-color);"></i>
+					@if($page->isPublished())
+						<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
+						@if( hasPermission('pages', 'publish') )
+						<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
+						<div class="form-group mt-3">
+							<div class="row text-center">
+								<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
+									<i class="fab fa-facebook social-share-icon" style="color: var(--facebook-color);"></i>
+								</div>
+								<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
+									<i class="fab fa-twitter social-share-icon" style="color: var(--twitter-color);"></i>
+								</div>
+								<div class="col-md-3 col-sm-4 p-2 text-center">
+									<i class="fab fa-linkedin social-share-icon" style="color: var(--linkedIn-color);"></i>
+								</div>
 							</div>
 						</div>
-					</div>
+						@endif
+					@else
+						<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
+						@if( hasPermission('pages', 'publish') )
+							<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
+						@endif
 					@endif
-					@elseif($page->active == 'Draft')
-					<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-					@if( hasPermission('pages', 'publish') )
-					<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
-					@endif
-					@endif
-
 				</div>
-
-
 			</div>
 		</div>
 	</form>
-
-
 </div>
 @endsection
 
@@ -211,7 +206,7 @@
 		});
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value));
+			return isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
 		$.validator.addMethod("ckeditor_required", function(value, element) {
@@ -320,6 +315,16 @@
 					break;
 			}
 		});
+
+		$('.bootstrap-tagsinput > input').on('blur', function (e) {
+			if (document.getElementsByClassName('label-info').length > 0) {
+				$(this).attr('placeholder', '');
+			}
+		});
+
+		if (document.getElementsByClassName('label-info').length > 0) {
+			$('.bootstrap-tagsinput > input').attr('placeholder', '');
+		}
 
 	});
 

@@ -103,4 +103,8 @@ class Post extends Model
     public function scopePublished($query) {
         return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords");
     }
+
+    public function isPublished() {
+        return $this->published_at !== null;
+    }
 }
