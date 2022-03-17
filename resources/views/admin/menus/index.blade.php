@@ -104,11 +104,12 @@
 				<option value="" ${theme === "" ? "selected" : ""}>Select any theme</option>
 				${html}
 			</select>
+			<span class="label" style="margin: 4px 20px 0px 0px;">Current Theme:</span>
 		`);	
 	}
 
 	$(function() {
-		renderTable();			
+		renderTable('{{ $currentTheme }}');
 	});
 
 	function setCurrentTheme(e) {
