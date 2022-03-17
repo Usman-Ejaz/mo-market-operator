@@ -138,7 +138,7 @@ class ClientAttachmentController extends BaseApiController
     public function destroy(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category' => 'required|string',
+            'category' => 'sometimes|number',
             'phrase' => 'required|string'
         ]);
 
@@ -147,7 +147,7 @@ class ClientAttachmentController extends BaseApiController
         }
 
         try {
-            $attachment = ClientAttachment::findRecord($request->user()->id, $request->category, $request->phrase)->first();
+            $attachment = ClientAttachment::findRecord($request->user()->id, $request->category ?? null, $request->phrase)->first();
 
             if ($attachment) {
                 removeFile(ClientAttachment::DIR, $attachment->file);
