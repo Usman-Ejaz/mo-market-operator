@@ -157,31 +157,38 @@
 					@if ($client->attachments->count() > 0)
 						<h4 class="mt-3">Attachments</h4>
 						<hr />
-
-						@foreach($client->generalAttachments() as $attachment)
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label>{{ $attachment->phrase }}: </label>
-										<a href="{{ $attachment->file }}" target="_blank">View</a>
-									</div>
-								</div>
-							</div>
-						@endforeach
-
-						@foreach($client->categoryAttachments() as $categoryId => $attachments)
-							<h4 class="mt-3">{{ ucwords(\App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}</h4>
-							<hr />
-							@foreach($attachments as $attachment)
+						<h5 class="mt-3 mb-2" style="font-weight: bold;">{{ __("General Attachments") }}</h5>
+						<ul>
+							@foreach($client->generalAttachments() as $attachment)
 								<div class="row">
 									<div class="col-md-12">
 										<div class="form-group">
-											<label>{{ $attachment->phrase }}: </label>
-											<a href="{{ $attachment->file }}" target="_blank">View</a>
+											<li>
+												<p style="display: inline;">{{ $attachment->phrase }}: </p>
+												<a href="{{ $attachment->file }}" target="_blank">{{ __("View") }}</a>
+											</li>
 										</div>
 									</div>
 								</div>
 							@endforeach
+						</ul>						
+
+						@foreach($client->categoryAttachments() as $categoryId => $attachments)
+							<h5 class="mt-3 mb-2" style="font-weight: bold;">{{ ucwords(\App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}</h5>
+							<ul>
+								@foreach($attachments as $attachment)
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<li>
+													<p style="display: inline;">{{ $attachment->phrase }}: </p>
+													<a href="{{ $attachment->file }}" target="_blank">{{ __("View") }}</a>
+												</li>												
+											</div>
+										</div>
+									</div>
+								@endforeach
+							</ul>							
 						@endforeach
 					@endif
 				</div>
