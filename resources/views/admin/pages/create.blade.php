@@ -234,7 +234,10 @@
 			}
 		});
 
-		$('.bootstrap-tagsinput > input').on('blur', function (e) {
+		$('.bootstrap-tagsinput > input').on('blur keypress', function (e) {
+			if (e.which === 13 && $(this).val().trim().length > 0) {
+				$(this).attr('placeholder', '');
+			}
 			if (document.getElementsByClassName('label-info').length > 0) {
 				$(this).attr('placeholder', '');
 			}
