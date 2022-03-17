@@ -25,4 +25,8 @@ class ClientAttachment extends Model
         return $query->where(['client_id' => $clientId, 'category_id' => $categoryId, 'phrase' => strtolower($phrase)]);
     }
 
+    public function getPhraseAttribute($value) {
+        return $value ? ucwords(str_replace("_", " ", $value)) : "";
+    }
+
 }

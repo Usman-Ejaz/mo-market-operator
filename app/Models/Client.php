@@ -25,19 +25,17 @@ class Client extends Authenticatable
     
     /* Register categories e.g Market Participant, Service Provider */
     const REGISTER_CATEGORIES = [
-        1 => 'none',
-        2 => 'generator',
-        3 => 'base supplier', 
-        4 => 'pakistani trader', 
-        5 => 'bpc', 
-        6 => 'captive generator', 
-        7 => 'competitive supplier', 
-        8 => 'international trader',
-        
-        9 => 'none',
-        10 => 'transmission service provider', 
-        11 => 'distribution service provider', 
-        12 => 'metering service provider'
+        1 => 'generator',
+        2 => 'base supplier', 
+        3 => 'pakistani trader', 
+        4 => 'bpc', 
+        5 => 'captive generator', 
+        6 => 'competitive supplier', 
+        7 => 'international trader',
+                
+        8 => 'transmission service provider', 
+        9 => 'distribution service provider', 
+        10 => 'metering service provider'
     ];
 
 
