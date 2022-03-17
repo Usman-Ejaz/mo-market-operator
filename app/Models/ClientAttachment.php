@@ -18,7 +18,7 @@ class ClientAttachment extends Model
     }    
 
     public function category() {
-        return ucwords(Client::REGISTER_CATEGORIES[$this->category_id]);        
+        return ucwords(Client::REGISTER_CATEGORIES[$this->category_id]);
     }
 
     public function scopeFindRecord($query, $clientId, $categoryId, $phrase) {
@@ -26,7 +26,7 @@ class ClientAttachment extends Model
     }
 
     public function getPhraseAttribute($value) {
-        return $value ? ucwords(str_replace("_", " ", $value)) : "";
+        return $value ? ucfirst(str_replace("_", " ", $value)) : "";
     }
 
 }

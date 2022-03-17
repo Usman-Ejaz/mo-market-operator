@@ -40,7 +40,7 @@ class ClientAttachmentController extends BaseApiController
      *                      title="attachment",
      *                      type="file"
      *                  ),
-     *                  required={"category", "phrase", "attachment"}
+     *                  required={"phrase", "attachment"}
      *             )
      *         )
      *      ),
@@ -63,7 +63,7 @@ class ClientAttachmentController extends BaseApiController
     {
         $validator = Validator::make($request->all(), [
             'attachment' => 'required|file|max:5000',
-            'category' => 'required|string',
+            'category' => 'sometimes|string',
             'phrase' => 'required|string'
         ], [
             'attachment.max' => __('messages.max_file', ['limit' => '5 MB'])
