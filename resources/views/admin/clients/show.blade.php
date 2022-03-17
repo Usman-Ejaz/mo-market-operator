@@ -165,7 +165,7 @@
 										<div class="form-group">
 											<li>
 												<p style="display: inline;">{{ $attachment->phrase }}: </p>
-												<a href="{{ $attachment->file }}" target="_blank">{{ __("View") }}</a>
+												<a href="{{ $attachment->file }}">{{ __("View") }}</a>
 											</li>
 										</div>
 									</div>
@@ -182,7 +182,7 @@
 											<div class="form-group">
 												<li>
 													<p style="display: inline;">{{ $attachment->phrase }}: </p>
-													<a href="{{ $attachment->file }}" target="_blank">{{ __("View") }}</a>
+													<a href="{{ $attachment->file }}">{{ __("View") }}</a>
 												</li>												
 											</div>
 										</div>

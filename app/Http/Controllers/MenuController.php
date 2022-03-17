@@ -6,6 +6,7 @@ use App\Models\DocumentCategory;
 use App\Models\Menu;
 use App\Models\Page;
 use App\Models\Post;
+use App\Models\Settings;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,9 @@ class MenuController extends Controller
     {
         abort_if(!hasPermission("menus", "list"), 401, __('messages.unauthorized_action'));
 
-        return view('admin.menus.index');
+        $theme = Settings::where('name', 'current_theme')->first();
+
+        return view('admin.menus.index', ['currentTheme' => $theme->value]);
     }
 
     /**
