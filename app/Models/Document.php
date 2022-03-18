@@ -16,6 +16,8 @@ class Document extends Model
 
     protected $attributes = [];
 
+    public const STORAGE_DIRECTORY = 'documents/';
+
     // Model Relation goes here
 
     public function category() {
@@ -39,5 +41,9 @@ class Document extends Model
     // Scope Queries
     public function scopePublished ($query) {
         return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id");
+    }
+
+    public function isPublished() {
+        return $this->published_at !== null;
     }
 }

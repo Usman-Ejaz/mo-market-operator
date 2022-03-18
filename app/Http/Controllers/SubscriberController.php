@@ -16,24 +16,29 @@ class SubscriberController extends Controller
      */
     public function index()
     {
-        if (!hasPermission('subscribers', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("subscribers", "list"), 401, __('messages.unauthorized_action'));
 
         return view("admin.subscribers.index");
     }
 
     public function list(Request $request)
     {
-        if (!hasPermission('subscribers', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("subscribers", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Subscriber::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->addColumn('multiselect', function ($row) {
+                    return '<input type="checkbox" id="checkbox_'. $row->id .'" class="multiselect" name="checkbox['.$row->id.']"/>';
+                })
+                ->addColumn('name', function ($row) {
+                    return ($row->name) ? $row->name : '';
+                })
+                ->addColumn('email', function ($row) {
+                    return ($row->email) ? $row->email : '';
+                })
                 ->addColumn('status', function ($row) {
                     return ($row->status) ? $row->status : '';
                 })
@@ -43,10 +48,11 @@ class SubscriberController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if (hasPermission('subscribers', 'subscribe')) {
+                        $class = $row->status == 'Subscribed' ? 'danger' : 'success';
                         $options .= '<form action="'. route('admin.subscribers.toggleSubscription', $row->id) .'" method="POST" style="display: inline-block;">
                                 '.csrf_field().'
                                 <input type="hidden" name="status" value="' . ($row->status == 'Subscribed' ? 0 : 1) . '">
-                                <button type="submit" class="btn btn-primary width-120"
+                                <button type="submit" class="btn btn-'.$class.' width-120"
                                     onclick="return confirm(\'Are You Sure Want to '.  ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'">
                                         '. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'
                                 </button>
@@ -54,16 +60,15 @@ class SubscriberController extends Controller
                     }
                     return $options;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'multiselect'])
                 ->make(true);
         }
     }
 
     public function toggleSubscription(Request $request, Subscriber $subscriber)
     {
-        if (!hasPermission('subscribers', 'subscribe')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("subscribers", "subscribe"), 401, __('messages.unauthorized_action'));
+        
         $status = intval($request->get("status"));
         $subscriber->status = $status;
         $subscriber->save();
@@ -71,5 +76,23 @@ class SubscriberController extends Controller
         $message = $status == 1 ? "Subscribed" : "Unsubscribed";
 
         return redirect()->route('admin.subscribers.index')->with('success', "Subscriber {$message} Successfully!");
+    }
+
+    public function bulkToggle(Request $request)
+    {
+        abort_if(!hasPermission("subscribers", "subscribe"), 401, __('messages.unauthorized_action'));
+
+        if (!$request->ajax()) {
+            return response(['message' => 'Baq Request'], 400);
+        }
+        $idsList = explode(',', $request->bulkIds);
+        
+        $status = $request->subscribe == "true" ? 1 : 0;
+        $subscribers = Subscriber::find($idsList);
+
+        foreach($subscribers as $subscriber) {
+            $subscriber->update(['status' => $status]);
+        }
+        return response(['success' => true], 200);
     }
 }

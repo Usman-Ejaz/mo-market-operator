@@ -16,6 +16,8 @@ class Page extends Model
     protected $attributes = [ /*'active' => 1*/];
 
     protected $appends = ['link'];
+
+    public const STORAGE_DIRECTORY = 'pages/';
     
     public function getActiveAttribute ($attribute) {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
@@ -41,17 +43,31 @@ class Page extends Model
         return !empty($this->slug) ? route('pages.show', $this->slug) : null;
     }
 
+    public function parseStartDate() {
+        if ($this->start_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
+        }
+        return "";
+    }
+
+    public function parseEndDate() {
+        if ($this->end_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
+        }
+        return "";
+    }
+
 
     /********** Setters *********/
-    public function setStartDatetimeAttribute($attribute){
+    // public function setStartDatetimeAttribute($attribute){
 
-        $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    }
+    //     $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
+    // }
 
-    public function setEndDatetimeAttribute($attribute){
+    // public function setEndDatetimeAttribute($attribute){
 
-        $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    }
+    //     $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
+    // }
 
     public function setKeywordsAttribute($attribute){
 
@@ -73,5 +89,9 @@ class Page extends Model
     // Scope Queries
     public function scopePublished($query) {
         return $query->where('published_at', '!=', null)->select('title', 'slug', 'keywords', 'description');
+    }
+
+    public function isPublished() {
+        return $this->published_at !== null;
     }
 }

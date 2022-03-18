@@ -32,6 +32,13 @@ class BaseApiController extends Controller
      *    name="Authorization",
      *    type="apiKey"
      * ),
+     * 
+     * @OA\SecurityScheme(
+     *    securityScheme="BearerToken",
+     *    in="header",
+     *    name="Authorization",
+     *    type="apiKey"
+     * ),
      */
 
      

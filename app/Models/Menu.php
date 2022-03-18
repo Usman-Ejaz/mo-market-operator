@@ -27,4 +27,14 @@ class Menu extends Model
             1 => 'Active'
         ];
     }
+
+    public function scopeByTheme($query, $theme = null)
+    {
+        if ($theme === null) {
+            $theme = Settings::where('name', 'current_theme')->first();
+            return $query->where('theme', $theme->value);
+        } else {
+            return $query->where('theme', $theme);
+        }
+    }
 }

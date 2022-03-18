@@ -3,17 +3,17 @@
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.faq-categories.index') }}">Faq Categories</a></li>
-  <li class="breadcrumb-item active">Details</li>
+  <li class="breadcrumb-item active">View</li>
 @endsection
 @section('addButton')
-@if(hasPermission('faq-categories', 'delete'))
+@if(hasPermission('faq_categories', 'delete'))
 <form method="POST" action="{{ route('admin.faq-categories.destroy', $faqCategory->id) }}" class="float-right">
   @method('DELETE')
   @csrf
-  <button class="btn btn-danger">Delete</button>
+  <button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
 </form>
 @endif
-@if(hasPermission('faq-categories', 'edit'))
+@if(hasPermission('faq_categories', 'edit'))
   <a class="btn btn-primary float-right mr-2" href="{{ route('admin.faq-categories.edit', $faqCategory->id)}}">Edit Document Category</a>
 @endif
 @endsection
@@ -24,7 +24,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing Category - {{ $faqCategory->name }}</h3>
+                <h3 class="card-title">View Category - {{ $faqCategory->name }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

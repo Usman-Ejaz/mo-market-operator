@@ -20,6 +20,8 @@ class Job extends Model
         // 'active' => 1
     ];
 
+    const STORAGE_DIRECTORY = 'jobs/';
+
     protected $appends = ['link'];
 
     /********* Getters ***********/
@@ -40,22 +42,36 @@ class Job extends Model
     }    
 
     public function getImageAttribute ($value) {
-        return $value ? asset(config("filepaths.jobImagePath.public_path") . $value) : null;
+        return serveFile(self::STORAGE_DIRECTORY, $value);
     }
 
     public function getLinkAttribute($value) {
         return !empty($this->slug) ? route('pages.show', $this->slug) : null;
     }
 
+    public function parseStartDate() {
+        if ($this->start_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
+        }
+        return "";
+    }
+
+    public function parseEndDate() {
+        if ($this->end_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
+        }
+        return "";
+    }
+
 
     /********** Setters *********/
-    public function setStartDatetimeAttribute($attribute){
-        $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    }
+    // public function setStartDatetimeAttribute($attribute){
+    //     $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
+    // }
 
-    public function setEndDatetimeAttribute($attribute){
-        $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    }
+    // public function setEndDatetimeAttribute($attribute){
+    //     $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
+    // }
 
     public function activeOptions(){
         return [
@@ -72,5 +88,9 @@ class Job extends Model
     // Scope Queries
     public function scopePublished ($query) {
         return $query->where("published_at", "!=", null)->select("title", "slug", "description", "location", "qualification", "experience", "published_at", "total_positions", "image");
+    }
+
+    public function isPublished() {
+        return $this->published_at !== null;
     }
 }

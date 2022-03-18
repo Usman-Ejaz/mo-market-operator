@@ -14,3 +14,9 @@ $('form').on("change paste", function (e) {
 function trimSpaces(elementId) {
     $('#' + elementId) && $('#' + elementId).val($('#' + elementId).val().trim());
 }
+
+document.querySelector('input[type="number"]') && document.querySelector('input[type="number"]').addEventListener("keypress", function (evt) {
+    if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57) {
+        evt.preventDefault();
+    }
+});

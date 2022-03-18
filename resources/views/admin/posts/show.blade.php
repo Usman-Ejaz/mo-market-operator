@@ -1,19 +1,19 @@
 @extends('admin.layouts.app')
-@section('header', 'News')
+@section('header', 'Posts')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-  <li class="breadcrumb-item">News</li>
-  <li class="breadcrumb-item active">Details</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.posts.index') }}">Posts</a></li>
+  <li class="breadcrumb-item active">View</li>
 @endsection
 
 @section('addButton')
-<form method="POST" action="{{ route('admin.news', $news->id) }}" class="float-right">
+<form method="POST" action="{{ route('admin.posts', $post->id) }}" class="float-right">
   @method('DELETE')
   @csrf
-  <button class="btn btn-danger">Delete</button>
+  <button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
 </form>
 
-<a class="btn btn-primary float-right mr-2" href="{{ route('admin.news.edit', $news->id)}}">Edit News</a>
+<a class="btn btn-primary float-right mr-2" href="{{ route('admin.posts.edit', $post->id)}}">Edit Posts</a>
 
 @endsection
 
@@ -23,7 +23,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing News - {{ $news->title }}</h3>
+                <h3 class="card-title">View Post - {{ $post->title }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -32,13 +32,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Title</label>
-                      <span>{{$news->title}}</span>
+                      <span>{{$post->title}}</span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Slug</label>
-                      <span>{{$news->slug}}</span>
+                      <span>{{$post->slug}}</span>
                     </div>
                   </div>
                 </div>
@@ -48,7 +48,7 @@
                     <div class="form-group">
                       <label>Description</label>
                       <br/>
-                      <div>{{$news->description}}</div>
+                      <div>{{$post->description}}</div>
                     </div>
                   </div>
                 </div>
@@ -57,13 +57,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Keywords</label>
-                      <span>{{$news->keywords}}</span>
+                      <span>{{$post->keywords}}</span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Category</label>
-                      <span>{{ $news->news_category ?? 'None' }}</span>
+                      <span>{{ $post->post_category ?? 'None' }}</span>
                     </div>
                   </div>
                 </div>
@@ -72,13 +72,13 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Start DateTime</label>
-                      <span>{{$news->start_datetime}}</span>
+                      <span>{{$post->start_datetime}}</span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>End DateTime</label>
-                      <span>{{$news->end_datetime}}</span>
+                      <span>{{$post->end_datetime}}</span>
                     </div>
                   </div>
                 </div>
@@ -87,7 +87,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Status</label>
-                      <span>{{$news->active}}</span>
+                      <span>{{$post->active}}</span>
                     </div>
                   </div>
                 </div>
@@ -97,8 +97,8 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Image</label>
-                        @if( isset($news->image) )
-                            <img src="{{ asset( config('filepaths.newsImagePath.public_path') .$news->image) }}" class="img-fluid">
+                        @if( isset($post->image) )
+                            <img src="{{ asset( config('filepaths.postImagePath.public_path') .$post->image) }}" class="img-fluid">
                         @else
                             <span>None</span>
                         @endif

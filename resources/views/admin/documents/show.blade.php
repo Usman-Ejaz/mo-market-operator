@@ -3,14 +3,14 @@
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.documents.index') }}">Documents</a></li>
-  <li class="breadcrumb-item active">Details</li>
+  <li class="breadcrumb-item active">View</li>
 @endsection
 
 @section('addButton')
 <form method="POST" action="/admin/documents/{{$document->id}}" class="float-right">
   @method('DELETE')
   @csrf
-  <button class="btn btn-danger">Delete</button>
+  <button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
 </form>
 
 <a class="btn btn-primary float-right mr-2" href="{{ route('admin.documents.edit', $document->id)}}">Edit Document</a>
@@ -23,7 +23,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing Document - {{ $document->title }}</h3>
+                <h3 class="card-title">View Document - {{ $document->title }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

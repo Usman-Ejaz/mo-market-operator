@@ -13,7 +13,7 @@ class SitewideSearch extends Aggregator
      */
     protected $models = [
         \App\Models\Page::class,
-        \App\Models\News::class,
+        \App\Models\Post::class,
         \App\Models\Job::class,
         \App\Models\Faq::class,
     ];

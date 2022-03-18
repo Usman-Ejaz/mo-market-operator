@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\CareersApiController;
+use App\Http\Controllers\Api\Client\ClientAttachmentController;
+use App\Http\Controllers\Api\Client\ClientRegistrationController;
 use App\Http\Controllers\Api\ContactFormQueryController;
 use App\Http\Controllers\Api\DocumentsApiController;
 use App\Http\Controllers\Api\FaqApiController;
 use App\Http\Controllers\Api\NewsletterSubscriptionController;
-use App\Http\Controllers\Api\PublishedNewsApiController;
+use App\Http\Controllers\Api\PublishedPostApiController;
 use App\Http\Controllers\Api\RegisterApiController;
 use App\Http\Controllers\Api\SitemapApiController;
 use App\Http\Controllers\Api\SiteSearchApiController;
@@ -23,11 +25,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::post('register', [RegisterController::class, 'register']);
-Route::post('login', [RegisterApiController::class, 'login']);
 
-Route::middleware('auth:api')->group(function () {
-    
+Route::prefix('v1/auth')->group(function() {
+    Route::post('register', [ClientRegistrationController::class, 'register'])->name('client.register');
+    Route::post('login', [RegisterApiController::class, 'login']);
+});
+//Route::post('register', [RegisterController::class, 'register']);
+
+Route::middleware('auth:api')->prefix('v1')->group(function () {
+    Route::post('upload-attachments', [ClientAttachmentController::class, 'store'])->name('client.attachment.store');
+    Route::post('remove-attachments', [ClientAttachmentController::class, 'destroy'])->name('client.attachment.delete');
 });
 
 Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
@@ -35,8 +42,8 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::post("subscribe-to-newsletter", [NewsletterSubscriptionController::class, "subscribe"])->name("newsletters.subscribe");
     Route::get("faqs", [FaqApiController::class, "show"])->name("faqs.show");
 
-    Route::get("get-news", [PublishedNewsApiController::class, "getPublishedNews"])->name("news.published");
-    Route::get("show-news/{slug}", [PublishedNewsApiController::class, "getSingleNews"])->name("news.show");
+    Route::get("get-posts", [PublishedPostApiController::class, "getPublishedPosts"])->name("posts.published");
+    Route::get("show-post/{slug}", [PublishedPostApiController::class, "getSinglePost"])->name("posts.show");
 
     Route::get("get-jobs", [CareersApiController::class, "getPublishedJobs"])->name("careers.published");
     Route::get("show-job/{slug}", [CareersApiController::class, "showSingleJob"])->name("careers.show");

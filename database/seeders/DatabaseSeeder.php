@@ -12,13 +12,14 @@ use App\Models\Faq;
 use App\Models\FaqCategory;
 use App\Models\Menu;
 use App\Models\Job;
-use App\Models\News;
+use App\Models\Post;
 use App\Models\Newsletter;
 use App\Models\Page;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\SearchStatistic;
 use App\Models\Settings;
+use App\Models\StaticBlock;
 use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -77,8 +78,8 @@ class DatabaseSeeder extends Seeder
         Menu::factory()->create(['name' => 'Menu footer']);
         Menu::factory(2)->create();
 
-        // Create News
-        News::factory(30)->create();
+        // Create Posts
+        Post::factory(30)->create();
 
         DocumentCategory::factory(10)->create();
 
@@ -94,18 +95,10 @@ class DatabaseSeeder extends Seeder
         Faq::factory(20)->create();
 
          //Create Job
-        $sampleJob = Job::factory(20)->create();
+        Job::factory(20)->create();
 
         //Create Job Applications
-        Application::factory(5)->create([
-            'job_id' => $sampleJob[0]->id,
-        ]);
-
-        Application::factory(5)->create([
-            'job_id' => $sampleJob[1]->id,
-        ]);
-
-        Application::factory(10)->create();
+        Application::factory(15)->create();
 
         // Set current theme
         Settings::factory(1)->create([
@@ -130,6 +123,8 @@ class DatabaseSeeder extends Seeder
 
         // Create Knowledge Base
         ChatBotKnowledgeBase::factory(20)->create();
+
+        StaticBlock::factory(2)->create();
     }
 
 
@@ -140,29 +135,32 @@ class DatabaseSeeder extends Seeder
      */
     private function makeDirectories()
     {
+
+        $basePath = config('filesystems.disks.app.root');
+
         // For User Profile
-        if (!is_dir(storage_path('app/' . config('filepaths.userProfileImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.userProfileImagePath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . User::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . User::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Page Images
-        if (!is_dir(storage_path('app/' . config('filepaths.pageImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.pageImagePath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Page::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Page::STORAGE_DIRECTORY, 0777, true);
         }
 
-        // For News Images
-        if (!is_dir(storage_path('app/' . config('filepaths.newsImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.newsImagePath.internal_path')), 0777, true);
+        // For Posts Images
+        if (!is_dir($basePath . '/' . Post::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Post::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Job Images
-        if (!is_dir(storage_path('app/' . config('filepaths.jobImagePath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.jobImagePath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Job::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Job::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Documents Images
-        if (!is_dir(storage_path('app/' . config('filepaths.documentsFilePath.public_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.documentsFilePath.public_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Document::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Document::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For CK-Editor Images
@@ -171,8 +169,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // For Applications
-        if (!is_dir(storage_path('app/' . config('filepaths.applicationsPath.internal_path')))) {
-            mkdir(storage_path('app/' . config('filepaths.applicationsPath.internal_path')), 0777, true);
+        if (!is_dir($basePath . '/' . Application::STORAGE_DIRECTORY)) {
+            mkdir($basePath . '/' . Application::STORAGE_DIRECTORY, 0777, true);
         }
     }
 }

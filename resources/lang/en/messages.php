@@ -20,7 +20,7 @@ return [
     "min_characters" => ":field must be at least :limit characters long.",
     "unique" => ":attribute already exist.",
     "required" => "This field is required.",
-    "max_image" => "The file is too large. Allowed max size is :limit.",
+    "max_file" => "The file is too large. Allowed max size is :limit.",
     
     
     /*
@@ -34,5 +34,5 @@ return [
     "error" => "",
     "not_found" => "",
     "something_wrong" => "Something went wrong.",
-
+    "unauthorized_action" => "Unauthorized Action"
 ];

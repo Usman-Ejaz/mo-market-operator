@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Page;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -16,9 +17,7 @@ class PageController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('pages', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.pages.index');
     }
@@ -31,9 +30,7 @@ class PageController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('pages', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "create"), 401, __('messages.unauthorized_action'));
 
         $page = new Page();
         return view('admin.pages.create', compact('page'));
@@ -47,12 +44,13 @@ class PageController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('pages', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "create"), 401, __('messages.unauthorized_action'));
 
         $page = new Page();
-        $page = Page::create( $this->validateRequest($page) );
+        $data = $this->validateRequest($page);
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
+        $page = Page::create($data);
 
         $this->storeImage($page);
 
@@ -73,9 +71,7 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        if( !hasPermission('pages', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.pages.show', compact('page'));
     }
@@ -88,9 +84,7 @@ class PageController extends Controller
      */
     public function edit(Page $page)
     {
-        if( !hasPermission('pages', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.pages.edit', compact('page'));
     }
@@ -104,13 +98,13 @@ class PageController extends Controller
      */
     public function update(Request $request, Page $page)
     {
-        if( !hasPermission('pages', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
 
         $previousImage = $page->image;
-
-        $page->update($this->validateRequest($page));
+        $data = $this->validateRequest($page);
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
+        $page->update($data);
 
         if ($request->action === "Unpublished") {
             $page->published_at = null;
@@ -134,9 +128,7 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {
-        if( !hasPermission('pages', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "delete"), 401, __('messages.unauthorized_action'));
 
         if ($page->image !== null) {
             $file_path = public_path(config('filepaths.pageImagePath.public_path')) . basename($page->image);
@@ -149,9 +141,8 @@ class PageController extends Controller
 
     public function list(Request $request)
     {
-        if( !hasPermission('pages', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("pages", "list"), 401, __('messages.unauthorized_action'));
+
         if ($request->ajax()) {
             $data = Page::latest()->get();
 
@@ -205,7 +196,7 @@ class PageController extends Controller
             'modified_by' => ''
         ], [
             "slug.unique" => __('messages.unique', ['attribute' => 'Slug']),
-            "image.max" => __('messages.max_image', ['limit' => '2 MB']),
+            "image.max" => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }
 
@@ -242,8 +233,13 @@ class PageController extends Controller
                     return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
-
         }
+    }
 
+    private function parseDate($date) {
+        if ($date) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $date))));
+        }
+        return null;
     }
 }

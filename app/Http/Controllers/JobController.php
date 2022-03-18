@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Carbon\Carbon;
-use DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 
 class JobController extends Controller
 {
@@ -18,9 +18,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('jobs', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.jobs.index');
     }
@@ -32,9 +30,7 @@ class JobController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('jobs', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "create"), 401, __('messages.unauthorized_action'));
 
         $job = new Job();
         return view('admin.jobs.create', compact('job'));
@@ -48,14 +44,15 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('jobs', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "create"), 401, __('messages.unauthorized_action'));
 
         $job = new Job();
         $job = $this->validateRequest($job);
         $job['slug'] = Str::slug($job['title']);
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
+        $job['start_datetime'] = $this->parseDate($request->start_datetime);
+        $job['end_datetime'] = $this->parseDate($request->end_datetime);
+        
         $job = Job::create($job);
         $this->storeImage($job);
 
@@ -76,9 +73,7 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        if( !hasPermission('jobs', 'view') ){
-            return abort(403);
-        }
+        // abort_if(!hasPermission("jobs", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.jobs.show', compact('job'));
     }
@@ -91,9 +86,7 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        if( !hasPermission('jobs', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.jobs.edit', compact('job'));
     }
@@ -107,13 +100,14 @@ class JobController extends Controller
      */
     public function update(Request $request, Job $job)
     {      
-        if( !hasPermission('jobs', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "edit"), 401, __('messages.unauthorized_action'));
+
         $previousImage = $job->image;
         $data = $this->validateRequest($job);
         $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $data['slug'] = Str::slug($data['title']);
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
         $job->update($data);
         $this->storeImage($job, $previousImage);
 
@@ -137,13 +131,9 @@ class JobController extends Controller
      */
     public function destroy(Job $job)
     {
-        if( !hasPermission('jobs', 'delete') ){
-            return abort(403);
-        }
-        if ($job->image !== null) {
-            $file_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($job->image);
-            unlink($file_path);
-        }
+        abort_if(!hasPermission("jobs", "delete"), 401, __('messages.unauthorized_action'));
+
+        $job->image !== null && removeFile(Job::STORAGE_DIRECTORY, $job->image);
 
         $job->delete();
         return redirect()->route('admin.jobs.index')->with('success', 'Job Deleted Successfully!');
@@ -157,13 +147,12 @@ class JobController extends Controller
      */
     public function list(Request $request)
     {
-        if( !hasPermission('jobs', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Job::latest()->get();
-            return Datatables::of($data)
+
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
                     return truncateWords($row->title, 30);
@@ -214,18 +203,14 @@ class JobController extends Controller
 
     public function getJobApplications (Job $job) {
 
-        if (!hasPermission('jobs', 'view_applications')) {
-            return abort(403);
-        }
+        // abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
         return view('admin.applications.index',compact('job'));
     }
 
-    public function getApplicationsList(Request $request,Job $job) {
+    public function getApplicationsList(Request $request, Job $job) {
 
-        if (!hasPermission('jobs', 'view_applications')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
         $job = Job::find($job->id);
         $data = $job->applications;
@@ -280,9 +265,7 @@ class JobController extends Controller
 
     public function exportApplicationsList(Request $request,Job $job) {
 
-        if (!hasPermission('jobs', 'export_applications')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("jobs", "export_applications"), 401, __('messages.unauthorized_action'));
 
         $job = Job::find($job->id);
         $data = $job->applications;
@@ -340,46 +323,33 @@ class JobController extends Controller
             'created_by' => '',
             'modified_by' => ''
         ], [
-            "image.max" => __('messages.max_image', ['limit' => '2 MB']),
+            "image.max" => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }
 
 
-    private function storeImage($job, $previousImage = null){
-
-        if(request()->has('image')){
-
-            // remove previous file
-            if ($previousImage !== null) {
-                $file_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($previousImage);
-                unlink($file_path);
-            }
-
-            $uploadFile = request()->file('image');
-            $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.jobImagePath.internal_path'), $file_name);
-
-            $job->update([
-                'image' => $file_name,
-            ]);
+    private function storeImage($job, $oldFile = null) {
+        if (request()->hasFile('image')) {
+            $job->update(['image' => storeFile(Job::STORAGE_DIRECTORY, request()->file('image'), $oldFile)]);
         }
     }
 
-    public function deleteImage(Request $request){
+    public function deleteImage(Request $request) {
         if ($request->ajax()) {
-            if( isset($request->job_id) ){
+            if (isset($request->job_id)) {
                 $job = Job::find($request->job_id);
-                $image_path = public_path(config('filepaths.jobImagePath.public_path')) . basename($job->image);
-                if( unlink($image_path) ){
-                    $job->image = null;
-                    $job->update();
-
+                if ($job && removeFile(Job::STORAGE_DIRECTORY, $job->image)) {
+                    $job->update(['image' => null]);
                     return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
                 }
             }
-
         }
-
     }
 
+    private function parseDate($date) {
+        if ($date) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $date))));
+        }
+        return null;
+    }
 }

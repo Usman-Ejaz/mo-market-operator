@@ -31,8 +31,8 @@ class SiteSearchApiController extends BaseApiController
      *      path="/search",
      *      operationId="siteSearch",
      *      tags={"Site Search"},
-     *      summary="Search records from the whole site. (FAQs, Pages, Documents, News, Pages)",
-     *      description="Search records from the whole site. (FAQs, Pages, Documents, News, Pages)",
+     *      summary="Search records from the whole site. (FAQs, Jobs, Documents, Posts, Pages)",
+     *      description="This search API will work for FAQs, Posts, Jobs and Pages when 'type' property is not set or 'type' property is set to 'web_content'. If the 'type' property is set to 'document' then the API will only search from the Documents Module",
      *      security={{"BearerAppKey": {}}},
      * 
      *      @OA\RequestBody(
@@ -53,6 +53,7 @@ class SiteSearchApiController extends BaseApiController
      *                  required={"key"},
      *                  example={
      *                      "key": "John Doe",
+     *                      "type": ""
      *                  }
      *              )
      *          )

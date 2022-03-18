@@ -17,9 +17,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('roles', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("roles", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.roles.index');
     }
@@ -31,9 +29,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('roles', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("roles", "create"), 401, __('messages.unauthorized_action'));
 
         $role = new Role();
         return view('admin.roles.create', compact('role'));
@@ -47,15 +43,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('roles', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("roles", "create"), 401, __('messages.unauthorized_action'));
 
         $role = new Role();
-        $role = Role::create( $this->validateRequest($role) );
+        $role = Role::create($this->validateRequest($role));
 
         $request->session()->flash('success', 'Role Added Successfully!');
-        return redirect()->route('admin.roles.index');
+        return redirect()->route('admin.permissions.index');
     }
 
     /**
@@ -66,9 +60,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        if( !hasPermission('roles', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("roles", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.roles.show', compact('role'));
     }
@@ -81,9 +73,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        if( !hasPermission('roles', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("roles", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.roles.edit', compact('role'));
     }
@@ -97,9 +87,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        if( !hasPermission('roles', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("roles", "edit"), 401, __('messages.unauthorized_action'));
 
         $role->update($this->validateRequest($role));
 
@@ -115,9 +103,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        if( !hasPermission('roles', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("roles", "delete"), 401, __('messages.unauthorized_action'));
+
         try {
             $role->delete();
         } catch (\Illuminate\Database\QueryException $ex) {
@@ -130,9 +117,7 @@ class RoleController extends Controller
 
     public function list(Request $request)
     {
-        if( !hasPermission('roles', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("roles", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Role::latest()->get();

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'role_id',
+        'designation',
         'department',
         'image',
         'active',
@@ -55,6 +56,8 @@ class User extends Authenticatable
     protected $attributes = [
          'active' => 1
     ];
+
+    public const STORAGE_DIRECTORY = 'users/';
 
     /********* Getters ***********/
     public function getActiveAttribute($attribute){

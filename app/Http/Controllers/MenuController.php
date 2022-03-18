@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DocumentCategory;
 use App\Models\Menu;
 use App\Models\Page;
+use App\Models\Post;
+use App\Models\Settings;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,11 +25,11 @@ class MenuController extends Controller
      */
     public function index()
     {
-        if( !hasPermission('menus', 'list') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "list"), 401, __('messages.unauthorized_action'));
 
-        return view('admin.menus.index');
+        $theme = Settings::where('name', 'current_theme')->first();
+
+        return view('admin.menus.index', ['currentTheme' => $theme->value]);
     }
 
     /**
@@ -36,9 +39,7 @@ class MenuController extends Controller
      */
     public function create()
     {
-        if( !hasPermission('menus', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "create"), 401, __('messages.unauthorized_action'));
 
         $menu = new Menu();
         return view('admin.menus.create', compact('menu'));
@@ -52,9 +53,7 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        if( !hasPermission('menus', 'create') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "create"), 401, __('messages.unauthorized_action'));
 
         $menu = new Menu();
         $menu = Menu::create( $this->validateRequest($menu) );
@@ -71,9 +70,7 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        if( !hasPermission('menus', 'view') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.menus.show', compact('menu'));
     }
@@ -86,9 +83,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        if( !hasPermission('menus', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "edit"), 401, __('messages.unauthorized_action'));
 
         return view('admin.menus.edit', compact('menu'));
     }
@@ -102,9 +97,7 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
-        if( !hasPermission('menus', 'edit') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "edit"), 401, __('messages.unauthorized_action'));
 
         $menu->update($this->validateRequest($menu));
 
@@ -120,9 +113,7 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        if( !hasPermission('menus', 'delete') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "delete"), 401, __('messages.unauthorized_action'));
 
         $menu->delete();
         return redirect()->route('admin.menus.index')->with('success', 'Menu Deleted Successfully!');
@@ -135,11 +126,11 @@ class MenuController extends Controller
      */
     public function submenus(Menu $menu)
     {
-        if( !hasPermission('menus', 'submenus') ){
-            return abort(403);
-        }
+        abort_if(!hasPermission("menus", "submenus"), 401, __('messages.unauthorized_action'));
 
-        $pages = Page::where('active', 1)->pluck('title', 'id')->all();
+        $pages = Page::where('published_at', '!=', null)->pluck('title', 'id')->all();
+        $documentCategories = DocumentCategory::pluck('id', 'name')->all();
+        $postCategories = (new Post)->postCategoryOptions();
 
         $submenus = json_decode($menu->submenu_json, true);
         $html = '';
@@ -150,7 +141,7 @@ class MenuController extends Controller
 
         $lastSubMenuId = $this->lastSubMenuId;
 
-        return view('admin.menus.submenus', compact('menu', 'html', 'pages', 'lastSubMenuId'));
+        return view('admin.menus.submenus', compact('menu', 'html', 'pages', 'lastSubMenuId', 'documentCategories', 'postCategories'));
     }
 
 
@@ -166,6 +157,12 @@ class MenuController extends Controller
             } else if ( isset($item['anchor']) ){
                 $dataAttribute = 'data-anchor="'.$item['anchor'].'"';
                 $type="anchor";
+            } else if (isset($item['post'])) {
+                $dataAttribute = 'data-post="'.$item['post'].'"';
+                $type="post category";
+            } else if (isset($item['doc'])) {
+                $dataAttribute = 'data-doc="'.$item['doc'].'"';
+                $type="document category";
             }
 
             if( isset($item['title']) ){
@@ -209,12 +206,10 @@ class MenuController extends Controller
 
     public function list(Request $request)
     {
-        if( !hasPermission('menus', 'list') ){
-            return abort(403);
-        }
-
+        abort_if(!hasPermission("menus", "list"), 401, __('messages.unauthorized_action'));
+        
         if ($request->ajax()) {
-            $data = Menu::latest()->get();
+            $data = Menu::byTheme($request->query('theme'))->latest()->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -260,6 +255,105 @@ class MenuController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    public function search(Request $request) 
+    {
+        if (!$request->ajax()) {
+            return response('Bad Request', 400);
+        }
+
+        $searchKey = $request->get('searchKey');
+
+        switch($request->get('id')) {
+            case 'page-search':
+                return $this->searchPages($searchKey);
+                break;
+            case 'document-categories':
+                return $this->searchDocumentCategories($searchKey);
+                break;
+            case 'post-categories':
+                return $this->searchPostCategories($searchKey);
+                break;
+        }
+    }
+
+    private function searchPages($searchKey) 
+    {
+        $pages = Page::where('title', 'like', "%{$searchKey}%")->where('slug', 'like', "%{$searchKey}%");
+        $pages = $pages->where('published_at', '!=', null)->get();
+        
+        $html = "";
+        
+        if ($pages->count() > 0) {
+            foreach ($pages as $page) {
+                $html .= '
+                <li>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="pages['. $page->id .']" value="" data-page="'. $page->id .'" data-title="'. $page->title .'">
+                            '. truncateWords($page->title, 35) .'
+                            <a href="'. route("admin.pages.edit", $page->id) .'" target="_blank"> <i class="fa fa-link"></i></a>
+                        </label>
+                    </div>
+                </li>
+                ';
+            }
+        }
+        return $html;
+    }
+
+    private function searchDocumentCategories($searchKey) 
+    {
+        $documentCategories = DocumentCategory::where('name', 'like', "%{$searchKey}%")->get();
+        
+        $html = "";
+        
+        if ($documentCategories->count() > 0) {
+            foreach ($documentCategories as $documentCategory) {
+                $html .= '
+                <li>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="documentCategories['. $documentCategory->id .']" value="" data-doc="'. $documentCategory->id .'" data-title="'. $documentCategory->name .'">
+                            '. truncateWords($documentCategory->name, 35) .'
+                            <a href="'. route("admin.document-categories.edit", $documentCategory->id) .'" target="_blank"> <i class="fa fa-link"></i></a>
+                        </label>
+                    </div>
+                </li>
+                ';
+            }
+        }
+        return $html;
+    }
+
+    private function searchPostCategories($searchKey) 
+    {
+        $post = new Post;
+        $postCategories = collect($post->postCategoryOptions());
+
+        if (!empty($searchKey)) {
+            $postCategories = $postCategories->filter( function ($item) use ($searchKey) { 
+                return strpos(strtolower($item), strtolower($searchKey)) !== false;
+            });
+        }
+
+        $html = "";
+        if ($postCategories->count() > 0) {
+            foreach ($postCategories as $key => $documentCategory) {
+                $html .= '
+                <li>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="postCategories['. $key .']" value="" data-post="'. $key .'" data-title="'. $documentCategory .'">
+                            '. truncateWords($documentCategory, 35) .'
+                        </label>
+                    </div>
+                </li>
+                ';
+            }
+        }
+        return $html;
     }
 
     private function validateRequest($menu){

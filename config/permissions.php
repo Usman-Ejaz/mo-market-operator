@@ -32,8 +32,8 @@ return [
         ]
     ],
     [
-        "name" => "news",
-        "display_name" => "News",
+        "name" => "posts",
+        "display_name" => "Posts",
         "capabilities" => [
             "list" => "List",
             //"view" => "View",
@@ -60,14 +60,6 @@ return [
         ]
     ],
     [
-        "name" => "applications",
-        "display_name" => "Applications of job",
-        "capabilities" => [
-            "view" => "View",
-            "delete" => "Delete",
-        ]
-    ],
-    [
         "name" => "pages",
         "display_name" => "Pages",
         "capabilities" => [
@@ -80,7 +72,7 @@ return [
         ]
     ],
     [
-        "name" => "faq-categories",
+        "name" => "faq_categories",
         "display_name" => "Faq Categories",
         "capabilities" => [
             "list" => "List",
@@ -103,7 +95,7 @@ return [
         ]
     ],
     [
-        "name" => "document-categories",
+        "name" => "document_categories",
         "display_name" => "Document Categories",
         "capabilities" => [
             "list" => "List",
@@ -165,7 +157,7 @@ return [
         ]
     ],    
     [
-        "name" => "contact-page-queries",
+        "name" => "contact_page_queries",
         "display_name" => "Contact Page Queries",
         "capabilities" => [
             "list" => "List",
@@ -174,17 +166,17 @@ return [
         ]
     ],
     [
-        "name" => "search-statistics",
+        "name" => "search_statistics",
         "display_name" => "Search Statistics",
         "capabilities" => [
             "list" => "List",
-            "view" => "View",
-            "delete" => "Delete",
+            // "view" => "View",
+            // "delete" => "Delete",
             "export_keywords" => "Export Keywords"
         ]
     ],
     [
-        "name" => "knowledge-base",
+        "name" => "knowledge_base",
         "display_name" => "Chatbot Knowledge Base",
         "capabilities" => [
             "list" => "List",
@@ -193,6 +185,26 @@ return [
             "delete" => "Delete",
             // "view" => "View",
             // "publish" => "Publish"
+        ]
+    ],
+    [
+        "name" => "clients",
+        "display_name" => "Clients",
+        "capabilities" => [
+            "list" => "List",
+            "delete" => "Delete",
+            "view" => "View"
+        ]
+    ],
+    [
+        "name" => "static_block",
+        "display_name" => "Static Block",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            "view" => "View"
         ]
     ],
 ];

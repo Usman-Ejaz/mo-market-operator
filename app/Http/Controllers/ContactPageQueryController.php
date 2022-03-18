@@ -17,9 +17,7 @@ class ContactPageQueryController extends Controller
      */
     public function index()
     {
-        if (!hasPermission("contact-page-queries", "list")) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("contact_page_queries", "list"), 401, __('messages.unauthorized_action'));
 
         return view("admin.contact-page-queries.index");
     }
@@ -53,9 +51,7 @@ class ContactPageQueryController extends Controller
      */
     public function show(ContactPageQuery $contactPageQuery)
     {
-        if (!hasPermission('contact-page-queries', 'view')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("contact_page_queries", "view"), 401, __('messages.unauthorized_action'));
 
         return view("admin.contact-page-queries.show", compact('contactPageQuery'));
     }
@@ -91,9 +87,7 @@ class ContactPageQueryController extends Controller
      */
     public function destroy(ContactPageQuery $contactPageQuery)
     {
-        if (!hasPermission('contact-page-queries', 'delete')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("contact_page_queries", "delete"), 401, __('messages.unauthorized_action'));
 
         $contactPageQuery->delete();
         return redirect()->route('admin.contact-page-queries.index')->with('success', 'Query Deleted Successfully!');
@@ -101,9 +95,7 @@ class ContactPageQueryController extends Controller
 
     public function list(Request $request)
     {
-        if (!hasPermission('contact-page-queries', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("contact_page_queries", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = ContactPageQuery::latest()->get();
@@ -127,17 +119,17 @@ class ContactPageQueryController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';
-                    if (hasPermission('contact-page-queries', 'edit')) {
+                    if (hasPermission('contact_page_queries', 'edit')) {
                         $options .= '<a href="' . route('admin.contact-page-queries.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if (hasPermission('contact-page-queries', 'view')) {
+                    if (hasPermission('contact_page_queries', 'view')) {
                         $options .= '<a href="' . route('admin.contact-page-queries.show', $row->id) . '" class="btn btn-primary" title="View">
                             <i class="fas fa-eye"></i>
                         </a>';
                     }
-                    if (hasPermission('contact-page-queries', 'delete')) {
+                    if (hasPermission('contact_page_queries', 'delete')) {
                         $options .= ' <form action="'. route('admin.contact-page-queries.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
@@ -152,15 +144,5 @@ class ContactPageQueryController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-    }
-
-    private function validateRequest($request) {
-
-        return $request->validate([
-            'name' => 'required|min:3|max:100',
-            'email' => 'required|email',
-            'subject' => 'required|min:5|max:100',
-            'message' => 'required|min:5|max:255',
-        ]);
     }
 }

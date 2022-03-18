@@ -22,9 +22,7 @@ class SearchStatisticController extends Controller
      */
     public function index()
     {
-        if (!hasPermission('search-statistics', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search_statistics", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.search-statistics.index');
     }
@@ -37,9 +35,7 @@ class SearchStatisticController extends Controller
      */
     public function show(SearchStatistic $searchStatistic)
     {
-        if (!hasPermission('search-statistics', 'view')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search_statistics", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.search-statistics.show', compact('searchStatistic'));
     }
@@ -52,9 +48,7 @@ class SearchStatisticController extends Controller
      */
     public function destroy(SearchStatistic $searchStatistic)
     {
-        if (!hasPermission('search-statistics', 'delete')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search_statistics", "delete"), 401, __('messages.unauthorized_action'));
 
         $searchStatistic->delete();
         return redirect()->route('admin.search-statistics.index')->with('success', 'Search Keyword Deleted Successfully!');
@@ -62,59 +56,26 @@ class SearchStatisticController extends Controller
 
     public function list(Request $request)
     {
-        if (!hasPermission('search-statistics', 'list')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search_statistics", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = SearchStatistic::query();
+            $data = SearchStatistic::latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->setTotalRecords($data->count())
-                ->orderColumn('keyword', 'keyword $1')
-                ->orderColumn('count', 'count $1')
-                ->orderColumn('DT_RowIndex', 'id $1')
                 ->addColumn('keyword', function ($row) {
                     return truncateWords($row->keyword, 70);
                 })
                 ->addColumn('count', function ($row) {
                     return $row->count;
                 })
-                // ->addColumn('created_at', function ($row) {
-                //     return $row->created_at;
-                // })
-                // ->addColumn('action', function ($row) {
-                //     $options = '';
-                //     if (hasPermission('search-statistics', 'view')) {
-                //         $options .= '<a href="'. route('admin.search-statistics.show',$row->id) .'" class="btn btn-primary" title="View">
-                //             <i class="fas fa-eye"></i>
-                //         </a>';
-                //     }
-
-                //     if (hasPermission('search-statistics', 'delete')) {
-                //         $options .= ' <form action="'. route('admin.search-statistics.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                //             '.csrf_field().'
-                //             '.method_field("DELETE").'
-                //             <button type="submit" class="btn btn-danger"
-                //                 onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
-                //                     <i class="fas fa-trash"></i>
-                //             </button>
-                //         </form>';
-                //     }
-
-                //     return $options;
-                // })
-                // ->rawColumns(['action'])
                 ->make(true);
         }
     }
 
     public function exportkeywords() {
 
-        if (!hasPermission('search-statistics', 'export_keywords')) {
-            return abort(403);
-        }
+        abort_if(!hasPermission("search_statistics", "export_keywords"), 401, __('messages.unauthorized_action'));
 
         $searchStatistics = SearchStatistic::orderByCount()->get();
         
@@ -126,19 +87,19 @@ class SearchStatisticController extends Controller
             "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
             "Expires"             => "0"
         );
-        $columns = array('ID' ,'Keyword', 'Count', 'Created Date');
+        $columns = array('ID' ,'Keyword', 'Count');
 
         $callback = function() use ($searchStatistics, $columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
-
+            $counter = 1;
             foreach ($searchStatistics as $item) {
-                $row['id'] = $item->id;
+                $row['id'] = $counter;
                 $row['keyword'] = $item->keyword;
                 $row['count'] = $item->count;
-                $row['created_at'] = $item->created_at;
 
-                fputcsv($file, array($row['id'], $row['keyword'], $row['count'], $row['created_at']));
+                fputcsv($file, array($row['id'], $row['keyword'], $row['count']));
+                $counter++;
             }
 
             fclose($file);

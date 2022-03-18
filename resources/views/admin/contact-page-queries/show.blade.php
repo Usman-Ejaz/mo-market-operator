@@ -3,10 +3,10 @@
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.contact-page-queries.index') }}">Contact Page Queries</a></li>
-<li class="breadcrumb-item active">Details</li>
+<li class="breadcrumb-item active">View</li>
 @endsection
 @section('addButton')
-@if(hasPermission('contact-page-queries', 'delete'))
+@if(hasPermission('contact_page_queries', 'delete'))
 <form method="POST" action="{{ route('admin.contact-page-queries.destroy', $contactPageQuery->id) }}" class="float-right">
 	@method('DELETE')
 	@csrf
@@ -21,7 +21,7 @@
 		<div class="col-md-12">
 			<div class="card card-primary">
 				<div class="card-header">
-					<h3 class="card-title">Viewing Query - {{ $contactPageQuery->subject }}</h3>
+					<h3 class="card-title">View Query - {{ $contactPageQuery->subject }}</h3>
 				</div>
 				<div class="card-body">
 					<div class="row">

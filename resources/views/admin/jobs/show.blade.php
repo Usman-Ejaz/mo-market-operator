@@ -1,16 +1,16 @@
 @extends('admin.layouts.app')
 @section('header', 'Jobs')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-  <li class="breadcrumb-item">Jobs</li>
-  <li class="breadcrumb-item active">Details</li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+  <li class="breadcrumb-item"><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
+  <li class="breadcrumb-item active">View</li>
 @endsection
 
 @section('addButton')
 <form method="POST" action="{{ route('admin.jobs', $job->id) }}" class="float-right">
   @method('DELETE')
   @csrf
-  <button class="btn btn-danger">Delete</button>
+  <button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
 </form>
 
 <a class="btn btn-primary float-right mr-2" href="{{ route('admin.jobs.edit', $job->id)}}">Edit Job</a>
@@ -23,7 +23,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Viewing Job - {{ $job->title }}</h3>
+                <h3 class="card-title">View Job - {{ $job->title }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

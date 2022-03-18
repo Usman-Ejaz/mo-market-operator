@@ -7,7 +7,7 @@
 @endsection
 
 @section('addButton')
-@if(hasPermission('faq-categories', 'create'))
+@if(hasPermission('faq_categories', 'create'))
   <a class="btn btn-primary float-right" href="{{ route('admin.faq-categories.create') }}">Add New Category</a>
 @endif
 @endsection
