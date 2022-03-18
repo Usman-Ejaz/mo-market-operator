@@ -21,30 +21,9 @@ class ClientController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param  Client  $client
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
     public function show(Client $client)
@@ -57,10 +36,10 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Client $client)
     {
         //
     }
@@ -69,10 +48,10 @@ class ClientController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Client $client)
     {
         //
     }
@@ -80,7 +59,7 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Client  $client
+     * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
     public function destroy(Client $client)
@@ -101,10 +80,9 @@ class ClientController extends Controller
         abort_if(! hasPermission("clients", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = Client::query();
+            $data = Client::latest()->get();
 
             return DataTables::of($data)
-            ->addIndexColumn()
             ->addColumn('name', function ($row) {
                 return ( isset($row->name)) ? $row->name : '';
             })
@@ -117,7 +95,6 @@ class ClientController extends Controller
             ->addColumn('status', function ($row) {
                 return $row->status();
             })
-            ->orderColumn('created_at', 'created_at $1')
             ->addColumn('created_at', function ($row) {
                 return ($row->created_at) ? $row->created_at : '';
             })
