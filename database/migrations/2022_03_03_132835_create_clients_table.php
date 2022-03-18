@@ -22,7 +22,7 @@ class CreateClientsTable extends Migration
             $table->string('type')->index();
             $table->string('image')->nullable();
             $table->text('address');
-            $table->string('categories');
+            $table->string('categories')->nullable();
             $table->boolean('approved')->default(0)->index();
             $table->string('pri_name');
             $table->string('pri_address');

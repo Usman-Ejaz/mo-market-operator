@@ -13,7 +13,7 @@ class BaseApiController extends Controller
      *      title="ISMO API Documentation",
      *      description="Ismo Api documentation description",
      *      @OA\Contact(
-     *          email="usman.ejaz@nxb.com.pk"
+     *          email="contact@nxb.com.pk"
      *      ),
      *      @OA\License(
      *          name="Apache 2.0",

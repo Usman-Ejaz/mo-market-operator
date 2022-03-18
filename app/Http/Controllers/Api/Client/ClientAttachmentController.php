@@ -40,7 +40,7 @@ class ClientAttachmentController extends BaseApiController
      *                      title="attachment",
      *                      type="file"
      *                  ),
-     *                  required={"category", "phrase", "attachment"}
+     *                  required={"phrase", "attachment"}
      *             )
      *         )
      *      ),
@@ -63,7 +63,7 @@ class ClientAttachmentController extends BaseApiController
     {
         $validator = Validator::make($request->all(), [
             'attachment' => 'required|file|max:5000',
-            'category' => 'required|string',
+            'category' => 'sometimes|string',
             'phrase' => 'required|string'
         ], [
             'attachment.max' => __('messages.max_file', ['limit' => '5 MB'])
@@ -138,7 +138,7 @@ class ClientAttachmentController extends BaseApiController
     public function destroy(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category' => 'required|string',
+            'category' => 'sometimes|number',
             'phrase' => 'required|string'
         ]);
 
@@ -147,7 +147,7 @@ class ClientAttachmentController extends BaseApiController
         }
 
         try {
-            $attachment = ClientAttachment::findRecord($request->user()->id, $request->category, $request->phrase)->first();
+            $attachment = ClientAttachment::findRecord($request->user()->id, $request->category ?? null, $request->phrase)->first();
 
             if ($attachment) {
                 removeFile(ClientAttachment::DIR, $attachment->file);

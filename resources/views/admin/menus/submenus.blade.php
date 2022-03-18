@@ -137,43 +137,44 @@
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary">
-                        <h5 class="modal-title" id="exampleModalLabel">Update Submenu</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="usr">Menu Title:</label>
-                            <input type="text" class="form-control" id="MenuTitle">
+                    <form action="" method="POST" id="update-submenus-form" onsubmit="return false;">
+                        <div class="modal-header bg-primary">
+                            <h5 class="modal-title" id="exampleModalLabel">Update Submenu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="type">
-                            <label> <input type="radio" name="menuType" value="anchor" checked="checked"> Anchor </label>
-                            <label style="margin-left:15px;"> <input type="radio" name="menuType" value="page"> Page </label>
-                        </div>
-                        <div class="form-group">
-                            <div id="anchor">
-                                <label for="usr">Anchor:</label>
-                                <input type="text" class="form-control" id="menuAnchor">
-                                <span id="editUrlError" class="error invalid-feedback">Please provide a valid url</span>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="usr">Menu Title:</label>
+                                <input type="text" class="form-control" id="MenuTitle" name="submenu_title">
                             </div>
-                            <div id="page" style="display:none;">
-                                <label for="usr">Page:</label>
-                                <select class="form-control" id="menuPage">
-                                    @foreach($pages as $id => $title)
-                                        <option value="{{ $id }}">{{ $id }} - {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="type">
+                                <label> <input type="radio" name="menuType" value="anchor" checked="checked"> Anchor </label>
+                                <label style="margin-left:15px;"> <input type="radio" name="menuType" value="page"> Page </label>
                             </div>
+                            <div class="form-group">
+                                <div id="anchor">
+                                    <label for="usr">Anchor:</label>
+                                    <input type="text" class="form-control" id="menuAnchor" name="submenu_anchor">
+                                </div>
+                                <div id="page" style="display:none;">
+                                    <label for="usr">Page:</label>
+                                    <select class="form-control" id="menuPage" name="submenu_page">
+                                        @foreach($pages as $id => $title)
+                                            <option value="{{ $id }}">{{ $id }} - {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" id="currentMenuId" value="" />
                         </div>
-                        <input type="hidden" id="currentMenuId" value="" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
-                        <button type="button" class="btn btn-primary" id="saveButton">Save changes</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+                            <button type="submit" class="btn btn-primary" id="saveButton">Save changes</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -182,42 +183,45 @@
         <div class="modal fade" id="addNewSubmenuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header bg-primary">
-                        <h5 class="modal-title" id="exampleModalLabel">Add new Submenu</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="usr">Menu Title:</label>
-                            <input type="text" class="form-control" id="NewMenuTitle">
+                    <form action="" method="POST" id="create-submenus-form" onsubmit="return false;">
+                        <div class="modal-header bg-primary">
+                            <h5 class="modal-title" id="exampleModalLabel">Add new Submenu</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="type">
-                            <label> <input type="radio" name="newMenuType" value="anchor" checked="checked"> Anchor </label>
-                            <label style="margin-left:15px;"> <input type="radio" name="newMenuType" value="page"> Page </label>
-                        </div>
-                        <div class="form-group">
-                            <div id="newAnchor">
-                                <label for="usr">Anchor:</label>
-                                <input type="text" class="form-control" id="newMenuAnchor">
-                                <span id="newUrlError" class="error invalid-feedback">Please provide a valid url</span>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="usr">Menu Title:</label>
+                                <input type="text" class="form-control" id="NewMenuTitle" name="submenu_title">
                             </div>
-                            <div id="newPage" style="display:none;">
-                                <label for="usr">Page:</label>
-                                <select class="form-control" id="newMenuPage">
-                                    @foreach($pages as $id => $title)
-                                        <option value="{{ $id }}">{{ $id }} - {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}</option>
-                                    @endforeach
-                                </select>
+                            <div class="type">
+                                <label> <input type="radio" name="newMenuType" value="anchor" checked="checked"> Anchor </label>
+                                <label class="ml-2"> <input type="radio" name="newMenuType" value="page" id="menuTypeRadio"> Page </label>
                             </div>
+                            <div class="form-group">
+                                <div id="newAnchor">
+                                    <label for="usr">Anchor:</label>
+                                    <input type="text" class="form-control" id="newMenuAnchor" name="submenu_anchor">
+                                    <span id="newUrlError" class="my-error-class" style="display: none;">Please provide a valid url</span>
+                                </div>
+                                <div id="newPage" style="display:none;">
+                                    <label for="usr">Page:</label>
+                                    <select class="form-control" id="newMenuPage" name="submenu_page">
+                                        @foreach($pages as $id => $title)
+                                            <option value="{{ $id }}">{{ $id }} - {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span id="newUrlError" class="my-error-class" style="display: none;">Please provide a valid url</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="newCurrentMenuId" value="" />
                         </div>
-                        <input type="hidden" id="newCurrentMenuId" value="" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="newSaveButton">Save changes</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="newSaveButton">Save changes</button>
+                        </div>
+                    </form>                    
                 </div>
             </div>
         </div>
@@ -237,6 +241,15 @@
     <script>
         $(document).ready(function(){
 
+            $.validator.addMethod("notNumericValues", function(value, element) {
+                return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
+            }, '{{ __("messages.not_numeric") }}');
+
+            $.validator.addMethod("validURL", function(value, element) {
+                var pattern = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
+                return (this.optional(element) || value === "#" || pattern.test(value));
+            }, 'Please enter a valid URL.');
+
             $('#update-menus-form').validate({
                 errorElement: 'span',
                 errorClass: "my-error-class",
@@ -244,10 +257,63 @@
                 rules:{
                     name: {
                         required: true,
-                        maxlength: 255
+                        maxlength: 255,
+                        notNumericValues: true,
                     }
                 }
             });
+
+            $('#create-submenus-form').validate({
+                ignore: [],
+                errorElement: 'span',
+                errorClass: "my-error-class",
+                validClass: "my-valid-class",
+                rules: {
+                    submenu_title: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 255,
+                        notNumericValues: true,
+                    },
+                    submenu_anchor: {
+                        required: true,
+                        validURL: true,
+                    },
+                    submenu_page: {
+                        required: {
+                            depends: function () {
+                                return $('#menuTypeRadio').is(':checked');
+                            }
+                        }
+                    }
+                }
+            })
+
+            $('#update-submenus-form').validate({
+                ignore: [],
+                errorElement: 'span',
+                errorClass: "my-error-class",
+                validClass: "my-valid-class",
+                rules: {
+                    submenu_title: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 255,
+                        notNumericValues: true,
+                    },
+                    submenu_anchor: {
+                        required: true,
+                        validURL: true,
+                    },
+                    submenu_page: {
+                        required: {
+                            depends: function () {
+                                return $('#menuTypeRadio').is(':checked');
+                            }
+                        }
+                    }
+                }
+            })
 
             // Update json for submenu order
             var updateOutput = function(e)
@@ -392,13 +458,13 @@
             });
 
             // On save modal
-            $('#addNewSubmenuModal #newUrlError').hide();
+            $('#addNewSubmenuModal #newUrlError #newTitleError').hide();
             $('body').on('click','#newSaveButton',function(){
                 lastSubMenuId = lastSubMenuId + 1;
                 let menuIdToUpdate = $('#newCurrentMenuId').val();
 
                 // Set title
-                let title = '';
+                let title = $('#NewMenuTitle').val();
                 if( $('#NewMenuTitle').val() != '' ) {
                     title = $('#NewMenuTitle').val();
                     $("li[data-id='" + menuIdToUpdate +"']").attr( 'data-title', title );
@@ -412,7 +478,7 @@
                 if(menuType == 'anchor'){
                     let anchor = $("#newMenuAnchor").val();
                     attributes = "data-anchor='"+anchor+"' data-title='"+title+"'";
-                    html = lastSubMenuId + ' - ( anchor ) ' + title;
+                    html = lastSubMenuId + ' ( anchor ) ' + title;
 
                     // check if valid url
                     let regex = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;

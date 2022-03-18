@@ -202,7 +202,6 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "category",
                                     "phrase",
                                     "attachment"
                                 ],

@@ -18,11 +18,15 @@ class ClientAttachment extends Model
     }    
 
     public function category() {
-        return ucwords(Client::REGISTER_CATEGORIES[$this->category_id]);        
+        return ucwords(Client::REGISTER_CATEGORIES[$this->category_id]);
     }
 
     public function scopeFindRecord($query, $clientId, $categoryId, $phrase) {
         return $query->where(['client_id' => $clientId, 'category_id' => $categoryId, 'phrase' => strtolower($phrase)]);
+    }
+
+    public function getPhraseAttribute($value) {
+        return $value ? ucfirst(str_replace("_", " ", $value)) : "";
     }
 
 }
