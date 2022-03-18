@@ -138,7 +138,7 @@ class ClientAttachmentController extends BaseApiController
     public function destroy(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category' => 'sometimes|number',
+            'category' => 'sometimes|string',
             'phrase' => 'required|string'
         ]);
 
