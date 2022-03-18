@@ -98,6 +98,12 @@
 					required: true,
 				}
 			},
+			errorPlacement: function(error, element) {
+				if (element.attr("id") == "image") {
+					element.next().text('');
+				}
+				error.insertAfter(element);
+			},
 			messages: {
 				image: '{{ __("messages.valid_file_extension") }}',
 				name: {
