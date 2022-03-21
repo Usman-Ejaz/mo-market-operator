@@ -115,18 +115,24 @@ class DocumentController extends Controller
     public function update(Request $request, Document $document)
     {        
         abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
-        $filename = basename($document->file);
+
         $data = $this->validateRequest($document);
-        $extension = explode('.', $filename)[1];
+        
+        $filename = $document->file ? basename($document->file) : null;
+        $extension = $filename ? explode('.', $filename)[1] : "";
 
         if ($request->hasFile('file')) {
             $filename = storeFile(Document::STORAGE_DIRECTORY, $request->file('file'), $filename);
             $extension = $request->file('file')->getClientOriginalExtension();
         }
         
-        if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked            
-            if (in_array($extension, $this->allowedFileExtensions)) {
-                $filename = $this->convertFile($filename);
+        if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked
+            if ($filename !== null) {
+                if (in_array($extension, $this->allowedFileExtensions)) {
+                    $filename = $this->convertFile($filename);
+                }
+            } else {
+                // please upload the document first.
             }
         }
         $data['file'] = $filename;
