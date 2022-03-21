@@ -15,7 +15,11 @@
 				<select class="custom-select" name="category_id" id="category_id">
 					<option value="">Please select a category</option>
 					@foreach($categories as $category)
-					<option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
+						@if(old('category_id') == $category->id)
+							<option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+						@else
+							<option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
+						@endif
 					@endforeach
 				</select>
 				<span class="form-text text-danger">{{ $errors->first('category') }} </span>
@@ -37,7 +41,7 @@
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="file" class="form-label">Document File <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, txt, ppt, pptx, csv, xls, xlsx, pdf, odt)</small> </label>
-				<input class="form-control" type="file" id="file" name="file">
+				<input class="form-control" type="file" id="file" name="file" onchange="resetConvertCheckbox()">
 				<span class="form-text text-danger">{{ $errors->first('file') }} </span>
 				@if(isset($document->file) && !empty($document->file))
 				<small class="fileExists">

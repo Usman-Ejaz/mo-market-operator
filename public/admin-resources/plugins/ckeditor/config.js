@@ -28,10 +28,23 @@ CKEDITOR.editorConfig = function( config ) {
         '/',
         { name: 'styles', groups: [ 'styles' ] },        
         '/',
-        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align',/* 'bidi', 'paragraph'*/ ] },
         { name: 'links', groups: [ 'links' ] },
         { name: 'insert', groups: [ 'insert' ] }        
     ];
 
     config.removeButtons = 'Save,NewPage,ExportPdf,Preview,Print,Source,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField';
 };
+
+CKEDITOR.on("instanceReady", function(event) {
+    event.editor.on("beforeCommandExec", function(event) {
+        // Show the paste dialog for the paste buttons and right-click paste
+        if (event.data.name == "paste") {
+            event.editor._.forcePasteDialog = true;
+        }
+        // Don't show the paste dialog for Ctrl+Shift+V
+        if (event.data.name == "pastetext" && event.data.commandData.from == "keystrokeHandler") {
+            event.cancel();
+        }
+    })
+}); 
