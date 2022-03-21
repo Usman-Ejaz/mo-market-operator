@@ -118,14 +118,14 @@ class DocumentController extends Controller
 
         $filename = basename($document->file);
         $data = $this->validateRequest($document);
+        $extension = explode('.', $filename)[1];
 
         if ($request->hasFile('file')) {
             $filename = storeFile(Document::STORAGE_DIRECTORY, $request->file('file'), $filename);
+            $extension = $request->file('file')->getClientOriginalExtension();
         }
         
-        if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked
-            
-            $extension = $request->file('file')->getClientOriginalExtension();
+        if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked            
             if (in_array($extension, $this->allowedFileExtensions)) {
                 $filename = $this->convertFile($filename);
             }
