@@ -115,7 +115,6 @@ class DocumentController extends Controller
     public function update(Request $request, Document $document)
     {        
         abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
-
         $filename = basename($document->file);
         $data = $this->validateRequest($document);
         $extension = explode('.', $filename)[1];
@@ -130,7 +129,6 @@ class DocumentController extends Controller
                 $filename = $this->convertFile($filename);
             }
         }
-
         $data['file'] = $filename;
         
         if ($request->action === "Published") {
@@ -228,15 +226,10 @@ class DocumentController extends Controller
         ]);
     }
 
-    private function storeFile($document, $previousFile = null) {
-        if (request()->has('file')) {
-            return storeFile(Document::STORAGE_DIRECTORY, request()->file('image'), $previousFile);
-        }
-    }
-
     private function convertFile($filename)
     {
-        $storagePath = config('filesystems.disks.app.root');
+        $storagePath = config('filesystems.disks.app.root') . '/' . Document::STORAGE_DIRECTORY;
+
         $storageFile = $storagePath . $filename;
         
         exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir '.$storagePath.' '.$storageFile);
