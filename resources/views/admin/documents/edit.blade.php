@@ -206,6 +206,10 @@
 			return;
 		}		
 	}
+
+	function resetConvertCheckbox() {
+		document.getElementById('convert').checked = false;
+	}
 </script>
 
 @endpush
