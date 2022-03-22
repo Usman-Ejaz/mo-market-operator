@@ -1,6 +1,6 @@
 @component('mail::message')
-    
-{{ $description }}
+
+{!! $description !!}
 
 Thanks,<br>
 {{ config('app.name') }}

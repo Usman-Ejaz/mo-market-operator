@@ -61,7 +61,7 @@ return [
     ],
     [
         "name" => "pages",
-        "display_name" => "Pages",
+        "display_name" => "CMS Pages",
         "capabilities" => [
             "list" => "List",
             //"view" => "View",

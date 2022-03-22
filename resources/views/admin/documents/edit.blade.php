@@ -47,6 +47,7 @@
 						<div class="float-right">
 
 							<input type="hidden" name="action" id="action">
+							<input type="hidden" name="removeFile" id="removeFile" value="0">
 
 							@if ($document->isPublished())
 								<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
@@ -145,23 +146,28 @@
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$("#deleteFile").click(function() {
 
+			// if (confirm('Are you sure you want to this file?')) {
+			// 	$.ajax({
+			// 		url: "{{ route('admin.documents.deleteFile') }}",
+			// 		type: 'POST',
+			// 		data: {
+			// 			_token: "{{ csrf_token() }}",
+			// 			document_id: "{{$document->id}}"
+			// 		},
+			// 		dataType: 'JSON',
+			// 		success: function(data) {
+			// 			if (data.success) {
+			// 				alert('File Deleted Successfully');
+			// 				window.location.reload();
+			// 				$('.fileExists').remove();
+			// 			}
+			// 		}
+			// 	});
+			// }
+
 			if (confirm('Are you sure you want to this file?')) {
-				$.ajax({
-					url: "{{ route('admin.documents.deleteFile') }}",
-					type: 'POST',
-					data: {
-						_token: "{{ csrf_token() }}",
-						document_id: "{{$document->id}}"
-					},
-					dataType: 'JSON',
-					success: function(data) {
-						if (data.success) {
-							alert('File Deleted Successfully');
-							window.location.reload();
-							// $('.fileExists').remove();
-						}
-					}
-				});
+				$('.fileExists').remove();
+				$("#removeFile").val("1");
 			}
 		});
 

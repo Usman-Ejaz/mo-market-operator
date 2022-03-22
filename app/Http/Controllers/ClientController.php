@@ -72,7 +72,7 @@ class ClientController extends Controller
 
         // event(new ClientHasDeletedEvent($_client));
 
-        return redirect()->back()->with('success', 'Client deleted successfully!');
+        return redirect()->route('admin.clients.index')->with('success', 'Client deleted successfully!');
     }
 
     public function list(Request $request)
