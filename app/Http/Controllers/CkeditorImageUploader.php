@@ -3,34 +3,50 @@
 namespace App\Http\Controllers;
 
 use DataTables;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 
 class CkeditorImageUploader extends Controller
-{
+{    
     /**
-     * Upload images from ckeditor
+     * upload
+     *
+     * @param  Request $request
+     * @return void
      */
-    public function upload() {
-        if (request()->has('upload')) {
+    public function upload(Request $request) {
 
-            $uploadFile = request()->file('upload');
+        $validator = Validator::make($request->all(), [
+            'upload' => 'required|file|image|max:' . config('settings.maxImageSize'),
+            'CKEditorFuncNum' => 'required|string'
+        ], [
+            'upload.max' => 'Maximum allowed size is 2MB.'
+        ], [
+            'upload' => 'file'
+        ]);
 
-            $file_name = $uploadFile->hashName();
+        if ($validator->fails()) {
+            $errors = json_encode($validator->errors());
+            echo "<script type='text/javascript'>
+                alert('$errors');
+            </script>";
+            return;
+        }
 
-            $uploadFile->storeAs(config('filepaths.ckeditorImagePath.internal_path'), $file_name);
+        $filename = storeFile('ckeditor/', $request->file('upload'), null);
 
-            $url = URL::to( config('filepaths.ckeditorImagePath.public_path').$file_name);
+        $fileURL = serveFile('ckeditor/', $filename);
 
-            $funcNum = request()->input('CKEditorFuncNum');
+        $funcNum = $request->input('CKEditorFuncNum');
             // Optional: instance name (might be used to load a specific configuration file or anything else).
-            //$CKEditor = request()->input('CKEditor') ;
+            // $CKEditor = request()->input('CKEditor') ;
             // Optional: might be used to provide localized messages.
-            //$langCode = request()->input('langCode') ;
+            // $langCode = request()->input('langCode') ;
 
             // Usually you will only assign something here if the file could not be uploaded.
-            $message = 'File Uploaded Successfully!';
-            echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '$message');</script>";
-        }
+        $message = 'File Uploaded Successfully!';
+        echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$fileURL', '$message');</script>";
     }
 
 }

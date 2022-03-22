@@ -188,7 +188,7 @@ class PageController extends Controller
             'slug' => 'required|unique:pages,slug,'.$page->id,
             'description' => 'required',
             'keywords' => 'nullable',
-            'image' => 'sometimes|file|image|max:2000',
+            'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'required',
