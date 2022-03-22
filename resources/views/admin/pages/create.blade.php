@@ -242,6 +242,10 @@
 
 			$(this).attr('placeholder', '{{ __("Enter Keywords") }}');
 		});
+
+		if (document.getElementsByClassName('label-info').length > 0) {
+			$('.bootstrap-tagsinput > input').attr('placeholder', '');
+		}
 	});
 
 	function mapDate(date) {

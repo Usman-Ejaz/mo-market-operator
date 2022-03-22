@@ -113,11 +113,11 @@ class DocumentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Document $document)
-    {        
+    {
         abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($document);
-        
+
         $filename = $document->file ? basename($document->file) : null;
         $extension = $filename ? explode('.', $filename)[1] : "";
 
@@ -125,7 +125,7 @@ class DocumentController extends Controller
             $filename = storeFile(Document::STORAGE_DIRECTORY, $request->file('file'), $filename);
             $extension = $request->file('file')->getClientOriginalExtension();
         }
-        
+
         if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked
             if ($filename !== null) {
                 if (in_array($extension, $this->allowedFileExtensions)) {
