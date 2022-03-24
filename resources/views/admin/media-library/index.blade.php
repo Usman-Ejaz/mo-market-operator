@@ -1,17 +1,13 @@
 @extends('admin.layouts.app')
-@section('header', 'Roles')
+@section('header', 'Media Library')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-<li class="breadcrumb-item active">Roles</li>
+<li class="breadcrumb-item active">Media Library</li>
 @endsection
 
 @section('addButton')
-@if( hasPermission('roles', 'create') )
-<a class="btn btn-primary float-right" href="{{ route('admin.roles.create') }}">Add Role</a>
-@endif
-
-@if( hasPermission('permissions', 'view') )
-<a class="btn btn-primary float-right mr-2" href="{{ route('admin.permissions.index') }}">Permissions</a>
+@if( hasPermission('media_library', 'create') )
+<a class="btn btn-primary float-right" href="{{ route('admin.media-library.create') }}">Add Media Library</a>
 @endif
 @endsection
 
@@ -52,13 +48,13 @@
 <script type="text/javascript">
 	$(function() {
 		var table = $('.yajra-datatable').DataTable({
-			order: [
-				[1, 'asc']
-			],
+			// order: [
+			// 	[1, 'asc']
+			// ],
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			ajax: "{{ route('admin.roles.list') }}",
+			ajax: "{{ route('admin.media-library.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
 					const searchedRecods = this.fnSettings()._iRecordsDisplay;
@@ -69,10 +65,8 @@
 				}
 			},
 			columns: [{
-					data: 'DT_RowIndex',
-					name: 'DT_RowIndex',
-					orderable: false,
-					searchable: false
+					data: 'id',
+					name: 'id',
 				},
 				{
 					data: 'name',

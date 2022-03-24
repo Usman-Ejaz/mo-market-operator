@@ -75,7 +75,7 @@
 					</tbody>
 				</table>
 
-				@if( hasPermission('permissions', 'edit') )
+				@if( hasPermission('roles_and_permissions', 'edit_permission') )
 				<div class="text-right mb-5">
 					<input type="submit" class="btn btn-primary width-120" value="Update" />
 				</div>

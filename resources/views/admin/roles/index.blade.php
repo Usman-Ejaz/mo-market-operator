@@ -6,11 +6,11 @@
 @endsection
 
 @section('addButton')
-@if( hasPermission('roles', 'create') )
+@if( hasPermission('roles_and_permissions', 'create') )
 <a class="btn btn-primary float-right" href="{{ route('admin.roles.create') }}">Add Role</a>
 @endif
 
-@if( hasPermission('permissions', 'view') )
+@if( hasPermission('roles_and_permissions', 'view_permission') )
 <a class="btn btn-primary float-right mr-2" href="{{ route('admin.permissions.index') }}">Permissions</a>
 @endif
 @endsection
