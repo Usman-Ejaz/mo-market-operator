@@ -17,7 +17,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        abort_if(!hasPermission("permissions", "view"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("roles_and_permissions", "view_permission"), 401, __('messages.unauthorized_action'));
 
         $roles = Role::orderByName()->get();
         $permissions = config('permissions');
@@ -32,7 +32,7 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(!hasPermission("permissions", "edit"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("roles_and_permissions", "edit_permission"), 401, __('messages.unauthorized_action'));
 
         $data = $request->all();
         Permission::where('role_id',$data['role_id'])->delete();
@@ -61,7 +61,7 @@ class PermissionController extends Controller
      */
     public function getPermissions(Request $request)
     {
-        abort_if(!hasPermission("permissions", "view"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("roles_and_permissions", "view_permission"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             if (isset($request->role_id)) {

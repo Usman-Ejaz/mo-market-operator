@@ -315,7 +315,7 @@ class JobController extends Controller
             'qualification' => 'required',
             'experience' => 'required',
             'total_positions' => 'required',
-            'image' => 'sometimes|file|image|max:2000',
+            'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'nullable',

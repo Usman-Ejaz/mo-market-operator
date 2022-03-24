@@ -218,7 +218,7 @@ class DocumentController extends Controller
             'title' => 'required|min:3',
             'keywords' => 'nullable',
             'category_id' => 'required',
-            'file' => 'required|file|max:5000',
+            'file' => 'required|file|max:' . config('settings.maxDocumentSize'),
             'created_by' => '',
             'modified_by' => ''
         ];

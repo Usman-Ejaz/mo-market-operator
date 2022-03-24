@@ -1,19 +1,19 @@
 @extends('admin.layouts.app')
-@section('header', 'Roles')
+@section('header', 'Media Library')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item">Roles</li>
+  <li class="breadcrumb-item">Media Library</li>
   <li class="breadcrumb-item active">View</li>
 @endsection
 
 @section('addButton')
-<form method="POST" action="{{ route('admin.roles', $role->id) }}" class="float-right">
+<form method="POST" action="{{ route('admin.media-library', $role->id) }}" class="float-right">
   @method('DELETE')
   @csrf
-  <button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
+  <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
 </form>
 
-<a class="btn btn-primary float-right mr-2" href="{{ route('admin.roles.edit', $role->id)}}">Edit Role</a>
+<a class="btn btn-primary float-right mr-2" href="{{ route('admin.media-library.edit', $role->id)}}">Edit Role</a>
 
 @endsection
 

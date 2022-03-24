@@ -10,6 +10,7 @@ use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -34,6 +35,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('test-file-editor', function () {
+    return view('test-editor');
+});
 
 Route::get('/', function () {
     return redirect()->route('admin.dashboard');
@@ -147,6 +151,12 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     Route::get('static-block/list', [StaticBlockController::class, 'list'])->name('static-block.list');
     Route::resource('static-block', StaticBlockController::class);
+
+    Route::get('media-library/list', [MediaLibraryController::class, 'list'])->name('media-library.list');
+    Route::get('media-library/{mediaLibrary}/manage-files', [MediaLibraryController::class, 'mediaFiles'])->name('media-library.files');
+    Route::post('media-library/{mediaLibrary}/save', [MediaLibraryController::class, 'updateFile'])->name('media-library.files.save');
+    Route::delete('media-library/{mediaLibrary}/save', [MediaLibraryController::class, 'updateFile'])->name('media-library.files.save');
+    Route::resource('media-library', MediaLibraryController::class);
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");

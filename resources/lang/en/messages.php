@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Form Validation Mesages
+    | Form Validation Messages
     |--------------------------------------------------------------------------
     |
     */
@@ -15,7 +15,6 @@ return [
     "ckeditor_required" => "This field is required.",
     "min_date" => "The end date must be a date after or equal to start date",
     "max_date" => ":first date must be greater than :second date",
-    "ckeditor_required" => "This field is required.",
     "max_characters" => ":field should not exceed the max length than :limit.",
     "min_characters" => ":field must be at least :limit characters long.",
     "unique" => ":attribute already exist.",
@@ -25,7 +24,7 @@ return [
     
     /*
     |--------------------------------------------------------------------------
-    | Api Response Mesages
+    | Api Response Messages
     |--------------------------------------------------------------------------
     |
     */
