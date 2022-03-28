@@ -26,13 +26,13 @@
 				<div class="card-body">
 					<div class="row">
 						@foreach ($files as $media)
-							<div class="folder-container" id="{{ strtolower(str_replace(" ", "_", basename($media->file))) }}" data-link="{{ $media->file }}">
+							<div class="folder-container" id="{{ strtolower(str_replace(" ", "_", basename($media->file))) }}" data-record="{{ json_encode($media) }}">
 								<div class="folder-icon">
 									<img src="{{ $media->file }}" alt="" style="object-fit: contain; height: 50px;">
 									{{-- <i class="fa fa-folder"></i> --}}
 								</div>
 								<div class="folder-name">
-									{{ $media->title }}
+									{{-- {{ $media->title }} --}}
 								</div>
 							</div>
 						@endforeach						
@@ -43,10 +43,56 @@
 								<input type="file" multiple/>
 							</div>
 						</div>
-					</div>
-					<div class="my-editor"></div>
+					</div>					
 				</div>
 			</div>
+		</div>
+	</div>	
+</div>
+
+<div class="modal fade" id="imageEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close editor-modal">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="my-editor"></div>
+			</div>              
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="imageViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form action="" method="POST" id="create-submenus-form" onsubmit="return false;">
+				<div class="modal-header bg-primary">
+					<h5 class="modal-title" id="exampleModalLabel">Edit Image</h5>
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="usr">Featured:</label>
+						<input type="checkbox" name="featured" id="featured">
+					</div>
+					<div class="form-group">
+						<label for="image">Image:</label>
+						<div class="img-container">
+							<img src="" alt="" id="imageSrc" style="height: 180px;">
+						</div>
+					</div>
+					<input type="hidden" id="imageId" />
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" id="newSaveButton">Save changes</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -119,6 +165,14 @@
 		align-items: center;
 		margin: 0px 20px;
 	}
+
+	.my-editor > .PinturaRoot {
+		background: #fff;
+	}
+
+	.img-container {
+		max-width: 20%;
+	}
 </style>
 @endpush
 
@@ -136,24 +190,35 @@
 <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
 <script type="module">
-	import { appendDefaultEditor } from "{{ asset('editor/editor.js') }}";
+	import { 
+		appendDefaultEditor, 
+		openEditor, 
+		createDefaultImageReader,  
+		createDefaultImageWriter,
+	} from "{{ asset('editor/editor.js') }}";
+	
+	let imageEditor = null;
 
 	let previousSelected = "";
 	$(document).ready(function () {
 		$('.folder-container').on('click', function () {
-			if (previousSelected !== "") {
-				$(previousSelected).toggleClass('selected');
-			}
-			previousSelected = '#' + $(this).attr('id');
-			$(this).toggleClass('selected');
+			let { record } = $(this).data();
+			
+			$("#featured").prop("checked", record.featured === 1);
+			$('#imageSrc').attr('src', record.file);
+			$('#imageId').val(record.id);
+
+			$('#imageViewModal').modal('show');
 		});
 
-		$('.folder-container').on('dblclick', function () {
-			
-		});
+		$('.editor-modal').on('click', function () {
+			if (imageEditor !== null) imageEditor.destroy();
+			$('#imageEditorModal').modal('hide');
+		})
 	});
 
 	const inputElement = document.querySelector('input[type="file"]');
+
 
 	FilePond.registerPlugin(
 		FilePondPluginImagePreview,
@@ -172,45 +237,72 @@
 		// - receives file object and image edit instructions
 		open: (file, instructions) => {
 			// open editor here
-			appendDefaultEditor(".my-editor", {
+			// console.log(instructions);
+			// console.log(file);
+			imageEditor = appendDefaultEditor(".my-editor", {
 				// The source image to load
 				src: file,
-
+				utils: ['crop', 'filter', 'annotate'],
+				imageReader: createDefaultImageReader(),
+				imageWriter: createDefaultImageWriter(),
 				// This will set a square crop aspect ratio
-				imageCropAspectRatio: 1,
+				imageCropAspectRatio: instructions.aspectRatio,
+				willRenderCanvas: (shapes, state) => {
+					// console.log(shapes);
+					// console.log(state);
+					return {
+						// copy other shape lists
+						...shapes,
 
-				// Stickers available to user
-				// stickers: [
-				// 	["Emoji", ["⭐️", "😊", "👍", "👎", "☀️", "🌤", "🌥"]],
-				// 	[
-				// 		"Markers",
-				// 		[
-				// 			{
-				// 				src: "sticker-one.svg",
-				// 				width: "5%",
-				// 				alt: "One"
-				// 			},
-				// 			{
-				// 				src: "sticker-two.svg",
-				// 				width: "5%",
-				// 				alt: "Two"
-				// 			},
-				// 			{
-				// 				src: "sticker-three.svg",
-				// 				width: "5%",
-				// 				alt: "Three"
-				// 			}
-				// 		]
-				// 	]
-				// ],
+						// add an `ellipse` shape
+						// interfaceShapes: [
+						// 	{
+						// 		x: x + width * 0.5,
+						// 		y: y + height * 0.5,
+						// 		rx: width * 0.5,
+						// 		ry: height * 0.5,
+						// 		opacity: state.opacity,
+						// 	},
+						// 	...shapes.interfaceShapes,
+						// ],
+					};
+				}
 			});
+
+			imageEditor.on('update', console.log);
+
+			$('#imageEditorModal').modal('show');
+
+			imageEditor.on('process', (res) => {
+				console.log('process => ', res);
+				if (imageEditor !== null) imageEditor.destroy();
+				$('#imageEditorModal').modal('hide');
+				editor.onconfirm({
+					data: {
+						// This is the same as the instructions object
+						crop: {
+							center: {
+								x: .5,
+								y: .5
+							},
+							flip: {
+								horizontal: res.imageState.flipX,
+								vertical: res.imageState.flipY
+							},
+							zoom: 1,
+							rotation: res.imageState.rotation,
+							aspectRatio: null
+						}
+					}
+				});
+			})
 		},
 
 		// Callback set by FilePond
 		// - should be called by the editor when user confirms editing
 		// - should receive output object, resulting edit information
 		onconfirm: (output) => {
-			console.log(output);
+			console.log('onconfirm triggered ', output);
 		},
 
 		// Callback set by FilePond
@@ -225,18 +317,93 @@
 	const pond = FilePond.create(inputElement, {
 		acceptedFileTypes: ['image/*'],
 		maxFileSize: '2MB',
-		imageCropAspectRatio: '16:10',
 		credits: false,
+		allowMultiple: true,
 		maxFiles: 3,
     	required: true,
 		imageEditEditor: editor,
 		server: {
-			process: '{{ route("admin.media-library.files.save", $mediaLibrary->id) }}',
+			process: {
+				url: '{{ route("admin.media-library.files.save", $mediaLibrary->id) }}',
+				method: 'POST',
+				onload: (response) => console.log('response.key => ', response),
+				onerror: (response) => console.log('response.data => ', response.data),
+			},
 			revert: '{{ route("admin.media-library.files.save", $mediaLibrary->id) }}',
 			headers: {
 				'X-CSRF-TOKEN': '{{ csrf_token() }}'
 			}
 		},
 	});
+
+
+
+
+
+    // {
+    //     const container = document.currentScript.parentNode;
+    //     container.querySelector('.button').addEventListener('click', () => {
+
+    //             // This sandbox version of Pintura Image Editor is for use on pqina.nl only.
+    //             // For testing purposes please purchase a license.
+    //             import('./demo/pintura.js?v=1648212601').then(({
+    //                 setPlugins,
+    //                 openEditor,
+    //                 createDefaultImageReader,
+    //                 createDefaultImageWriter,
+    //                 plugin_crop,
+    //                 locale_en_gb,
+    //                 plugin_crop_locale_en_gb,
+    //             }) => {
+
+    //             setPlugins(plugin_crop)
+                
+    //             const editor = openEditor({
+    //                 src: 'demo/mountains.jpeg',
+    //                 utils: ['crop'],
+    //                 imageReader: createDefaultImageReader(),
+    //                 imageWriter: createDefaultImageWriter(),
+    //                 imageCropAspectRatio: 1,
+    //                 locale: Object.assign({}, locale_en_gb, plugin_crop_locale_en_gb),
+    //                 willRenderCanvas: (shapes, state) => {
+
+    //                     const { utilVisibility, selectionRect } = state;
+
+    //                     // shortcuts to selection rect
+    //                     const { x, y, width, height } = selectionRect;
+
+    //                     // return updated UI shapes list
+    //                     return {
+    //                         // copy other shape lists
+    //                         ...shapes,
+
+    //                         // add an `ellipse` shape
+    //                         interfaceShapes: [
+    //                             {
+    //                                 x: x + width * 0.5,
+    //                                 y: y + height * 0.5,
+    //                                 rx: width * 0.5,
+    //                                 ry: height * 0.5,
+    //                                 opacity: state.opacity,
+    //                                 inverted: true,
+    //                                 backgroundColor: [0, 0, 0, 0.5],
+    //                                 strokeWidth: 1,
+    //                                 strokeColor: [1, 1, 1],
+    //                             },
+    //                             ...shapes.interfaceShapes,
+    //                         ],
+    //                     };
+    //                 }
+    //             });
+
+    //             editor.on('process', (res) => {
+    //                 previewImage && previewImage(res.dest, res.imageState);
+    //             });
+
+    //         });
+
+    //     });
+    // }
+    
 </script>
 @endpush

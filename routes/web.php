@@ -112,9 +112,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('documents', DocumentController::class);
     
     // Routes for Page Module
-    Route::get('pages/list', [PageController::class, 'list'])->name('pages.list');
-    Route::post('pages/deleteImage', [PageController::class, 'deleteImage'])->name('pages.deleteImage');
-    Route::resource('pages', PageController::class);
+    Route::get('cms-pages/list', [PageController::class, 'list'])->name('pages.list');
+    Route::post('cms-pages/deleteImage', [PageController::class, 'deleteImage'])->name('pages.deleteImage');
+    Route::resource('cms-pages', PageController::class, ['names' => 'pages']);
     
     // Route for uploading images for ckeditor
     Route::post('ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('ckeditor.upload');

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
+use OpenApi\Attributes\MediaType;
 
 class MediaLibraryController extends Controller
 {
@@ -203,12 +204,14 @@ class MediaLibraryController extends Controller
         return view('admin.media-library.files', ['files' => $mediaLibrary->files(), 'mediaLibrary' => $mediaLibrary]);
     }
 
-    public function updateFile(Request $request, $mediaLibrary)
+    public function updateFile(Request $request, MediaLibrary $mediaLibrary)
     {
         if ($request->hasFile('filepond')) {
-            return response('I am done', 200);
+            $filename = storeFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $request->file('filepond'), null);
+
+            return response(serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $filename), 200);
         } else {
-            return response('I am not done', 200);
+            return response($request->all(), 200);
         }
     }
 
@@ -223,7 +226,7 @@ class MediaLibraryController extends Controller
     {
         $dir = MediaLibrary::MEDIA_STORAGE . $data['directory'];                
 
-        if ($oldDir !== null) {
+        if ($oldDir !== null && $oldDir !== $data['directory']) {
             $this->disk->move(MediaLibrary::MEDIA_STORAGE . $oldDir, $dir);
             return;
         }

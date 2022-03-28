@@ -32,8 +32,8 @@ class PageController extends Controller
     {
         abort_if(!hasPermission("pages", "create"), 401, __('messages.unauthorized_action'));
 
-        $page = new Page();
-        return view('admin.pages.create', compact('page'));
+        $cms_page = new Page();
+        return view('admin.pages.create', compact('cms_page'));
     }
 
     /**
@@ -69,11 +69,11 @@ class PageController extends Controller
      * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function show(Page $page)
+    public function show(Page $cms_page)
     {
         abort_if(!hasPermission("pages", "view"), 401, __('messages.unauthorized_action'));
 
-        return view('admin.pages.show', compact('page'));
+        return view('admin.pages.show', compact('cms_page'));
     }
 
     /**
@@ -82,11 +82,11 @@ class PageController extends Controller
      * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function edit(Page $page)
+    public function edit(Page $cms_page)
     {
         abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
 
-        return view('admin.pages.edit', compact('page'));
+        return view('admin.pages.edit', compact('cms_page'));
     }
 
     /**
@@ -96,25 +96,25 @@ class PageController extends Controller
      * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Page $page)
+    public function update(Request $request, Page $cms_page)
     {
         abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
 
-        $previousImage = $page->image;
-        $data = $this->validateRequest($page);
+        $previousImage = $cms_page->image;
+        $data = $this->validateRequest($cms_page);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
-        $page->update($data);
+        $cms_page->update($data);
 
         if ($request->action === "Unpublished") {
-            $page->published_at = null;
-            $page->save();
+            $cms_page->published_at = null;
+            $cms_page->save();
         } else if ($request->action === "Published") {
-            $page->published_at = now();
-            $page->save();
+            $cms_page->published_at = now();
+            $cms_page->save();
         }
 
-        $this->storeImage($page, $previousImage);
+        $this->storeImage($cms_page, $previousImage);
 
         $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
@@ -126,16 +126,15 @@ class PageController extends Controller
      * @param  \App\Models\Page  $page
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Page $page)
+    public function destroy(Page $cms_page)
     {
         abort_if(!hasPermission("pages", "delete"), 401, __('messages.unauthorized_action'));
 
-        if ($page->image !== null) {
-            $file_path = public_path(config('filepaths.pageImagePath.public_path')) . basename($page->image);
-            unlink($file_path);
+        if ($cms_page->image !== null) {
+            removeFile(Page::STORAGE_DIRECTORY, $cms_page->image);
         }
 
-        $page->delete();
+        $cms_page->delete();
         return redirect()->route('admin.pages.index')->with('success', 'Page Deleted Successfully!');
     }
 
