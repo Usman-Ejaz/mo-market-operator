@@ -206,7 +206,7 @@ return [
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
-            "view" => "View"
+            // "view" => "View"
         ]
     ],
     [
@@ -217,7 +217,7 @@ return [
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
-            "view" => "View",
+            // "view" => "View",
             "manage_files" => "Manage Files"
         ]
     ],
