@@ -70,11 +70,9 @@
 
 				@if( hasPermission('pages', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/pages*') ? 'active' : '' }}">
+					<a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/cms-pages*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-pager"></i>
-						<p>
-							CMS Pages
-						</p>
+						<p> {{ __("CMS Pages") }} </p>
 					</a>
 				</li>
 				@endif
@@ -83,7 +81,7 @@
 				<li class="nav-item">
 					<a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ (Request::is('admin/newsletters*') || Request::is('admin/subscribers*')) ? 'active' : '' }}">
 						<i class="nav-icon fa fa-envelope-open"></i>
-						<p>Newsletters</p>
+						<p> {{ __("Newsletters") }} </p>
 					</a>
 				</li>
 				@endif

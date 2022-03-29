@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MediaLibrary;
+use App\Models\MediaLibraryFile;
 use Faker\Provider\Medical;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -190,6 +191,14 @@ class MediaLibraryController extends Controller
                 ->make(true);
         }
     }
+
+    public function mediaFilesList(Request $request, MediaLibrary $mediaLibrary)
+    {
+        if ($request->ajax()) {
+            $files = $mediaLibrary->files();
+            return response(['data' => $files, 'status' => 'success'], 200);
+        }
+    }
     
     /**
      * mediaFiles
@@ -204,15 +213,25 @@ class MediaLibraryController extends Controller
         return view('admin.media-library.files', ['files' => $mediaLibrary->files(), 'mediaLibrary' => $mediaLibrary]);
     }
 
-    public function updateFile(Request $request, MediaLibrary $mediaLibrary)
+    public function uploadFile(Request $request, MediaLibrary $mediaLibrary)
     {
         if ($request->hasFile('filepond')) {
+            $mediaLibraryFile = new MediaLibraryFile;
             $filename = storeFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $request->file('filepond'), null);
+            $mediaLibraryFile->file = $filename;
+            $mediaLibraryFile->media_library_id = $mediaLibrary->id;
+            $mediaLibraryFile->save();
 
-            return response(serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $filename), 200);
         } else {
-            return response($request->all(), 200);
+            // $data = $request->get('imageString');
+            // list($type, $data) = explode(';', $data);
+            // list(, $data)      = explode(',', $data);
+            // $data = base64_decode($data);
+            // list(, $extension) = explode('/', $type);
+            // $filename = md5(time() . time()) . '.' .$extension;
+            // Storage::disk('app')->put(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/' . $filename, $data);
         }
+        return response(serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $filename), 200);
     }
 
     private function validateRequest($mediaLibrary)
@@ -235,5 +254,37 @@ class MediaLibraryController extends Controller
         {
             $this->disk->makeDirectory($dir);
         }
+    }
+
+    public function updateFile(Request $request) 
+    {
+
+        $mediaFile = MediaLibraryFile::where('id', $request->get('id'))->with('mediaLibrary')->first();
+
+        if (!$mediaFile) {
+            // Show some error here
+            return;
+        }
+
+        $filename = basename($mediaFile->file);
+
+        if ($request->has('dataURL')) {
+            removeFile(MediaLibrary::MEDIA_STORAGE . $mediaFile->mediaLibrary->directory . '/', $mediaFile->file);
+
+            $data = $request->get('dataURL');
+            list($type, $data) = explode(';', $data);
+            list(, $data) = explode(',', $data);
+            $data = base64_decode($data);
+            list(, $extension) = explode('/', $type);
+            $filename = md5(time()) . md5(time()) . '.' . $extension;
+            Storage::disk('app')->put(MediaLibrary::MEDIA_STORAGE . $mediaFile->mediaLibrary->directory . '/' . $filename, $data);
+
+        }
+        $mediaFile->update([
+            'file' => $filename,
+            'featured' => $request->get('featured') ? 1 : 0
+        ]);
+
+        return response(['message' => 'Image updated successfully', 'status' => 'success'], 200);
     }
 }
