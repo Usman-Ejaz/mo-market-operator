@@ -208,7 +208,7 @@
 	.modal-image-preview {
 		display: block;
     	max-width: 464px;
-    	/* max-height: 120px; */
+    	max-height: 390px;
 		width: auto;
 		height: auto;
 	}
