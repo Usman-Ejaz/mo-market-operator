@@ -203,9 +203,9 @@ return [
         "display_name" => "Static Block",
         "capabilities" => [
             "list" => "List",
-            "create" => "Create",
+            // "create" => "Create",
             "edit" => "Edit",
-            "delete" => "Delete",
+            // "delete" => "Delete",
             // "view" => "View"
         ]
     ],
