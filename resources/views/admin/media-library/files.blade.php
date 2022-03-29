@@ -92,8 +92,8 @@
 									<img src="" alt="" id="imageSrc" class="modal-image-preview">
 								</div>
 								<div class="col-md-3">
-									<div class="cropper-img-preview"></div>
-									<div class="row mt-4 ml-2" id="cropper-actions">
+									<div class="cropper-img-preview ml-4"></div>
+									<div class="row mt-4 ml-4" id="cropper-actions">
 										<div class="btn-group">
 											<button type="button" class="btn btn-primary cropper-action-button" data-method="scaleX" data-option="-1" title="Flip Horizontal">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.scaleX(-1)" aria-describedby="tooltip234149">
