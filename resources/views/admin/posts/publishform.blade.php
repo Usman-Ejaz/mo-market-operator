@@ -47,11 +47,11 @@
 		</div>
 		@endif
 
-		@if( $post->isPublished() && \Route::current()->getName() == 'admin.posts.edit' )
-		<div class="col-md-12">
-			<label for="endtime">Status:</label>
-			<span>{{ ($post->isPublished()) ? 'Published' : 'Draft' }}</span>
-		</div>
+		@if(\Route::current()->getName() == 'admin.posts.edit')
+			<div class="col-md-12">
+				<label for="endtime">Status:</label>
+				<span>{{ ($post->isPublished()) ? 'Published' : 'Draft' }}</span>
+			</div>
 		@endif
 
 	</div>

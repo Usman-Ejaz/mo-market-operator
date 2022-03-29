@@ -34,12 +34,12 @@
 @section('content')
 <div class="container-fluid">
 
-	<form method="POST" action="{{ route('admin.pages.update', $page->id) }}" enctype="multipart/form-data" id="update-page-form">
+	<form method="POST" action="{{ route('admin.pages.update', $cms_page->id) }}" enctype="multipart/form-data" id="update-page-form">
 		<div class="row">
 			<div class="col-md-9">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Page - {{ $page->title }}</h3>
+						<h3 class="card-title">Edit Page - {{ truncateWords($cms_page->title, 60) }}</h3>
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->
@@ -64,7 +64,7 @@
 					<input type="hidden" name="active" id="status">
 					<input type="hidden" name="action" id="action">
 
-					@if($page->isPublished())
+					@if($cms_page->isPublished())
 						<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
 						@if( hasPermission('pages', 'publish') )
 						<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
@@ -278,7 +278,7 @@
 					type: 'POST',
 					data: {
 						_token: "{{ csrf_token() }}",
-						page_id: "{{$page->id}}"
+						page_id: "{{$cms_page->id}}"
 					},
 					dataType: 'JSON',
 					success: function(data) {
@@ -302,27 +302,27 @@
 
 			switch (clickedElement) {
 				case 'facebook':
-					url = `${FACEBOOK_SHARE_URL}?u={{ $page->link }}`;
+					url = `${FACEBOOK_SHARE_URL}?u={{ $cms_page->link }}`;
 					socialWindow(url);
 					break;
 				case 'twitter':
-					url = `${TWITTER_SHARE_URL}?url={{ $page->link }}`;
+					url = `${TWITTER_SHARE_URL}?url={{ $cms_page->link }}`;
 					socialWindow(url);
 					break;
 				case 'linkedin':
-					url = `${LINKEDIN_SHARE_URL}&url={{ $page->link }}`;
+					url = `${LINKEDIN_SHARE_URL}&url={{ $cms_page->link }}`;
 					socialWindow(url);
 					break;
 			}
 		});
 
 		$('.bootstrap-tagsinput > input').on('blur keypress', function (e) {
-			if (e.which === 13 && $(this).val().trim().length > 0) {
+			if ((e.which === 13 && $(this).val().trim().length > 0) || document.getElementsByClassName('label-info').length > 0) {
 				$(this).attr('placeholder', '');
+				return;
 			}
-			if (document.getElementsByClassName('label-info').length > 0) {
-				$(this).attr('placeholder', '');
-			}
+
+			$(this).attr('placeholder', '{{ __("Enter Keywords") }}');
 		});
 
 		if (document.getElementsByClassName('label-info').length > 0) {

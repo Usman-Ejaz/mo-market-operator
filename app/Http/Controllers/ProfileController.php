@@ -86,7 +86,7 @@ class ProfileController extends Controller
             'email' => 'required|email|unique:users,email,'.$user->id,
             'role_id' => 'required|min:1',
             'department' => 'nullable',
-            'image' => 'sometimes|file|image|max:2000',
+            'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''

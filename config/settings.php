@@ -10,5 +10,9 @@ return [
         'theme2' => 'Theme 2',
         'theme3' => 'Theme 3'
     ],
-    "createPassowrdLinkExpiryTime" => 30 // in mins
+    "createPassowrdLinkExpiryTime" => 30, // in mins
+
+    // Size in MBs.
+    "maxImageSize" => 2000,     // 2 MB
+    "maxDocumentSize" => 5000   // 5 MB
 ];

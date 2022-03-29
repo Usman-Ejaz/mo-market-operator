@@ -218,12 +218,11 @@ class CareersApiController extends BaseApiController
                 unset($data['job_slug']);
                 $application = Application::create($data);
                 $application->job_id = $job->id;
+
                 if ($request->hasFile("resume")) {
-                    $file = $request->file('resume');
-                    $file_name = $file->hashName();
-                    $file->storeAs(config('filepaths.applicationsPath.internal_path'), $file_name);
-                    $application->resume = $file_name;
+                    $application->resume = storeFile(Application::STORAGE_DIRECTORY, $request->file('resume'), null);
                 }
+                
                 $application->save();
 
                 return $this->sendResponse([], "Application submitted successfully");
@@ -246,7 +245,7 @@ class CareersApiController extends BaseApiController
             'degree_level' => 'required|string|min:3|max:255',
             'degree_title' => 'required|string|min:3|max:255',
             'address' => 'required|string|min:3|max:500',
-            'resume' => 'required|file|mimes:doc,docx,pdf|max:5000',
+            'resume' => 'required|file|mimes:doc,docx,pdf|max:' . config('settings.maxDocumentSize'),
             'job_slug' => 'required|string|min:3'
         ];
     }

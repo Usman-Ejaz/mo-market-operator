@@ -10,6 +10,7 @@ use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -34,9 +35,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('test-file-editor', function () {
+    return view('test-editor');
+});
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('admin.dashboard');
 });
 
 Route::get('/admin', function () {
@@ -108,9 +112,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('documents', DocumentController::class);
     
     // Routes for Page Module
-    Route::get('pages/list', [PageController::class, 'list'])->name('pages.list');
-    Route::post('pages/deleteImage', [PageController::class, 'deleteImage'])->name('pages.deleteImage');
-    Route::resource('pages', PageController::class);
+    Route::get('cms-pages/list', [PageController::class, 'list'])->name('pages.list');
+    Route::post('cms-pages/deleteImage', [PageController::class, 'deleteImage'])->name('pages.deleteImage');
+    Route::resource('cms-pages', PageController::class, ['names' => 'pages']);
     
     // Route for uploading images for ckeditor
     Route::post('ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('ckeditor.upload');
@@ -147,6 +151,13 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     Route::get('static-block/list', [StaticBlockController::class, 'list'])->name('static-block.list');
     Route::resource('static-block', StaticBlockController::class);
+
+    Route::get('media-library/list', [MediaLibraryController::class, 'list'])->name('media-library.list');
+    Route::get('media-library/{mediaLibrary}/manage-files', [MediaLibraryController::class, 'mediaFiles'])->name('media-library.files');
+    Route::get('media-library/{mediaLibrary}/manage-files/list', [MediaLibraryController::class, 'mediaFilesList'])->name('media-library.files.list');
+    Route::post('media-library/{mediaLibrary}/upload', [MediaLibraryController::class, 'uploadFile'])->name('media-library.files.upload');
+    Route::post('media-library/updateFile', [MediaLibraryController::class, 'updateFile'])->name('media-library.updateFile');
+    Route::resource('media-library', MediaLibraryController::class);
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");

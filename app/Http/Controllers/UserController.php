@@ -157,8 +157,8 @@ class UserController extends Controller
                 ->addColumn('role', function ($row) {
                     return ( isset($row->role->name)) ? $row->role->name : '';
                 })
-                ->addColumn('department', function ($row) {
-                    return ($row->department) ? $row->department : '';
+                ->addColumn('designation', function ($row) {
+                    return ($row->designation) ? $row->designation : '';
                 })
                 ->addColumn('status', function ($row) {
                     return ($row->active) ? $row->active : '';
@@ -198,7 +198,7 @@ class UserController extends Controller
             'designation' => 'required|min:3',
             'role_id' => 'required|min:1',
             'department' => 'nullable',
-            'image' => 'sometimes|file|image|max:2000',
+            'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''

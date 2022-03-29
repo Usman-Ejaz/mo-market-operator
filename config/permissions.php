@@ -13,24 +13,26 @@ return [
         ]
     ],
     [
-        "name" => "roles",
-        "display_name" => "Roles",
+        "name" => "roles_and_permissions",
+        "display_name" => "Roles & Permissions",
         "capabilities" => [
             "list" => "List",
             //"view" => "View",
             "create" => "Create",
             "edit" => "Edit",
-            "delete" => "Delete"
+            "delete" => "Delete",
+            "view_permission" => "View Permissions",
+            "edit_permission" => "Edit Permissions",
         ]
     ],
-    [
-        "name" => "permissions",
-        "display_name" => "Permissions",
-        "capabilities" => [
-            "view" => "View",
-            "edit" => "Edit",
-        ]
-    ],
+    // [
+    //     "name" => "permissions",
+    //     "display_name" => "Permissions",
+    //     "capabilities" => [
+    //         "view" => "View",
+    //         "edit" => "Edit",
+    //     ]
+    // ],
     [
         "name" => "posts",
         "display_name" => "Posts",
@@ -61,7 +63,7 @@ return [
     ],
     [
         "name" => "pages",
-        "display_name" => "Pages",
+        "display_name" => "CMS Pages",
         "capabilities" => [
             "list" => "List",
             //"view" => "View",
@@ -73,7 +75,7 @@ return [
     ],
     [
         "name" => "faq_categories",
-        "display_name" => "Faq Categories",
+        "display_name" => "FAQ Categories",
         "capabilities" => [
             "list" => "List",
             // "view" => "View",
@@ -201,10 +203,22 @@ return [
         "display_name" => "Static Block",
         "capabilities" => [
             "list" => "List",
+            // "create" => "Create",
+            "edit" => "Edit",
+            // "delete" => "Delete",
+            // "view" => "View"
+        ]
+    ],
+    [
+        "name" => "media_library",
+        "display_name" => "Media Library",
+        "capabilities" => [
+            "list" => "List",
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
-            "view" => "View"
+            // "view" => "View",
+            "manage_files" => "Manage Files"
         ]
     ],
 ];

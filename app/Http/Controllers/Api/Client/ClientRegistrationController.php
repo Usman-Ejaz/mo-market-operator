@@ -186,13 +186,13 @@ class ClientRegistrationController extends BaseApiController
             'pri_telephone' => 'required|string',
             'pri_facsimile_telephone' => 'required|string',
             'pri_email' => 'required|email|unique:clients,pri_email',
-            'pri_signature' => 'required|file|image|max:2000',
+            'pri_signature' => 'required|file|image|max:' . config('settings.maxImageSize'),
             'sec_name' => 'required|string',
             'sec_address' => 'required|string',
             'sec_telephone' => 'required|string',
             'sec_facsimile_telephone' => 'required|string',
             'sec_email' => 'required|email',
-            'sec_signature' => 'required|file|image|max:2000',
+            'sec_signature' => 'required|file|image|max:' . config('settings.maxImageSize')
         ];
     }
     

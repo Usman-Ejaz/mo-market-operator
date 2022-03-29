@@ -31,7 +31,7 @@
 						<th>Id</th>
 						<th>Name</th>
 						<th>Email</th>
-						<th>Department</th>
+						<th>Designation</th>
 						<th>Role</th>
 						<th>Status</th>
 						<th>Created at</th>
@@ -93,8 +93,8 @@
 					name: 'email'
 				},
 				{
-					data: 'department',
-					name: 'department'
+					data: 'designation',
+					name: 'designation'
 				},
 				{
 					data: 'role',

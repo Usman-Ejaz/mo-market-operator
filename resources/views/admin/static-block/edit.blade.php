@@ -14,7 +14,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Static Block - {{ truncateWords($staticBlock->contents, 30) }}</h3>
+						<h3 class="card-title">Edit Static Block - {{ truncateWords($staticBlock->name, 30) }}</h3>
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->

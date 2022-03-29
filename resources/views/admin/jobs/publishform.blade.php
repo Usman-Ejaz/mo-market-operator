@@ -47,7 +47,7 @@
 		</div>
 		@endif
 
-		@if( $job->isPublished() && \Route::current()->getName() == 'admin.jobs.edit' )
+		@if(\Route::current()->getName() == 'admin.jobs.edit' )
 		<div class="col-md-12">
 			<label for="endtime">Status:</label>
 			<span>{{ ($job->isPublished()) ? 'Published' : 'Draft' }}</span>
