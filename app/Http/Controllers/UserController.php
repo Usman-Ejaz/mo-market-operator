@@ -157,8 +157,8 @@ class UserController extends Controller
                 ->addColumn('role', function ($row) {
                     return ( isset($row->role->name)) ? $row->role->name : '';
                 })
-                ->addColumn('department', function ($row) {
-                    return ($row->department) ? $row->department : '';
+                ->addColumn('designation', function ($row) {
+                    return ($row->designation) ? $row->designation : '';
                 })
                 ->addColumn('status', function ($row) {
                     return ($row->active) ? $row->active : '';

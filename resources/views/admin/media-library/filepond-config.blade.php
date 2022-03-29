@@ -7,8 +7,8 @@
 <script type="module">
 	
 	let cropper = null;    
+    let cropperEnabled = false;
 
-	let previousSelected = "";
 	$(document).ready(function () {
 
         loadAllImages();
@@ -26,7 +26,7 @@
 
 		$('.editor-modal').on('click', function () {
 			disableCropper();
-            $('#enableCropper').html('Enable Cropper');
+            $('#customizeImage').html('Enable Cropper');
 			$('#imageViewModal').modal('hide');
 		})
 
@@ -34,14 +34,25 @@
 			saveImageInfo();
 		});
 
-        let cropperEnabled = false;
-        $('#enableCropper').on('click', () => {
+        $('.crop-box-ratio').on('keyup', function (e) {
+            let val = $(this).val().replace(/[^0-9]/g, '');
+            let data = cropper.getData();
+            if ($(this).attr('id') === "dataWidth") {
+                data.width = val;
+            } else {
+                data.height = val;
+            }
+            cropper.setData(data);
+            $(this).val(val);
+        });
+        
+        $('#customizeImage').on('click', () => {
             cropperEnabled = !cropperEnabled;
             if (cropperEnabled) {
-                $('#enableCropper').html('Disable Cropper');
+                $('#customizeImage').html('Disable Customize');
                 enableCropper();
             } else {
-                $('#enableCropper').html('Enable Cropper');
+                $('#customizeImage').html('Customize Image');
                 disableCropper();
             }
         })
@@ -62,9 +73,7 @@
                         html += `
                             <div class="folder-container" data-id="${ item.id }" data-featured="${ item.featured }" data-src="${ item.file }">
 								<div class="folder-icon">
-									<img src="${ item.file}" alt="" style="object-fit: contain; height: 50px;">
-								</div>
-								<div class="folder-name">
+									<img src="${ item.file}" alt="" class="image-aspact-ratio">
 								</div>
 							</div>
                         `;
@@ -93,7 +102,6 @@
             maxFileSize: '2MB',
             credits: false,
             allowMultiple: true,
-            maxFiles: 3,
             required: true,
             server: {
                 process: {
@@ -137,32 +145,83 @@
 
         cropper = new Cropper(elem, {
             aspectRatio: 'free',
+            autoCrop: false,
             viewMode: 1,
-            preview: '.cropper-img-preview'
+            preview: '.cropper-img-preview',
+            crop: (e) => {
+                $('#dataWidth').val(Math.round(e.detail.width));
+                $('#dataHeight').val(Math.round(e.detail.height));
+            },
         });
 
-        let flipX = 1, flipY = 1, rotationAngle = 45;
+        let flipX = 1, flipY = 1, rotationAngle = 45, data = null;
         $('.cropper-action-button').on('click', function () {
             let { method, option } = $(this).data();
+            data = cropper.getCropBoxData();
+
+            let editorHidden = document.getElementsByClassName('cropper-crop-box cropper-hidden').length > 0;
+            
+            // cropper.getImageData();
+
             switch(method) {
                 case 'scaleX':
                     flipX = -flipX;
                     cropper.scaleX(flipX);
+                    if (editorHidden) {
+                        let e = cropper.getImageData();
+                        $('.cropper-img-preview').css({
+                            width: '100%',
+                            overflow: 'hidden',
+                            height: e.height,
+                            maxWidth: e.width,
+                            maxHeight: e.height / 2
+                        });
+                        $('.cropper-img-preview > img').css({
+                            width: '100%',
+                            overflow: 'hidden',
+                            height: e.height,
+                            maxWidth: e.width,
+                            maxHeight: e.height / 2,
+                            transform: `scaleX(${flipX})`
+                        })
+                    }
                     break;
                 case 'scaleY':
                     flipY = -flipY;
                     cropper.scaleY(flipY);
+                    let e = cropper.getImageData();
+                    $('.cropper-img-preview').css({
+                        width: '100%',
+                        overflow: 'hidden',
+                        height: e.height,
+                        maxWidth: e.width,
+                        maxHeight: e.height / 2
+                    });
+                    $('.cropper-img-preview > img').css({
+                        width: '100%',
+                        overflow: 'hidden',
+                        height: e.height,
+                        maxWidth: e.width,
+                        maxHeight: e.height / 2,
+                        transform: `scaleY(${flipY})`
+                    })
                     break;
                 case 'rotate':
                     cropper.rotate(option);
                     break;
+                case 'crop':
+                case 'clear':
+                    cropper[method]();
+                    break;
             }
+            cropper.setCropBoxData(data);
         });
     }
 
     function disableCropper () {
         $('#cropper-actions').css({display: 'none'});
         if (cropper !== null) {
+            cropperEnabled = false;
             cropper.destroy();
             cropper = null;
         }

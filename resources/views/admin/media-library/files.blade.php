@@ -95,28 +95,75 @@
 									<div class="cropper-img-preview ml-4"></div>
 									<div class="row mt-4 ml-4" id="cropper-actions">
 										<div class="btn-group">
-											<button type="button" class="btn btn-primary cropper-action-button" data-method="scaleX" data-option="-1" title="Flip Horizontal">
+											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="scaleX" data-option="-1" title="Flip Horizontal">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.scaleX(-1)" aria-describedby="tooltip234149">
 													<span class="fa fa-arrows-alt-h"></span>
 												</span>
 											</button>
-											<button type="button" class="btn btn-primary cropper-action-button" data-method="scaleY" data-option="-1" title="Flip Vertical">
+											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="scaleY" data-option="-1" title="Flip Vertical">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.scaleY(-1)">
 													<span class="fa fa-arrows-alt-v"></span>
 												</span>
 											</button>
 										</div>
 										<div class="btn-group">
-											<button type="button" class="btn btn-primary cropper-action-button" data-method="rotate" data-option="-45" title="Rotate Left">
+											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="rotate" data-option="-45" title="Rotate Left">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(-45)" aria-describedby="tooltip187138">
 													<span class="fa fa-undo-alt"></span>
 												</span>
 											</button>
-											<button type="button" class="btn btn-primary cropper-action-button" data-method="rotate" data-option="45" title="Rotate Right">
+											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="rotate" data-option="45" title="Rotate Right">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(45)">
 													<span class="fa fa-redo-alt"></span>
 												</span>
+											</button>											
+										</div>
+										<div class="btn-group">
+											<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Opacity
 											</button>
+											<div class="dropdown-menu">
+												<span class="dropdown-item" data-value="10">10%</span>
+												<span class="dropdown-item" data-value="10">20%</span>
+												<span class="dropdown-item" data-value="10">30%</span>
+												<span class="dropdown-item" data-value="10">40%</span>
+												<span class="dropdown-item" data-value="10">50%</span>
+												<span class="dropdown-item" data-value="10">60%</span>
+												<span class="dropdown-item" data-value="10">70%</span>
+												<span class="dropdown-item" data-value="10">80%</span>
+												<span class="dropdown-item" data-value="10">90%</span>
+												<span class="dropdown-item" data-value="10">100%</span>
+											</div>
+										</div>
+										<div class="btn-group mt-2">
+											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="crop" title="Crop">
+												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.crop()">
+													Crop
+												</span>
+											</button>
+											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="clear" title="Clear">
+												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.clear()">
+													Clear
+												</span>
+											</button>
+										</div>
+										<div class="input-group input-group-sm mt-3">
+											<span class="input-group-prepend">
+												<label class="input-group-text" for="dataWidth">Width</label>
+											</span>
+											<input type="text" class="form-control crop-box-ratio" id="dataWidth" placeholder="width">
+											<span class="input-group-append">
+												<span class="input-group-text">px</span>
+											</span>
+										</div>
+										<div class="input-group input-group-sm mt-3">
+											<span class="input-group-prepend">
+												<label class="input-group-text" for="dataHeight">Height</label>
+											</span>
+											<input type="text" class="form-control crop-box-ratio" id="dataHeight" placeholder="Height">
+											<span class="input-group-append">
+												<span class="input-group-text">px</span>
+											</span>
 										</div>
 									</div>
 								</div>
@@ -126,7 +173,7 @@
 					<input type="hidden" id="imageId" />
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" id="enableCropper">Enable Cropper</button>
+					<button type="button" class="btn btn-secondary" id="customizeImage">Customize Image</button>
 					<button type="button" class="btn btn-secondary editor-modal" data-dismiss="modal">Close</button>
 					<button type="submit" class="btn btn-primary" id="saveImageInfo">Save changes</button>
 				</div>
@@ -181,24 +228,6 @@
 		color: #fff !important;
 	}
 
-	.folder-icon {
-		padding-left: 0;
-		margin-left: 10px;
-		margin-right: 5px;
-		font-size: 50px;
-		color: #9f9f9fcc;
-	}
-
-	.folder-name {
-		display: flex;
-		align-items: center;
-		margin: 0px 20px;
-	}
-
-	.my-editor > .PinturaRoot {
-		background: #fff;
-	}
-
 
 	/* Limit image width to avoid overflow the container */
 	img {
@@ -225,19 +254,10 @@
 		transform: none;
 	}
 
-	#canvas {
-		height: 600px;
-		width: 600px;
-		background-color: #ffffff;
-		cursor: default;
-		border: 1px solid black;
+	.image-aspact-ratio {
+		object-fit: contain;
+		height: 150px;
 	}
-	/* #imageEditorModal .cropper-canvas,
-	#imageEditorModal .cropper-canvas img,
-	#imageEditorModal .cropper-container {
-		width: 100% !important;
-		height: 100% !important;
-	} */
 </style>
 @endpush
 
