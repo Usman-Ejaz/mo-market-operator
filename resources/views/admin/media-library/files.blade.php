@@ -24,26 +24,16 @@
 					<h3 class="card-title">View Media Library - {{ $mediaLibrary->name }}</h3>
 				</div>
 				<div class="card-body">
-					<div class="row">
-						@foreach ($files as $media)
-							<div class="folder-container" id="{{ strtolower(str_replace(" ", "_", basename($media->file))) }}" data-record="{{ json_encode($media) }}">
-								<div class="folder-icon">
-									<img src="{{ $media->file }}" alt="" style="object-fit: contain; height: 50px;">
-									{{-- <i class="fa fa-folder"></i> --}}
-								</div>
-								<div class="folder-name">
-									{{-- {{ $media->title }} --}}
-								</div>
-							</div>
-						@endforeach						
+					<div class="row" id="mediafiles">
+											
 					</div>
 					<div class="row mt-3">
 						<div class="col-md-12">
 							<div class="form-group">
-								<input type="file" multiple/>
+								<input type="file" multiple id="filepond"/>
 							</div>
 						</div>
-					</div>					
+					</div>						
 				</div>
 			</div>
 		</div>
@@ -51,46 +41,94 @@
 </div>
 
 <div class="modal fade" id="imageEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl" role="document">
-		<div class="modal-content">
+	<div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+		<div class="modal-content" style="height: 100vh;">
 			<div class="modal-header">
 				<button type="button" class="close editor-modal">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="my-editor"></div>
-			</div>              
+				<div class="row">
+					<div class="col-md-8">
+						<img src="" alt="" id="cropper-image">
+					</div>
+					<div class="col-md-4">
+						<div class="image-preview">
+
+						</div>
+					</div>
+				</div>
+				<canvas id="canvas"> Your browser does not support the HTML5 canvas element. </canvas>
+			</div>
+			<div class="modal-footer">
+				{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+				<button type="submit" class="btn btn-primary" id="saveFinalImage">Save changes</button>
+			</div>
 		</div>
 	</div>
 </div>
 
 <div class="modal fade" id="imageViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
 		<div class="modal-content">
 			<form action="" method="POST" id="create-submenus-form" onsubmit="return false;">
 				<div class="modal-header bg-primary">
 					<h5 class="modal-title" id="exampleModalLabel">Edit Image</h5>
-					<button type="button" class="close" data-dismiss="modal">
+					<button type="button" class="close editor-modal" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="usr">Featured:</label>
+						<label for="featured">Featured:</label>
 						<input type="checkbox" name="featured" id="featured">
 					</div>
 					<div class="form-group">
 						<label for="image">Image:</label>
 						<div class="img-container">
-							<img src="" alt="" id="imageSrc" style="height: 180px;">
+							<div class="row">
+								<div class="col-md-8">
+									<img src="" alt="" id="imageSrc" class="modal-image-preview">
+								</div>
+								<div class="col-md-3">
+									<div class="cropper-img-preview"></div>
+									<div class="row mt-4 ml-2" id="cropper-actions">
+										<div class="btn-group">
+											<button type="button" class="btn btn-primary cropper-action-button" data-method="scaleX" data-option="-1" title="Flip Horizontal">
+												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.scaleX(-1)" aria-describedby="tooltip234149">
+													<span class="fa fa-arrows-alt-h"></span>
+												</span>
+											</button>
+											<button type="button" class="btn btn-primary cropper-action-button" data-method="scaleY" data-option="-1" title="Flip Vertical">
+												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.scaleY(-1)">
+													<span class="fa fa-arrows-alt-v"></span>
+												</span>
+											</button>
+										</div>
+										<div class="btn-group">
+											<button type="button" class="btn btn-primary cropper-action-button" data-method="rotate" data-option="-45" title="Rotate Left">
+												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(-45)" aria-describedby="tooltip187138">
+													<span class="fa fa-undo-alt"></span>
+												</span>
+											</button>
+											<button type="button" class="btn btn-primary cropper-action-button" data-method="rotate" data-option="45" title="Rotate Right">
+												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(45)">
+													<span class="fa fa-redo-alt"></span>
+												</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>							
 						</div>
 					</div>
 					<input type="hidden" id="imageId" />
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary" id="newSaveButton">Save changes</button>
+					<button type="button" class="btn btn-secondary" id="enableCropper">Enable Cropper</button>
+					<button type="button" class="btn btn-secondary editor-modal" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" id="saveImageInfo">Save changes</button>
 				</div>
 			</form>
 		</div>
@@ -101,7 +139,7 @@
 @push('optional-styles')
 <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
 <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/>
-<link href="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.css" />
 
 <link rel="stylesheet" href="{{ asset('editor/editor.css') }}">
 <link rel="stylesheet" href="{{ asset('editor/style.css') }}">
@@ -139,15 +177,6 @@
 		color: #fff;
 	}
 
-	.selected {
-		background: #4da7e8;
-		color: #fff;
-	}
-
-	.selected > .folder-icon {
-		color: #fff;
-	}
-
 	.folder-container:hover .folder-icon {
 		color: #fff !important;
 	}
@@ -170,240 +199,50 @@
 		background: #fff;
 	}
 
-	.img-container {
-		max-width: 20%;
+
+	/* Limit image width to avoid overflow the container */
+	img {
+		max-width: 100%; /* This rule is very important, please do not ignore this! */
 	}
+
+	.modal-image-preview {
+		display: block;
+    	max-width: 464px;
+    	/* max-height: 120px; */
+		width: auto;
+		height: auto;
+	}
+
+	.image-preview {
+		border: 1px solid black;
+		height: 200px;
+		width: 200px;
+		max-width: 20%;
+		/* min-width: 0px !important; */
+		/* min-height: 0px !important; */
+		/* max-width: none !important; */
+		/* max-height: none !important; */
+		transform: none;
+	}
+
+	#canvas {
+		height: 600px;
+		width: 600px;
+		background-color: #ffffff;
+		cursor: default;
+		border: 1px solid black;
+	}
+	/* #imageEditorModal .cropper-canvas,
+	#imageEditorModal .cropper-canvas img,
+	#imageEditorModal .cropper-container {
+		width: 100% !important;
+		height: 100% !important;
+	} */
 </style>
 @endpush
 
 @push('optional-scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
-<script src="https://unpkg.com/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.js"></script>
-<script src="https://unpkg.com/filepond-plugin-file-rename/dist/filepond-plugin-file-rename.js"></script>
-<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-
-<script type="module">
-	import { 
-		appendDefaultEditor, 
-		openEditor, 
-		createDefaultImageReader,  
-		createDefaultImageWriter,
-	} from "{{ asset('editor/editor.js') }}";
-	
-	let imageEditor = null;
-
-	let previousSelected = "";
-	$(document).ready(function () {
-		$('.folder-container').on('click', function () {
-			let { record } = $(this).data();
-			
-			$("#featured").prop("checked", record.featured === 1);
-			$('#imageSrc').attr('src', record.file);
-			$('#imageId').val(record.id);
-
-			$('#imageViewModal').modal('show');
-		});
-
-		$('.editor-modal').on('click', function () {
-			if (imageEditor !== null) imageEditor.destroy();
-			$('#imageEditorModal').modal('hide');
-		})
-	});
-
-	const inputElement = document.querySelector('input[type="file"]');
-
-
-	FilePond.registerPlugin(
-		FilePondPluginImagePreview,
-		FilePondPluginFileValidateType,
-		FilePondPluginFileValidateSize,
-		FilePondPluginFileRename,
-		FilePondPluginImageEdit,
-		FilePondPluginImageCrop,
-		FilePondPluginImageTransform,
-		FilePondPluginImageResize
-	);
-
-	const editor = {
-		// Called by FilePond to edit the image
-		// - should open your image editor
-		// - receives file object and image edit instructions
-		open: (file, instructions) => {
-			// open editor here
-			// console.log(instructions);
-			// console.log(file);
-			imageEditor = appendDefaultEditor(".my-editor", {
-				// The source image to load
-				src: file,
-				utils: ['crop', 'filter', 'annotate'],
-				imageReader: createDefaultImageReader(),
-				imageWriter: createDefaultImageWriter(),
-				// This will set a square crop aspect ratio
-				imageCropAspectRatio: instructions.aspectRatio,
-				willRenderCanvas: (shapes, state) => {
-					// console.log(shapes);
-					// console.log(state);
-					return {
-						// copy other shape lists
-						...shapes,
-
-						// add an `ellipse` shape
-						// interfaceShapes: [
-						// 	{
-						// 		x: x + width * 0.5,
-						// 		y: y + height * 0.5,
-						// 		rx: width * 0.5,
-						// 		ry: height * 0.5,
-						// 		opacity: state.opacity,
-						// 	},
-						// 	...shapes.interfaceShapes,
-						// ],
-					};
-				}
-			});
-
-			imageEditor.on('update', console.log);
-
-			$('#imageEditorModal').modal('show');
-
-			imageEditor.on('process', (res) => {
-				console.log('process => ', res);
-				if (imageEditor !== null) imageEditor.destroy();
-				$('#imageEditorModal').modal('hide');
-				editor.onconfirm({
-					data: {
-						// This is the same as the instructions object
-						crop: {
-							center: {
-								x: .5,
-								y: .5
-							},
-							flip: {
-								horizontal: res.imageState.flipX,
-								vertical: res.imageState.flipY
-							},
-							zoom: 1,
-							rotation: res.imageState.rotation,
-							aspectRatio: null
-						}
-					}
-				});
-			})
-		},
-
-		// Callback set by FilePond
-		// - should be called by the editor when user confirms editing
-		// - should receive output object, resulting edit information
-		onconfirm: (output) => {
-			console.log('onconfirm triggered ', output);
-		},
-
-		// Callback set by FilePond
-		// - should be called by the editor when user cancels editing
-		oncancel: () => {},
-
-		// Callback set by FilePond
-		// - should be called by the editor when user closes the editor
-		onclose: () => {},
-	};
-	
-	const pond = FilePond.create(inputElement, {
-		acceptedFileTypes: ['image/*'],
-		maxFileSize: '2MB',
-		credits: false,
-		allowMultiple: true,
-		maxFiles: 3,
-    	required: true,
-		imageEditEditor: editor,
-		server: {
-			process: {
-				url: '{{ route("admin.media-library.files.save", $mediaLibrary->id) }}',
-				method: 'POST',
-				onload: (response) => console.log('response.key => ', response),
-				onerror: (response) => console.log('response.data => ', response.data),
-			},
-			revert: '{{ route("admin.media-library.files.save", $mediaLibrary->id) }}',
-			headers: {
-				'X-CSRF-TOKEN': '{{ csrf_token() }}'
-			}
-		},
-	});
-
-
-
-
-
-    // {
-    //     const container = document.currentScript.parentNode;
-    //     container.querySelector('.button').addEventListener('click', () => {
-
-    //             // This sandbox version of Pintura Image Editor is for use on pqina.nl only.
-    //             // For testing purposes please purchase a license.
-    //             import('./demo/pintura.js?v=1648212601').then(({
-    //                 setPlugins,
-    //                 openEditor,
-    //                 createDefaultImageReader,
-    //                 createDefaultImageWriter,
-    //                 plugin_crop,
-    //                 locale_en_gb,
-    //                 plugin_crop_locale_en_gb,
-    //             }) => {
-
-    //             setPlugins(plugin_crop)
-                
-    //             const editor = openEditor({
-    //                 src: 'demo/mountains.jpeg',
-    //                 utils: ['crop'],
-    //                 imageReader: createDefaultImageReader(),
-    //                 imageWriter: createDefaultImageWriter(),
-    //                 imageCropAspectRatio: 1,
-    //                 locale: Object.assign({}, locale_en_gb, plugin_crop_locale_en_gb),
-    //                 willRenderCanvas: (shapes, state) => {
-
-    //                     const { utilVisibility, selectionRect } = state;
-
-    //                     // shortcuts to selection rect
-    //                     const { x, y, width, height } = selectionRect;
-
-    //                     // return updated UI shapes list
-    //                     return {
-    //                         // copy other shape lists
-    //                         ...shapes,
-
-    //                         // add an `ellipse` shape
-    //                         interfaceShapes: [
-    //                             {
-    //                                 x: x + width * 0.5,
-    //                                 y: y + height * 0.5,
-    //                                 rx: width * 0.5,
-    //                                 ry: height * 0.5,
-    //                                 opacity: state.opacity,
-    //                                 inverted: true,
-    //                                 backgroundColor: [0, 0, 0, 0.5],
-    //                                 strokeWidth: 1,
-    //                                 strokeColor: [1, 1, 1],
-    //                             },
-    //                             ...shapes.interfaceShapes,
-    //                         ],
-    //                     };
-    //                 }
-    //             });
-
-    //             editor.on('process', (res) => {
-    //                 previewImage && previewImage(res.dest, res.imageState);
-    //             });
-
-    //         });
-
-    //     });
-    // }
-    
-</script>
+	@include('admin.media-library.filepond-config')
 @endpush

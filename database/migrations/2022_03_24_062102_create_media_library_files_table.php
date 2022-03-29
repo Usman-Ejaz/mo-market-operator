@@ -15,9 +15,8 @@ class CreateMediaLibraryFilesTable extends Migration
     {
         Schema::create('media_library_files', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->string('file');
-            $table->boolean('featured');
+            $table->boolean('featured')->default(0);
             $table->unsignedBigInteger('media_library_id');
             $table->timestamps();
 
