@@ -162,8 +162,10 @@
 
     function disableCropper () {
         $('#cropper-actions').css({display: 'none'});
-        cropper.destroy();
-        cropper = null;
+        if (cropper !== null) {
+            cropper.destroy();
+            cropper = null;
+        }
     }
 
     function saveImageInfo() {
@@ -177,6 +179,8 @@
         payload.id = $('#imageId').val();
         payload.featured = $('#featured').prop('checked');
 
+        $('#saveImageInfo').prop('disable', true);
+
         $.ajax({
             url: '{{ route("admin.media-library.updateFile") }}',
             method: 'POST',
@@ -189,6 +193,8 @@
                 if (status === "success") {
                     loadAllImages();
                     $('.editor-modal').click();
+                    $('#saveImageInfo').prop('disable', false);
+                    toastr.success("Image updated successfully!");
                 }
             },
             error: () => {

@@ -282,7 +282,7 @@ class MediaLibraryController extends Controller
         }
         $mediaFile->update([
             'file' => $filename,
-            'featured' => $request->get('featured') ? 1 : 0
+            'featured' => $request->get('featured') == "true" ? 1 : 0
         ]);
 
         return response(['message' => 'Image updated successfully', 'status' => 'success'], 200);
