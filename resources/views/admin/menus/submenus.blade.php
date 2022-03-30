@@ -482,7 +482,9 @@
 
                     // check if valid url
                     let regex = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
-                    if( regex.test(anchor)){
+                    if (anchor === '#') {
+                        // do nothing
+                    }else if( regex.test(anchor)){
                         $('#addNewSubmenuModal #newUrlError').hide();
                     } else {
                         $('#addNewSubmenuModal #newUrlError').show();

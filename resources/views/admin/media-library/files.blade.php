@@ -185,12 +185,9 @@
 @endsection
 
 @push('optional-styles')
-<link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.css" />
-
-<link rel="stylesheet" href="{{ asset('editor/editor.css') }}">
-<link rel="stylesheet" href="{{ asset('editor/style.css') }}">
+<link href="{{ asset('admin-resources/plugins/filepond/css/filepond.css') }}" rel="stylesheet" />
+<link href="{{ asset('admin-resources/plugins/filepond/css/filepond-plugin-image-preview.css') }}" rel="stylesheet"/>
+<link href="{{ asset('admin-resources/plugins/cropperjs/css/cropper.min.css') }}" rel="stylesheet" />
 
 <style>
 	.item-list {

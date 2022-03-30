@@ -1,8 +1,8 @@
-<script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js"></script>
+<script src="{{ asset('admin-resources/plugins/filepond/js/filepond-plugin-file-validate-size.js') }}"></script>
+<script src="{{ asset('admin-resources/plugins/filepond/js/filepond-plugin-file-validate-type.js') }}"></script>
+<script src="{{ asset('admin-resources/plugins/filepond/js/filepond-plugin-image-preview.js') }}"></script>
+<script src="{{ asset('admin-resources/plugins/filepond/js/filepond.js') }}"></script>
+<script src="{{ asset('admin-resources/plugins/cropperjs/js/cropper.min.js') }}"></script>
 
 <script type="module">
 	
@@ -151,6 +151,7 @@
 
         cropper = new Cropper(elem, {
             aspectRatio: 'free',
+            autoCrop: false,
             viewMode: 1,
             preview: '.cropper-img-preview',
             ready: () => {
