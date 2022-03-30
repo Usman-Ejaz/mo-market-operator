@@ -35,9 +35,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test-file-editor', function () {
-    return view('test-editor');
-});
 
 Route::get('/', function () {
     return redirect()->route('admin.dashboard');
