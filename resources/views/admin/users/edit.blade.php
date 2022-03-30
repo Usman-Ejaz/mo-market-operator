@@ -23,7 +23,7 @@
 					<input type="hidden" name="sendEmail" value="0" id="sendEmail">
 					<div class="card-footer text-right">
 						<button type="submit" class="btn btn-primary draft_button width-120">Update</button>
-						<button type="submit" class="btn btn-success mr-2 save-with-email">Update & Send Email</button>
+						{{-- <button type="submit" class="btn btn-success mr-2 save-with-email">Update & Send Email</button> --}}
 					</div>
 				</div>
 			</div>
