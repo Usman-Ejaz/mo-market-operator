@@ -40,35 +40,6 @@
 	</div>	
 </div>
 
-<div class="modal fade" id="imageEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
-		<div class="modal-content" style="height: 100vh;">
-			<div class="modal-header">
-				<button type="button" class="close editor-modal">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-8">
-						<img src="" alt="" id="cropper-image">
-					</div>
-					<div class="col-md-4">
-						<div class="image-preview">
-
-						</div>
-					</div>
-				</div>
-				<canvas id="canvas"> Your browser does not support the HTML5 canvas element. </canvas>
-			</div>
-			<div class="modal-footer">
-				{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-				<button type="submit" class="btn btn-primary" id="saveFinalImage">Save changes</button>
-			</div>
-		</div>
-	</div>
-</div>
-
 <div class="modal fade" id="imageViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
@@ -133,18 +104,18 @@
 												<span class="dropdown-item" data-value="80">80%</span>
 												<span class="dropdown-item" data-value="90">90%</span>
 												<span class="dropdown-item" data-value="100">100%</span>
-												<span class="dropdown-item" data-value="0">None</span>
+												<span class="dropdown-item" data-value="100">None</span>
 											</div>
 										</div>
 										<div class="btn-group mt-2">
 											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="crop" title="Crop">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.crop()">
-													Crop
+													Cropper
 												</span>
 											</button>
 											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="clear" title="Clear">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.clear()">
-													Clear
+													Clear Cropper
 												</span>
 											</button>
 										</div>
@@ -252,9 +223,19 @@
 		transform: none;
 	}
 
-	.image-aspact-ratio {
+	.folder-icon {
+		display: flex;
+		margin: auto;
+	}
+
+	.image-aspact-ratio {		
 		object-fit: contain;
 		height: 150px;
+	}
+
+	.featured {
+		border: 2px solid #4da7e8;
+		box-shadow: 5px 5px #d2d6d3;
 	}
 </style>
 @endpush
