@@ -1,3 +1,10 @@
+:root {
+    --facebook-color: #1877f2;
+    --twitter-color: #1d9bf0;
+    --linkedIn-color: #0373B1;
+    --color-white: #fff;
+}
+
 /* Validation classes */
 .my-error-class {
     color:#FF0000;
@@ -55,11 +62,10 @@ ul.pagination li.active{
     width: 120px;
 }
 .bg-white {
-    background-color: #fff;
+    background-color: var(--color-white);
 }
 
-:root {
-    --facebook-color: #1877f2;
-    --twitter-color: #1d9bf0;
-    --linkedIn-color: #0373B1;
+table.dataTable tbody tr {
+    background-color: var(--color-white);
 }
+
