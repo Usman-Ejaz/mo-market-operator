@@ -70,7 +70,7 @@
 </div>
 
 <div class="modal fade" id="imageViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<form action="" method="POST" id="create-submenus-form" onsubmit="return false;">
 				<div class="modal-header bg-primary">
@@ -122,17 +122,18 @@
 											<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 												Opacity
 											</button>
-											<div class="dropdown-menu">
+											<div class="dropdown-menu" id="opcaityDropdown">
 												<span class="dropdown-item" data-value="10">10%</span>
-												<span class="dropdown-item" data-value="10">20%</span>
-												<span class="dropdown-item" data-value="10">30%</span>
-												<span class="dropdown-item" data-value="10">40%</span>
-												<span class="dropdown-item" data-value="10">50%</span>
-												<span class="dropdown-item" data-value="10">60%</span>
-												<span class="dropdown-item" data-value="10">70%</span>
-												<span class="dropdown-item" data-value="10">80%</span>
-												<span class="dropdown-item" data-value="10">90%</span>
-												<span class="dropdown-item" data-value="10">100%</span>
+												<span class="dropdown-item" data-value="20">20%</span>
+												<span class="dropdown-item" data-value="30">30%</span>
+												<span class="dropdown-item" data-value="40">40%</span>
+												<span class="dropdown-item" data-value="50">50%</span>
+												<span class="dropdown-item" data-value="60">60%</span>
+												<span class="dropdown-item" data-value="70">70%</span>
+												<span class="dropdown-item" data-value="80">80%</span>
+												<span class="dropdown-item" data-value="90">90%</span>
+												<span class="dropdown-item" data-value="100">100%</span>
+												<span class="dropdown-item" data-value="0">None</span>
 											</div>
 										</div>
 										<div class="btn-group mt-2">
