@@ -33,7 +33,8 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'insert', groups: [ 'insert' ] }        
     ];
 
-    config.removeButtons = 'Save,NewPage,ExportPdf,Preview,Print,Source,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField';
+    // config.removeButtons = 'Save,NewPage,ExportPdf,Preview,Print,Source,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField';
+    config.removeButtons = 'Save,NewPage,ExportPdf,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField';
 };
 
 CKEDITOR.on("instanceReady", function(event) {
