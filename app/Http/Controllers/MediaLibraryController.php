@@ -158,6 +158,9 @@ class MediaLibraryController extends Controller
                 ->addColumn('name', function ($row) {
                     return ( isset($row->name)) ? $row->name : '';
                 })
+                ->addColumn('description', function ($row) {
+                    return ( isset($row->description)) ? $row->description : '';
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
@@ -223,22 +226,18 @@ class MediaLibraryController extends Controller
             $mediaLibraryFile->media_library_id = $mediaLibrary->id;
             $mediaLibraryFile->save();
 
-        } else {
-            // $data = $request->get('imageString');
-            // list($type, $data) = explode(';', $data);
-            // list(, $data)      = explode(',', $data);
-            // $data = base64_decode($data);
-            // list(, $extension) = explode('/', $type);
-            // $filename = md5(time() . time()) . '.' .$extension;
-            // Storage::disk('app')->put(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/' . $filename, $data);
+            return response(serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $filename), 200);
         }
-        return response(serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $filename), 200);
+
+        return response('Something went wrong.', 400);
+
     }
 
     private function validateRequest($mediaLibrary)
     {
         return request()->validate([
-            'name' => 'required|unique:media_libraries,name,'.$mediaLibrary->id
+            'name' => 'required|unique:media_libraries,name,'.$mediaLibrary->id,
+            'description' => 'nullable|string'
         ]);
     }
 
@@ -272,7 +271,7 @@ class MediaLibraryController extends Controller
         $directoryPrefix = MediaLibrary::MEDIA_STORAGE . $mediaFile->mediaLibrary->directory . '/';
 
         if ($request->has('dataURL')) {
-            removeFile($directoryPrefix, $mediaFile->file);
+            removeFile($directoryPrefix, $filename);
 
             $data = $request->get('dataURL');
             list($type, $data) = explode(';', $data);
@@ -283,17 +282,41 @@ class MediaLibraryController extends Controller
             Storage::disk('app')->put($directoryPrefix . $filename, $data);
 
             if ($request->has('imageWidth') && $request->has('imageHeight')) {
-                $url = config('filesystems.disks.app.root') .'/'. $directoryPrefix . $filename;
+                $path = config('filesystems.disks.app.root') .'/'. $directoryPrefix . $filename;
                 $width = $request->get('imageWidth');
                 $height = $request->get('imageHeight');
-                Image::make($url)->resize($width, $height)->save($url);
+                Image::make($path)->resize($width, $height)->save($path);
             }
         }
+
+        if ($request->get('featured') == "true") {
+            MediaLibraryFile::where('media_library_id', $mediaFile->media_library_id)
+                ->where('featured', 1)
+                ->update(['featured' => 0]);
+        }
+
         $mediaFile->update([
             'file' => $filename,
             'featured' => $request->get('featured') == "true" ? 1 : 0
         ]);
 
         return response(['message' => 'Image updated successfully', 'status' => 'success'], 200);
+    }
+
+    public function removeMediaFile(Request $request) 
+    {
+        if ($request->ajax())
+        {
+            $media = MediaLibraryFile::where('id', $request->get('id'))->with('mediaLibrary')->first();
+            if ($media) {
+                $directoryPrefix = MediaLibrary::MEDIA_STORAGE . $media->mediaLibrary->directory . '/';
+                removeFile($directoryPrefix, $media->file);
+
+                $media->delete();
+                return response(['message' => 'Media file deleted successfully!', 'status' => 'success'], 200);
+            }
+
+            return response(['message' => 'Media file does not exist.', 'status' => 'error'], 400);
+        }
     }
 }
