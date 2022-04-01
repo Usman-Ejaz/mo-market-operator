@@ -193,6 +193,7 @@
             crop: (e) => {
                 $('#dataWidth').val(Math.round(e.detail.width));
                 $('#dataHeight').val(Math.round(e.detail.height));
+                imageScale = null;
             },
             // zoom: (e) => {
             //     $('#dataWidth').val(Math.round(e.detail.width));
