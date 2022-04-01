@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendNewsletterEmail;
 use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
 use App\Models\Subscriber;
@@ -175,12 +176,8 @@ class NewsletterController extends Controller
     public function sendNewsLetter(Request $request, Newsletter $newsletter) 
     {
         abort_if(!hasPermission("newsletters", "sendNewsLetter"), 401, __('messages.unauthorized_action'));
-        
-        $subscribers = Subscriber::active()->select("email")->get();
 
-        foreach ($subscribers as $subscriber) {
-            Mail::to($subscriber->email)->send(new NewsletterEmail($newsletter));
-        }
+        dispatch(new SendNewsletterEmail($newsletter));
 
         $request->session()->flash('success', 'Newsletter Sent Successfully!');
         return redirect()->route('admin.newsletters.index');
