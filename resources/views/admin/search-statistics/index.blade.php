@@ -58,7 +58,13 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			ajax: "{{ route('admin.search-statistics.list') }}",
+			ajax: {
+				url: "{{ route('admin.search-statistics.list') }}",
+				data:  {
+					start_date: null,
+					end_date: null,
+				}
+			},			
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
 					const searchedRecods = this.fnSettings()._iRecordsDisplay;
@@ -92,6 +98,74 @@
 			]
 		});
 
+		$('#DataTables_Table_0_length').parent().css({display: 'flex', flexDirection: 'row'});
+		$('#DataTables_Table_0_length').parent().append(`
+			<input name="start_date" id="start_date" class="form-control form-control-sm" readonly placeholder="Start Date" style="position:absolute; width: 35%; right: 100px;"/>
+			<input type="hidden" id="start_date_hidden" value="" />
+		`);	
+
+		$('#DataTables_Table_0_filter').parent().css({display: 'flex', flexDirection: 'row-reverse'});
+		$('#DataTables_Table_0_filter').parent().append(`			
+			<input name="end_date" id="end_date" class="form-control form-control-sm" readonly placeholder="End Date" style="position:absolute; width: 35%; left: -92px;"/>
+			<input type="hidden" id="end_date_hidden" value="" />
+			<button class="btn btn-primary btn-sm" type="button" id="seachByDate" style="position:absolute; left: 140px;" >Search</button>
+		`);	
+		
+		// Handle date filters
+		$('#seachByDate').on('click', (e) => {
+			if ($('#start_date_hidden').val().trim().length === 0 && $('#end_date_hidden').val().trim().length === 0) {
+				alert("Please select date first");
+				e.preventDefault();
+				return;
+			}
+			table.draw();
+		});
+
+		$('#start_date').datetimepicker({
+			format: '{{ config("settings.datetime_format") }}',
+			step: 30,
+			roundTime: 'ceil',
+			minDate: new Date(),
+			validateOnBlur: false,
+			onChangeDateTime: function(dp, $input) {
+				$('#start_date_hidden').val(mapDate(dp));
+				let endDate = $("#end_date").val();
+				if (endDate.trim().length > 0 && $input.val() >= endDate) {
+					$input.val("");
+					$input.parent().next().text("Start Date cannot be less than end date");
+				}
+			},
+			onShow: function() {
+				this.setOptions({
+					maxDate: $('#end_date_hidden').val() ? $('#end_date_hidden').val() : false
+				})
+			}
+		});
+
+		$('#end_date').datetimepicker({
+			format: '{{ config("settings.datetime_format") }}',
+			step: 30,
+			roundTime: 'ceil',
+			minDate: new Date(),
+			validateOnBlur: false,
+			onChangeDateTime: function(dp, $input) {
+				$('#end_date_hidden').val(mapDate(dp));
+				let startDate = $("#start_date").val();
+				if (startDate.trim().length > 0 && $input.val() <= startDate) {
+					$input.val("");
+					$input.parent().next().text("{{ __('messages.min_date') }}");
+				}
+			},
+			onShow: function () {
+				this.setOptions({
+					minDate: $('#start_date_hidden').val() ? $('#start_date_hidden').val() : false
+				})
+			}
+		});		
 	});
+
+	function mapDate(date) {
+		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
+	}
 </script>
 @endpush

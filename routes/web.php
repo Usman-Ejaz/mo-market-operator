@@ -153,8 +153,11 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get('media-library/{mediaLibrary}/manage-files', [MediaLibraryController::class, 'mediaFiles'])->name('media-library.files');
     Route::get('media-library/{mediaLibrary}/manage-files/list', [MediaLibraryController::class, 'mediaFilesList'])->name('media-library.files.list');
     Route::post('media-library/{mediaLibrary}/upload', [MediaLibraryController::class, 'uploadFile'])->name('media-library.files.upload');
-    Route::post('media-library/updateFile', [MediaLibraryController::class, 'updateFile'])->name('media-library.updateFile');
     Route::resource('media-library', MediaLibraryController::class);
+
+    Route::post('manage-files/remove', [MediaLibraryController::class, 'removeMediaFile'])->name('media-library.files.remove');
+    Route::post('media-library/updateFile', [MediaLibraryController::class, 'updateFile'])->name('media-library.updateFile');
+    
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");

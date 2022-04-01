@@ -28,6 +28,31 @@
 			$('#imageViewModal').modal({backdrop: 'static', keyboard: false});
 		});
 
+        $('body').on('click', '.btn-remove', (e) => {
+            if(confirm('Are you sure you want to delete this record?')) {
+                let { id } = e.target.dataset;
+                $.ajax({
+                    url: '{{ route("admin.media-library.files.remove") }}',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: { id },
+                    success: (response) => {
+                        let { status, message } = response;
+                        if (status === 'success') {
+                            toastr.success(message);
+                            loadAllImages();
+                        }
+                    },
+                    error: (error) => {
+                        console.log(error);
+                        toastr.error("Something went wrong");
+                    }
+                })
+            }
+        })
+
 		$('.editor-modal').on('click', function () {
 			disableCropper();
 			$('#imageViewModal').modal('hide');
@@ -98,11 +123,16 @@
 
                     data.forEach(item => {
                         html += `
-                            <div class="folder-container ${item.featured === 1 ? 'featured' : ''}" data-id="${ item.id }" data-featured="${ item.featured }" data-src="${ item.file }">
-								<div class="folder-icon">
-									<img src="${ item.file}" alt="" class="image-aspact-ratio">
-								</div>
-							</div>
+                            <div class="" style="width: 22%">
+                                <div class="folder-container ${item.featured === 1 ? 'featured' : ''}" data-id="${ item.id }" data-featured="${ item.featured }" data-src="${ item.file }">
+                                    <div class="folder-icon">
+                                        <img src="${ item.file}" alt="" class="image-aspact-ratio" style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div class="btn-container">
+                                    <button type="button" class="btn btn-danger btn-sm btn-remove" data-id="${ item.id }"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
                         `;
                         // <div style="position: relative;top: 182px;right: 30px; height: 1px; display:inline-block; bottom: 0;">
                         //  <a style="color:red; cursor:pointer" href="javascript:void(0);" data-id="${item.id}" class="image-remove"><i class="fa fa-times"></i></button>
