@@ -123,7 +123,7 @@
 											<span class="input-group-prepend">
 												<label class="input-group-text" for="dataWidth">Width</label>
 											</span>
-											<input type="text" class="form-control crop-box-ratio" id="dataWidth" placeholder="width">
+											<input type="number" class="form-control crop-box-ratio" id="dataWidth" placeholder="width">
 											<span class="input-group-append">
 												<span class="input-group-text">px</span>
 											</span>
@@ -132,10 +132,17 @@
 											<span class="input-group-prepend">
 												<label class="input-group-text" for="dataHeight">Height</label>
 											</span>
-											<input type="text" class="form-control crop-box-ratio" id="dataHeight" placeholder="Height">
+											<input type="number" class="form-control crop-box-ratio" id="dataHeight" placeholder="Height">
 											<span class="input-group-append">
 												<span class="input-group-text">px</span>
 											</span>
+										</div>
+										<div class="form-group mt-4">
+											{{-- <div class="row">
+												<input type="checkbox" name="keepAspectRatio" id="keepAspectRatio" style="margin: 3px 5px 0px 10px;" checked />
+												<label for="keepAspectRatio" class="" style="font-size: 14px; font-weight: unset;">Keep Aspect Ratio</label>
+											</div> --}}
+											<input type="range" class="custom-range custom-range-primary" min="1" max="100" value="100">
 										</div>
 									</div>
 								</div>

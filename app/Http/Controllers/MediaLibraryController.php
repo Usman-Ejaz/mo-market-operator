@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
 use OpenApi\Attributes\MediaType;
+use Image;
 
 class MediaLibraryController extends Controller
 {
@@ -268,8 +269,10 @@ class MediaLibraryController extends Controller
 
         $filename = basename($mediaFile->file);
 
+        $directoryPrefix = MediaLibrary::MEDIA_STORAGE . $mediaFile->mediaLibrary->directory . '/';
+
         if ($request->has('dataURL')) {
-            removeFile(MediaLibrary::MEDIA_STORAGE . $mediaFile->mediaLibrary->directory . '/', $mediaFile->file);
+            removeFile($directoryPrefix, $mediaFile->file);
 
             $data = $request->get('dataURL');
             list($type, $data) = explode(';', $data);
@@ -277,8 +280,14 @@ class MediaLibraryController extends Controller
             $data = base64_decode($data);
             list(, $extension) = explode('/', $type);
             $filename = md5(time()) . md5(time()) . '.' . $extension;
-            Storage::disk('app')->put(MediaLibrary::MEDIA_STORAGE . $mediaFile->mediaLibrary->directory . '/' . $filename, $data);
+            Storage::disk('app')->put($directoryPrefix . $filename, $data);
 
+            if ($request->has('imageWidth') && $request->has('imageHeight')) {
+                $url = config('filesystems.disks.app.root') .'/'. $directoryPrefix . $filename;
+                $width = $request->get('imageWidth');
+                $height = $request->get('imageHeight');
+                Image::make($url)->resize($width, $height)->save($url);
+            }
         }
         $mediaFile->update([
             'file' => $filename,
