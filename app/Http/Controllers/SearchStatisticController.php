@@ -58,8 +58,11 @@ class SearchStatisticController extends Controller
     {
         abort_if(!hasPermission("search_statistics", "list"), 401, __('messages.unauthorized_action'));
 
+        $startFrom = $request->get('start_date');
+        $endsAt = $request->get('end_date');
+
         if ($request->ajax()) {
-            $data = SearchStatistic::latest()->get();
+            $data = SearchStatistic::groupByKeyword($startFrom, $endsAt)->latest()->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()

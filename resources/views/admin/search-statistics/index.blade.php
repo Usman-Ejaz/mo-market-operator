@@ -49,9 +49,37 @@
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" defer></script>
 
 <script type="text/javascript">
-	$(function() {
+	var table = null;
 
-		var table = $('.yajra-datatable').DataTable({
+	$(document).ready(() => {
+		
+		var startDate = null;
+		var endDate = null;
+		
+
+		renderTable(startDate, endDate);		
+		
+		// Handle date filters
+		$('body').on('click', '#seachByDate', (e) => {
+			if ($('#start_date_hidden').val().trim().length === 0 && $('#end_date_hidden').val().trim().length === 0) {
+				alert("Please select date first");
+				e.preventDefault();
+				return;
+			}
+			startDate = $('#start_date_hidden').val();
+			endDate = $('#end_date_hidden').val();
+
+			if (table !== null) {
+				table.destroy();
+				renderTable(startDate, endDate);
+			}
+		});
+			
+	});
+
+	function renderTable(startDate, endDate)
+	{
+		table = $('.yajra-datatable').DataTable({
 			order: [
 				[2, 'desc']
 			],
@@ -60,9 +88,9 @@
 			pageLength: 25,
 			ajax: {
 				url: "{{ route('admin.search-statistics.list') }}",
-				data:  {
-					start_date: null,
-					end_date: null,
+				data: {
+					start_date: startDate,
+					end_date: endDate,
 				}
 			},			
 			fnDrawCallback: function() {
@@ -110,22 +138,11 @@
 			<input type="hidden" id="end_date_hidden" value="" />
 			<button class="btn btn-primary btn-sm" type="button" id="seachByDate" style="position:absolute; left: 140px;" >Search</button>
 		`);	
-		
-		// Handle date filters
-		$('#seachByDate').on('click', (e) => {
-			if ($('#start_date_hidden').val().trim().length === 0 && $('#end_date_hidden').val().trim().length === 0) {
-				alert("Please select date first");
-				e.preventDefault();
-				return;
-			}
-			table.draw();
-		});
 
 		$('#start_date').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
 			step: 30,
 			roundTime: 'ceil',
-			minDate: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date_hidden').val(mapDate(dp));
@@ -146,7 +163,6 @@
 			format: '{{ config("settings.datetime_format") }}',
 			step: 30,
 			roundTime: 'ceil',
-			minDate: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#end_date_hidden').val(mapDate(dp));
@@ -161,8 +177,8 @@
 					minDate: $('#start_date_hidden').val() ? $('#start_date_hidden').val() : false
 				})
 			}
-		});		
-	});
+		});	
+	}
 
 	function mapDate(date) {
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
