@@ -192,7 +192,7 @@
 		overflow: hidden;
 		background: #f6f8f9;
 		display: flex;
-		width: 20%;
+		/* width: 20%; */
 	}
 
 	.folder-container:hover {
@@ -231,13 +231,18 @@
 	}
 
 	.folder-icon {
-		display: flex;
-		margin: auto;
+		/* display: flex; */
+		/* margin: auto; */
+		width: 100%;
 	}
 
 	.image-aspact-ratio {		
-		object-fit: contain;
+		/* object-fit: contain; */
 		height: 150px;
+	}
+
+	.btn-container {
+    	text-align: center;
 	}
 
 	.featured {

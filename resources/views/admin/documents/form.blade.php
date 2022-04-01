@@ -41,7 +41,7 @@
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="file" class="form-label">Document File <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, txt, ppt, pptx, csv, xls, xlsx, pdf, odt)</small> </label>
-				<input class="form-control" type="file" id="file" name="file" onchange="resetConvertCheckbox()">
+				<input class="form-control" type="file" id="file" name="file[]" onchange="resetConvertCheckbox(event)" multiple>
 				<span class="form-text text-danger">{{ $errors->first('file') }} </span>
 				@if(isset($document->file) && !empty($document->file))
 				<small class="fileExists">

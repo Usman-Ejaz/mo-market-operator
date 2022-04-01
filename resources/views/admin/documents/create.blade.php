@@ -98,9 +98,14 @@
 				keywords: {
 					notNumericValues: true
 				},
-				file: {
+				'file[]': {
 					required: true,
-					extension: "doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt"
+					extension: {
+						depends: (e) => {
+							console.log(e);
+							// "doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt"
+						}
+					}
 				}
 			},
 			errorPlacement: function(error, element) {
@@ -110,7 +115,7 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				file: {
+				'file[]': {
 					required: "{{ __('messages.required') }}",
 					extension: '{{ __("messages.valid_file_extension") }}',
 				},
@@ -154,7 +159,11 @@
 		}
 	}
 
-	function resetConvertCheckbox() {
+	function resetConvertCheckbox(e) {
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			return false;
+		}
 		document.getElementById('convert').checked = false;
 	}
 </script>
