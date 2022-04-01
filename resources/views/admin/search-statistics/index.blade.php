@@ -113,8 +113,8 @@
 					name: 'keyword'
 				},
 				{
-					data: 'count',
-					name: 'count'
+					data: 'count_sum',
+					name: 'count_sum'
 				},
 				// {data: 'created_at', name: 'created_at'},
 				// {

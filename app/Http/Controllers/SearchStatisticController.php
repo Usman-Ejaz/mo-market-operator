@@ -62,15 +62,12 @@ class SearchStatisticController extends Controller
         $endsAt = $request->get('end_date');
 
         if ($request->ajax()) {
-            $data = SearchStatistic::groupByKeyword($startFrom, $endsAt)->latest()->get();
+            $data = SearchStatistic::groupByKeyword($startFrom, $endsAt)->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('keyword', function ($row) {
                     return truncateWords($row->keyword, 70);
-                })
-                ->addColumn('count', function ($row) {
-                    return $row->count;
                 })
                 ->make(true);
         }

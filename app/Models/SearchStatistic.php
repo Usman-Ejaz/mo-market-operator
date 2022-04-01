@@ -32,6 +32,6 @@ class SearchStatistic extends Model
             $query->where('created_at', '<=',  Carbon::parse($endsAt));
         }
 
-        return $query;
+        return $query->groupBy('keyword')->selectRaw('keyword, sum(count) as count_sum');
     }
 }
