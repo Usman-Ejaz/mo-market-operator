@@ -2,6 +2,7 @@
 
 use App\Models\ApiKey;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 if (!function_exists("truncateWords")) {
 
@@ -28,7 +29,7 @@ if (!function_exists("storeFile")) {
         }
         
         try {
-            $filename = (md5(time()) . md5(time()) . '.' . $file->getClientOriginalExtension());
+            $filename = Str::random(30) . '.' . $file->getClientOriginalExtension();
             $contents = $file->get();
             Storage::disk('app')->put($dir . $filename, $contents);
         } catch (\Exception $ex) {
@@ -63,11 +64,11 @@ if (!function_exists("removeFile")) {
 
 if (!function_exists("hasPermission")) {
 
-    function hasPermission($capability, $permission) 
+    function hasPermission($module, $permission) 
     {
-        if ($capability === "" || $permission === "") return false;
+        if ($module === "" || $permission === "") return false;
 
-        if (auth()->check() && auth()->user()->role->hasPermission($capability, $permission)) {
+        if (auth()->check() && auth()->user()->role->hasPermission($module, $permission)) {
             return true;
         }
 

@@ -14,5 +14,7 @@ return [
 
     // Size in MBs.
     "maxImageSize" => 2000,     // 2 MB
-    "maxDocumentSize" => 5000   // 5 MB
+    "maxDocumentSize" => 5000,   // 5 MB
+
+    "storage_disk_base_path" => config('filesystems.disks.app.root') . '/',
 ];
