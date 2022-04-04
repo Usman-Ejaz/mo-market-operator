@@ -49,9 +49,56 @@
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" defer></script>
 
 <script type="text/javascript">
-	$(function() {
+	var table = null;
 
-		var table = $('.yajra-datatable').DataTable({
+	$(document).ready(() => {
+		
+		var startDate = "";
+		var endDate = "";
+
+		var datePickerStartDate = "";
+		var datePickerEndDate = "";
+		
+
+		renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);	
+		
+		// Handle date filters
+		$('body').on('click', '#seachByDate', (e) => {
+			if ($('#start_date_hidden').val().trim().length === 0 && $('#end_date_hidden').val().trim().length === 0) {
+				alert("Please select date first");
+				e.preventDefault();
+				return;
+			}
+			startDate = $('#start_date_hidden').val();
+			endDate = $('#end_date_hidden').val();
+
+			datePickerStartDate = $('#start_date').val();
+			datePickerEndDate = $('#end_date').val();
+
+			if (table !== null) {
+				table.destroy();
+				renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);
+			}
+		});
+
+		$('body').on('click', '#clearSearch', (e) => {
+			startDate = ""
+			endDate = "";
+
+			datePickerStartDate = "";
+			datePickerEndDate = "";
+
+			if (table !== null) {
+				table.destroy();
+				renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);
+			}
+		});
+			
+	});
+
+	function renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate)
+	{
+		table = $('.yajra-datatable').DataTable({
 			order: [
 				[2, 'desc']
 			],
@@ -60,9 +107,9 @@
 			pageLength: 25,
 			ajax: {
 				url: "{{ route('admin.search-statistics.list') }}",
-				data:  {
-					start_date: null,
-					end_date: null,
+				data: {
+					start_date: startDate,
+					end_date: endDate,
 				}
 			},			
 			fnDrawCallback: function() {
@@ -85,8 +132,8 @@
 					name: 'keyword'
 				},
 				{
-					data: 'count',
-					name: 'count'
+					data: 'count_sum',
+					name: 'count_sum'
 				},
 				// {data: 'created_at', name: 'created_at'},
 				// {
@@ -100,40 +147,27 @@
 
 		$('#DataTables_Table_0_length').parent().css({display: 'flex', flexDirection: 'row'});
 		$('#DataTables_Table_0_length').parent().append(`
-			<input name="start_date" id="start_date" class="form-control form-control-sm" readonly placeholder="Start Date" style="position:absolute; width: 35%; right: 100px;"/>
-			<input type="hidden" id="start_date_hidden" value="" />
+			<input name="start_date" id="start_date" class="form-control form-control-sm" readonly placeholder="Start Date" style="position:absolute; width: 35%; right: 100px;" value="${datePickerStartDate}"/>
+			<input type="hidden" id="start_date_hidden" value="${startDate}" />
 		`);	
 
 		$('#DataTables_Table_0_filter').parent().css({display: 'flex', flexDirection: 'row-reverse'});
 		$('#DataTables_Table_0_filter').parent().append(`			
-			<input name="end_date" id="end_date" class="form-control form-control-sm" readonly placeholder="End Date" style="position:absolute; width: 35%; left: -92px;"/>
-			<input type="hidden" id="end_date_hidden" value="" />
+			<input name="end_date" id="end_date" class="form-control form-control-sm" readonly placeholder="End Date" style="position:absolute; width: 35%; left: -92px;" value="${datePickerEndDate}"/>
+			<input type="hidden" id="end_date_hidden" value="${endDate}" />
 			<button class="btn btn-primary btn-sm" type="button" id="seachByDate" style="position:absolute; left: 140px;" >Search</button>
+			${(datePickerStartDate !== "" && datePickerEndDate !== "") ? `
+			<button class="btn btn-primary btn-sm" type="button" id="clearSearch" style="position:absolute; left: 205px;" >Clear</button>
+			` : ""}
 		`);	
-		
-		// Handle date filters
-		$('#seachByDate').on('click', (e) => {
-			if ($('#start_date_hidden').val().trim().length === 0 && $('#end_date_hidden').val().trim().length === 0) {
-				alert("Please select date first");
-				e.preventDefault();
-				return;
-			}
-			table.draw();
-		});
 
 		$('#start_date').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
 			step: 30,
 			roundTime: 'ceil',
-			minDate: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date_hidden').val(mapDate(dp));
-				let endDate = $("#end_date").val();
-				if (endDate.trim().length > 0 && $input.val() >= endDate) {
-					$input.val("");
-					$input.parent().next().text("Start Date cannot be less than end date");
-				}
 			},
 			onShow: function() {
 				this.setOptions({
@@ -146,23 +180,17 @@
 			format: '{{ config("settings.datetime_format") }}',
 			step: 30,
 			roundTime: 'ceil',
-			minDate: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#end_date_hidden').val(mapDate(dp));
-				let startDate = $("#start_date").val();
-				if (startDate.trim().length > 0 && $input.val() <= startDate) {
-					$input.val("");
-					$input.parent().next().text("{{ __('messages.min_date') }}");
-				}
 			},
 			onShow: function () {
 				this.setOptions({
 					minDate: $('#start_date_hidden').val() ? $('#start_date_hidden').val() : false
 				})
 			}
-		});		
-	});
+		});	
+	}
 
 	function mapDate(date) {
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
