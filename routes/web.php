@@ -22,6 +22,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchStatisticController;
+use App\Http\Controllers\SliderImageController;
 use App\Http\Controllers\StaticBlockController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
@@ -158,6 +159,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get('media-library/{mediaLibrary}/manage-files', [MediaFileController::class, 'index'])->name('media-library.files');
     Route::post('manage-files/remove', [MediaFileController::class, 'destroy'])->name('media-library.files.remove');
     Route::post('media-library/updateFile', [MediaFileController::class, 'update'])->name('media-library.updateFile');
+
+    Route::get('slider-images/list', [SliderImageController::class, 'list'])->name('slider-images.list');
+    Route::resource('slider-images', SliderImageController::class);
     
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");

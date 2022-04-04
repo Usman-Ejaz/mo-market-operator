@@ -19,6 +19,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\SearchStatistic;
 use App\Models\Settings;
+use App\Models\SliderImage;
 use App\Models\StaticBlock;
 use App\Models\Subscriber;
 use App\Models\User;
@@ -125,6 +126,9 @@ class DatabaseSeeder extends Seeder
         ChatBotKnowledgeBase::factory(20)->create();
 
         StaticBlock::factory(2)->create();
+
+        // For Slider Images
+        SliderImage::factory(5)->create();
     }
 
 
@@ -171,6 +175,11 @@ class DatabaseSeeder extends Seeder
         // For Applications
         if (!is_dir($basePath . Application::STORAGE_DIRECTORY)) {
             mkdir($basePath . Application::STORAGE_DIRECTORY, 0777, true);
+        }
+
+        // For Slider Images
+        if (!is_dir($basePath . SliderImage::STORAGE_DIRECTORY)) {
+            mkdir($basePath . SliderImage::STORAGE_DIRECTORY, 0777, true);
         }
     }
 }

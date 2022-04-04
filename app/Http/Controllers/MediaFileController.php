@@ -40,6 +40,8 @@ class MediaFileController extends Controller
      */
     public function store(Request $request, MediaLibrary $mediaLibrary)
     {
+        abort_if(! hasPermission('media_library', 'manage_files'), __('auth.error_code'), __('messages.unauthorized_action'));
+
         $directoryPrefix = MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/';
 
         if ($request->hasFile('filepond')) {
@@ -86,6 +88,8 @@ class MediaFileController extends Controller
      */
     public function update(Request $request)
     {
+        abort_if(! hasPermission('media_library', 'manage_files'), __('auth.error_code'), __('messages.unauthorized_action'));
+
         $mediaFile = MediaLibraryFile::where('id', $request->get('id'))->with('mediaLibrary')->first();
 
         if (!$mediaFile) {
@@ -140,6 +144,8 @@ class MediaFileController extends Controller
      */
     public function destroy(Request $request)
     {
+        abort_if(! hasPermission('media_library', 'manage_files'), __('auth.error_code'), __('messages.unauthorized_action'));
+
         if ($request->ajax())
         {
             $media = MediaLibraryFile::where('id', $request->get('id'))->with('mediaLibrary')->first();
@@ -157,6 +163,8 @@ class MediaFileController extends Controller
 
     public function list(Request $request, MediaLibrary $mediaLibrary)
     {
+        abort_if(! hasPermission('media_library', 'manage_files'), __('auth.error_code'), __('messages.unauthorized_action'));
+        
         if ($request->ajax()) {
             $files = $mediaLibrary->files();
             return response(['data' => $files, 'status' => 'success'], 200);
