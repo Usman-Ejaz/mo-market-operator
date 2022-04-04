@@ -53,11 +53,14 @@
 
 	$(document).ready(() => {
 		
-		var startDate = null;
-		var endDate = null;
+		var startDate = "";
+		var endDate = "";
+
+		var datePickerStartDate = "";
+		var datePickerEndDate = "";
 		
 
-		renderTable(startDate, endDate);		
+		renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);	
 		
 		// Handle date filters
 		$('body').on('click', '#seachByDate', (e) => {
@@ -69,15 +72,31 @@
 			startDate = $('#start_date_hidden').val();
 			endDate = $('#end_date_hidden').val();
 
+			datePickerStartDate = $('#start_date').val();
+			datePickerEndDate = $('#end_date').val();
+
 			if (table !== null) {
 				table.destroy();
-				renderTable(startDate, endDate);
+				renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);
+			}
+		});
+
+		$('body').on('click', '#clearSearch', (e) => {
+			startDate = ""
+			endDate = "";
+
+			datePickerStartDate = "";
+			datePickerEndDate = "";
+
+			if (table !== null) {
+				table.destroy();
+				renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);
 			}
 		});
 			
 	});
 
-	function renderTable(startDate, endDate)
+	function renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate)
 	{
 		table = $('.yajra-datatable').DataTable({
 			order: [
@@ -128,15 +147,18 @@
 
 		$('#DataTables_Table_0_length').parent().css({display: 'flex', flexDirection: 'row'});
 		$('#DataTables_Table_0_length').parent().append(`
-			<input name="start_date" id="start_date" class="form-control form-control-sm" readonly placeholder="Start Date" style="position:absolute; width: 35%; right: 100px;"/>
-			<input type="hidden" id="start_date_hidden" value="" />
+			<input name="start_date" id="start_date" class="form-control form-control-sm" readonly placeholder="Start Date" style="position:absolute; width: 35%; right: 100px;" value="${datePickerStartDate}"/>
+			<input type="hidden" id="start_date_hidden" value="${startDate}" />
 		`);	
 
 		$('#DataTables_Table_0_filter').parent().css({display: 'flex', flexDirection: 'row-reverse'});
 		$('#DataTables_Table_0_filter').parent().append(`			
-			<input name="end_date" id="end_date" class="form-control form-control-sm" readonly placeholder="End Date" style="position:absolute; width: 35%; left: -92px;"/>
-			<input type="hidden" id="end_date_hidden" value="" />
+			<input name="end_date" id="end_date" class="form-control form-control-sm" readonly placeholder="End Date" style="position:absolute; width: 35%; left: -92px;" value="${datePickerEndDate}"/>
+			<input type="hidden" id="end_date_hidden" value="${endDate}" />
 			<button class="btn btn-primary btn-sm" type="button" id="seachByDate" style="position:absolute; left: 140px;" >Search</button>
+			${(datePickerStartDate !== "" && datePickerEndDate !== "") ? `
+			<button class="btn btn-primary btn-sm" type="button" id="clearSearch" style="position:absolute; left: 205px;" >Clear</button>
+			` : ""}
 		`);	
 
 		$('#start_date').datetimepicker({
@@ -146,11 +168,6 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date_hidden').val(mapDate(dp));
-				let endDate = $("#end_date").val();
-				if (endDate.trim().length > 0 && $input.val() >= endDate) {
-					$input.val("");
-					$input.parent().next().text("Start Date cannot be less than end date");
-				}
 			},
 			onShow: function() {
 				this.setOptions({
@@ -166,11 +183,6 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#end_date_hidden').val(mapDate(dp));
-				let startDate = $("#start_date").val();
-				if (startDate.trim().length > 0 && $input.val() <= startDate) {
-					$input.val("");
-					$input.parent().next().text("{{ __('messages.min_date') }}");
-				}
 			},
 			onShow: function () {
 				this.setOptions({
