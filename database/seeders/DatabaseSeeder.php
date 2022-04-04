@@ -136,31 +136,31 @@ class DatabaseSeeder extends Seeder
     private function makeDirectories()
     {
 
-        $basePath = config('filesystems.disks.app.root');
+        $basePath = config('settings.storage_disk_base_path');
 
         // For User Profile
-        if (!is_dir($basePath . '/' . User::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . User::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . User::STORAGE_DIRECTORY)) {
+            mkdir($basePath . User::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Page Images
-        if (!is_dir($basePath . '/' . Page::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Page::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Page::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Page::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Posts Images
-        if (!is_dir($basePath . '/' . Post::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Post::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Post::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Post::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Job Images
-        if (!is_dir($basePath . '/' . Job::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Job::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Job::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Job::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Documents Images
-        if (!is_dir($basePath . '/' . Document::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Document::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Document::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Document::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For CK-Editor Images
@@ -169,8 +169,8 @@ class DatabaseSeeder extends Seeder
         }
 
         // For Applications
-        if (!is_dir($basePath . '/' . Application::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Application::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Application::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Application::STORAGE_DIRECTORY, 0777, true);
         }
     }
 }

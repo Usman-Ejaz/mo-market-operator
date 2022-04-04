@@ -196,43 +196,6 @@ class MediaLibraryController extends Controller
         }
     }
 
-    public function mediaFilesList(Request $request, MediaLibrary $mediaLibrary)
-    {
-        if ($request->ajax()) {
-            $files = $mediaLibrary->files();
-            return response(['data' => $files, 'status' => 'success'], 200);
-        }
-    }
-    
-    /**
-     * mediaFiles
-     *
-     * @param  mixed $mediaLibrary
-     * @return void
-     */
-    public function mediaFiles(MediaLibrary $mediaLibrary)
-    {
-        abort_if(! hasPermission('media_library', 'manage_files'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
-        return view('admin.media-library.files', ['files' => $mediaLibrary->files(), 'mediaLibrary' => $mediaLibrary]);
-    }
-
-    public function uploadFile(Request $request, MediaLibrary $mediaLibrary)
-    {
-        if ($request->hasFile('filepond')) {
-            $mediaLibraryFile = new MediaLibraryFile;
-            $filename = storeFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $request->file('filepond'), null);
-            $mediaLibraryFile->file = $filename;
-            $mediaLibraryFile->media_library_id = $mediaLibrary->id;
-            $mediaLibraryFile->save();
-
-            return response(serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $filename), 200);
-        }
-
-        return response('Something went wrong.', 400);
-
-    }
-
     private function validateRequest($mediaLibrary)
     {
         return request()->validate([
@@ -253,70 +216,6 @@ class MediaLibraryController extends Controller
         if (!$this->disk->exists($dir)) 
         {
             $this->disk->makeDirectory($dir);
-        }
-    }
-
-    public function updateFile(Request $request) 
-    {
-
-        $mediaFile = MediaLibraryFile::where('id', $request->get('id'))->with('mediaLibrary')->first();
-
-        if (!$mediaFile) {
-            // Show some error here
-            return;
-        }
-
-        $filename = basename($mediaFile->file);
-
-        $directoryPrefix = MediaLibrary::MEDIA_STORAGE . $mediaFile->mediaLibrary->directory . '/';
-
-        if ($request->has('dataURL')) {
-            removeFile($directoryPrefix, $filename);
-
-            $data = $request->get('dataURL');
-            list($type, $data) = explode(';', $data);
-            list(, $data) = explode(',', $data);
-            $data = base64_decode($data);
-            list(, $extension) = explode('/', $type);
-            $filename = md5(time()) . md5(time()) . '.' . $extension;
-            Storage::disk('app')->put($directoryPrefix . $filename, $data);
-
-            if ($request->has('imageWidth') && $request->has('imageHeight')) {
-                $path = config('filesystems.disks.app.root') .'/'. $directoryPrefix . $filename;
-                $width = $request->get('imageWidth');
-                $height = $request->get('imageHeight');
-                Image::make($path)->resize($width, $height)->save($path);
-            }
-        }
-
-        if ($request->get('featured') == "true") {
-            MediaLibraryFile::where('media_library_id', $mediaFile->media_library_id)
-                ->where('featured', 1)
-                ->update(['featured' => 0]);
-        }
-
-        $mediaFile->update([
-            'file' => $filename,
-            'featured' => $request->get('featured') == "true" ? 1 : 0
-        ]);
-
-        return response(['message' => 'Image updated successfully', 'status' => 'success'], 200);
-    }
-
-    public function removeMediaFile(Request $request) 
-    {
-        if ($request->ajax())
-        {
-            $media = MediaLibraryFile::where('id', $request->get('id'))->with('mediaLibrary')->first();
-            if ($media) {
-                $directoryPrefix = MediaLibrary::MEDIA_STORAGE . $media->mediaLibrary->directory . '/';
-                removeFile($directoryPrefix, $media->file);
-
-                $media->delete();
-                return response(['message' => 'Media file deleted successfully!', 'status' => 'success'], 200);
-            }
-
-            return response(['message' => 'Media file does not exist.', 'status' => 'error'], 400);
         }
     }
 }

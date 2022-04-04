@@ -10,6 +10,7 @@ use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
@@ -150,13 +151,13 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('static-block', StaticBlockController::class);
 
     Route::get('media-library/list', [MediaLibraryController::class, 'list'])->name('media-library.list');
-    Route::get('media-library/{mediaLibrary}/manage-files', [MediaLibraryController::class, 'mediaFiles'])->name('media-library.files');
-    Route::get('media-library/{mediaLibrary}/manage-files/list', [MediaLibraryController::class, 'mediaFilesList'])->name('media-library.files.list');
-    Route::post('media-library/{mediaLibrary}/upload', [MediaLibraryController::class, 'uploadFile'])->name('media-library.files.upload');
     Route::resource('media-library', MediaLibraryController::class);
-
-    Route::post('manage-files/remove', [MediaLibraryController::class, 'removeMediaFile'])->name('media-library.files.remove');
-    Route::post('media-library/updateFile', [MediaLibraryController::class, 'updateFile'])->name('media-library.updateFile');
+    
+    Route::post('media-library/{mediaLibrary}/upload', [MediaFileController::class, 'store'])->name('media-library.files.upload');
+    Route::get('media-library/{mediaLibrary}/manage-files/list', [MediaFileController::class, 'list'])->name('media-library.files.list');
+    Route::get('media-library/{mediaLibrary}/manage-files', [MediaFileController::class, 'index'])->name('media-library.files');
+    Route::post('manage-files/remove', [MediaFileController::class, 'destroy'])->name('media-library.files.remove');
+    Route::post('media-library/updateFile', [MediaFileController::class, 'update'])->name('media-library.updateFile');
     
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");

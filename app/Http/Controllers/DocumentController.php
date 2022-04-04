@@ -51,21 +51,27 @@ class DocumentController extends Controller
 
         $document = new Document();
         $data = $this->validateRequest($document);
-        $filename = null;
+                
+        $convertFiles = $request->convert !== null && $request->convert == '1';
 
-        if ($request->hasFile('file')) {            
-            $filename = storeFile(Document::STORAGE_DIRECTORY, $request->file('file'), null);
+        $filenames = "";
 
-            if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked
+        if (count($data['file']) > 0) {
 
-                $extension = $request->file('file')->getClientOriginalExtension();
-                if (in_array($extension, $this->allowedFileExtensions)) {
-                    $filename = $this->convertFile($filename);
+            foreach ($data['file'] as $file) {
+                $filename = storeFile(Document::STORAGE_DIRECTORY, $file, null);
+
+                if ($convertFiles) {
+                    $extension = $file->getClientOriginalExtension();
+                    if (in_array($extension, $this->allowedFileExtensions)) {
+                        $filename = $this->convertFile($filename);
+                    }
                 }
-            }
+                $filenames .= $filename . ",";
+            }            
         }
         
-        $data['file'] = $filename;
+        $data['file'] = trim($filenames, ",");
 
         if ($request->action === "Published") {
             $data['published_at'] = now();
@@ -118,31 +124,56 @@ class DocumentController extends Controller
 
         $data = $this->validateRequest($document);
 
-        $filename = $document->file ? basename($document->file) : null;
-        $extension = $filename ? explode('.', $filename)[1] : "";
+        $files = $document->file;
+        $convertFiles = $request->convert !== null && $request->convert == '1';
+        $filenames = "";
 
         if ($request->hasFile('file')) {
-            $filename = storeFile(Document::STORAGE_DIRECTORY, $request->file('file'), $filename);
-            $extension = $request->file('file')->getClientOriginalExtension();
-        }
 
-        if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked
-            if ($filename !== null) {
-                if (in_array($extension, $this->allowedFileExtensions)) {
-                    $filename = $this->convertFile($filename);
-                }
-            } else {
-                // please upload the document first.
+            // remove previous files
+            foreach($files as $file) {
+                removeFile(Document::STORAGE_DIRECTORY, $file);
             }
+
+            $files = $request->file('file');
+            
+            if (count($files) > 0) {
+                foreach ($files as $file) {
+                    $filename = storeFile(Document::STORAGE_DIRECTORY, $file, null);
+    
+                    if ($convertFiles) { // convert file checkbox is checked
+    
+                        $extension = $file->getClientOriginalExtension();
+                        if (in_array($extension, $this->allowedFileExtensions)) {
+                            $filename = $this->convertFile($filename);
+                        }
+                    }
+                    $filenames .= $filename . ",";
+                }
+
+                $data['file'] = trim($filenames, ",");
+            }
+        } else if ($convertFiles) {
+
+            foreach ($files as $key => $file) {
+                $extension = basename($file);
+                $extension = $extension[$extension - 1];
+                if (in_array($extension, $this->allowedFileExtensions)) {
+                    $filename = $this->convertFile($file);
+                    $filenames .= $filename . ",";
+                }
+            }
+
+            $data['file'] = trim($filenames, ",");
         }
-        $data['file'] = $filename;
+        
         
         if ($request->action === "Published") {
             $data['published_at'] = now();
         } else if ($request->action === "Unpublished") {
             $data['published_at'] = null;
         }
-
+        
         $document->update($data);
 
         $request->session()->flash('success', "Document {$request->action} Successfully!");
@@ -218,7 +249,7 @@ class DocumentController extends Controller
             'title' => 'required|min:3',
             'keywords' => 'nullable',
             'category_id' => 'required',
-            'file' => 'required|file|max:' . config('settings.maxDocumentSize'),
+            'file' => 'required',
             'created_by' => '',
             'modified_by' => ''
         ];
@@ -234,7 +265,7 @@ class DocumentController extends Controller
 
     private function convertFile($filename)
     {
-        $storagePath = config('filesystems.disks.app.root') . '/' . Document::STORAGE_DIRECTORY;
+        $storagePath = config('settings.storage_disk_base_path') . Document::STORAGE_DIRECTORY;
 
         $storageFile = $storagePath . $filename;
         
