@@ -71,6 +71,7 @@
                             <button type="button" class="btn btn-secondary" id="add_pages_to_menu">Add to menu</button>
                         </div>
                     </div>
+
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Post Categories</h3>
@@ -100,6 +101,7 @@
                             <button type="button" class="btn btn-secondary" id="add_post_categories_to_menu">Add to menu</button>
                         </div>
                     </div>
+
                     <div class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Document Categories</h3>
@@ -133,59 +135,13 @@
             </div>
         </form>
 
-        <!-- Edit Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form action="" method="POST" id="update-submenus-form" onsubmit="return false;">
-                        <div class="modal-header bg-primary">
-                            <h5 class="modal-title" id="exampleModalLabel">Update Submenu</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="usr">Menu Title:</label>
-                                <input type="text" class="form-control" id="MenuTitle" name="submenu_title">
-                            </div>
-                            <div class="type">
-                                <label> <input type="radio" name="menuType" value="anchor" checked="checked"> Anchor </label>
-                                <label style="margin-left:15px;"> <input type="radio" name="menuType" value="page"> Page </label>
-                            </div>
-                            <div class="form-group">
-                                <div id="anchor">
-                                    <label for="usr">Anchor:</label>
-                                    <input type="text" class="form-control" id="menuAnchor" name="submenu_anchor">
-                                </div>
-                                <div id="page" style="display:none;">
-                                    <label for="usr">Page:</label>
-                                    <select class="form-control" id="menuPage" name="submenu_page">
-                                        @foreach($pages as $id => $title)
-                                            <option value="{{ $id }}">{{ $id }} - {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <input type="hidden" id="currentMenuId" value="" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
-                            <button type="submit" class="btn btn-primary" id="saveButton">Save changes</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
         <!-- New Modal -->
         <div class="modal fade" id="addNewSubmenuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form action="" method="POST" id="create-submenus-form" onsubmit="return false;">
+                    <form action="" method="POST" id="create-submenus-form">
                         <div class="modal-header bg-primary">
-                            <h5 class="modal-title" id="exampleModalLabel">Add new Submenu</h5>
+                            <h5 class="modal-title" id="submenu_modal_heading"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -203,22 +159,21 @@
                                 <div id="newAnchor">
                                     <label for="usr">Anchor:</label>
                                     <input type="text" class="form-control" id="newMenuAnchor" name="submenu_anchor">
-                                    <span id="newUrlError" class="my-error-class" style="display: none;">Please provide a valid url</span>
                                 </div>
                                 <div id="newPage" style="display:none;">
                                     <label for="usr">Page:</label>
                                     <select class="form-control" id="newMenuPage" name="submenu_page">
                                         @foreach($pages as $id => $title)
-                                            <option value="{{ $id }}">{{ $id }} - {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}</option>
+                                            <option value="{{ $id }}">{{ $id }} - {{ truncateWords($title, 35) }}</option>
                                         @endforeach
                                     </select>
-                                    <span id="newUrlError" class="my-error-class" style="display: none;">Please provide a valid url</span>
                                 </div>
                             </div>
                             <input type="hidden" id="newCurrentMenuId" value="" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
                             <button type="submit" class="btn btn-primary" id="newSaveButton">Save changes</button>
                         </div>
                     </form>                    
@@ -240,6 +195,8 @@
 
     <script>
         $(document).ready(function(){
+
+            let isEditing = false;
 
             $.validator.addMethod("notNumericValues", function(value, element) {
                 return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
@@ -263,58 +220,6 @@
                 }
             });
 
-            $('#create-submenus-form').validate({
-                ignore: [],
-                errorElement: 'span',
-                errorClass: "my-error-class",
-                validClass: "my-valid-class",
-                rules: {
-                    submenu_title: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 255,
-                        notNumericValues: true,
-                    },
-                    submenu_anchor: {
-                        required: true,
-                        validURL: true,
-                    },
-                    submenu_page: {
-                        required: {
-                            depends: function () {
-                                return $('#menuTypeRadio').is(':checked');
-                            }
-                        }
-                    }
-                }
-            })
-
-            $('#update-submenus-form').validate({
-                ignore: [],
-                errorElement: 'span',
-                errorClass: "my-error-class",
-                validClass: "my-valid-class",
-                rules: {
-                    submenu_title: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 255,
-                        notNumericValues: true,
-                    },
-                    submenu_anchor: {
-                        required: true,
-                        validURL: true,
-                    },
-                    submenu_page: {
-                        required: {
-                            depends: function () {
-                                return $('#menuTypeRadio').is(':checked');
-                            }
-                        }
-                    }
-                }
-            })
-
             // Update json for submenu order
             var updateOutput = function(e)
             {
@@ -330,7 +235,7 @@
             // activate Nestable for list
             $('#nestable').nestable({
                 group: 1,
-                maxDepth:10
+                maxDepth: 10
             }).on('change', updateOutput);
 
             // output initial serialised data
@@ -442,161 +347,61 @@
 
                 // set hidden field value
                 let currentMenuId = $(this).closest('li').data('id');
-                $('#newCurrentMenuId').val( currentMenuId );
+                $('#newCurrentMenuId').val(currentMenuId);
+                $('#submenu_modal_heading').text("Add new Submenu");
+                $('#deleteButton').hide();
+                isEditing = false;
                 $('#addNewSubmenuModal').modal('toggle');
             });
 
             // On type change
-            $('input[name="newMenuType"]').on('change', function(){
-                if( $('input[name="newMenuType"]:checked').val() == 'anchor' ){
+            $('input[name="newMenuType"]').on('change', function() {
+                if( $('input[name="newMenuType"]:checked').val() == 'anchor') {
                     $('#newAnchor').show();
                     $('#newPage').hide();
-                } else if( $('input[name="newMenuType"]:checked').val() == 'page' ){
+                } else if( $('input[name="newMenuType"]:checked').val() == 'page') {
                     $('#newPage').show();
                     $('#newAnchor').hide();
                 }
-            });
-
-            // On save modal
-            $('#addNewSubmenuModal #newUrlError #newTitleError').hide();
-            $('body').on('click','#newSaveButton',function(){
-                lastSubMenuId = lastSubMenuId + 1;
-                let menuIdToUpdate = $('#newCurrentMenuId').val();
-
-                // Set title
-                let title = $('#NewMenuTitle').val();
-                if( $('#NewMenuTitle').val() != '' ) {
-                    title = $('#NewMenuTitle').val();
-                    $("li[data-id='" + menuIdToUpdate +"']").attr( 'data-title', title );
-                    $("li[data-id='" + menuIdToUpdate +"']").find('.dd3-content').text();
-                }
-
-                // Check menuType
-                let menuType = $('input[name="newMenuType"]:checked').val();
-                let attributes = '';
-                let html = '';
-                if(menuType == 'anchor'){
-                    let anchor = $("#newMenuAnchor").val();
-                    attributes = "data-anchor='"+anchor+"' data-title='"+title+"'";
-                    html = lastSubMenuId + ' ( anchor ) ' + title;
-
-                    // check if valid url
-                    let regex = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
-                    if (anchor === '#') {
-                        // do nothing
-                    }else if( regex.test(anchor)){
-                        $('#addNewSubmenuModal #newUrlError').hide();
-                    } else {
-                        $('#addNewSubmenuModal #newUrlError').show();
-                        return;
-                    }
-
-                } else if(menuType == 'page'){
-                    let page = $("#newMenuPage").val();
-                    page = (page != "") ? page : '';
-                    attributes = "data-page='"+page+"' data-title='"+title+"'";
-                    html = lastSubMenuId + ' ( page ) ' + title;
-                }
-
-                $('ol#submenu').append('<li class="dd-item dd3-item" data-id="'+ lastSubMenuId +'" '+attributes+'>' +
-                    '<div class="dd-handle dd3-handle"></div><div class="dd3-content">' + html +
-                    '</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>' +
-                    '</li>'
-                );
-
-                $('#addNewSubmenuModal').modal('toggle');
-                $('#nestable').trigger('change');
             });
 
             /************** Edit Modal Features **************/
             // Show modal
             $('body').on('click','.dd3-edit', function () {
                 // reset all fields of modal
-                $("#myModal").find("input[type='text'],select").val("");
-                $("#myModal input[name=menuType][value='anchor']").prop("checked",true);
+                $("#addNewSubmenuModal").find("input[type='text'],select").val("");
+                $("#addNewSubmenuModal input[name=newMenuType][value='anchor']").prop("checked", true);
 
                 // set hidden field value
                 let currentMenuId = $(this).closest('li').data('id');
-                $('#currentMenuId').val( currentMenuId );
+                $('#newCurrentMenuId').val(currentMenuId);
 
                 // set values
-                let title = $('li[data-id="'+currentMenuId+'"').attr('data-title');
-                let page = $('li[data-id="'+currentMenuId+'"').attr('data-page');
-                let anchor = $('li[data-id="'+currentMenuId+'"').attr('data-anchor');
+                let title = $(`li[data-id="${currentMenuId}"`).attr('data-title');
+                let page = $(`li[data-id="${currentMenuId}"`).attr('data-page');
+                let anchor = $(`li[data-id="${currentMenuId}"`).attr('data-anchor');
 
-                $("#myModal").find("#MenuTitle").val(title);
-                if(page != undefined){
-                    $("#myModal input[name=menuType][value='page']").prop("checked",true).trigger('change');
-                    $("#myModal #menuPage").val(page);
-                } else if( anchor ){
-                    $("#myModal input[name=menuType][value='anchor']").prop("checked",true).trigger('change');
-                    $("#myModal #menuAnchor").val(anchor);
+                $("#addNewSubmenuModal").find("#NewMenuTitle").val(title);
+                
+                if (page != undefined) {
+                    $("#addNewSubmenuModal input[name=newMenuType][value='page']").prop("checked",true).trigger('change');
+                    $("#addNewSubmenuModal #newMenuPage").val(page);
+                } else if (anchor) {
+                    $("#addNewSubmenuModal input[name=newMenuType][value='anchor']").prop("checked",true).trigger('change');
+                    $("#addNewSubmenuModal #newMenuAnchor").val(anchor);
                 }
 
-                $('#myModal').modal('toggle');
-            });
-
-            // On type change
-            $('input[name="menuType"]').on('change', function(){
-                if( $('input[name="menuType"]:checked').val() == 'anchor' ){
-                    $('#anchor').show();
-                    $('#page').hide();
-                } else if( $('input[name="menuType"]:checked').val() == 'page' ){
-                    $('#page').show();
-                    $('#anchor').hide();
-                }
+                $('#submenu_modal_heading').text("Update Submenu");
+                $('#deleteButton').show();
+                isEditing = true;
+                $('#addNewSubmenuModal').modal('toggle');
             });
 
             // Delete submenu
             $('#deleteButton').click(function(){
-                let menuIdToDelete = $('#currentMenuId').val();
-                $("li[data-id='" + menuIdToDelete +"']").remove();
-                $('#myModal').modal('toggle');
-                $('#nestable').trigger('change');
-            });
-
-            // On save modal
-            $('#myModal #editUrlError').hide();
-            $('body').on('click','#saveButton',function(){
-                let menuIdToUpdate = $('#currentMenuId').val();
-
-                // Set title
-                let title = $('#MenuTitle').val();
-                $("li[data-id='" + menuIdToUpdate +"']").attr( 'data-title', title );
-                //$("li[data-id='" + menuIdToUpdate +"']").find('.dd3-content').text();
-
-                // Check menuType
-                let menuType = $('input[name="menuType"]:checked').val();
-                if(menuType == 'anchor'){
-                    let anchor = $("#menuAnchor").val();
-                    let title = $('#MenuTitle').val();
-
-                    // check if valid url
-                    var regex = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
-                    if (anchor === '#') {
-                        // do nothing, just bypass for # sign, don't check any URL validation
-                    } else if( regex.test(anchor)){
-                        $('#myModal #editUrlError').hide();
-                    } else {
-                        $('#myModal #editUrlError').show();
-                        return;
-                    }
-
-                    $("li[data-id='" + menuIdToUpdate +"']").removeAttr('data-page').attr('data-anchor', anchor);
-                    $("li[data-id='" + menuIdToUpdate +"'] > .dd3-content").html(menuIdToUpdate + ' (anchor) ' + title);
-
-                } else if(menuType == 'page'){
-                    let page = $("#menuPage").val();
-                    let title = $('#MenuTitle').val();
-                    page = (page != "") ? page : '';
-                    $("li[data-id='" + menuIdToUpdate +"']").removeAttr('data-anchor').attr('data-page', page);
-                    $("li[data-id='" + menuIdToUpdate +"'] > .dd3-content").html(menuIdToUpdate + ' (page) ' + title);
-                }
-
-                $("li[data-id='" + menuIdToUpdate +"']").clone().insertBefore("li[data-id='" + menuIdToUpdate +"']");
-                $("li[data-id='" + menuIdToUpdate +"']").eq(1).remove();
-
-                $('#myModal').modal('toggle');
+                let menuIdToDelete = $('#newCurrentMenuId').val();
+                $(`li[data-id="${menuIdToDelete}"]`).remove();
+                $('#addNewSubmenuModal').modal('toggle');
                 $('#nestable').trigger('change');
             });
 
@@ -632,6 +437,125 @@
                     clearTimeout(timer);
                     timer = setTimeout(() => { func.apply(this, args); }, timeout);
                 };
+            }
+
+            $('#create-submenus-form').submit((e) => {
+                e.preventDefault();
+
+                if (!validateFields()) return;
+
+                if (isEditing) {
+                    let menuIdToUpdate = $('#newCurrentMenuId').val();
+
+                    // Set title
+                    let title = $('#NewMenuTitle').val();
+                    $(`li[data-id="${menuIdToUpdate}"]`).attr('data-title', title);
+                    //$("li[data-id='" + menuIdToUpdate +"']").find('.dd3-content').text();
+
+                    // Check menuType
+                    let menuType = $('input[name="newMenuType"]:checked').val();
+                    if (menuType === 'anchor') {
+                        let anchor = $("#newMenuAnchor").val();
+                        let title = $('#NewMenuTitle').val();
+
+                        $(`li[data-id="${menuIdToUpdate}"]`).removeAttr('data-page').attr('data-anchor', anchor);
+                        $(`li[data-id="${menuIdToUpdate}"] > .dd3-content`).html(menuIdToUpdate + ' (anchor) ' + title);
+
+                    } else if (menuType === 'page') {
+                        let page = $("#newMenuPage").val();
+                        let title = $('#NewMenuTitle').val();
+                        page = (page !== "") ? page : '';
+                        $(`li[data-id="${menuIdToUpdate}"]`).removeAttr('data-anchor').attr('data-page', page);
+                        $(`li[data-id="${menuIdToUpdate}"] > .dd3-content`).html(menuIdToUpdate + ' (page) ' + title);
+                    }
+
+                    $(`li[data-id="${menuIdToUpdate}"]`).clone().insertBefore(`li[data-id="${menuIdToUpdate}"]`);
+                    $(`li[data-id="${menuIdToUpdate}"]`).eq(1).remove();
+
+                    $('#addNewSubmenuModal').modal('toggle');
+                    $('#nestable').trigger('change');
+                    return;
+                }
+
+                lastSubMenuId = lastSubMenuId + 1;
+                let menuIdToUpdate = $('#newCurrentMenuId').val();
+
+                // Set title
+                let title = '';
+                if ($('#NewMenuTitle').val() !== '') {
+                    title = $('#NewMenuTitle').val();
+                    $(`li[data-id="${menuIdToUpdate}"]`).attr('data-title', title);
+                    $(`li[data-id="${menuIdToUpdate}"]`).find('.dd3-content').text();
+                }
+
+                // Check menuType
+                let menuType = $('input[name="newMenuType"]:checked').val();
+                let attributes = '';
+                let html = '';
+                if (menuType === 'anchor') {
+                    let anchor = $("#newMenuAnchor").val();
+                    attributes = `data-anchor="${anchor}" data-title="${title}"`;
+                    html = lastSubMenuId + ' ( anchor ) ' + title;
+                } else if(menuType === 'page') {
+                    let page = $("#newMenuPage").val();
+                    page = (page !== "") ? page : '';
+                    attributes = `data-page="${page}" data-title="${title}"`;
+                    html = lastSubMenuId + ' ( page ) ' + title;
+                }
+
+                $('ol#submenu').append(`
+                    <li class="dd-item dd3-item" data-id="${lastSubMenuId}" ${attributes}>
+                        <div class="dd-handle dd3-handle"></div>
+                        <div class="dd3-content">${html}</div>
+                        <div class="dd3-edit"><i class="fa fa-trash"></i></div>
+                    </li>`
+                );
+
+                $('#addNewSubmenuModal').modal('toggle');
+                $('#nestable').trigger('change');
+            });
+
+            function validateFields() {
+                let hasMenuError = hasURLError = hasPageError = false;
+                if ($('#NewMenuTitle').val() === "") {
+                    if (! ($('#NewMenuTitle').next().hasClass("my-error-class"))) {
+                        $('#NewMenuTitle').after(`<span class="my-error-class">This field is required.</span>`);
+                    }
+                    hasMenuError = true;
+                }
+                let val = $('input[name="newMenuType"]:checked').val();
+                
+                if (val === "anchor") {
+                    let value = $('#newMenuAnchor').val();
+                    if (value === "") {
+                        if (! ($('#newMenuAnchor').next().hasClass("my-error-class"))) {
+                            $('#newMenuAnchor').after(`<span class="my-error-class">This field is required.</span>`);
+                        }
+                    } else {
+                        let regex = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
+                        if (value === '#') {
+                            // do nothing
+                        } else if(regex.test(value)) {
+                            $('#addNewSubmenuModal #newUrlError').hide();
+                        } else {
+                            if (! ($('#newMenuAnchor').next().hasClass("my-error-class"))) {
+                                $('#newMenuAnchor').after(`<span class="my-error-class">Please enter a valid URL.</span>`);
+                                hasURLError = true;
+                            }
+                        }
+                    }
+                } else {
+                    let selectedPage = $('#newMenuPage').find(":selected").text();
+
+                    if (selectedPage.trim() === "") {
+                        if (! ($('#newMenuPage').next().hasClass("my-error-class"))) {
+                            $('#newMenuPage').after(`<span class="my-error-class">This field is required.</span>`);
+                        }
+                        hasPageError = true;
+                    }
+                }
+
+                return !(hasMenuError || hasURLError || hasPageError);
             }
         });
     </script>

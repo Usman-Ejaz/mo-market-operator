@@ -183,7 +183,10 @@
                 }
             },
             onprocessfile: (error, file) => {
-                setTimeout(() => { pond.removeFile(); }, 600);
+                setTimeout(() => { 
+                    pond.removeFile(); 
+                    loadAllImages();
+                }, 200);
             },
             onprocessfiles: (error, file) => {                
                 setTimeout(() => { 
