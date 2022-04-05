@@ -19,6 +19,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\SearchStatistic;
 use App\Models\Settings;
+use App\Models\SliderImage;
 use App\Models\StaticBlock;
 use App\Models\Subscriber;
 use App\Models\User;
@@ -125,6 +126,9 @@ class DatabaseSeeder extends Seeder
         ChatBotKnowledgeBase::factory(20)->create();
 
         StaticBlock::factory(2)->create();
+
+        // For Slider Images
+        SliderImage::factory(5)->create();
     }
 
 
@@ -136,31 +140,31 @@ class DatabaseSeeder extends Seeder
     private function makeDirectories()
     {
 
-        $basePath = config('filesystems.disks.app.root');
+        $basePath = config('settings.storage_disk_base_path');
 
         // For User Profile
-        if (!is_dir($basePath . '/' . User::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . User::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . User::STORAGE_DIRECTORY)) {
+            mkdir($basePath . User::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Page Images
-        if (!is_dir($basePath . '/' . Page::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Page::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Page::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Page::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Posts Images
-        if (!is_dir($basePath . '/' . Post::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Post::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Post::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Post::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Job Images
-        if (!is_dir($basePath . '/' . Job::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Job::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Job::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Job::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For Documents Images
-        if (!is_dir($basePath . '/' . Document::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Document::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Document::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Document::STORAGE_DIRECTORY, 0777, true);
         }
 
         // For CK-Editor Images
@@ -169,8 +173,13 @@ class DatabaseSeeder extends Seeder
         }
 
         // For Applications
-        if (!is_dir($basePath . '/' . Application::STORAGE_DIRECTORY)) {
-            mkdir($basePath . '/' . Application::STORAGE_DIRECTORY, 0777, true);
+        if (!is_dir($basePath . Application::STORAGE_DIRECTORY)) {
+            mkdir($basePath . Application::STORAGE_DIRECTORY, 0777, true);
+        }
+
+        // For Slider Images
+        if (!is_dir($basePath . SliderImage::STORAGE_DIRECTORY)) {
+            mkdir($basePath . SliderImage::STORAGE_DIRECTORY, 0777, true);
         }
     }
 }

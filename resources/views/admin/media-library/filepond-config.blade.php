@@ -29,8 +29,11 @@
 		});
 
         $('body').on('click', '.btn-remove', (e) => {
-            if(confirm('Are you sure you want to delete this record?')) {
+            if(confirm('Are you sure you want to delete this record?')) {                
                 let { id } = e.target.dataset;
+
+                if (!id) { console.log(id); toastr.error("Could not find media file."); return; }
+
                 $.ajax({
                     url: '{{ route("admin.media-library.files.remove") }}',
                     type: 'POST',
@@ -51,12 +54,12 @@
                     }
                 })
             }
-        })
+        });
 
 		$('.editor-modal').on('click', function () {
 			disableCropper();
 			$('#imageViewModal').modal('hide');
-		})
+		});
 
 		$('#saveImageInfo').on('click', function (e) {
 			saveImageInfo();
@@ -130,13 +133,10 @@
                                     </div>
                                 </div>
                                 <div class="btn-container">
-                                    <button type="button" class="btn btn-danger btn-sm btn-remove" data-id="${ item.id }"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-danger btn-sm btn-remove" data-id="${ item.id }"><i class="fa fa-trash" aria-hidden="true" data-id="${ item.id }"></i></button>
                                 </div>
                             </div>
                         `;
-                        // <div style="position: relative;top: 182px;right: 30px; height: 1px; display:inline-block; bottom: 0;">
-                        //  <a style="color:red; cursor:pointer" href="javascript:void(0);" data-id="${item.id}" class="image-remove"><i class="fa fa-times"></i></button>
-                        // </div>
                     });
 
                     $('#mediafiles').html(html);
@@ -163,6 +163,9 @@
             credits: false,
             allowMultiple: true,
             required: true,
+            labelTapToUndo: '',
+            labelTapToCancel: '',
+            labelTapToRetry: '',
             server: {
                 process: {
                     url: '{{ route("admin.media-library.files.upload", $mediaLibrary->id) }}',
@@ -170,9 +173,8 @@
                     onload: (response) => {
                         
                     },
-                    onerror: (response) => { 
-                        console.log('response.data => ', response.data);  
-                        toastr.error('Something went wrong');
+                    onerror: (response) => {
+                        toastr.error('Something went wrong.');
                     },
                 },
                 revert: null,
@@ -180,15 +182,14 @@
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             },
-            // onprocessfile: (error, file) => {
-            //     loadAllImages()
-            //     setTimeout(() => { pond.removeFile(); }, 600);
-            // },
+            onprocessfile: (error, file) => {
+                setTimeout(() => { pond.removeFile(); }, 600);
+            },
             onprocessfiles: (error, file) => {                
                 setTimeout(() => { 
                     pond.removeFiles(); 
                     loadAllImages();
-                    toastr.success('Image uploaded successfully!');
+                    toastr.success('Media file uploaded successfully!');
                 }, 600);
             }
         });
@@ -386,7 +387,7 @@
                     $('.editor-modal').click();
                     disableCropper();
                     $('#saveImageInfo').prop('disabled', false);
-                    toastr.success("Image updated successfully!");
+                    toastr.success("Media file updated successfully!");
                 }
             },
             error: () => {

@@ -10,6 +10,7 @@ use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PermissionController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchStatisticController;
+use App\Http\Controllers\SliderImageController;
 use App\Http\Controllers\StaticBlockController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
@@ -150,15 +152,18 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('static-block', StaticBlockController::class);
 
     Route::get('media-library/list', [MediaLibraryController::class, 'list'])->name('media-library.list');
-    Route::get('media-library/{mediaLibrary}/manage-files', [MediaLibraryController::class, 'mediaFiles'])->name('media-library.files');
-    Route::get('media-library/{mediaLibrary}/manage-files/list', [MediaLibraryController::class, 'mediaFilesList'])->name('media-library.files.list');
-    Route::post('media-library/{mediaLibrary}/upload', [MediaLibraryController::class, 'uploadFile'])->name('media-library.files.upload');
     Route::resource('media-library', MediaLibraryController::class);
+    
+    Route::post('media-library/{mediaLibrary}/upload', [MediaFileController::class, 'store'])->name('media-library.files.upload');
+    Route::get('media-library/{mediaLibrary}/manage-files/list', [MediaFileController::class, 'list'])->name('media-library.files.list');
+    Route::get('media-library/{mediaLibrary}/manage-files', [MediaFileController::class, 'index'])->name('media-library.files');
+    Route::post('manage-files/remove', [MediaFileController::class, 'destroy'])->name('media-library.files.remove');
+    Route::post('media-library/updateFile', [MediaFileController::class, 'update'])->name('media-library.updateFile');
 
-    Route::post('manage-files/remove', [MediaLibraryController::class, 'removeMediaFile'])->name('media-library.files.remove');
-    Route::post('media-library/updateFile', [MediaLibraryController::class, 'updateFile'])->name('media-library.updateFile');
-    
-    
+    Route::get('slider-images/list', [SliderImageController::class, 'list'])->name('slider-images.list');
+    Route::post('slider-images/deleteImage', [SliderImageController::class, 'deleteImage'])->name('slider-images.deleteImage');    
+    Route::resource('slider-images', SliderImageController::class);
+        
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");
 });

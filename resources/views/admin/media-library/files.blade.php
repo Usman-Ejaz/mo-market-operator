@@ -249,6 +249,11 @@
 		border: 2px solid #4da7e8;
 		box-shadow: 5px 5px #d2d6d3;
 	}
+
+	.dropdown-menu span {
+		cursor: pointer;
+		margin: 2px 0px;
+	}
 </style>
 @endpush
 

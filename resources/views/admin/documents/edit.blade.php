@@ -98,6 +98,12 @@
 			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
+		$.validator.addMethod('extension', function (value, element, param) {
+			let files = Array.from(element.files);
+			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
+			return this.optional(element) || invalidFiles.length === 0;
+		}, '');
+
 		$('#update-document-form').validate({
 			errorElement: 'span',
 			errorClass: "my-error-class",
@@ -115,13 +121,13 @@
 				keywords: {
 					notNumericValues: true
 				},
-				file: {
+				'file[]': {
 					required: {
 						depends: function() {
 							return $(".fileExists").length > 0 ? false : true;
 						}
 					},
-					extension: "doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt"
+					extension: ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'],
 				}
 			},
 			errorPlacement: function(error, element) {
@@ -131,7 +137,7 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				file: {
+				'file[]': {
 					required: "{{ __('messages.required') }}",
 					extension: '{{ __("messages.valid_file_extension") }}'
 				},
@@ -143,31 +149,16 @@
 			}
 		});
 
+		let paths = [];
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-		$("#deleteFile").click(function() {
-
-			// if (confirm('Are you sure you want to this file?')) {
-			// 	$.ajax({
-			// 		url: "{{ route('admin.documents.deleteFile') }}",
-			// 		type: 'POST',
-			// 		data: {
-			// 			_token: "{{ csrf_token() }}",
-			// 			document_id: "{{$document->id}}"
-			// 		},
-			// 		dataType: 'JSON',
-			// 		success: function(data) {
-			// 			if (data.success) {
-			// 				alert('File Deleted Successfully');
-			// 				window.location.reload();
-			// 				$('.fileExists').remove();
-			// 			}
-			// 		}
-			// 	});
-			// }
-
-			if (confirm('Are you sure you want to this file?')) {
-				$('.fileExists').remove();
-				$("#removeFile").val("1");
+		$(".remove-file").on('click', function() {
+			let { path } = $(this).data();
+			
+			if (confirm('Are you sure you want to delete this file?')) {
+				paths.push(path);
+				$(this).parent().parent().remove();
+				// $('.fileExists').remove();
+				$("#removeFile").val(`${paths.toString()}`);
 			}
 		});
 
@@ -190,31 +181,56 @@
 		if (!e.target.checked) return;
 
 		const convertableExtensions = ['doc', 'docx', 'txt', 'ppt', 'pptx', 'odt'];
-		let extension = "";
 
-		if ($("#file").get(0).files.length > 0) {
-			let filename = $("#file").get(0).files[0].name;
-			extension = filename.split(".");
-			extension = extension[extension.length - 1];			
-		} else if ($(".fileExists").length > 0) {
-			let filename = '{{ $document->file }}';
-			extension = filename.split(".");
-			extension = extension[extension.length - 1];
+		const uploadedFiles = $("#file").get(0).files;
+
+		if (uploadedFiles.length > 0) {
+			let invalidFiles = [];
+
+			for (let file of uploadedFiles) {
+				if (!convertableExtensions.includes(getFileExtension(file))) {
+					invalidFiles.push(file.name);
+				}
+			}
+
+			if (invalidFiles.length > 0) {
+				alert(`${invalidFiles.toString()} document(s) extension is not allowed for conversion.`);
+				e.target.checked = false;
+			}
 		} else {
-			alert("Please upload the file first.");
+			alert('Please select document first.');
 			e.target.checked = false;
-			return;
 		}
-
-		if (!convertableExtensions.includes(extension)) {
-			alert("This document extension is not allowed for conversion.");
-			e.target.checked = false;
-			return;
-		}		
 	}
 
-	function resetConvertCheckbox() {
+	function resetConvertCheckbox(e) {
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			return false;
+		}
+
+		const allowedUploedFiles = ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'];
+		const invalidFiles = [];
+
+		let uploadedFiles = e.target.files;
+
+		for (let file of uploadedFiles) {			
+			if (!allowedUploedFiles.includes(getFileExtension(file))) {
+				invalidFiles.push(file.name);
+			}
+		}
+		
+		if (invalidFiles.length > 0) {
+			message = `${invalidFiles.toString()} file(s) are not allowed for upload.`
+			$(`#${e.target.id}`).append(`<span class="my-error-class">${message}</span>`);
+		}
+
 		document.getElementById('convert').checked = false;
+	}
+
+	function getFileExtension(file) {
+		let uploadedFilename = file.name;
+		return uploadedFilename.split(".").at(-1);
 	}
 </script>
 

@@ -43,16 +43,16 @@
 				<label for="file" class="form-label">Document File <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, txt, ppt, pptx, csv, xls, xlsx, pdf, odt)</small> </label>
 				<input class="form-control" type="file" id="file" name="file[]" onchange="resetConvertCheckbox(event)" multiple>
 				<span class="form-text text-danger">{{ $errors->first('file') }} </span>
-				@if(isset($document->file) && !empty($document->file))
-				<small class="fileExists">
-					<p>
-						Open Attachment Of -
-						<a href="{{ $document->file }}" target="_blank">
-							{{$document->title}}
-						</a>
-						<span class="btn-sm btn-danger float-right" id="deleteFile" title="Delete File"><i class="fa fa-trash"></i></span>
-					</p>
-				</small>
+				@if(isset($document->document_links) && !empty($document->document_links))
+					@foreach ($document->document_links as $key => $path)
+					<small class="fileExists">
+						<p>
+							Open Attachment Of -
+							<a href="{{ $path }}" target="_blank"> {{ $document->title }} </a>
+							<span class="btn-sm btn-danger float-right remove-file" data-path="{{ $path }}" id="{{ $key }}-filebutton" title="Delete File"><i class="fa fa-trash"></i></span>
+						</p>
+					</small>
+					@endforeach				
 				@endif
 			</div>
 		</div>

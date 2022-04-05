@@ -111,7 +111,7 @@
 					start_date: startDate,
 					end_date: endDate,
 				}
-			},			
+			},
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
 					const searchedRecods = this.fnSettings()._iRecordsDisplay;
@@ -157,7 +157,7 @@
 			<input type="hidden" id="end_date_hidden" value="${endDate}" />
 			<button class="btn btn-primary btn-sm" type="button" id="seachByDate" style="position:absolute; left: 140px;" >Search</button>
 			${(datePickerStartDate !== "" && datePickerEndDate !== "") ? `
-			<button class="btn btn-primary btn-sm" type="button" id="clearSearch" style="position:absolute; left: 205px;" >Clear</button>
+				<button class="btn btn-primary btn-sm" type="button" id="clearSearch" style="position:absolute; left: 205px;" >Clear</button>
 			` : ""}
 		`);	
 
