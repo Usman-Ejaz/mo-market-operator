@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
-@section('header', 'Roles')
+@section('header', 'Roles & Permissions')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-<li class="breadcrumb-item active">Roles</li>
+<li class="breadcrumb-item active">Roles & Permissions</li>
 @endsection
 
 @section('addButton')

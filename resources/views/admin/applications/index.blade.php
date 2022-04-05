@@ -65,7 +65,7 @@
               if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
                 const searchedRecods = this.fnSettings()._iRecordsDisplay;
                 const totalRecords = this.fnSettings()._iRecordsTotal;
-                $('.dataTables_info').text(`Showing ${searchedRecods} to ${searchedRecods} of ${searchedRecods} entry ${"("}filtered from ${totalRecords} total entries${")"}`);
+                $('.dataTables_info').text(`Showing ${searchedRecods} to ${searchedRecods} of ${searchedRecods} entry ${"("}filtered from ${totalRecords} total ${totalRecords > 1 ? 'entries' : 'entry'}${")"}`);
               } else {
                 $('.dataTables_info').show();
               }
