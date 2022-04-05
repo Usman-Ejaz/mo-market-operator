@@ -15,8 +15,8 @@ class CreateSliderImagesTable extends Migration
     {
         Schema::create('slider_images', function (Blueprint $table) {
             $table->id();
-            $table->string('block_one');
-            $table->string('block_two');
+            $table->string('slot_one');
+            $table->string('slot_two');
             $table->string('url');
             $table->unsignedInteger('order');
             $table->string('image');

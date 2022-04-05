@@ -161,9 +161,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::post('media-library/updateFile', [MediaFileController::class, 'update'])->name('media-library.updateFile');
 
     Route::get('slider-images/list', [SliderImageController::class, 'list'])->name('slider-images.list');
+    Route::post('slider-images/deleteImage', [SliderImageController::class, 'deleteImage'])->name('slider-images.deleteImage');    
     Route::resource('slider-images', SliderImageController::class);
-    
-    
+        
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");
 });

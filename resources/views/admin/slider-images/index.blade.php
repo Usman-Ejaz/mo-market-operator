@@ -20,8 +20,8 @@
 				<thead>
 					<tr>
 						<th>Id</th>
-						<th>Block One</th>
-						<th>Block Two</th>
+						<th>Slot One</th>
+						<th>Slot Two</th>
 						<th>Image</th>
 						<th>Action</th>
 					</tr>
@@ -67,12 +67,12 @@
 					name: 'id'
 				},
 				{
-					data: 'block_one',
-					name: 'block_one'
+					data: 'slot_one',
+					name: 'slot_one'
 				},
 				{
-					data: 'block_two',
-					name: 'block_two'
+					data: 'slot_two',
+					name: 'slot_two'
 				},
 				{
 					data: 'image',

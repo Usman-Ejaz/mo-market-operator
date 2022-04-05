@@ -15,8 +15,8 @@ class SliderImageFactory extends Factory
     public function definition()
     {
         return [
-            'block_one' => $this->faker->paragraph(1),
-            'block_two' => $this->faker->paragraph(2),
+            'slot_one' => $this->faker->paragraph(1),
+            'slot_two' => $this->faker->paragraph(2),
             'url' => '',
             'order' => $this->faker->numberBetween(1, 10),
             'image' => $this->faker->image(config('settings.storage_disk_base_path') .  SliderImage::STORAGE_DIRECTORY, 640, 480, 'cats', false)

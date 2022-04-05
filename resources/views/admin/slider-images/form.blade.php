@@ -2,18 +2,18 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="name">Block One <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="block_one" placeholder="Enter Block One" name="block_one" value="{{ old('block_one') ?? $sliderImage->block_one }}">
-                <span class="form-text text-danger">{{ $errors->first('block_one') }} </span>
+                <label for="name">Slot One <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="slot_one" placeholder="Enter Slot One" name="slot_one" value="{{ old('slot_one') ?? $sliderImage->slot_one }}">
+                <span class="form-text text-danger">{{ $errors->first('slot_one') }} </span>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="name">Block Two <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="block_two" placeholder="Enter Block Two" name="block_two" value="{{ old('block_two') ?? $sliderImage->block_two }}">
-                <span class="form-text text-danger">{{ $errors->first('block_two') }} </span>
+                <label for="name">Slot Two <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="slot_two" placeholder="Enter Slot Two" name="slot_two" value="{{ old('slot_two') ?? $sliderImage->slot_two }}">
+                <span class="form-text text-danger">{{ $errors->first('slot_two') }} </span>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="name">URL <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="url" placeholder="Enter URL" name="url" value="{{ old('url') ?? $sliderImage->url }}">
+                <input type="url" class="form-control" id="url" placeholder="Enter URL" name="url" value="{{ old('url') ?? $sliderImage->url }}">
                 <span class="form-text text-danger">{{ $errors->first('url') }} </span>
             </div>
         </div>
@@ -30,7 +30,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="name">Order <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="order" placeholder="Enter Order" name="order" value="{{ old('order') ?? $sliderImage->order }}">
+                <input type="number" class="form-control" id="order" placeholder="Enter Order" name="order" value="{{ old('order') ?? $sliderImage->order }}">
                 <span class="form-text text-danger">{{ $errors->first('order') }} </span>
             </div>
         </div>

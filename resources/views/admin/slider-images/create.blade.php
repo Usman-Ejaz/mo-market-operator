@@ -60,22 +60,20 @@
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
 			rules: {
-				block_one: {
+				slot_one: {
 					required: true,
-					maxlength: 255,
+					maxlength: 64,
 					minlength: 3,
 					notNumericValues: true
 				},
-				block_two: {
+				slot_two: {
 					required: true,
-					maxlength: 255,
+					maxlength: 100,
 					minlength: 3,
 					notNumericValues: true
 				},
 				url: {
 					required: true,
-					maxlength: 255,
-					minlength: 3,
 					notNumericValues: true
 				},
 				order: {
@@ -87,15 +85,16 @@
 				}
 			},
 			messages: {
-				name: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
+				slot_one: {
+					minlength: "{{ __('messages.min_characters', ['field' => 'slot one', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'slot one', 'limit' => 64]) }}"
 				},
-				contents: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'Contents', 'limit' => 3]) }}",
-					ckeditor_required: "{{ __('messages.required') }}",
-				}
+				slot_two: {
+					minlength: "{{ __('messages.min_characters', ['field' => 'slot two', 'limit' => 3]) }}",
+					required: "{{ __('messages.required') }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'slot two', 'limit' => 100]) }}"
+				},
 			}
 		});
 	});

@@ -85,6 +85,16 @@ class SliderImageController extends Controller
     public function update(Request $request, SliderImage $sliderImage)
     {
         abort_if(! hasPermission('slider_images', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+
+        $data = $this->validateRequest();
+        if ($request->hasFile('image')) {
+            removeFile(SliderImage::STORAGE_DIRECTORY, $data['image']);
+            $data['image'] = storeFile(SliderImage::STORAGE_DIRECTORY, $request->file('image'), null);            
+        }
+        $sliderImage->update($data);
+
+        $request->flash('success', 'Slider image updated successfully!');
+        return redirect()->route('admin.slider-images.index');
     }
 
     /**
@@ -112,17 +122,17 @@ class SliderImageController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('block_one', function ($row) {
-                    return truncateWords($row->block_one, 20);
+                ->addColumn('slot_one', function ($row) {
+                    return truncateWords($row->slot_one, 20);
                 })
-                ->addColumn('block_two', function ($row) {
-                    return truncateWords($row->block_two, 30);
+                ->addColumn('slot_two', function ($row) {
+                    return truncateWords($row->slot_two, 30);
                 })
                 ->addColumn('order', function ($row) {
                     return ($row->order) ? $row->order : '';
                 })
                 ->addColumn('image', function ($row) {
-                    return '<img src="'. $row->image .'" height="100" width="100" />';
+                    return !empty($row->image) ? '<img src="'. $row->image .'" height="100" width="100" />' : 'No image is selected';
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
@@ -150,11 +160,22 @@ class SliderImageController extends Controller
         }
     }
 
+    public function deleteImage(Request $request) {
+        if ($request->ajax()) {
+            if (isset($request->slider_id)) {
+                $sliderImage = SliderImage::find($request->slider_id);
+                removeFile(SliderImage::STORAGE_DIRECTORY, $sliderImage->image);
+                $sliderImage->update(['image' => '']);
+                return response()->json(['success' => 'true', 'message' => 'Image deleted successfully'], 200);
+            }
+        }
+    }
+
     private function validateRequest()
     {
         return request()->validate([
-            'block_one' => 'required|string|min:3',
-            'block_two' => 'required',
+            'slot_one' => 'required|string|min:3',
+            'slot_two' => 'required',
             'url' => 'required',
             'order' => 'required',
             'image' => 'required|file|max:' . config('settings.maxImageSize'),

@@ -14,7 +14,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Slider Image - {{ truncateWords($sliderImage->block_one, 30) }}</h3>
+						<h3 class="card-title">Edit Slider Image - {{ truncateWords($sliderImage->slot_one, 30) }}</h3>
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->
@@ -53,19 +53,19 @@
 			return messageLength !== 0;
 		}, '{{ __("messages.ckeditor_required") }}');
 
-		$('#create-slider-images-form').validate({
+		$('#update-slider-images-form').validate({
 			ignore: [],
 			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
 			rules: {
-				block_one: {
+				slot_one: {
 					required: true,
 					maxlength: 255,
 					minlength: 3,
 					notNumericValues: true
 				},
-				block_two: {
+				slot_two: {
 					required: true,
 					maxlength: 255,
 					minlength: 3,
@@ -86,15 +86,40 @@
 				}
 			},
 			messages: {
-				name: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
+				slot_one: {
+					minlength: "{{ __('messages.min_characters', ['field' => 'slot one', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'slot one', 'limit' => 64]) }}"
 				},
-				contents: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'Contents', 'limit' => 3]) }}",
-					ckeditor_required: "{{ __('messages.required') }}",
-				}
+				slot_two: {
+					minlength: "{{ __('messages.min_characters', ['field' => 'slot two', 'limit' => 3]) }}",
+					required: "{{ __('messages.required') }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'slot two', 'limit' => 100]) }}"
+				},
+			}
+		});
+
+		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+		$("#deleteImage").click(function() {
+
+			if (confirm('Are you sure you want to delete this image?')) {
+				$('.imageExists').remove();
+				return;
+				// $.ajax({
+				// 	url: "{{ route('admin.slider-images.deleteImage') }}",
+				// 	type: 'POST',
+				// 	data: {
+				// 		_token: "{{ csrf_token() }}",
+				// 		slider_id: "{{ $sliderImage->id }}"
+				// 	},
+				// 	dataType: 'JSON',
+				// 	success: function(data) {
+				// 		if (data.success) {
+				// 			toastr.success(data.message);							
+				// 			$('.imageExists').remove();
+				// 		}
+				// 	}
+				// });
 			}
 		});
 	});
