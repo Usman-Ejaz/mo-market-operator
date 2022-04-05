@@ -123,9 +123,7 @@
 			},
 			columns: [{
 					data: 'DT_RowIndex',
-					name: 'DT_RowIndex',
-					orderable: false,
-					searchable: false
+					name: 'DT_RowIndex'
 				},
 				{
 					data: 'keyword',
