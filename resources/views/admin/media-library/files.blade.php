@@ -46,7 +46,7 @@
 			<form action="" method="POST" id="create-submenus-form" onsubmit="return false;">
 				<div class="modal-header bg-primary">
 					<h5 class="modal-title" id="exampleModalLabel">Edit Image</h5>
-					<button type="button" class="close editor-modal" data-dismiss="modal">
+					<button type="button" class="close editor-modal-close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
@@ -153,7 +153,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" id="customizeImage">Customize Image</button>
-					<button type="button" class="btn btn-secondary editor-modal" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary editor-modal-close" data-dismiss="modal">Close</button>
 					<button type="submit" class="btn btn-primary" id="saveImageInfo">Save changes</button>
 				</div>
 			</form>

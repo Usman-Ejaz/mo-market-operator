@@ -56,7 +56,7 @@
             }
         });
 
-		$('.editor-modal').on('click', function () {
+		$('.editor-modal-close').on('click', function () {
 			disableCropper();
 			$('#imageViewModal').modal('hide');
 		});
@@ -115,6 +115,11 @@
         });
 	});	
 
+    /**
+     * Load all images against the selected event from the resource.
+     * 
+     * @retrun void
+     */
     function loadAllImages() {
         $.ajax({
             url: '{{ route("admin.media-library.files.list", $mediaLibrary->id) }}',
@@ -148,6 +153,11 @@
         })
     }
 
+    /**
+     * Register a new Fileponf object in the DOM with the options object.
+     * 
+     * @return void
+    */
     function registerFilePondObject() {
         const inputElement = document.getElementById('filepond');
 
@@ -198,6 +208,11 @@
         });
     }
 
+    /**
+     * Enables CropperJs library to the given image tag with some cropper default actions
+     * 
+     * @return void
+    */
     function enableCropper() {
 
         let elem = document.getElementById('imageSrc');
@@ -313,9 +328,9 @@
     }
 
     /**
+     * Disables CropperJs library from the DOM.
      * 
-     * 
-     * 
+     * @return void
      */
     function disableCropper () {
         $('#cropper-actions').css({display: 'none'});
@@ -332,9 +347,9 @@
     }
 
     /**
+     * Saves customized image in the resource.
      * 
-     * 
-     * 
+     * @return void
      */
     async function saveImageInfo() {
         let payload = {};
@@ -387,7 +402,7 @@
                 let { status } = response;
                 if (status === "success") {
                     loadAllImages();
-                    $('.editor-modal').click();
+                    $('.editor-modal-close').click();
                     disableCropper();
                     $('#saveImageInfo').prop('disabled', false);
                     toastr.success("Media file updated successfully!");
@@ -399,6 +414,11 @@
         })
     }
 
+    /**
+     * Get the latest image after applying opacity.
+     * 
+     * @return promise
+    */
     async function getImage(canvas, opacity) {
         return new Promise(resolve => {
             const tmpCanvas = document.createElement('canvas');
@@ -412,6 +432,11 @@
         });
     }
 
+    /**
+     * Converts Blob to Base64 string
+     * 
+     * @return promise
+    */
     async function convertBlobToBase64(image) {
         return new Promise((resolve, _) => {
             const reader = new FileReader();

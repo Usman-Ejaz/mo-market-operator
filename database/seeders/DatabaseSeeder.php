@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\ApiKey;
 use App\Models\Application;
 use App\Models\ChatBotKnowledgeBase;
+use App\Models\Client;
+use App\Models\ClientAttachment;
 use App\Models\ContactPageQuery;
 use App\Models\Document;
 use App\Models\DocumentCategory;
@@ -129,6 +131,12 @@ class DatabaseSeeder extends Seeder
 
         // For Slider Images
         SliderImage::factory(5)->create();
+
+        // For Client
+        Client::factory(4)->create();
+
+        // For Client Attachment
+        ClientAttachment::factory(20)->create();
     }
 
 
@@ -180,6 +188,14 @@ class DatabaseSeeder extends Seeder
         // For Slider Images
         if (!is_dir($basePath . SliderImage::STORAGE_DIRECTORY)) {
             mkdir($basePath . SliderImage::STORAGE_DIRECTORY, 0777, true);
+        }
+
+        if (!is_dir($basePath . Client::SIGNATURE_DIR)) {
+            mkdir($basePath . Client::SIGNATURE_DIR, 0777, true);
+        }
+
+        if (!is_dir($basePath . ClientAttachment::DIR)) {
+            mkdir($basePath . ClientAttachment::DIR, 0777, true);
         }
     }
 }
