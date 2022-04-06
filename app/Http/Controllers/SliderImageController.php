@@ -43,7 +43,8 @@ class SliderImageController extends Controller
     {
         abort_if(! hasPermission('slider_images', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        $data = $this->validateRequest();
+        $sliderImage = new SliderImage;
+        $data = $this->validateRequest($sliderImage);
         $data['image'] = storeFile(SliderImage::STORAGE_DIRECTORY, $request->file('image'), null);
         SliderImage::create($data);
 
@@ -60,6 +61,8 @@ class SliderImageController extends Controller
     public function show(SliderImage $sliderImage)
     {
         abort_if(! hasPermission('slider_images', 'view'), __('auth.error_code'), __('messages.unauthorized_action'));
+
+        return view('admin.slider-images.show', compact('sliderImage'));
     }
 
     /**
@@ -86,7 +89,7 @@ class SliderImageController extends Controller
     {
         abort_if(! hasPermission('slider_images', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        $data = $this->validateRequest();
+        $data = $this->validateRequest($sliderImage);
         if ($request->hasFile('image')) {
             removeFile(SliderImage::STORAGE_DIRECTORY, $data['image']);
             $data['image'] = storeFile(SliderImage::STORAGE_DIRECTORY, $request->file('image'), null);            
@@ -136,13 +139,13 @@ class SliderImageController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( hasPermission('slider_images', 'edit') ) {
+                    if (hasPermission('slider_images', 'edit')) {
                         $options .= '<a href="'. route('admin.slider-images.edit',$row->id) .'" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
-                    if( hasPermission('slider_images', 'delete') ) {
+                    if (hasPermission('slider_images', 'delete')) {
                         $options .= ' <form action="'. route('admin.slider-images.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
@@ -171,14 +174,20 @@ class SliderImageController extends Controller
         }
     }
 
-    private function validateRequest()
+    private function validateRequest($sliderImage)
     {
-        return request()->validate([
+        $rules = [
             'slot_one' => 'required|string|min:3',
             'slot_two' => 'required',
             'url' => 'required',
             'order' => 'required',
             'image' => 'required|file|max:' . config('settings.maxImageSize'),
-        ]);
+        ];
+
+        if ($sliderImage->image !== "" && $sliderImage->image !== null) {
+            unset($rules['image']);
+        }
+        
+        return request()->validate($rules);
     }
 }
