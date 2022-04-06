@@ -81,7 +81,11 @@
 					required: true,
 				},
 				image: {
-					required: true,
+					required: {
+						depends: () => {
+							return $(".imageExists").length > 0 ? false : true;
+						}
+					},
 					extension: "jpg|jpeg|png",
 				}
 			},
