@@ -28,9 +28,6 @@
 		</div>
 	</div>
 </div>
-</div>
-
-
 @endsection
 
 @push('optional-styles')
