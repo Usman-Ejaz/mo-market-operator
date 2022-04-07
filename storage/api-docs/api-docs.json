@@ -588,6 +588,35 @@
                 ]
             }
         },
+        "/media-library": {
+            "get": {
+                "tags": [
+                    "Media Library"
+                ],
+                "summary": "Get list of Media Library files",
+                "description": "Returns Media Library files",
+                "operationId": "getFiles",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
         "/subscribe-to-newsletter": {
             "post": {
                 "tags": [
@@ -829,6 +858,35 @@
                 "summary": "Get list of Published Pages",
                 "description": "Returns list of Pages",
                 "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/slider-images": {
+            "get": {
+                "tags": [
+                    "Slider Images"
+                ],
+                "summary": "Get list of Slider Images",
+                "description": "Returns Slider Images",
+                "operationId": "getSliderImages",
                 "responses": {
                     "200": {
                         "description": "Success"

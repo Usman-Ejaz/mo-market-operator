@@ -28,6 +28,6 @@ class SliderImage extends Model
 
     public function scopeOrderByImageOrder($query)
     {
-        return $query->orderBy('order', 'desc');
+        return $query->orderBy('order', 'asc');
     }
 }
