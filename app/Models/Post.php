@@ -104,6 +104,16 @@ class Post extends Model
         return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords");
     }
 
+    public function scopeOnlyNewsAndBlogs($query)
+    {
+        return $query->whereIn('post_category', [1, 2]);
+    }
+
+    public function scopeOnlyPressRelease($query)
+    {
+        return $query->where('post_category', '=', 3);
+    }
+
     public function isPublished() {
         return $this->published_at !== null;
     }

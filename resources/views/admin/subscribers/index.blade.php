@@ -27,7 +27,7 @@
 							<input type="checkbox" name="select-all" id="select-all">
 						</th>
 						<th>Id</th>
-						<th>Name</th>
+						{{-- <th>Name</th> --}}
 						<th>Email</th>
 						<th>Status</th>
 						<th>Created date</th>
@@ -84,10 +84,10 @@
 					data: 'id',
 					name: 'id'
 				},
-				{
-					data: 'name',
-					name: 'name'
-				},
+				// {
+				// 	data: 'name',
+				// 	name: 'name'
+				// },
 				{
 					data: 'email',
 					name: 'email'
@@ -114,11 +114,11 @@
 		});
 
 		$('.bulk-action').on('click', function(e) {
-			let markedCheckbox = Array.from(document.querySelectorAll('input[class=multiselect]')).filter(elem => elem.checked === true);
+			let markedCheckboxs = Array.from(document.querySelectorAll('input[class=multiselect]')).filter(elem => elem.checked === true);
 
-			if (markedCheckbox.length > 0) {
+			if (markedCheckboxs.length > 0) {
 				let ids = '';
-				markedCheckbox.forEach(checkbox => { ids += checkbox.id.split('_')[1] + ','; });
+				markedCheckboxs.forEach(checkbox => { ids += checkbox.id.split('_')[1] + ','; });
 				ids = ids.slice(0, ids.length - 1);
 				if (confirm('Are you sure?')) {
 					$.ajax({
@@ -131,9 +131,7 @@
 						},
 						dataType: 'JSON',
 						success: function(data) {
-							console.log(data);
 							if (data.success) {
-								// alert('Image Deleted Successfully');
 								window.location.reload();
 							}
 						}

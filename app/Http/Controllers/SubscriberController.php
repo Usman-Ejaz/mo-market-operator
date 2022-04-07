@@ -33,9 +33,9 @@ class SubscriberController extends Controller
                 ->addColumn('multiselect', function ($row) {
                     return '<input type="checkbox" id="checkbox_'. $row->id .'" class="multiselect" name="checkbox['.$row->id.']"/>';
                 })
-                ->addColumn('name', function ($row) {
-                    return ($row->name) ? $row->name : '';
-                })
+                // ->addColumn('name', function ($row) {
+                //     return ($row->name) ? $row->name : '';
+                // })
                 ->addColumn('email', function ($row) {
                     return ($row->email) ? $row->email : '';
                 })

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactPageQuery;
+use App\Notifications\ContactFormQueryReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -92,7 +93,10 @@ class ContactFormQueryController extends BaseApiController
                 return $this->sendError("Error", ['errors' => $validator->errors()], 400);
             }
 
-            ContactPageQuery::create($request->all());
+            $contactPageQuery = ContactPageQuery::create($request->all());
+            
+            // (getAdmins()->first())->notify(new ContactFormQueryReceived($contactPageQuery));
+
             return $this->sendResponse([], "Query Submitted Successfully");
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
