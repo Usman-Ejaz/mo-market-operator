@@ -15,7 +15,7 @@ class MediaLibraryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $featuredImage = $this->mediaFiles;
+        $featuredImage = $this->mediaFiles()->first();
         
         $filePath = serveFile(MediaLibrary::MEDIA_STORAGE . $this->directory . '/', $featuredImage->file);
 

@@ -47,13 +47,8 @@ class MediaLibrary extends Model
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
     }
 
-    public function mediaLibraryFeaturedImage(Type $var = null)
-    {
-        # code...
-    }
-
     public function scopeFeaturedImage($query)
     {
-        return $query->whereHas('mediaFiles', fn ($q) => $q->where('featured', '=', 1)->first());
+        return $query->whereHas('mediaFiles', fn ($q) => $q->where('featured', '=', 1));
     }
 }
