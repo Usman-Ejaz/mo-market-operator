@@ -3,28 +3,27 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Faq;
+use App\Models\SliderImage;
 use Illuminate\Http\Request;
 
-class FaqApiController extends BaseApiController
+class SliderImageApiController extends BaseApiController
 {
-
     /**
      * 
      * @OA\Tag(
-     *     name="Faqs",
-     *     description="API Endpoints of faqs"
+     *     name="Slider Images",
+     *     description="API Endpoints of Slider Images"
      * )
      * 
      */ 
 
     /** 
      * @OA\Get(
-     *      path="/faqs",
-     *      operationId="show",
-     *      tags={"Faqs"},
-     *      summary="Get list of Published faqs",
-     *      description="Returns list of faqs",
+     *      path="/slider-images",
+     *      operationId="getSliderImages",
+     *      tags={"Slider Images"},
+     *      summary="Get list of Slider Images",
+     *      description="Returns Slider Images",
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
@@ -44,15 +43,15 @@ class FaqApiController extends BaseApiController
      *      ),
      *  )
      */
-    public function show()
+    public function getSliderImages()
     {
         try {
-            $faqs = Faq::published()->oldest()->get();
+            $sliderImages = SliderImage::orderByImageOrder()->select("slot_one", "slot_two", "url", "image")->get();
         
-            if ($faqs->count() > 0) {
-                return $this->sendResponse($faqs, "Found");
+            if ($sliderImages->count() > 0) {
+                return $this->sendResponse($sliderImages, "Found.");
             } else {
-                return $this->sendError("Could not found faqs.", ["errors" => "Could not found faqs."], 404);
+                return $this->sendResponse([], "Data not found.");
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);

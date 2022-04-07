@@ -13,6 +13,12 @@ class MediaLibrary extends Model
     const MEDIA_STORAGE = 'medias/';
 
     protected $guarded = [];
+
+
+    public function mediaFiles()
+    {
+        return $this->hasMany(MediaLibraryFile::class, 'media_library_id', 'id');
+    }
     
     /**
      * files
@@ -21,7 +27,7 @@ class MediaLibrary extends Model
      */
     public function files()
     {
-        $mediaFiles = $this->hasMany(MediaLibraryFile::class, 'media_library_id', 'id')->get();
+        $mediaFiles = $this->mediaFiles()->get();
 
         foreach ($mediaFiles as $media) {
             $media->file = serveFile(self::MEDIA_STORAGE . $this->directory . '/', $media->file);
@@ -39,5 +45,15 @@ class MediaLibrary extends Model
     public function getCreatedAtAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
+    }
+
+    public function mediaLibraryFeaturedImage(Type $var = null)
+    {
+        # code...
+    }
+
+    public function scopeFeaturedImage($query)
+    {
+        return $query->whereHas('mediaFiles', fn ($q) => $q->where('featured', '=', 1)->first());
     }
 }

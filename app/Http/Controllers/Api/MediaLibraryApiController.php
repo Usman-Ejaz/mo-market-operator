@@ -3,28 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Faq;
+use App\Http\Resources\MediaLibraryResource;
+use App\Models\MediaLibrary;
 use Illuminate\Http\Request;
 
-class FaqApiController extends BaseApiController
+class MediaLibraryApiController extends BaseApiController
 {
-
     /**
      * 
      * @OA\Tag(
-     *     name="Faqs",
-     *     description="API Endpoints of faqs"
+     *     name="Media Library",
+     *     description="API Endpoints of Media Library"
      * )
      * 
      */ 
 
     /** 
      * @OA\Get(
-     *      path="/faqs",
-     *      operationId="show",
-     *      tags={"Faqs"},
-     *      summary="Get list of Published faqs",
-     *      description="Returns list of faqs",
+     *      path="/media-library",
+     *      operationId="getFiles",
+     *      tags={"Media Library"},
+     *      summary="Get list of Media Library files",
+     *      description="Returns Media Library files",
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
@@ -44,15 +44,15 @@ class FaqApiController extends BaseApiController
      *      ),
      *  )
      */
-    public function show()
+    public function getFiles()
     {
         try {
-            $faqs = Faq::published()->oldest()->get();
+            $mediaFiles = MediaLibrary::featuredImage()->get();
         
-            if ($faqs->count() > 0) {
-                return $this->sendResponse($faqs, "Found");
+            if ($mediaFiles->count() > 0) {
+                return $this->sendResponse(MediaLibraryResource::collection($mediaFiles), "Found.");
             } else {
-                return $this->sendError("Could not found faqs.", ["errors" => "Could not found faqs."], 404);
+                return $this->sendResponse([], "Data not found.");
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
