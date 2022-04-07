@@ -4,7 +4,7 @@
         "title": "ISMO API Documentation",
         "description": "Ismo Api documentation description",
         "contact": {
-            "email": "usman.ejaz@nxb.com.pk"
+            "email": "contact@nxb.com.pk"
         },
         "license": {
             "name": "Apache 2.0",
@@ -602,14 +602,9 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
                                     "email"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "title": "name",
-                                        "type": "string"
-                                    },
                                     "email": {
                                         "title": "email",
                                         "type": "string"
@@ -617,7 +612,6 @@
                                 },
                                 "type": "object",
                                 "example": {
-                                    "name": "John Doe",
                                     "email": "johndoe@email.com"
                                 }
                             }
@@ -684,6 +678,72 @@
                         "name": "slug",
                         "in": "path",
                         "description": "Post slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/get-announcements": {
+            "get": {
+                "tags": [
+                    "Announcements"
+                ],
+                "summary": "Get list of Published Announcements",
+                "description": "Returns list of Announcements",
+                "operationId": "getPublishedPressReleases",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/show-announcement/{slug}": {
+            "get": {
+                "tags": [
+                    "Announcements"
+                ],
+                "summary": "Get Specific Announcement against slug",
+                "description": "Returns single Announcement",
+                "operationId": "getPressRelease",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Announcement slug",
                         "required": true,
                         "schema": {
                             "type": "string"

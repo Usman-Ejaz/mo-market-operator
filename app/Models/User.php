@@ -73,7 +73,8 @@ class User extends Authenticatable
     }
 
     public function getImageAttribute($value) {
-        return !empty($value) ? asset(config("filepaths.userProfileImagePath.public_path") . $value) : null;
+        return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
+        // return !empty($value) ? asset(config("filepaths.userProfileImagePath.public_path") . $value) : null;
     }
 
 //    public function departments(){
@@ -89,5 +90,10 @@ class User extends Authenticatable
             0 => 'Inactive',
             1 => 'Active'
         ];
+    }
+
+    public function scopeAdmins($query)
+    {
+        return $query->whereHas('role', fn ($q) => $q->where('name', '=', 'Administrator'));
     }
 }

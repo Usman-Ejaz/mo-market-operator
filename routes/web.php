@@ -6,6 +6,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactPageQueryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
@@ -48,9 +49,7 @@ Route::get('/admin', function () {
 
 Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("admin.")->group(function () {
     
-    Route::get('dashboard', function () {
-        return view('admin.dashboard.index');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Routes for User Module
     Route::get('users/list', [UserController::class, 'list'])->name('users.list');

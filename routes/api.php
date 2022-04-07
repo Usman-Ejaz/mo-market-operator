@@ -45,6 +45,9 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get("get-posts", [PublishedPostApiController::class, "getPublishedPosts"])->name("posts.published");
     Route::get("show-post/{slug}", [PublishedPostApiController::class, "getSinglePost"])->name("posts.show");
 
+    Route::get("get-announcements", [PublishedPostApiController::class, "getPublishedPressReleases"])->name("announcements.published");
+    Route::get("show-announcement/{slug}", [PublishedPostApiController::class, "getPressRelease"])->name("announcements.show");
+
     Route::get("get-jobs", [CareersApiController::class, "getPublishedJobs"])->name("careers.published");
     Route::get("show-job/{slug}", [CareersApiController::class, "showSingleJob"])->name("careers.show");
     Route::post("submit-job-application", [CareersApiController::class, "submitApplication"])->name("careers.submitApplication");
