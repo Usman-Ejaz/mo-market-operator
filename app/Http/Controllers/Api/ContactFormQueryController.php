@@ -95,7 +95,7 @@ class ContactFormQueryController extends BaseApiController
 
             $contactPageQuery = ContactPageQuery::create($request->all());
             
-            // (getAdmins()->first())->notify(new ContactFormQueryReceived($contactPageQuery));
+            (getAdmins()->first())->notify(new ContactFormQueryReceived($contactPageQuery));
 
             return $this->sendResponse([], "Query Submitted Successfully");
         } catch (\Exception $ex) {

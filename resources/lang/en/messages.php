@@ -30,8 +30,8 @@ return [
     */
 
     "success" => "Success",
-    "error" => "",
-    "data_not_found" => "",
-    "something_wrong" => "Something went wrong.",
+    "error" => "Error",
+    "data_not_found" => "Data not found",
+    "something_wrong" => "Something went wrong",
     "unauthorized_action" => "Unauthorized Action"
 ];

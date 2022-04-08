@@ -18,7 +18,8 @@ class SettingsController extends Controller
         abort_if(!hasPermission("settings", "list"), 401, __('messages.unauthorized_action'));
         
         $theme = Settings::where('name', 'current_theme')->first();
-        return view('admin.settings.index', compact('theme'));
+        $notification_emails = Settings::where('name', 'notification_emails')->first();
+        return view('admin.settings.index', compact('theme', 'notification_emails'));
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\ApiKey;
+use App\Models\Settings;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -81,5 +82,15 @@ if (!function_exists('getAdmins')) {
 
     function getAdmins() {
         return User::admins()->select('email', 'id')->get();
+    }
+}
+
+if (!function_exists('settings')) {
+    
+    function settings($option) {
+
+        if ($option === null || $option === "") return null;
+
+        return Settings::get_option($option);
     }
 }
