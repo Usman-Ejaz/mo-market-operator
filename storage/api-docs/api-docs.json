@@ -617,6 +617,35 @@
                 ]
             }
         },
+        "/menus": {
+            "get": {
+                "tags": [
+                    "Menus"
+                ],
+                "summary": "Get list of Menus by active theme",
+                "description": "Returns Menus by active theme",
+                "operationId": "getMenus",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
         "/subscribe-to-newsletter": {
             "post": {
                 "tags": [
@@ -887,6 +916,35 @@
                 "summary": "Get list of Slider Images",
                 "description": "Returns Slider Images",
                 "operationId": "getSliderImages",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/static-blocks": {
+            "get": {
+                "tags": [
+                    "Static Blocks"
+                ],
+                "summary": "Get list of Static Blocks",
+                "description": "Returns Static Blocks",
+                "operationId": "show",
                 "responses": {
                     "200": {
                         "description": "Success"
