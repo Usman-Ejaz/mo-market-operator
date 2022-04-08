@@ -361,6 +361,7 @@ class MenuController extends Controller
         return request()->validate([
             'name' => 'required|unique:menus,name,'.$menu->id,
             'theme' => 'required',
+            'identifier' => 'required',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''
