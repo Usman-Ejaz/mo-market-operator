@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MediaLibraryResource;
 use App\Models\MediaLibrary;
+use App\Models\MediaLibraryFile;
 use Illuminate\Http\Request;
 
 class MediaLibraryApiController extends BaseApiController
@@ -47,10 +48,10 @@ class MediaLibraryApiController extends BaseApiController
     public function getFiles()
     {
         try {
-            $mediaFiles = MediaLibrary::featuredImage()->get();
-        
+            $mediaFiles = MediaLibraryFile::featuredImages()->with('mediaLibrary')->select("id", "file", "media_library_id")->get();
+            
             if ($mediaFiles->count() > 0) {
-                return $this->sendResponse(MediaLibraryResource::collection($mediaFiles), "Found.");
+                return $this->sendResponse(MediaLibraryResource::collection($mediaFiles), __("messages.success"));
             } else {
                 return $this->sendResponse([], "Data not found.");
             }

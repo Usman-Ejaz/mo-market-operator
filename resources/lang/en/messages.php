@@ -29,9 +29,9 @@ return [
     |
     */
 
-    "success" => "",
+    "success" => "Success",
     "error" => "",
-    "not_found" => "",
+    "data_not_found" => "",
     "something_wrong" => "Something went wrong.",
     "unauthorized_action" => "Unauthorized Action"
 ];

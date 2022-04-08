@@ -13,6 +13,11 @@ class MediaLibraryFile extends Model
 
     public function mediaLibrary() 
     {
-        return $this->belongsTo(MediaLibrary::class);
+        return $this->belongsTo(MediaLibrary::class, 'media_library_id', 'id');
+    }
+
+    public function scopeFeaturedImages($query)
+    {
+        return $query->where('featured', '=', 1);
     }
 }

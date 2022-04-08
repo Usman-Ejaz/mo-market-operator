@@ -49,16 +49,16 @@
 
                         <div class="card-body">
 
-                            @if( is_array($pages) && count($pages) )
+                            @if($pages->count() > 0)
                                 <input type="text" name="search-pages" id="page-search" class="form-control mb-3 search-box" placeholder="Search Page">
                                 <ul id="pages" class="page-list">
-                                @foreach($pages as $id => $title)
+                                @foreach($pages as $page)
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="pages[{{ $id }}]" value="" data-page="{{ $id }}" data-title="{{ $title }}">
-                                                {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}
-                                                <a href="{{ route('admin.pages.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a>
+                                                <input type="checkbox" name="pages[{{ $page->id }}]" value="" data-page="{{ $page->id }}" data-title="{{ $page->title }}" data-slug="{{ $page->slug }}">
+                                                {{ \Illuminate\Support\Str::limit($page->title, 35, $end='...') }}
+                                                <a href="{{ route('admin.pages.edit', $page->id) }}" target="_blank"> <i class="fa fa-link"></i></a>
                                             </label>
                                         </div>
                                     </li>
@@ -163,8 +163,8 @@
                                 <div id="newPage" style="display:none;">
                                     <label for="usr">Page:</label>
                                     <select class="form-control" id="newMenuPage" name="submenu_page">
-                                        @foreach($pages as $id => $title)
-                                            <option value="{{ $id }}">{{ $id }} - {{ truncateWords($title, 35) }}</option>
+                                        @foreach($pages as $page)
+                                            <option value="{{ $page->id }}">{{ $page->id }} - {{ truncateWords($page->title, 35) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -285,11 +285,11 @@
             $('#add_pages_to_menu').click(function(){
                 $("input[name^='page']:checkbox:checked").each(function () {
                     lastSubMenuId = lastSubMenuId + 1;
-                    $('ol#submenu').append(`<li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-page="${$(this).data('page')}" data-title="${$(this).data('title')}">` +
-                        '<div class="dd-handle dd3-handle"></div><div class="dd3-content">' +
-                        lastSubMenuId + ' ( page ) ' + $(this).data('title') +
-                        '</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>' +
-                        '</li>'
+                    $('ol#submenu').append(`<li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-page="${$(this).data('page')}" data-title="${$(this).data('title')}" data-slug="${$(this).data('slug')}">
+                        <div class="dd-handle dd3-handle"></div><div class="dd3-content">
+                        ${lastSubMenuId} ( page ) ${$(this).data('title')}
+                        </div><div class="dd3-edit"><i class="fa fa-trash"></i></div>
+                        </li>`
                     );
                     $("input[name^='page']:checkbox:checked").prop('checked', false);
                     //$('#nestable').nestable();

@@ -15,13 +15,13 @@ class MediaLibraryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $featuredImage = $this->mediaFiles()->first();
+        $mediaLibrary = $this->mediaLibrary;
         
-        $filePath = serveFile(MediaLibrary::MEDIA_STORAGE . $this->directory . '/', $featuredImage->file);
+        $filePath = serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $this->file);
 
         return [
-            'title' => $this->name,
-            'description' => $this->description,
+            'title' => $mediaLibrary->name,
+            'description' => $mediaLibrary->description,
             'image' => $filePath
         ];
     }
