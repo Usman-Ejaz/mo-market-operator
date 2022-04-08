@@ -17,4 +17,6 @@ return [
     "maxDocumentSize" => 5000,   // 5 MB
 
     "storage_disk_base_path" => config('filesystems.disks.app.root') . '/',
+
+    "fallback_email" => 'noreply@nxb.com.pk'
 ];

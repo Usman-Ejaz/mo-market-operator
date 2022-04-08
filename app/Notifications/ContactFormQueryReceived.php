@@ -2,7 +2,10 @@
 
 namespace App\Notifications;
 
+use App\Mail\ContactFormQueryMail;
 use App\Models\ContactPageQuery;
+use App\Models\Settings;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -12,7 +15,7 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $contactPageQuery = null;
+    private $contactPageQuery = null;
 
     /**
      * Create a new notification instance.
@@ -22,7 +25,6 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
     public function __construct(ContactPageQuery $contactPageQuery)
     {        
         $this->contactPageQuery = $contactPageQuery;
-        $this->afterCommit();
     }
 
     /**
@@ -33,7 +35,7 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -43,11 +45,16 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+    {        
+        $notification_receiver_emails = explode(",", settings('notification_emails'));
+        
+        if ($notification_receiver_emails === null || empty($notification_receiver_emails)) {
+            $notification_receiver_emails = config('settings.fallback_email');
+        }
+
+        return (new ContactFormQueryMail($this->contactPageQuery))
+            ->from($this->contactPageQuery->email)
+            ->to($notification_receiver_emails);
     }
 
     /**
@@ -61,7 +68,7 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
         return [
             'link' => route("admin.contact-page-queries.show", $this->contactPageQuery->id),
             'title' => $this->contactPageQuery->subject,
-            'time' => $this->contactPageQuery->created_at->diffForHumans()
+            'time' => Carbon::parse($this->contactPageQuery->created_at)->diffForHumans()
         ];
     }
 }
