@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('header', 'Applications')
+@section('header', 'Application Details')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
@@ -12,7 +12,7 @@
             <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">View Application - {{ $application->name }}</h3>
+                <h3 class="card-title">Application Detail - {{ $application->name }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

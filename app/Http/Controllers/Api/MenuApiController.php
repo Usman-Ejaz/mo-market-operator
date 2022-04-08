@@ -50,12 +50,14 @@ class MenuApiController extends BaseApiController
         try {
             $currentTheme = settings('current_theme');
 
-            $menus = Menu::byTheme($currentTheme)->active()->select('name', 'submenu_json')->get();
+            $menus = Menu::byTheme($currentTheme)->active()->select('name', 'submenu_json', 'identifier')->get();
 
             $menus = $menus->map(function ($m) {
                 return [
-                    'name' => $m->name,
-                    'submenu_json' => json_decode($m->submenu_json)
+                    $m->identifier => [
+                        'name' => $m->name,
+                        'submenu_json' => json_decode($m->submenu_json)
+                    ]
                 ];
             });
             

@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('header')
-  Viewing Applications Of - {{ $job->title }}
+  Applications Of - {{ $job->title }}
 @endsection
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
