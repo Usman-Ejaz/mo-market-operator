@@ -76,7 +76,8 @@
 				},
 				{
 					data: 'image',
-					name: 'image'
+					name: 'image',
+					searchable: false
 				},
 				{
 					data: 'action',

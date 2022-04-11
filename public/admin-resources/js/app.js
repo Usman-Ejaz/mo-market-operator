@@ -2,7 +2,7 @@
 $('form').on("change paste", function (e) {
     if (e.target.id.trim().length <= 0) return;
     const elemId = '#' + e.target.id;
-    trimSpaces(e.target.id);
+    trimSpaces(e.target.id, e.target.type);
     if ($(elemId).val().length > 0) {
         $(elemId).hasClass("my-error-class") && $(elemId).removeClass("my-error-class");
         $(elemId).next().hasClass("my-error-class") && $(elemId).next().remove();
@@ -11,8 +11,10 @@ $('form').on("change paste", function (e) {
 });
 
 // To remove spaces from start and end of a string
-function trimSpaces(elementId) {
-    $('#' + elementId) && $('#' + elementId).val($('#' + elementId).val().trim());
+function trimSpaces(elementId, elementType) {
+    if (['text', 'email', 'number', 'select-one', 'url'].includes(elementType)) {
+        $('#' + elementId) && $('#' + elementId).val($('#' + elementId).val().trim());        
+    }
 }
 
 document.querySelector('input[type="number"]') && document.querySelector('input[type="number"]').addEventListener("keypress", function (evt) {
