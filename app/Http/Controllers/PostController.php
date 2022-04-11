@@ -157,10 +157,7 @@ class PostController extends Controller
                     return ($row->post_category) ? $row->post_category : '';
                 })
                 ->editColumn('created_at', function ($row) {
-                    return [
-                        'display' => $row->created_at,
-                        'timestamp' => Carbon::create($row->created_at)->timestamp
-                    ];
+                    return $row->created_at;
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
