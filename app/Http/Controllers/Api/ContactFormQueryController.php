@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewContactQueryHasArrived;
 use App\Http\Controllers\Controller;
 use App\Models\ContactPageQuery;
 use App\Notifications\ContactFormQueryReceived;
@@ -94,9 +95,9 @@ class ContactFormQueryController extends BaseApiController
             }
 
             $contactPageQuery = ContactPageQuery::create($request->all());
+                        
+            event(new NewContactQueryHasArrived($contactPageQuery));
             
-            (getAdmins()->first())->notify(new ContactFormQueryReceived($contactPageQuery));
-
             return $this->sendResponse([], "Query Submitted Successfully");
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);

@@ -164,7 +164,7 @@
                                     <label for="usr">Page:</label>
                                     <select class="form-control" id="newMenuPage" name="submenu_page">
                                         @foreach($pages as $page)
-                                            <option value="{{ $page->id }}">{{ $page->id }} - {{ truncateWords($page->title, 35) }}</option>
+                                            <option value="{{ $page->id }}" data-page-slug="{{ $page->slug }}">{{ $page->id }} - {{ truncateWords($page->title, 35) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -463,9 +463,10 @@
 
                     } else if (menuType === 'page') {
                         let page = $("#newMenuPage").val();
+                        let pageSlug = $('#newMenuPage').find(":selected").data('page-slug');
                         let title = $('#NewMenuTitle').val();
                         page = (page !== "") ? page : '';
-                        $(`li[data-id="${menuIdToUpdate}"]`).removeAttr('data-anchor').attr('data-page', page);
+                        $(`li[data-id="${menuIdToUpdate}"]`).removeAttr('data-anchor').attr('data-page', page).attr('data-slug', pageSlug);
                         $(`li[data-id="${menuIdToUpdate}"] > .dd3-content`).html(menuIdToUpdate + ' (page) ' + title);
                     }
 
@@ -498,8 +499,9 @@
                     html = lastSubMenuId + ' ( anchor ) ' + title;
                 } else if(menuType === 'page') {
                     let page = $("#newMenuPage").val();
+                    let pageSlug = $('#newMenuPage').find(":selected").data('page-slug');
                     page = (page !== "") ? page : '';
-                    attributes = `data-page="${page}" data-title="${title}"`;
+                    attributes = `data-page="${page}" data-title="${title}" data-slug="${pageSlug}"`;
                     html = lastSubMenuId + ' ( page ) ' + title;
                 }
 

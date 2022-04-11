@@ -16,7 +16,7 @@ class CreateStaticBlocksTable extends Migration
         Schema::create('static_blocks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('contents');
+            $table->text('contents');
             $table->timestamps();
         });
     }

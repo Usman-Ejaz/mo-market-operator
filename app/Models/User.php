@@ -26,6 +26,7 @@ class User extends Authenticatable
         'role_id',
         'designation',
         'department',
+        'show_notifications',
         'image',
         'active',
         'created_by',
@@ -92,8 +93,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function scopeAdmins($query)
+    public function scopeNotifiable($query)
     {
-        return $query->whereHas('role', fn ($q) => $q->where('name', '=', 'Administrator'));
+        return $query->where('show_notifications', '=', 1);
     }
 }

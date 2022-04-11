@@ -78,10 +78,10 @@ if (!function_exists("hasPermission")) {
     }
 }
 
-if (!function_exists('getAdmins')) {
+if (!function_exists('getNotifiableUsers')) {
 
-    function getAdmins() {
-        return User::admins()->select('email', 'id')->get();
+    function getNotifiableUsers() {
+        return User::notifiable()->get();
     }
 }
 

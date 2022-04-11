@@ -49,7 +49,10 @@ class UserController extends Controller
         abort_if(!hasPermission("users", "create"), 401, __('messages.unauthorized_action'));
 
         $user = new User();
-        $user = User::create( $this->validateRequest($user) );
+        $data = $this->validateRequest($user);
+        $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
+        
+        $user = User::create($data);
 
         if ($user->exists) {
             $this->storeImage($user);
@@ -104,8 +107,11 @@ class UserController extends Controller
         abort_if(!hasPermission("users", "edit"), 401, __('messages.unauthorized_action'));
         
         $previousImage = $user->image;
+        $data = $this->validateRequest($user);
+        
+        $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
 
-        if ($user->update($this->validateRequest($user))) {
+        if ($user->update($data)) {
             $this->storeImage($user, $previousImage);
 
             if ($request->get("sendEmail") == "1") {
@@ -200,6 +206,7 @@ class UserController extends Controller
             'department' => 'nullable',
             'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
             'active' => 'required',
+            'notifications' => 'sometimes|accepted',
             'created_by' => '',
             'modified_by' => ''
         ], [

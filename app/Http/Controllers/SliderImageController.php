@@ -91,8 +91,8 @@ class SliderImageController extends Controller
 
         $data = $this->validateRequest($sliderImage);
         if ($request->hasFile('image')) {
-            removeFile(SliderImage::STORAGE_DIRECTORY, $data['image']);
-            $data['image'] = storeFile(SliderImage::STORAGE_DIRECTORY, $request->file('image'), null);            
+            removeFile(SliderImage::STORAGE_DIRECTORY, $sliderImage->image);
+            $data['image'] = storeFile(SliderImage::STORAGE_DIRECTORY, $request->file('image'), null);
         }
         $sliderImage->update($data);
 

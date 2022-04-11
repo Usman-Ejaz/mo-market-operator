@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('designation');
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('department')->nullable();
+            $table->boolean('show_notifications')->default(0);
             $table->integer('active')->default(0);
             $table->string('image')->nullable();
             $table->rememberToken();
