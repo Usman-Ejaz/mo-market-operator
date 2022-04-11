@@ -72,7 +72,8 @@
                 {data: 'slug', name: 'slug'},
                 {data: 'post_category', name: 'post_category'},
                 {data: 'keywords', name: 'keywords'},
-                {data: 'created_at', name: 'created_at'},
+                {data: 
+                  { _:'created_at.display', sort: 'created_at.timestamp' }, name: 'created_at'},
                 {
                     data: 'action',
                     name: 'action',
