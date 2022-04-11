@@ -188,6 +188,8 @@ class SliderImageController extends Controller
             unset($rules['image']);
         }
         
-        return request()->validate($rules);
+        return request()->validate($rules, [
+            'image.max' => __('messages.max_file', ['limit' => '2 MB'])
+        ]);
     }
 }

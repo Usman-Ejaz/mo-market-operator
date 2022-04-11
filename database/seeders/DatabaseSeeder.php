@@ -14,6 +14,8 @@ use App\Models\Faq;
 use App\Models\FaqCategory;
 use App\Models\Menu;
 use App\Models\Job;
+use App\Models\MediaLibrary;
+use App\Models\MediaLibraryFile;
 use App\Models\Post;
 use App\Models\Newsletter;
 use App\Models\Page;
@@ -26,6 +28,7 @@ use App\Models\StaticBlock;
 use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -102,14 +105,7 @@ class DatabaseSeeder extends Seeder
         Application::factory(15)->create();
 
         // Set current theme
-        Settings::factory(1)->create([
-            'name' => 'current_theme',
-            'value' => 'theme1'
-        ]);
-        Settings::factory(1)->create([
-            'name' => 'notification_emails',
-            'value' => 'test@nxb.com.pk,testing@nxb.com.pk'
-        ]);
+        $this->createSettings();
         
         // Create News Letters
         Newsletter::factory(20)->create();
@@ -133,6 +129,10 @@ class DatabaseSeeder extends Seeder
         
         // For Slider Images
         $this->createSliderImages();
+
+        for ($i = 1; $i <= 6; $i++) {
+            $this->createMediaLibraries($i);
+        }
 
         // For Client
         Client::factory(4)->create();
@@ -310,23 +310,72 @@ class DatabaseSeeder extends Seeder
 
     private function createSliderImages()
     {
-        SliderImage::factory()->create([
+        SliderImage::create([
             'slot_one' => 'Market Operator',
             'slot_two' => 'Bridges Between Single Buyer to Market.',
             'url' => '#',
             'order' => 1,
+            'image' => 'slider1.png'
         ]);
-        SliderImage::factory()->create([
+        SliderImage::create([
             'slot_one' => 'Market Operator 2',
             'slot_two' => 'Bridges Between Single Buyer to Market.',
             'url' => '#',
             'order' => 2,
+            'image' => 'slider2.png'
         ]);
-        SliderImage::factory()->create([
+        SliderImage::create([
             'slot_one' => 'Market Operator 3',
             'slot_two' => 'Bridges Between Single Buyer to Market.',
             'url' => '#',
             'order' => 3,
+            'image' => 'slider3.png'
+        ]);
+
+        $basePath = config('settings.storage_disk_base_path') . SliderImage::STORAGE_DIRECTORY;
+
+        copy(public_path('slider_images/slider1.png'), $basePath . 'slider1.png');
+        copy(public_path('slider_images/slider2.png'), $basePath . 'slider2.png');
+        copy(public_path('slider_images/slider3.png'), $basePath . 'slider3.png');
+    }
+
+    private function createSettings()
+    {
+        Settings::factory(1)->create([
+            'name' => 'current_theme',
+            'value' => 'theme1'
+        ]);
+        Settings::factory(1)->create([
+            'name' => 'notification_emails',
+            'value' => 'test@nxb.com.pk,testing@nxb.com.pk'
+        ]);
+    }
+
+    private function createMediaLibraries($counter)
+    {
+        
+        $name = 'Farewell Party for Retiring Employees ' . $counter;
+        $slug = Str::slug($name);
+        
+        $mediaLibrary = MediaLibrary::factory()->create([
+            'name' => $name,
+            'description' => 'This is test description for ' . $name,
+            'directory' => $slug
+        ]);
+
+        $basePath = config('settings.storage_disk_base_path') . MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory;
+        $filename = 'media' . $counter . '.png';
+
+        if (!is_dir($basePath)) {
+            mkdir($basePath, 0777, true);
+
+            copy(public_path('media_images/' . $filename), $basePath . '/' . $filename);
+        }
+
+        MediaLibraryFile::create([
+            'file' => $filename,
+            'featured' => 1,
+            'media_library_id' => $mediaLibrary->id,
         ]);
     }
 }
