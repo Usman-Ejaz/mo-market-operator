@@ -106,6 +106,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'current_theme',
             'value' => 'theme1'
         ]);
+        Settings::factory(1)->create([
+            'name' => 'notification_emails',
+            'value' => 'test@nxb.com.pk,testing@nxb.com.pk'
+        ]);
         
         // Create News Letters
         Newsletter::factory(20)->create();
@@ -126,8 +130,9 @@ class DatabaseSeeder extends Seeder
         ChatBotKnowledgeBase::factory(20)->create();
         
         $this->createStaticBlocks();
+        
         // For Slider Images
-        SliderImage::factory(5)->create();
+        $this->createSliderImages();
 
         // For Client
         Client::factory(4)->create();

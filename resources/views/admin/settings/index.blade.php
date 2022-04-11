@@ -81,7 +81,7 @@
                             <div class="row mt-5">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="notification_emails">Notification Receiver Emails <span class="text-danger">*</span></label>
+                                        <label for="notification_emails">Notification Receiver Emails </label>
                                         <input type="input" class="form-control" id="notification_emails" placeholder="Notification Receiver Emails" name="notification_emails" data-role="tagsinput" value={{ old('notification_emails') ?? $notification_emails ? $notification_emails->value : '' }}>
                                         <span class="form-text text-danger">{{ $errors->first('notification_emails') }} </span>
                                     </div>

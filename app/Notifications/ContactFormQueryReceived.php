@@ -35,7 +35,7 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', 'database'];
+        return ['database'];
     }
 
     /**
@@ -46,15 +46,15 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {        
-        $notification_receiver_emails = explode(",", settings('notification_emails'));
+        // $notification_receiver_emails = explode(",", settings('notification_emails'));
         
-        if ($notification_receiver_emails === null || empty($notification_receiver_emails)) {
-            $notification_receiver_emails = config('settings.fallback_email');
-        }
+        // if ($notification_receiver_emails === null || empty($notification_receiver_emails)) {
+        //     $notification_receiver_emails = config('settings.fallback_email');
+        // }
 
-        return (new ContactFormQueryMail($this->contactPageQuery))
-            ->from($this->contactPageQuery->email)
-            ->to($notification_receiver_emails);
+        // return (new ContactFormQueryMail($this->contactPageQuery))
+        //     ->from($this->contactPageQuery->email)
+        //     ->to($notification_receiver_emails);
     }
 
     /**
