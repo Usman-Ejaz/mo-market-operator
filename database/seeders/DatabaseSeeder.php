@@ -308,7 +308,7 @@ class DatabaseSeeder extends Seeder
         );
     }
 
-    private function createSliderImages($counter)
+    private function createSliderImages()
     {
         SliderImage::create([
             'slot_one' => 'Market Operator',
