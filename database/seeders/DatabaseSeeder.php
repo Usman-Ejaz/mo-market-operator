@@ -77,9 +77,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create Menus
-        Menu::factory()->create(['name' => 'Menu header']);
-        Menu::factory()->create(['name' => 'Menu footer']);
-        Menu::factory(2)->create();
+        $this->createMenus();        
 
         // Create Posts
         Post::factory(30)->create();
@@ -126,9 +124,8 @@ class DatabaseSeeder extends Seeder
 
         // Create Knowledge Base
         ChatBotKnowledgeBase::factory(20)->create();
-
-        StaticBlock::factory(2)->create();
-
+        
+        $this->createStaticBlocks();
         // For Slider Images
         SliderImage::factory(5)->create();
 
@@ -197,5 +194,134 @@ class DatabaseSeeder extends Seeder
         if (!is_dir($basePath . ClientAttachment::DIR)) {
             mkdir($basePath . ClientAttachment::DIR, 0777, true);
         }
+    }
+    
+    /**
+     * createMenus
+     *
+     * @return void
+     */
+    private function createMenus()
+    {
+        Menu::create([
+            'name' => 'Access Market Portals',
+            'identifier' => 'top_menu_1',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'Password reset GBB', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'API portal', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'WA GBB', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'WEMS MPI', 'anchor' => '#'],
+                ['id' => 5, 'title' => 'OPDMS', 'anchor' => '#'],
+                ['id' => 6, 'title' => 'Market Portal', 'anchor' => '#'],
+                ['id' => 7, 'title' => 'Market Portals Help', 'anchor' => '#'],
+                ['id' => 8, 'title' => 'NOS', 'anchor' => '#'],
+                ['id' => 9, 'title' => 'MSATS and B2B Hub', 'anchor' => '#'],
+                ['id' => 10, 'title' => 'Web Exchanger (WEX)', 'anchor' => '#'],
+                ['id' => 11, 'title' => 'Participant Services Portal', 'anchor' => '#'],
+                ['id' => 12, 'title' => 'DER Register Installer Portal', 'anchor' => '#'],
+                ['id' => 13, 'title' => 'System Management MPI', 'anchor' => '#'],
+                ['id' => 14, 'title' => 'Market Information System (MIS)', 'anchor' => '#'],
+                ['id' => 15, 'title' => 'Market Information Bulletin Board (MIBB)', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Header Menu 2',
+            'identifier' => 'top_menu_2',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'Market Renewal', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Sector Participants', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Corporate MO', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Main Menu',
+            'identifier' => 'main_menu',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'Learn', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Get Involved', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Power Data', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'Powering Tomorrow', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Site Links',
+            'identifier' => 'footer_menu_1',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'About', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Library', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Careers', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'Contact', 'anchor' => '#'],
+                ['id' => 5, 'title' => 'Login', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Other Links',
+            'identifier' => 'footer_menu_2',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'News & Events', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Notices', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Ipps', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'Tenders', 'anchor' => '#'],
+                ['id' => 5, 'title' => 'Downloads', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Site Information',
+            'identifier' => 'footer_menu_3',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'Sitemap', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Terms', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Privacy', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'Faqs', 'anchor' => '#'],
+            ])
+        ]);
+    }
+
+    private function createStaticBlocks()
+    {
+        StaticBlock::create(
+            [
+                'name' => 'Contact Us',
+                'contents' => '<p><strong>Email</strong>: info@mo.gov.pk</p>
+
+                <p><strong>Contact</strong>:&nbsp;051-111-922-772</p>
+                
+                <p><strong>Address</strong>:&nbsp;Shaheen Plaza, Plot No. 73-West, Fazl-Ul-Haq Road, Blue Area, Islamabad, Pakistan.</p>'
+            ]
+        );
+    }
+
+    private function createSliderImages()
+    {
+        SliderImage::factory()->create([
+            'slot_one' => 'Market Operator',
+            'slot_two' => 'Bridges Between Single Buyer to Market.',
+            'url' => '#',
+            'order' => 1,
+        ]);
+        SliderImage::factory()->create([
+            'slot_one' => 'Market Operator 2',
+            'slot_two' => 'Bridges Between Single Buyer to Market.',
+            'url' => '#',
+            'order' => 2,
+        ]);
+        SliderImage::factory()->create([
+            'slot_one' => 'Market Operator 3',
+            'slot_two' => 'Bridges Between Single Buyer to Market.',
+            'url' => '#',
+            'order' => 3,
+        ]);
     }
 }
