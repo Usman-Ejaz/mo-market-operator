@@ -350,6 +350,7 @@
                 $('#newCurrentMenuId').val(currentMenuId);
                 $('#submenu_modal_heading').text("Add new Submenu");
                 $('#deleteButton').hide();
+                clearErrors();
                 isEditing = false;
                 $('#addNewSubmenuModal').modal('toggle');
             });
@@ -363,6 +364,7 @@
                     $('#newPage').show();
                     $('#newAnchor').hide();
                 }
+                clearErrors();
             });
 
             /************** Edit Modal Features **************/
@@ -393,6 +395,7 @@
 
                 $('#submenu_modal_heading').text("Update Submenu");
                 $('#deleteButton').show();
+                clearErrors();
                 isEditing = true;
                 $('#addNewSubmenuModal').modal('toggle');
             });
@@ -437,6 +440,10 @@
                     clearTimeout(timer);
                     timer = setTimeout(() => { func.apply(this, args); }, timeout);
                 };
+            }
+
+            function clearErrors() {
+                $('.my-error-class').remove();
             }
 
             $('#create-submenus-form').submit((e) => {
@@ -518,12 +525,13 @@
             });
 
             function validateFields() {
-                let hasMenuError = hasURLError = hasPageError = false;
+                let hasTitleError = hasURLError = hasPageError = false;
+
                 if ($('#NewMenuTitle').val() === "") {
                     if (! ($('#NewMenuTitle').next().hasClass("my-error-class"))) {
                         $('#NewMenuTitle').after(`<span class="my-error-class">This field is required.</span>`);
                     }
-                    hasMenuError = true;
+                    hasTitleError = true;
                 }
                 let val = $('input[name="newMenuType"]:checked').val();
                 
@@ -533,6 +541,7 @@
                         if (! ($('#newMenuAnchor').next().hasClass("my-error-class"))) {
                             $('#newMenuAnchor').after(`<span class="my-error-class">This field is required.</span>`);
                         }
+                        hasURLError = true;
                     } else {
                         let regex = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
                         if (value === '#') {
@@ -557,7 +566,7 @@
                     }
                 }
 
-                return !(hasMenuError || hasURLError || hasPageError);
+                return !(hasTitleError || hasURLError || hasPageError);
             }
         });
     </script>
