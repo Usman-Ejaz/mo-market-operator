@@ -8,7 +8,7 @@
     <strong>{{ __('Message') }}:</strong> {{ $contactPageQuery->message }} <br>
 @endcomponent
 
-@component('mail::button', ['url' => route('admin.contact-page-queries.show', $contactPageQuery->id) . '?notification' ])
+@component('mail::button', ['url' => route('admin.contact-page-queries.show', $contactPageQuery->id) ])
 {{ __('View Query') }}
 @endcomponent
 

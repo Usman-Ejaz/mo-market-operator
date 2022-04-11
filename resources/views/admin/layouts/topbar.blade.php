@@ -28,11 +28,11 @@
 					<span class="badge badge-warning navbar-badge">{{ auth()->user()->unreadNotifications()->count() }}</span>
 				</a>
 				<div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-					<span class="dropdown-item dropdown-header">{{ auth()->user()->notifications()->count() }} {{ __("Notifications") }}</span>
+					<span class="dropdown-item dropdown-header">{{ auth()->user()->unreadNotifications()->count() }} {{ __("Notifications") }}</span>
 
-					@forelse (auth()->user()->notifications as $notification)
+					@forelse (auth()->user()->unreadNotifications as $notification)
 						<div class="dropdown-divider"></div>
-						<a href="{{ $notification->data['link'] }}?notification" class="dropdown-item">
+						<a href="{{ $notification->data['link'] }}?notification={{ $notification->id }}" class="dropdown-item">
 							<i class="fas fa-envelope mr-2"></i>
 							{{ truncateWords($notification->data['title'], 15) }}
 							<span class="float-right text-muted text-sm">{{ $notification->data['time'] }}</span>
