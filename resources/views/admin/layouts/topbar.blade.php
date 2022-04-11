@@ -44,7 +44,7 @@
 					@empty
 						<div class="dropdown-divider"></div>
 						<a href="javascript:void(0);" class="dropdown-item">
-							<i class="fas fa-envelope mr-2"></i> No new notifications
+							<i class="fas fa-envelope mr-2"></i> No new unread notifications
 							<span class="float-right text-muted text-sm"></span>
 						</a>
 					@endforelse				
