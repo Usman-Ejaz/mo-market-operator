@@ -37,4 +37,9 @@ class Menu extends Model
             return $query->where('theme', $theme);
         }
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', '=', 1);
+    }
 }

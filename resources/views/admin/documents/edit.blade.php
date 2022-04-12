@@ -76,6 +76,7 @@
 <script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
 
 <script>
+	let oldFiles = [];
 	$(document).ready(function() {
 
 		$('.draft_button').click(function(e) {
@@ -174,6 +175,10 @@
 		if (document.getElementsByClassName('label-info').length > 0) {
 			$('.bootstrap-tagsinput > input').attr('placeholder', '');
 		}
+
+		$(document).on('focusin', 'input[type="file"]', function(e){
+			oldFiles = e.target.files;
+		});
 	});
 
 	function validateFileExtension(e) {
@@ -201,11 +206,18 @@
 			alert('Please select document first.');
 			e.target.checked = false;
 		}
+
+		// if ($(".fileExists").length > 0) {
+		// 	let filename = '$document->file';
+		// 	extension = filename.split(".");
+		// 	extension = extension[extension.length - 1];
+		// }
 	}
 
 	function resetConvertCheckbox(e) {
 		if (e.target.files.length === 0) {
 			e.preventDefault();
+			e.target.files = oldFiles;
 			return false;
 		}
 

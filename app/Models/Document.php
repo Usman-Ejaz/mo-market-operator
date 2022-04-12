@@ -63,7 +63,7 @@ class Document extends Model
 
     // Scope Queries
     public function scopePublished ($query) {
-        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id");
+        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "created_at");
     }
 
     public function isPublished() {

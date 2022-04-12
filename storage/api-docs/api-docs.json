@@ -4,7 +4,7 @@
         "title": "ISMO API Documentation",
         "description": "Ismo Api documentation description",
         "contact": {
-            "email": "usman.ejaz@nxb.com.pk"
+            "email": "contact@nxb.com.pk"
         },
         "license": {
             "name": "Apache 2.0",
@@ -588,6 +588,64 @@
                 ]
             }
         },
+        "/media-library": {
+            "get": {
+                "tags": [
+                    "Media Library"
+                ],
+                "summary": "Get list of Media Library files",
+                "description": "Returns Media Library files",
+                "operationId": "getFiles",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/menus": {
+            "get": {
+                "tags": [
+                    "Menus"
+                ],
+                "summary": "Get list of Menus by active theme",
+                "description": "Returns Menus by active theme",
+                "operationId": "getMenus",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
         "/subscribe-to-newsletter": {
             "post": {
                 "tags": [
@@ -602,14 +660,9 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
                                     "email"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "title": "name",
-                                        "type": "string"
-                                    },
                                     "email": {
                                         "title": "email",
                                         "type": "string"
@@ -617,7 +670,6 @@
                                 },
                                 "type": "object",
                                 "example": {
-                                    "name": "John Doe",
                                     "email": "johndoe@email.com"
                                 }
                             }
@@ -708,6 +760,72 @@
                 ]
             }
         },
+        "/get-announcements": {
+            "get": {
+                "tags": [
+                    "Announcements"
+                ],
+                "summary": "Get list of Published Announcements",
+                "description": "Returns list of Announcements",
+                "operationId": "getPublishedPressReleases",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/show-announcement/{slug}": {
+            "get": {
+                "tags": [
+                    "Announcements"
+                ],
+                "summary": "Get Specific Announcement against slug",
+                "description": "Returns single Announcement",
+                "operationId": "getPressRelease",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Announcement slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
         "/search": {
             "post": {
                 "tags": [
@@ -769,6 +887,64 @@
                 "summary": "Get list of Published Pages",
                 "description": "Returns list of Pages",
                 "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/slider-images": {
+            "get": {
+                "tags": [
+                    "Slider Images"
+                ],
+                "summary": "Get list of Slider Images",
+                "description": "Returns Slider Images",
+                "operationId": "getSliderImages",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/static-blocks": {
+            "get": {
+                "tags": [
+                    "Static Blocks"
+                ],
+                "summary": "Get list of Static Blocks",
+                "description": "Returns Static Blocks",
+                "operationId": "show",
                 "responses": {
                     "200": {
                         "description": "Success"

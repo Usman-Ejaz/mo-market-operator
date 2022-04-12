@@ -97,6 +97,17 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<div class="form-check">
+					<input type="checkbox" class="form-control-custom form-check-input" id="notifications" name="notifications" {{ $user->show_notifications === 1 ? 'checked' : '' }} value="1">
+					<label for="notifications" class="form-check-label">Send Notifications</label>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <!-- /.card-body -->
 

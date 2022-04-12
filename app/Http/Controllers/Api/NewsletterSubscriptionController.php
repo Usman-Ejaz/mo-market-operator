@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Validator;
 class NewsletterSubscriptionController extends BaseApiController
 {
 
+    
+    // *                  @OA\Property(
+    //     *                      property="name",
+    //     *                      title="name",
+    //     *                      type="string"
+    //     *                  ),
+
     /**
      * 
      * @OA\Tag(
@@ -35,18 +42,12 @@ class NewsletterSubscriptionController extends BaseApiController
      *             mediaType="application/json",
      *             @OA\Schema(
      *                  @OA\Property(
-     *                      property="name",
-     *                      title="name",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
      *                      property="email",
      *                      title="email",
      *                      type="string"
      *                  ),
-     *                  required={"name", "email"},
+     *                  required={"email"},
      *                  example={
-     *                      "name": "John Doe", 
      *                      "email": "johndoe@email.com"
      *                  }
      *             )
@@ -71,7 +72,7 @@ class NewsletterSubscriptionController extends BaseApiController
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'bail|required|string|min:3|max:100',
+                // 'name' => 'bail|required|string|min:3|max:100',
                 'email' => 'bail|required|email|string|unique:subscribers,email'
             ], [
                 'email.unique' => 'This email is already subscribed to newslettes.'
@@ -85,7 +86,6 @@ class NewsletterSubscriptionController extends BaseApiController
             return $this->sendResponse([], "Subscribed to Newsletters Successfully!");
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
-        }
-        
+        }        
     }
 }

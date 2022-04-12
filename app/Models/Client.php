@@ -37,25 +37,6 @@ class Client extends Authenticatable
         9 => 'distribution service provider', 
         10 => 'metering service provider'
     ];
-
-
-    /**
-     * Mutates the categories array into comma separated category ids.
-     *
-     * @param  array $value
-     * @return void
-     */
-    // public function setCategoriesAttribute($value)
-    // {
-    //     $ids = '';
-    //     foreach (self::REGISTER_CATEGORIES as $key => $category) {
-    //         if (in_array($category, $value)) {
-    //             $ids .= $key . ',';
-    //         }
-    //     }
-    //     $ids = trim($ids, ',');
-    //     $this->categories = $ids;
-    // }
         
     /**
      * Mutates the comma separated ids into comma separated category names.

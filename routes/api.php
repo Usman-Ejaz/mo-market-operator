@@ -6,11 +6,15 @@ use App\Http\Controllers\Api\Client\ClientRegistrationController;
 use App\Http\Controllers\Api\ContactFormQueryController;
 use App\Http\Controllers\Api\DocumentsApiController;
 use App\Http\Controllers\Api\FaqApiController;
+use App\Http\Controllers\Api\MediaLibraryApiController;
+use App\Http\Controllers\Api\MenuApiController;
 use App\Http\Controllers\Api\NewsletterSubscriptionController;
 use App\Http\Controllers\Api\PublishedPostApiController;
 use App\Http\Controllers\Api\RegisterApiController;
 use App\Http\Controllers\Api\SitemapApiController;
 use App\Http\Controllers\Api\SiteSearchApiController;
+use App\Http\Controllers\Api\SliderImageApiController;
+use App\Http\Controllers\Api\StaticBlockApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +48,14 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
 
     Route::get("get-posts", [PublishedPostApiController::class, "getPublishedPosts"])->name("posts.published");
     Route::get("show-post/{slug}", [PublishedPostApiController::class, "getSinglePost"])->name("posts.show");
+
+    Route::get('media-library', [MediaLibraryApiController::class, 'getFiles'])->name('media-library.files');
+    Route::get('slider-images', [SliderImageApiController::class, 'getSliderImages'])->name('slider-images.getSliderImages');
+    Route::get('menus', [MenuApiController::class, 'getMenus'])->name('menus.getMenus');
+    Route::get('static-blocks', [StaticBlockApiController::class, 'show'])->name('static-blocks.show');
+
+    Route::get("get-announcements", [PublishedPostApiController::class, "getPublishedPressReleases"])->name("announcements.published");
+    Route::get("show-announcement/{slug}", [PublishedPostApiController::class, "getPressRelease"])->name("announcements.show");
 
     Route::get("get-jobs", [CareersApiController::class, "getPublishedJobs"])->name("careers.published");
     Route::get("show-job/{slug}", [CareersApiController::class, "showSingleJob"])->name("careers.show");

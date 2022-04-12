@@ -128,7 +128,7 @@ class MenuController extends Controller
     {
         abort_if(!hasPermission("menus", "submenus"), 401, __('messages.unauthorized_action'));
 
-        $pages = Page::where('published_at', '!=', null)->pluck('title', 'id')->all();
+        $pages = Page::published()->select('id', 'title', 'slug')->get();
         $documentCategories = DocumentCategory::pluck('id', 'name')->all();
         $postCategories = (new Post)->postCategoryOptions();
 
@@ -169,7 +169,7 @@ class MenuController extends Controller
                 $title = $counter . ' ('.$type.') '. $item['title'];
 
                 if( isset($item['page']) ) {
-                    $page = Page::where(['active' => 1, 'id' => $item['page']])->pluck('title', 'id')->first();
+                    $page = Page::published()->where('id', '=', $item['page'])->select('title', 'id', 'slug')->first();
                     if (!$page) {
                         $title = ' (page not found) ' . $item['title'];
                     }
@@ -361,6 +361,7 @@ class MenuController extends Controller
         return request()->validate([
             'name' => 'required|unique:menus,name,'.$menu->id,
             'theme' => 'required',
+            'identifier' => 'required',
             'active' => 'required',
             'created_by' => '',
             'modified_by' => ''

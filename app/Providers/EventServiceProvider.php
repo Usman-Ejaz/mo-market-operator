@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\NewContactQueryHasArrived;
 use App\Events\SiteSearchEvent;
 use App\Listeners\LogSearchKeyword;
+use App\Listeners\SendEmailToQueryReceivers;
+use App\Listeners\SendNotificationToNotifiableUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,6 +25,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         SiteSearchEvent::class => [
             LogSearchKeyword::class
+        ],
+        NewContactQueryHasArrived::class => [
+            SendNotificationToNotifiableUsers::class,
+            SendEmailToQueryReceivers::class
         ]
     ];
 

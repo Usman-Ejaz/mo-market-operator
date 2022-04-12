@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\ApiKey;
+use App\Models\Settings;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -73,5 +75,22 @@ if (!function_exists("hasPermission")) {
         }
 
         return false;        
+    }
+}
+
+if (!function_exists('getNotifiableUsers')) {
+
+    function getNotifiableUsers() {
+        return User::notifiable()->get();
+    }
+}
+
+if (!function_exists('settings')) {
+    
+    function settings($option) {
+
+        if ($option === null || $option === "") return null;
+
+        return Settings::get_option($option);
     }
 }
