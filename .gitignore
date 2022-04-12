@@ -14,3 +14,4 @@ yarn-error.log
 /.idea
 /.vscode
 /storage/api-docs/*.json
+queue_command_list.sh
