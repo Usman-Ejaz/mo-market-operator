@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendNewsletterEmail;
-use App\Mail\NewsletterEmail;
 use App\Models\Newsletter;
-use App\Models\Subscriber;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
 class NewsletterController extends Controller

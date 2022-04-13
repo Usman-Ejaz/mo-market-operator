@@ -3,6 +3,7 @@
 use App\Models\ApiKey;
 use App\Models\Settings;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -92,5 +93,17 @@ if (!function_exists('settings')) {
         if ($option === null || $option === "") return null;
 
         return Settings::get_option($option);
+    }
+}
+
+if (!function_exists('parseDate')) {
+
+    function parseDate($date)
+    {
+        if ($date === null || $date === "") return null;
+
+        $date = Carbon::createFromFormat(config('settings.datetime_format'), $date);
+
+        return Carbon::parse($date)->format('Y-m-d H:i:s');
     }
 }

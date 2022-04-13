@@ -36,8 +36,8 @@ class SettingsController extends Controller
             $updated = Settings::update_option($name, $value);
         }
 
-        request()->session()->flash('success', 'Settings updated successfully!');
-        return redirect()->route('admin.settings.index');
+        request()->session()->flash('success', 'Site configuration updated successfully!');
+        return redirect()->route('admin.site-configuration.index');
     }
 
 }

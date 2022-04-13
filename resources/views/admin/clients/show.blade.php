@@ -164,7 +164,7 @@
 									<div class="col-md-12">
 										<div class="form-group">
 											<li>
-												<p style="display: inline;">{{ $attachment->phrase }}: </p>
+												<p style="display: inline;">{{ $attachment->phrase }} </p>
 												<a href="{{ $attachment->file }}">{{ __("View") }}</a>
 											</li>
 										</div>
@@ -181,7 +181,7 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<li>
-													<p style="display: inline;">{{ $attachment->phrase }}: </p>
+													<p style="display: inline;">{{ $attachment->phrase }} </p>
 													<a href="{{ $attachment->file }}">{{ __("View") }}</a>
 												</li>												
 											</div>

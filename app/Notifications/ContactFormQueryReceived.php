@@ -2,9 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Mail\ContactFormQueryMail;
 use App\Models\ContactPageQuery;
-use App\Models\Settings;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -68,7 +66,7 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
         return [
             'link' => route("admin.contact-page-queries.show", $this->contactPageQuery->id),
             'title' => $this->contactPageQuery->subject,
-            'time' => Carbon::parse($this->contactPageQuery->created_at)->diffForHumans()
+            'time' => Carbon::create(parseDate($this->contactPageQuery->created_at))->diffForHumans()
         ];
     }
 }
