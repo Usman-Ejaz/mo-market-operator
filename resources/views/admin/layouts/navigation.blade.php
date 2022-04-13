@@ -164,7 +164,7 @@
 				@endif
 
 				@if(hasPermission('roles_and_permissions', 'list') || hasPermission('menus', 'list') || hasPermission('settings', 'list') || hasPermission('users', 'list'))
-				<li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/settings*') || request()->is('admin/users*')) ? 'menu-is-opening menu-open' : '' }}">
+				<li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/site-configuration*') || request()->is('admin/users*')) ? 'menu-is-opening menu-open' : '' }}">
 					<a href="#" class="nav-link">
 						<i class="nav-icon fas fa-cogs"></i>
 						<p>Settings <i class="fas fa-angle-left right"></i></p>
@@ -208,7 +208,7 @@
 
 						@if( hasPermission('settings', 'list') )
 						<li class="nav-item">
-							<a href="{{ route('admin.settings.index') }}" class="nav-link {{ Request()->is('admin/settings*') ? 'active' : '' }}">
+							<a href="{{ route('admin.site-configuration.index') }}" class="nav-link {{ Request()->is('admin/site-configuration*') ? 'active' : '' }}">
 								<i class="fa fa-cog nav-icon"></i>
 								<p>Site Configuration</p>
 							</a>

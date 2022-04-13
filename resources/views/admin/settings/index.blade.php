@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
-@section('header', 'Settings')
+@section('header', 'Site Configuration')
 @section('breadcrumbs')
     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Settings</li>
+    <li class="breadcrumb-item active">Site Configuration</li>
 @endsection
 
 @push('optional-styles')
@@ -32,12 +32,12 @@
 
 @section('content')
     <div class="container-fluid">
-        <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data" id="update-settings-form">
+        <form method="POST" action="{{ route('admin.site-configuration.update') }}" enctype="multipart/form-data" id="update-settings-form">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Settings</h3>
+                            <h3 class="card-title">Site Configuration</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->

@@ -118,8 +118,8 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::post('ckeditor/upload', [CkeditorImageUploader::class, 'upload'])->name('ckeditor.upload');
     
     // Route for settings
-    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::patch('settings/update', [SettingsController::class, 'update'])->name('settings.update');
+    Route::get('site-configuration', [SettingsController::class, 'index'])->name('site-configuration.index');
+    Route::patch('site-configuration/update', [SettingsController::class, 'update'])->name('site-configuration.update');
     
     // Routes for Newsletter Module
     Route::get('newsletters/list', [NewsletterController::class, 'list'])->name('newsletters.list');
