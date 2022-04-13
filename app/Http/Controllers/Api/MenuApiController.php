@@ -52,17 +52,17 @@ class MenuApiController extends BaseApiController
 
             $menus = Menu::byTheme($currentTheme)->active()->select('name', 'submenu_json', 'identifier')->get();
 
-            $menus = $menus->map(function ($m) {
-                return [
-                    $m->identifier => [
-                        'name' => $m->name,
-                        'submenu_json' => json_decode($m->submenu_json)
-                    ]
+            $menuObject = [];
+
+            foreach ($menus as $menu) {
+                $menuObject[$menu->identifier] = [
+                    'name' => $menu->name,
+                    'submenu_json' => json_decode($menu->submenu_json)
                 ];
-            });
+            }
             
             if ($menus->count() > 0) {
-                return $this->sendResponse($menus, __("messages.success"));
+                return $this->sendResponse($menuObject, __("messages.success"));
             } else {
                 return $this->sendResponse([], __("messages.data_not_found"));
             }
