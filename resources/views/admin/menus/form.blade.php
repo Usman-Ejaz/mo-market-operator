@@ -42,6 +42,10 @@
                 </div>
             </div>
         @endif
+
+        @if (Route::is('admin.menus.edit'))        
+            <input type="hidden" class="form-control" id="identifier" placeholder="Enter identifier" name="identifier" value="{{ old('identifier') ?? $menu->identifier }}">
+        @endif
         
     </div>
 

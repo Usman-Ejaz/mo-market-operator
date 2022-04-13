@@ -61,7 +61,7 @@
 		// Handle date filters
 		$('body').on('click', '#seachByDate', (e) => {
 			if ($('#start_date_hidden').val().trim().length === 0 && $('#end_date_hidden').val().trim().length === 0) {
-				alert("Please select date first");
+				alert("Please select the date first");
 				e.preventDefault();
 				return;
 			}
