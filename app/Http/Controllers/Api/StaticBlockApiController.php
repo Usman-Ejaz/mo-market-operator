@@ -49,8 +49,16 @@ class StaticBlockApiController extends BaseApiController
         try {
             $staticBlocks = StaticBlock::select('name', 'contents')->get();
 
+            $arr = [];
+            $staticBlocks->each(function ($item) {
+                $arr[$item->identifier] = [
+                    'name' => $item->name,
+                    'contents' => $item->contents
+                ];
+            });
+
             if ($staticBlocks->count() > 0) {
-                return $this->sendResponse($staticBlocks, __("messages.success"));
+                return $this->sendResponse($arr, __("messages.success"));
             } else {
                 return $this->sendResponse([], __("messages.data_not_found"));
             }

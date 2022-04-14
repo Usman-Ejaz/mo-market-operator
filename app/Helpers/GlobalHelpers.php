@@ -102,7 +102,11 @@ if (!function_exists('parseDate')) {
     {
         if ($date === null || $date === "") return null;
 
-        $date = Carbon::createFromFormat(config('settings.datetime_format'), $date);
+        $d = Carbon::createFromFormat(config('settings.datetime_format'), $date);
+
+        if (strpos($date, "PM") !== false) {
+            $d = $d->addHours(12);
+        }
 
         return Carbon::parse($date)->format('Y-m-d H:i:s');
     }

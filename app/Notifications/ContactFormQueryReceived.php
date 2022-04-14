@@ -65,8 +65,7 @@ class ContactFormQueryReceived extends Notification implements ShouldQueue
     {
         return [
             'link' => route("admin.contact-page-queries.show", $this->contactPageQuery->id),
-            'title' => $this->contactPageQuery->subject,
-            'time' => Carbon::create(parseDate($this->contactPageQuery->created_at))->diffForHumans()
+            'title' => $this->contactPageQuery->subject
         ];
     }
 }

@@ -35,7 +35,7 @@
 						<a href="{{ $notification->data['link'] }}?notification={{ $notification->id }}" class="dropdown-item">
 							<i class="fas fa-envelope mr-2"></i>
 							{{ truncateWords($notification->data['title'], 15) }}
-							<span class="float-right text-muted text-sm">{{ $notification->data['time'] }}</span>
+							<span class="float-right text-muted text-sm">{{ $notification->created_at->diffForHumans() }}</span>
 						</a>
 						@if ($loop->last)
 							<div class="dropdown-divider"></div>

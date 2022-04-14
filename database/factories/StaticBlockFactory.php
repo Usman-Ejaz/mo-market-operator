@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class StaticBlockFactory extends Factory
 {
@@ -13,8 +14,11 @@ class StaticBlockFactory extends Factory
      */
     public function definition()
     {
+        $name = $this->faker->userName;
+        
         return [
-            'name' => $this->faker->userName,
+            'name' => $name,
+            'identifier' => Str::slug($name),
             'contents' => $this->faker->sentence(10)
         ];
     }
