@@ -20,6 +20,7 @@ return [
     "unique" => ":attribute already exist.",
     "required" => "This field is required.",
     "max_file" => "The file is too large. Allowed max size is :limit.",
+    "record_delete" => "Are you sure you want to delete this record?",
     
     
     /*

@@ -85,7 +85,19 @@
 				<span class="form-text text-danger">{{ $errors->first('active') }} </span>
 			</div>
 		</div>
+		
+		<div class="col-md-6">
+			<div class="form-group mt-3">
+				<label for="notifications" class="form-label"></label>
+				<div class="form-check">
+					<input type="checkbox" class="form-control-custom form-check-input" id="notifications" name="notifications" {{ $user->show_notifications === 1 ? 'checked' : '' }} value="1">
+					<label for="notifications" class="form-check-label">Send Notifications</label>
+				</div>
+			</div>
+		</div>
+	</div>
 
+	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="image" class="form-label">User Profile Image <small>(Allowed max size is 2MB. Allowed types are jpg, jpeg, png)</small></label>
@@ -94,17 +106,6 @@
 				@if( isset($user->image) )
 				<span class="text-primary imageExists"><a href="{{ $user->image }}" target="_blank"><img src="{{ $user->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </span>
 				@endif
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-md-6">
-			<div class="form-group">
-				<div class="form-check">
-					<input type="checkbox" class="form-control-custom form-check-input" id="notifications" name="notifications" {{ $user->show_notifications === 1 ? 'checked' : '' }} value="1">
-					<label for="notifications" class="form-check-label">Send Notifications</label>
-				</div>
 			</div>
 		</div>
 	</div>

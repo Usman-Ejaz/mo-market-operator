@@ -80,9 +80,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create Menus
-        Menu::factory()->create(['name' => 'Menu header']);
-        Menu::factory()->create(['name' => 'Menu footer']);
-        Menu::factory(2)->create();
+        // Menu::factory()->create(['name' => 'Menu header']);
+        // Menu::factory()->create(['name' => 'Menu footer']);
+        // Menu::factory(2)->create();
+        $this->createMenus();
 
         // Create Posts
         Post::factory(30)->create();
@@ -107,10 +108,11 @@ class DatabaseSeeder extends Seeder
         Application::factory(15)->create();
 
         // Set current theme
-        Settings::factory(1)->create([
-            'name' => 'current_theme',
-            'value' => 'theme1'
-        ]);
+        $this->createSettings();
+        // Settings::factory(1)->create([
+        //     'name' => 'current_theme',
+        //     'value' => 'theme1'
+        // ]);
         
         // Create News Letters
         Newsletter::factory(20)->create();
@@ -130,11 +132,16 @@ class DatabaseSeeder extends Seeder
         // Create Knowledge Base
         ChatBotKnowledgeBase::factory(20)->create();
         
-        // $this->createStaticBlocks();
-        StaticBlock::factory(2)->create();
+        $this->createStaticBlocks();
+        // StaticBlock::factory(2)->create();
         
         // For Slider Images
-        SliderImage::factory(5)->create();
+        $this->createSliderImages();
+        // SliderImage::factory(5)->create();
+
+        for ($i = 1; $i < 6; $i++) { 
+            $this->createMediaLibraries($i);
+        }
 
         // For Client
         Client::factory(4)->create();
@@ -208,176 +215,185 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    // private function createMenus()
-    // {
-    //     Menu::create([
-    //         'name' => 'Access Market Portals',
-    //         'identifier' => 'top_menu_1',
-    //         'theme' => 'theme1',
-    //         'active' => 1,
-    //         'submenu_json' => json_encode([
-    //             ['id' => 1, 'title' => 'Password reset GBB', 'anchor' => '#'],
-    //             ['id' => 2, 'title' => 'API portal', 'anchor' => '#'],
-    //             ['id' => 3, 'title' => 'WA GBB', 'anchor' => '#'],
-    //             ['id' => 4, 'title' => 'WEMS MPI', 'anchor' => '#'],
-    //             ['id' => 5, 'title' => 'OPDMS', 'anchor' => '#'],
-    //             ['id' => 6, 'title' => 'Market Portal', 'anchor' => '#'],
-    //             ['id' => 7, 'title' => 'Market Portals Help', 'anchor' => '#'],
-    //             ['id' => 8, 'title' => 'NOS', 'anchor' => '#'],
-    //             ['id' => 9, 'title' => 'MSATS and B2B Hub', 'anchor' => '#'],
-    //             ['id' => 10, 'title' => 'Web Exchanger (WEX)', 'anchor' => '#'],
-    //             ['id' => 11, 'title' => 'Participant Services Portal', 'anchor' => '#'],
-    //             ['id' => 12, 'title' => 'DER Register Installer Portal', 'anchor' => '#'],
-    //             ['id' => 13, 'title' => 'System Management MPI', 'anchor' => '#'],
-    //             ['id' => 14, 'title' => 'Market Information System (MIS)', 'anchor' => '#'],
-    //             ['id' => 15, 'title' => 'Market Information Bulletin Board (MIBB)', 'anchor' => '#'],
-    //         ])
-    //     ]);
-    //     Menu::create([
-    //         'name' => 'Header Menu 2',
-    //         'identifier' => 'top_menu_2',
-    //         'theme' => 'theme1',
-    //         'active' => 1,
-    //         'submenu_json' => json_encode([
-    //             ['id' => 1, 'title' => 'Market Renewal', 'anchor' => '#'],
-    //             ['id' => 2, 'title' => 'Sector Participants', 'anchor' => '#'],
-    //             ['id' => 3, 'title' => 'Corporate MO', 'anchor' => '#'],
-    //         ])
-    //     ]);
-    //     Menu::create([
-    //         'name' => 'Main Menu',
-    //         'identifier' => 'main_menu',
-    //         'theme' => 'theme1',
-    //         'active' => 1,
-    //         'submenu_json' => json_encode([
-    //             ['id' => 1, 'title' => 'Learn', 'anchor' => '#'],
-    //             ['id' => 2, 'title' => 'Get Involved', 'anchor' => '#'],
-    //             ['id' => 3, 'title' => 'Power Data', 'anchor' => '#'],
-    //             ['id' => 4, 'title' => 'Powering Tomorrow', 'anchor' => '#'],
-    //         ])
-    //     ]);
-    //     Menu::create([
-    //         'name' => 'Site Links',
-    //         'identifier' => 'footer_menu_1',
-    //         'theme' => 'theme1',
-    //         'active' => 1,
-    //         'submenu_json' => json_encode([
-    //             ['id' => 1, 'title' => 'About', 'anchor' => '#'],
-    //             ['id' => 2, 'title' => 'Library', 'anchor' => '#'],
-    //             ['id' => 3, 'title' => 'Careers', 'anchor' => '#'],
-    //             ['id' => 4, 'title' => 'Contact', 'anchor' => '#'],
-    //             ['id' => 5, 'title' => 'Login', 'anchor' => '#'],
-    //         ])
-    //     ]);
-    //     Menu::create([
-    //         'name' => 'Other Links',
-    //         'identifier' => 'footer_menu_2',
-    //         'theme' => 'theme1',
-    //         'active' => 1,
-    //         'submenu_json' => json_encode([
-    //             ['id' => 1, 'title' => 'News & Events', 'anchor' => '#'],
-    //             ['id' => 2, 'title' => 'Notices', 'anchor' => '#'],
-    //             ['id' => 3, 'title' => 'Ipps', 'anchor' => '#'],
-    //             ['id' => 4, 'title' => 'Tenders', 'anchor' => '#'],
-    //             ['id' => 5, 'title' => 'Downloads', 'anchor' => '#'],
-    //         ])
-    //     ]);
-    //     Menu::create([
-    //         'name' => 'Site Information',
-    //         'identifier' => 'footer_menu_3',
-    //         'theme' => 'theme1',
-    //         'active' => 1,
-    //         'submenu_json' => json_encode([
-    //             ['id' => 1, 'title' => 'Sitemap', 'anchor' => '#'],
-    //             ['id' => 2, 'title' => 'Terms', 'anchor' => '#'],
-    //             ['id' => 3, 'title' => 'Privacy', 'anchor' => '#'],
-    //             ['id' => 4, 'title' => 'Faqs', 'anchor' => '#'],
-    //         ])
-    //     ]);
-    // }
+    private function createMenus()
+    {
+        Menu::create([
+            'name' => 'Access Market Portals',
+            'identifier' => 'top_menu_1',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'Password reset GBB', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'API portal', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'WA GBB', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'WEMS MPI', 'anchor' => '#'],
+                ['id' => 5, 'title' => 'OPDMS', 'anchor' => '#'],
+                ['id' => 6, 'title' => 'Market Portal', 'anchor' => '#'],
+                ['id' => 7, 'title' => 'Market Portals Help', 'anchor' => '#'],
+                ['id' => 8, 'title' => 'NOS', 'anchor' => '#'],
+                ['id' => 9, 'title' => 'MSATS and B2B Hub', 'anchor' => '#'],
+                ['id' => 10, 'title' => 'Web Exchanger (WEX)', 'anchor' => '#'],
+                ['id' => 11, 'title' => 'Participant Services Portal', 'anchor' => '#'],
+                ['id' => 12, 'title' => 'DER Register Installer Portal', 'anchor' => '#'],
+                ['id' => 13, 'title' => 'System Management MPI', 'anchor' => '#'],
+                ['id' => 14, 'title' => 'Market Information System (MIS)', 'anchor' => '#'],
+                ['id' => 15, 'title' => 'Market Information Bulletin Board (MIBB)', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Header Menu 2',
+            'identifier' => 'top_menu_2',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'Market Renewal', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Sector Participants', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Corporate MO', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Main Menu',
+            'identifier' => 'main_menu',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'Learn', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Get Involved', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Power Data', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'Powering Tomorrow', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Site Links',
+            'identifier' => 'footer_menu_1',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'About', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Library', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Careers', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'Contact', 'anchor' => '#'],
+                ['id' => 5, 'title' => 'Login', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Other Links',
+            'identifier' => 'footer_menu_2',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'News & Events', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Notices', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Ipps', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'Tenders', 'anchor' => '#'],
+                ['id' => 5, 'title' => 'Downloads', 'anchor' => '#'],
+            ])
+        ]);
+        Menu::create([
+            'name' => 'Site Information',
+            'identifier' => 'footer_menu_3',
+            'theme' => 'theme1',
+            'active' => 1,
+            'submenu_json' => json_encode([
+                ['id' => 1, 'title' => 'Sitemap', 'anchor' => '#'],
+                ['id' => 2, 'title' => 'Terms', 'anchor' => '#'],
+                ['id' => 3, 'title' => 'Privacy', 'anchor' => '#'],
+                ['id' => 4, 'title' => 'Faqs', 'anchor' => '#'],
+            ])
+        ]);
+    }
 
-    // private function createStaticBlocks()
-    // {
-    //     StaticBlock::create(
-    //         [
-    //             'name' => 'Contact Us',
-    //             'contents' => '<p><strong>Email</strong>: info@mo.gov.pk</p>
+    private function createStaticBlocks()
+    {
+        StaticBlock::create(
+            [
+                'name' => 'Contact Us',
+                'identifier' => 'contact_us',
+                'contents' => '<p><strong>Email</strong>: info@mo.gov.pk</p>
 
-    //             <p><strong>Contact</strong>:&nbsp;051-111-922-772</p>
+                <p><strong>Contact</strong>:&nbsp;051-111-922-772</p>
                 
-    //             <p><strong>Address</strong>:&nbsp;Shaheen Plaza, Plot No. 73-West, Fazl-Ul-Haq Road, Blue Area, Islamabad, Pakistan.</p>'
-    //         ]
-    //     );
-    // }
+                <p><strong>Address</strong>:&nbsp;Shaheen Plaza, Plot No. 73-West, Fazl-Ul-Haq Road, Blue Area, Islamabad, Pakistan.</p>'
+            ]
+        );
 
-    // private function createSliderImages()
-    // {
-    //     SliderImage::create([
-    //         'slot_one' => 'Market Operator',
-    //         'slot_two' => 'Bridges Between Single Buyer to Market.',
-    //         'url' => '#',
-    //         'order' => 1,
-    //         'image' => 'slider1.png'
-    //     ]);
-    //     SliderImage::create([
-    //         'slot_one' => 'Market Operator 2',
-    //         'slot_two' => 'Bridges Between Single Buyer to Market.',
-    //         'url' => '#',
-    //         'order' => 2,
-    //         'image' => 'slider2.png'
-    //     ]);
-    //     SliderImage::create([
-    //         'slot_one' => 'Market Operator 3',
-    //         'slot_two' => 'Bridges Between Single Buyer to Market.',
-    //         'url' => '#',
-    //         'order' => 3,
-    //         'image' => 'slider3.png'
-    //     ]);
+        StaticBlock::create(
+            [
+                'name' => 'MO.',
+                'identifier' => 'site_slogan',
+                'contents' => ''
+            ]
+        );
+    }
 
-    //     $basePath = config('settings.storage_disk_base_path') . SliderImage::STORAGE_DIRECTORY;
+    private function createSliderImages()
+    {
+        SliderImage::create([
+            'slot_one' => 'Market Operator',
+            'slot_two' => 'Bridges Between Single Buyer to Market.',
+            'url' => '#',
+            'order' => 1,
+            'image' => 'slider1.png'
+        ]);
+        SliderImage::create([
+            'slot_one' => 'Market Operator 2',
+            'slot_two' => 'Bridges Between Single Buyer to Market.',
+            'url' => '#',
+            'order' => 2,
+            'image' => 'slider2.png'
+        ]);
+        SliderImage::create([
+            'slot_one' => 'Market Operator 3',
+            'slot_two' => 'Bridges Between Single Buyer to Market.',
+            'url' => '#',
+            'order' => 3,
+            'image' => 'slider3.png'
+        ]);
 
-    //     copy(public_path('slider_images/slider1.png'), $basePath . 'slider1.png');
-    //     copy(public_path('slider_images/slider2.png'), $basePath . 'slider2.png');
-    //     copy(public_path('slider_images/slider3.png'), $basePath . 'slider3.png');
-    // }
+        $basePath = config('settings.storage_disk_base_path') . SliderImage::STORAGE_DIRECTORY;
 
-    // private function createSettings()
-    // {
-    //     Settings::factory(1)->create([
-    //         'name' => 'current_theme',
-    //         'value' => 'theme1'
-    //     ]);
-    //     Settings::factory(1)->create([
-    //         'name' => 'notification_emails',
-    //         'value' => 'test@nxb.com.pk,testing@nxb.com.pk'
-    //     ]);
-    // }
+        copy(public_path('slider_images/slider1.png'), $basePath . 'slider1.png');
+        copy(public_path('slider_images/slider2.png'), $basePath . 'slider2.png');
+        copy(public_path('slider_images/slider3.png'), $basePath . 'slider3.png');
+    }
 
-    // private function createMediaLibraries($counter)
-    // {
+    private function createSettings()
+    {
+        Settings::factory(1)->create([
+            'name' => 'current_theme',
+            'value' => 'theme1'
+        ]);
+        Settings::factory(1)->create([
+            'name' => 'notification_emails',
+            'value' => 'test@nxb.com.pk,testing@nxb.com.pk'
+        ]);
+    }
+
+    private function createMediaLibraries($counter)
+    {
         
-    //     $name = 'Farewell Party for Retiring Employees ' . $counter;
-    //     $slug = Str::slug($name);
+        $name = 'Farewell Party for Retiring Employees ' . $counter;
+        $slug = Str::slug($name);
         
-    //     $mediaLibrary = MediaLibrary::factory()->create([
-    //         'name' => $name,
-    //         'description' => 'This is test description for ' . $name,
-    //         'directory' => $slug
-    //     ]);
+        $mediaLibrary = MediaLibrary::factory()->create([
+            'name' => $name,
+            'description' => 'This is test description for ' . $name,
+            'directory' => $slug
+        ]);
 
-    //     $basePath = config('settings.storage_disk_base_path') . MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory;
-    //     $filename = 'media' . $counter . '.png';
+        $basePath = config('settings.storage_disk_base_path') . MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory;
+        $filename = 'media' . $counter . '.png';
 
-    //     if (!is_dir($basePath)) {
-    //         mkdir($basePath, 0777, true);
+        if (!is_dir($basePath)) {
+            mkdir($basePath, 0777, true);
 
-    //         copy(public_path('media_images/' . $filename), $basePath . '/' . $filename);
-    //     }
+            copy(public_path('media_images/' . $filename), $basePath . '/' . $filename);
+        }
 
-    //     MediaLibraryFile::create([
-    //         'file' => $filename,
-    //         'featured' => 1,
-    //         'media_library_id' => $mediaLibrary->id,
-    //     ]);
-    // }
+        MediaLibraryFile::create([
+            'file' => $filename,
+            'featured' => 1,
+            'media_library_id' => $mediaLibrary->id,
+        ]);
+    }
 }
