@@ -19,28 +19,17 @@
 					<!-- /.card-header -->
 					<!-- form start -->
 					@include('admin.users.form')
-
-				</div>
-			</div>
-
-			<input type="hidden" name="sendEmail" value="0" id="sendEmail">
-			<!-- /.card-body -->
-			<div class="col-md-12 text-right">
-				<button type="submit" class="btn btn-primary width-120">Save</button>
-				<button type="submit" class="btn btn-success mr-2 save-with-email">Save & Send Email</button>
-			</div>
-
+					
+					<input type="hidden" name="sendEmail" value="0" id="sendEmail">
+					<!-- /.card-body -->
+					<div class="card-footer text-right">
+						<button type="submit" class="btn btn-primary width-120">Save</button>
+						<button type="submit" class="btn btn-success mr-2 save-with-email">Save & Send Email</button>
+					</div>
+				</div>				
+			</div>			
 		</div>
-</div>
-</form>
-
-
-</div>
-</div>
-<!-- /.row -->
-</div>
-<!-- /.container-fluid -->
-
+	</form>
 </div>
 @endsection
 

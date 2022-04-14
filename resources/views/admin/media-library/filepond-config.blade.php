@@ -170,6 +170,7 @@
         const pond = FilePond.create(inputElement, {
             acceptedFileTypes: ['image/*'],
             maxFileSize: '2MB',
+            maxParallelUploads: 5,
             credits: false,
             allowMultiple: true,
             required: true,
@@ -193,18 +194,19 @@
                 }
             },
             onprocessfile: (error, file) => {
-                setTimeout(() => { 
-                    pond.removeFile(); 
-                    loadAllImages();
-                }, 200);
-            },
-            onprocessfiles: (error, file) => {                
-                setTimeout(() => { 
-                    pond.removeFiles(); 
+                setTimeout(() => {
+                    pond.removeFile(file.id); 
                     loadAllImages();
                     toastr.success('Media file uploaded successfully!');
-                }, 600);
-            }
+                }, 16);
+            },
+            // onprocessfiles: (error, file) => {
+            //     setTimeout(() => { 
+            //         pond.removeFiles(); 
+            //         loadAllImages();
+            //         toastr.success('Media file uploaded successfully!');
+            //     }, 16);
+            // }
         });
     }
 
