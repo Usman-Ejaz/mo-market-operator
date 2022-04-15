@@ -22,7 +22,7 @@
 
 		<!-- Notifications Dropdown Menu -->
 		@if (auth()->user()->show_notifications === 1)
-			<li class="nav-item dropdown">
+			<li class="nav-item dropdown mr-3">
 				<a class="nav-link" data-toggle="dropdown" href="#">
 					<i class="far fa-bell"></i>
 					<span class="badge badge-warning navbar-badge">{{ auth()->user()->unreadNotifications()->count() }}</span>
@@ -51,9 +51,9 @@
 				</div>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" data-widget="fullscreen" href="#" role="button">
+				{{-- <a class="nav-link" data-widget="fullscreen" href="#" role="button">
 					<i class="fas fa-expand-arrows-alt"></i>
-				</a>
+				</a> --}}
 			</li>
 		@endif		
 		<!-- <li class="nav-item">
