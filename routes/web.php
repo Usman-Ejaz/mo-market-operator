@@ -165,6 +165,8 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
         
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");
+
+    Route::get('download-attachment/{module}/{file}', [DashboardController::class, 'downloadAttachment'])->where('module', '(.*)')->name('attachment.download')->withoutMiddleware(['preventBrowserHistory']);
 });
 
 Route::get('pages/{slug}', function ($slug) {

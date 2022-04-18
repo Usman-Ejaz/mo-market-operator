@@ -27,4 +27,9 @@ class Application extends Model
         
         return $this->belongsTo(Job::class);
     }
+
+    public function getResumeAttribute($value)
+    {
+        return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
+    }
 }

@@ -169,6 +169,9 @@ class JobController extends Controller
                 ->addColumn('total_positions', function ($row) {
                     return ($row->total_positions) ? $row->total_positions : '';
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->isPublished() ? 'Published' : 'Draft';
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
@@ -229,13 +232,13 @@ class JobController extends Controller
                 })
                 ->addColumn('phone', function ($row) {
                     return truncateWords($row->phone, 20);
-                })
+                })                
                 ->addColumn('city', function ($row) {
                     return truncateWords($row->city, 25);
                 })
                 ->addColumn('experience', function ($row) {
                     return truncateWords($row->experience, 10);
-                })
+                })               
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
@@ -258,19 +261,18 @@ class JobController extends Controller
                     }
                     return $options;
                 })
-                ->rawColumns(['action'])                
+                ->rawColumns(['action'])
                 ->make(true);
         }
     }
 
-    public function exportApplicationsList(Request $request,Job $job) {
+    public function exportApplicationsList(Request $request, Job $job) {
 
         abort_if(!hasPermission("jobs", "export_applications"), 401, __('messages.unauthorized_action'));
-
-        $job = Job::find($job->id);
+        
         $data = $job->applications;
         
-        $fileName = $job->title.'.csv';
+        $fileName = $job->title . '.csv';
         $headers = array(
             "Content-type"        => "text/csv",
             "Content-Disposition" => "attachment; filename=$fileName",
@@ -315,7 +317,9 @@ class JobController extends Controller
             'qualification' => 'required',
             'experience' => 'required',
             'total_positions' => 'required',
-            'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
+            'specialization' => 'required|string',
+            'salary' => 'nullable',
+            'image' => 'sometimes|file|max:' . config('settings.maxImageSize'),
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'nullable',

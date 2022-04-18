@@ -48,9 +48,7 @@
 <script type="text/javascript">
 	$(function() {
 		var table = $('.yajra-datatable').DataTable({
-			// order: [
-			// 	[1, 'asc']
-			// ],
+			order: [[2, 'desc']],
 			processing: true,
 			serverSide: true,
 			pageLength: 25,

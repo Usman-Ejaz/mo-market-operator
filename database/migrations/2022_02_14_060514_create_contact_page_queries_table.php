@@ -20,6 +20,7 @@ class CreateContactPageQueriesTable extends Migration
             $table->string("subject");
             $table->text("message");
             $table->enum("status", ['pending', 'inprocess', 'resolved'])->default('pending');
+            $table->text('comments')->nullable();
             $table->unsignedBigInteger("resolved_by")->nullable();
             $table->timestamps();
         });

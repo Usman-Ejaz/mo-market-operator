@@ -20,8 +20,9 @@
 					<tr>
 						<th>Id</th>
 						<th>Title</th>
-						<th>Slug</th>
+						{{-- <th>Slug</th> --}}
 						<th>Keywords</th>
+						<th>Status</th>
 						<th>Created date</th>
 						<th>Action</th>
 					</tr>
@@ -51,6 +52,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
+			order: [[4, 'desc']],
 			ajax: "{{ route('admin.pages.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
@@ -69,13 +71,17 @@
 					data: 'title',
 					name: 'title'
 				},
-				{
-					data: 'slug',
-					name: 'slug'
-				},
+				// {
+				// 	data: 'slug',
+				// 	name: 'slug'
+				// },
 				{
 					data: 'keywords',
 					name: 'keywords'
+				},
+				{
+					data: 'status',
+					name: 'status'
 				},
 				{
 					data: 'created_at',
