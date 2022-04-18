@@ -17,10 +17,12 @@ class CreateJobPostsTable extends Migration
             $table->id();
             $table->string('title', 100);
             $table->string('slug', 150);
-            $table->text('description')->nullable();
-            $table->text('location')->nullable();
-            $table->text('qualification')->nullable();
-            $table->text('experience')->nullable();
+            $table->text('description');
+            $table->text('location');
+            $table->string('qualification');
+            $table->string('experience');
+            $table->string('specialization');
+            $table->integer('salary')->nullable();
             $table->integer('total_positions')->nullable();
             $table->string('image')->nullable();
             $table->timestamp('start_datetime')->nullable();
@@ -28,8 +30,8 @@ class CreateJobPostsTable extends Migration
             $table->timestamp('published_at')->nullable();
             $table->unsignedBigInteger('created_by')->default(0);
             $table->unsignedBigInteger('modified_by')->default(0);
-            $table->integer('active')->default(0);
-            $table->integer('enable')->default(0);
+            $table->boolean('active')->default(0);
+            $table->boolean('enable')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

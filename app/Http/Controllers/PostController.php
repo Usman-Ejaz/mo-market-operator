@@ -153,6 +153,9 @@ class PostController extends Controller
                 ->addColumn('keywords', function ($row) {
                     return truncateWords($row->keywords, 27);
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->isPublished() ? 'Published' : 'Draft';
+                })
                 ->addColumn('post_category', function ($row) {
                     return ($row->post_category) ? $row->post_category : '';
                 })

@@ -97,4 +97,9 @@ class User extends Authenticatable
     {
         return $query->where('show_notifications', '=', 1);
     }
+
+    public function scopeSkipOwnAccount($query)
+    {
+        return $query->where('id', '!=', auth()->id());
+    }
 }

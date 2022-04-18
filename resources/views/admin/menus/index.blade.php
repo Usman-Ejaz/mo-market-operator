@@ -55,6 +55,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
+			order: [[4, 'desc']],
 			ajax: "{{ route('admin.menus.list') }}?theme="+theme,
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {

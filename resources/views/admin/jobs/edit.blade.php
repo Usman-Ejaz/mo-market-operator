@@ -111,8 +111,8 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date').val(mapDate(dp));
-				let endDate = $("#end_datetime").val();
-				if (endDate.trim().length > 0 && $input.val() >= endDate) {
+				let endDate = new Date($("#end_date").val());
+				if (dp >= endDate) {
 					$input.val("");
 					$input.parent().next().text("Start Date cannot be less than end date");
 				} else {
@@ -134,8 +134,8 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#end_date').val(mapDate(dp));
-				let startDate = $("#start_datetime").val();
-				if (startDate.trim().length > 0 && $input.val() <= startDate) {
+				let startDate = new Date($("#start_date").val());
+				if (dp <= startDate) {
 					$input.val("");
 					$input.parent().next().text("{{ __('messages.min_date') }}");
 				} else {
@@ -239,8 +239,16 @@
 					min: 1,
 					maxlength: 4
 				},
+				specialization: {
+					required: true,
+					minlength: 5,
+					notNumericValues: true,
+				},
+				salary: {
+					number: true,
+				},
 				image: {
-					extension: "jpg|jpeg|png|ico|bmp"
+					extension: "jpg|jpeg|png|ico|bmp|pdf"
 				},
 				enable: {
 					required: false,

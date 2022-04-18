@@ -32,7 +32,8 @@ if (!function_exists("storeFile")) {
         }
         
         try {
-            $filename = Str::random(30) . '.' . $file->getClientOriginalExtension();
+            $fileOriginalName = explode(".", $file->getClientOriginalName())[0];
+            $filename = $fileOriginalName . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
             $contents = $file->get();
             Storage::disk('app')->put($dir . $filename, $contents);
         } catch (\Exception $ex) {
@@ -62,6 +63,23 @@ if (!function_exists("removeFile")) {
         }
 
         return false;
+    }
+}
+
+if (!function_exists('donwloadFile')) {
+
+    function donwloadFile($dir, $file)
+    {
+        $filename = basename($file);
+        list($filename, $ext) = explode(".", $filename);
+        $filename = explode("_", $filename);
+
+        if (count($filename) > 1) {
+            unset($filename[count($filename) - 1]);
+        }
+        
+        $actualFilename = implode("_", $filename)  . '.' . $ext;
+        return Storage::disk('app')->download($dir . '/' . $file, $actualFilename);
     }
 }
 

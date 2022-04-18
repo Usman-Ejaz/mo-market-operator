@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ContactPageQuery;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ContactPageQueryFactory extends Factory
@@ -18,7 +19,8 @@ class ContactPageQueryFactory extends Factory
             "email" => $this->faker->email,
             "subject" => $this->faker->sentence(10),
             "message" => $this->faker->sentence(100),
-            "status" => $this->faker->randomElement(["pending", "inprocess", "resolved"])
+            "status" => $this->faker->randomElement(ContactPageQuery::STATUS_ENUMS),
+            "comments" => null,
         ];
     }
 }
