@@ -18,5 +18,5 @@ return [
 
     "storage_disk_base_path" => config('filesystems.disks.app.root') . '/',
 
-    "fallback_email" => 'noreply@nxb.com.pk'
+    "google_credentials" => storage_path('app/ismo-346411-3bcba68c89a3.json'),
 ];

@@ -20,6 +20,7 @@
 					<tr>
 						<th>Id</th>
 						<th>Question</th>
+						<th>Keywords</th>
 						<th>Created date</th>
 						<th>Action</th>
 					</tr>
@@ -50,7 +51,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			order: [[2, 'desc']],
+			order: [[3, 'desc']],
 			ajax: "{{ route('admin.knowledge-base.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
@@ -68,6 +69,10 @@
 				{
 					data: 'question',
 					name: 'question'
+				},
+				{
+					data: 'keywords',
+					name: 'keywords'
 				},
 				{
 					data: 'created_at',

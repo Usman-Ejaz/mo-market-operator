@@ -7,8 +7,6 @@ use Exception;
 use Google_Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Spatie\Analytics\Analytics;
-use Spatie\Analytics\Period;
 
 class DashboardController extends Controller
 {

@@ -17,6 +17,7 @@ class ChatBotKnowledgeBaseFactory extends Factory
         return [
             'question' => $this->faker->paragraph(3),
             'answer' => $this->faker->paragraph(8),
+            'keywords' => implode(",", $this->faker->randomElements(['Personal', 'Information', 'ISMO', 'Electricity', 'Government', 'Punjab'], 2)),
             'created_by' => User::all()->random()->id,
             'modified_by' => User::all()->random()->id,
             'published_at' => $this->faker->randomElement([null, now()])

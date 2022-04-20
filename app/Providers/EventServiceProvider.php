@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\ChatbotChatHistoryEvent;
 use App\Events\NewContactQueryHasArrived;
 use App\Events\SiteSearchEvent;
 use App\Listeners\LogSearchKeyword;
+use App\Listeners\SendEmailToChatInitiator;
+use App\Listeners\SendEmailToGeneralReceivers;
 use App\Listeners\SendEmailToQueryReceivers;
 use App\Listeners\SendNotificationToNotifiableUsers;
 use Illuminate\Auth\Events\Registered;
@@ -29,6 +32,10 @@ class EventServiceProvider extends ServiceProvider
         NewContactQueryHasArrived::class => [
             SendNotificationToNotifiableUsers::class,
             SendEmailToQueryReceivers::class
+        ],
+        ChatbotChatHistoryEvent::class => [
+            SendEmailToChatInitiator::class,
+            // SendEmailToGeneralReceivers::class
         ]
     ];
 

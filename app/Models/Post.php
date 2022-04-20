@@ -88,7 +88,7 @@ class Post extends Model
         return [
             1 => 'News',
             2 => 'Blog',
-            3 => 'Press Release'
+            3 => 'Announcements'
         ];
     }
 

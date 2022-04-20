@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChatBotKnowledgeBasesTable extends Migration
+class CreateChatbotHistoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateChatBotKnowledgeBasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('chat_bot_knowledge_bases', function (Blueprint $table) {
+        Schema::create('chatbot_histories', function (Blueprint $table) {
             $table->id();
-            $table->text('question')->nullable();
+            $table->text('question');
             $table->text('answer')->nullable();
-            $table->string('keywords');
-            $table->unsignedBigInteger('created_by')->default(0);
-            $table->unsignedBigInteger('modified_by')->default(0);
-            $table->timestamp('published_at')->nullable();
+            $table->unsignedBigInteger('chatbot_initiator_id');
             $table->timestamps();
+
+            $table->foreign('chatbot_initiator_id')->references('id')->on('chatbot_initiators')->onDelete('cascade');
         });
     }
 
@@ -32,6 +31,6 @@ class CreateChatBotKnowledgeBasesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chat_bot_knowledge_bases');
+        Schema::dropIfExists('chatbot_histories');
     }
 }

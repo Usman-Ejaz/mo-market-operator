@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CareersApiController;
+use App\Http\Controllers\Api\ChatbotQueriesController;
 use App\Http\Controllers\Api\Client\ClientAttachmentController;
 use App\Http\Controllers\Api\Client\ClientRegistrationController;
 use App\Http\Controllers\Api\ContactFormQueryController;
@@ -65,6 +66,10 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::post("search-document", [DocumentsApiController::class, "search"])->name("documents.search");
 
     Route::post("search", [SiteSearchApiController::class, "search"])->name("site-search.search");
+
+    Route::post('save-initiator-details', [ChatbotQueriesController::class, 'store'])->name('chatbot.store-details');
+    Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');
+    Route::post('close-chat', [ChatbotQueriesController::class, 'sendChatHistoryEmail'])->name('chatbot.send-emails');
 
     Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
 });
