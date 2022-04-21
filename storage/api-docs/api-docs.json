@@ -19,7 +19,7 @@
         }
     ],
     "paths": {
-        "/get-jobs": {
+        "/jobs": {
             "get": {
                 "tags": [
                     "Jobs & Job Applications"
@@ -45,7 +45,7 @@
                 ]
             }
         },
-        "/show-job/{slug}": {
+        "/job/{slug}": {
             "get": {
                 "tags": [
                     "Jobs & Job Applications"
@@ -493,7 +493,7 @@
                 ]
             }
         },
-        "/get-documents": {
+        "/documents": {
             "get": {
                 "tags": [
                     "Documents"
@@ -694,7 +694,7 @@
                 ]
             }
         },
-        "/get-posts": {
+        "/news-and-blogs": {
             "get": {
                 "tags": [
                     "Posts"
@@ -723,7 +723,7 @@
                 ]
             }
         },
-        "/show-post/{slug}": {
+        "/news-and-blogs/{slug}": {
             "get": {
                 "tags": [
                     "Posts"
@@ -760,14 +760,14 @@
                 ]
             }
         },
-        "/get-announcements": {
+        "/announcements": {
             "get": {
                 "tags": [
                     "Announcements"
                 ],
                 "summary": "Get list of Published Announcements",
                 "description": "Returns list of Announcements",
-                "operationId": "getPublishedPressReleases",
+                "operationId": "getPublishedAnnouncements",
                 "responses": {
                     "200": {
                         "description": "Success"
@@ -789,14 +789,14 @@
                 ]
             }
         },
-        "/show-announcement/{slug}": {
+        "/announcement/{slug}": {
             "get": {
                 "tags": [
                     "Announcements"
                 ],
                 "summary": "Get Specific Announcement against slug",
                 "description": "Returns single Announcement",
-                "operationId": "getPressRelease",
+                "operationId": "getAnnouncement",
                 "parameters": [
                     {
                         "name": "slug",

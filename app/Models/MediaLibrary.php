@@ -23,7 +23,7 @@ class MediaLibrary extends Model
     /**
      * files
      *
-     * @return
+     * @return mixed
      */
     public function files()
     {

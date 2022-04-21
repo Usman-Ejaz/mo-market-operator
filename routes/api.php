@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CareersApiController;
+use App\Http\Controllers\Api\ChatbotQueriesController;
 use App\Http\Controllers\Api\Client\ClientAttachmentController;
 use App\Http\Controllers\Api\Client\ClientRegistrationController;
 use App\Http\Controllers\Api\ContactFormQueryController;
@@ -46,25 +47,32 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::post("subscribe-to-newsletter", [NewsletterSubscriptionController::class, "subscribe"])->name("newsletters.subscribe");
     Route::get("faqs", [FaqApiController::class, "show"])->name("faqs.show");
 
-    Route::get("get-posts", [PublishedPostApiController::class, "getPublishedPosts"])->name("posts.published");
-    Route::get("show-post/{slug}", [PublishedPostApiController::class, "getSinglePost"])->name("posts.show");
+    Route::get("news-and-blogs", [PublishedPostApiController::class, "getPublishedPosts"])->name("posts.published");
+    Route::get("news-and-blogs/{slug}", [PublishedPostApiController::class, "getSinglePost"])->name("posts.show");
 
     Route::get('media-library', [MediaLibraryApiController::class, 'getFiles'])->name('media-library.files');
     Route::get('slider-images', [SliderImageApiController::class, 'getSliderImages'])->name('slider-images.getSliderImages');
     Route::get('menus', [MenuApiController::class, 'getMenus'])->name('menus.getMenus');
     Route::get('static-blocks', [StaticBlockApiController::class, 'show'])->name('static-blocks.show');
 
-    Route::get("get-announcements", [PublishedPostApiController::class, "getPublishedPressReleases"])->name("announcements.published");
-    Route::get("show-announcement/{slug}", [PublishedPostApiController::class, "getPressRelease"])->name("announcements.show");
+    Route::get("announcements", [PublishedPostApiController::class, "getPublishedAnnouncements"])->name("announcements.published");
+    Route::get("announcement/{slug}", [PublishedPostApiController::class, "getAnnouncement"])->name("announcements.show");
 
-    Route::get("get-jobs", [CareersApiController::class, "getPublishedJobs"])->name("careers.published");
-    Route::get("show-job/{slug}", [CareersApiController::class, "showSingleJob"])->name("careers.show");
+    Route::get("jobs", [CareersApiController::class, "getPublishedJobs"])->name("careers.published");
+    Route::get("job/{slug}", [CareersApiController::class, "showSingleJob"])->name("careers.show");
     Route::post("submit-job-application", [CareersApiController::class, "submitApplication"])->name("careers.submitApplication");
 
-    Route::get("get-documents", [DocumentsApiController::class, "getPublishedDocs"])->name("documents.published");
+    Route::get("documents", [DocumentsApiController::class, "getPublishedDocs"])->name("documents.published");
     Route::post("search-document", [DocumentsApiController::class, "search"])->name("documents.search");
 
     Route::post("search", [SiteSearchApiController::class, "search"])->name("site-search.search");
+
+    // route for blogs and news listing page, client side,
+    Route::get('posts', [PublishedPostApiController::class, "listPosts"])->name('posts.list');
+
+    Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'store'])->name('chatbot.store-details');
+    Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');
+    Route::post('close-chat', [ChatbotQueriesController::class, 'sendChatHistoryEmail'])->name('chatbot.send-emails');
 
     Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
 });

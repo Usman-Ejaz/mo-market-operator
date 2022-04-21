@@ -82,7 +82,7 @@ class Job extends Model
 
     // Relations
     public function applications() {
-        return $this->hasMany(Application::class);
+        return $this->hasMany(Application::class)->orderBy('created_at', 'desc');
     }
 
     // Scope Queries

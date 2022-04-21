@@ -88,7 +88,7 @@ class Post extends Model
         return [
             1 => 'News',
             2 => 'Blog',
-            3 => 'Press Release'
+            3 => 'Announcements'
         ];
     }
 
@@ -103,17 +103,56 @@ class Post extends Model
     public function scopePublished($query) {
         return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords");
     }
-
-    public function scopeOnlyNewsAndBlogs($query)
+    
+    /**
+     * scopeNews
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeNews($query)
+    {
+        return $query->where('post_category', '=', 1);
+    }
+    
+    /**
+     * scopeBlogs
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeBlogs($query)
+    {
+        return $query->where('post_category', '=', 2);
+    }
+    
+    /**
+     * scopeNewsAndBlogs
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeNewsAndBlogs($query)
     {
         return $query->whereIn('post_category', [1, 2]);
     }
-
-    public function scopeOnlyPressRelease($query)
+    
+    /**
+     * scopeAnnouncements
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeAnnouncements($query)
     {
         return $query->where('post_category', '=', 3);
     }
-
+    
+    /**
+     * isPublished
+     *
+     * @return boolean
+     */
     public function isPublished() {
         return $this->published_at !== null;
     }

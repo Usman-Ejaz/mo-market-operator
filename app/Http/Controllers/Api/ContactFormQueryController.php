@@ -88,6 +88,7 @@ class ContactFormQueryController extends BaseApiController
                 'email' => 'required|email',
                 'subject' => 'required|min:5|max:100',
                 'message' => 'required|min:5|max:255',
+                'type' => 'sometimes|string|max:10'
             ]);
      
             if ($validator->fails()) {
@@ -95,10 +96,10 @@ class ContactFormQueryController extends BaseApiController
             }
 
             $contactPageQuery = ContactPageQuery::create($request->all());
-                        
+
             event(new NewContactQueryHasArrived($contactPageQuery));
             
-            return $this->sendResponse([], "Query Submitted Successfully");
+            return $this->sendResponse([], __("Query Submitted Successfully"));
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }

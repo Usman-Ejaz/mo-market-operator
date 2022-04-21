@@ -86,7 +86,7 @@
 							return $(".imageExists").length > 0 ? false : true;
 						}
 					},
-					extension: "jpg|jpeg|png",
+					extension: "{{ config('settings.image_file_extensions') }}"
 				}
 			},
 			messages: {

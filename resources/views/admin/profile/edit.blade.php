@@ -72,7 +72,7 @@
 					number: true
 				},
 				image: {
-					extension: "jpg|jpeg|png"
+					extension: "{{ config('settings.image_file_extensions') }}"
 				},
 				active: {
 					required: true,

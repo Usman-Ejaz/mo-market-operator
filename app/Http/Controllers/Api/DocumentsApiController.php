@@ -21,7 +21,7 @@ class DocumentsApiController extends BaseApiController
 
     /** 
      * @OA\Get(
-     *      path="/get-documents",
+     *      path="/documents",
      *      operationId="getPublishedDocs",
      *      tags={"Documents"},
      *      summary="Get list of Published Documents",
