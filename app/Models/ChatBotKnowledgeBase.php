@@ -22,7 +22,7 @@ class ChatBotKnowledgeBase extends Model
         $question = explode(" ", strtolower($question));
         
         $question = $this->unsetCommonWords($question);
-
+        
         $query->where(function ($q) use ($question) {
             foreach ($question as $part) {
                 $q->orWhere('keywords', 'like', "%{$part}%");

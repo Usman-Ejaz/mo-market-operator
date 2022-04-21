@@ -248,7 +248,7 @@
 					number: true,
 				},
 				image: {
-					extension: "jpg|jpeg|png|ico|bmp|pdf"
+					extension: "{{ config('settings.image_file_extensions') }}|pdf"
 				},
 				enable: {
 					required: false,

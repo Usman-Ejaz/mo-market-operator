@@ -93,20 +93,27 @@ class ChatbotQueriesController extends BaseApiController
                 return $this->sendError('error', ['errors' => 'Chatbot initiator could not find.'], 404);
             }
 
-            $chatbotAnswer = ChatBotKnowledgeBase::searchByKeyword($request->question)->first();
+            $questions = ChatBotKnowledgeBase::select('question', 'answer')->get();
+            $chatbotAnswer = null;
+
+            foreach ($questions as $knowledgebase) {
+                similar_text(strtolower($request->question), strtolower($knowledgebase->question), $similarity_pst);
+
+                if (number_format($similarity_pst, 0) > 85) {
+                    $chatbotAnswer = $knowledgebase;
+                    break;
+                }
+            }
             
             if ($chatbotAnswer) {
                 // 1. log question with answer against initiatorID in the DB.
-                // 2. send email to ISMO staff specified emails
-                // 3. send response to client with answer.
+                // 2. send response to client with answer.
 
-                $history = ChatbotHistory::create([
+                ChatbotHistory::create([
                     'question' => $request->question,
                     'answer' => $chatbotAnswer->answer,
                     'chatbot_initiator_id' => $initiator->id
                 ]);
-
-                // $initiator->send_chat_history && event(new NewChatbotQueryArrived($history, $initiator));
 
                 return $this->sendResponse(['answer' => $chatbotAnswer->answer], 'success');
             }

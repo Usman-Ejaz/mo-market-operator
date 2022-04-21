@@ -241,7 +241,7 @@
 					notNumericValues: true
 				},
 				image: {
-					extension: "jpg|jpeg|png|ico|bmp"
+					extension: "{{ config('settings.image_file_extensions') }}"
 				},
 				start_datetime: {
 					required: false

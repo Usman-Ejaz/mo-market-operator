@@ -35,7 +35,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         ChatbotChatHistoryEvent::class => [
             SendEmailToChatInitiator::class,
-            // SendEmailToGeneralReceivers::class
+            SendEmailToGeneralReceivers::class
         ]
     ];
 

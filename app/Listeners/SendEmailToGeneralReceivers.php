@@ -2,10 +2,12 @@
 
 namespace App\Listeners;
 
+use App\Mail\SendChatHistoryEmail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
-class SendEmailToGeneralReceivers
+class SendEmailToGeneralReceivers implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -25,6 +27,13 @@ class SendEmailToGeneralReceivers
      */
     public function handle($event)
     {
-        //
+        $emails = settings('notification_emails');
+        if ($emails && !empty($emails)) {
+            $emails = explode(",", $emails);
+
+            foreach($emails as $email) {
+                Mail::to($email)->send(new SendChatHistoryEmail($event->history, $event->initiator));
+            }
+        }
     }
 }
