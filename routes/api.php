@@ -56,7 +56,7 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get('static-blocks', [StaticBlockApiController::class, 'show'])->name('static-blocks.show');
 
     Route::get("announcements", [PublishedPostApiController::class, "getPublishedAnnouncements"])->name("announcements.published");
-    Route::get("announcement/{slug}", [PublishedPostApiController::class, "getAnnouncement"])->name("announcements.show");
+    Route::get("announcements/{slug}", [PublishedPostApiController::class, "getAnnouncement"])->name("announcements.show");
 
     Route::get("jobs", [CareersApiController::class, "getPublishedJobs"])->name("careers.published");
     Route::get("job/{slug}", [CareersApiController::class, "showSingleJob"])->name("careers.show");
@@ -69,6 +69,8 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
 
     // route for blogs and news listing page, client side,
     Route::get('posts', [PublishedPostApiController::class, "listPosts"])->name('posts.list');
+    Route::get('post-menu', [PublishedPostApiController::class, "postMenus"])->name('posts.menu');
+    Route::get('posts/{category}', [PublishedPostApiController::class, "getPostsByCategory"])->name('posts.list');
 
     Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'store'])->name('chatbot.store-details');
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');

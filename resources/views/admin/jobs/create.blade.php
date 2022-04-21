@@ -165,6 +165,13 @@
 			return messageLength !== 0;
 		}, '{{ __("messages.ckeditor_required") }}');
 
+		$.validator.addMethod('extension', function (value, element, param) {
+			let files = Array.from(element.files);
+			param = param.split('|');
+			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
+			return this.optional(element) || invalidFiles.length === 0;
+		}, '');
+
 		$('#create-job-form').validate({
 			errorElement: 'span',
 			errorClass: "my-error-class",
@@ -210,7 +217,7 @@
 				salary: {
 					number: true,
 				},
-				image: {
+				'image[]': {
 					extension: "{{ config('settings.image_file_extensions') }}|pdf"
 				},
 				enable: {
@@ -233,7 +240,7 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				image: '{{ __("messages.valid_file_extension") }}',
+				'image[]': '{{ __("messages.valid_file_extension") }}',
 				title: {
 					required: "This field is required.",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",

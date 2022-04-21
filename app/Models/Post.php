@@ -156,4 +156,21 @@ class Post extends Model
     public function isPublished() {
         return $this->published_at !== null;
     }
+
+    public function scopeApplyFilters($query, $request)
+    {
+        if ($request->has('month')) {
+            $query = $query->whereMonth('created_at', '=', $request->get('month'));
+        }
+
+        if ($request->has('year')) {
+            $query = $query->whereYear('created_at', '=', $request->get('year'));
+        }
+
+        if ($request->has('sort')) {
+            $query = $query->orderBy('created_at', $request->get('sort'));
+        }
+
+        return $query;
+    }
 }

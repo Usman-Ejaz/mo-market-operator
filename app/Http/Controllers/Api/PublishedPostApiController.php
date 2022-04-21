@@ -8,6 +8,7 @@ use App\Models\MediaLibrary;
 use App\Models\MediaLibraryFile;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PublishedPostApiController extends BaseApiController
 {
@@ -117,7 +118,7 @@ class PublishedPostApiController extends BaseApiController
      * @OA\Get(
      *      path="/announcements",
      *      operationId="getPublishedAnnouncements",
-     *      tags={"Announcements"},
+     *      tags={"Posts"},
      *      summary="Get list of Published Announcements",
      *      description="Returns list of Announcements",
      *      security={{"BearerAppKey": {}}},
@@ -158,7 +159,7 @@ class PublishedPostApiController extends BaseApiController
      * @OA\Get(
      *      path="/announcement/{slug}",
      *      operationId="getAnnouncement",
-     *      tags={"Announcements"},
+     *      tags={"Posts"},
      *      summary="Get Specific Announcement against slug",
      *      description="Returns single Announcement",
      *      security={{"BearerAppKey": {}}},
@@ -195,46 +196,115 @@ class PublishedPostApiController extends BaseApiController
                 return $this->sendResponse([], __("messages.data_not_found"));
             }
         } catch (\Exception $e) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 402);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
         }
-    }
+    }    
 
-    public function listPosts() {
-
-        $categories = [ 1 => 'News', 2 => 'Blogs', 3 => 'Announcements'];
-        
-        try {
-            $responseArr = [];
-
-            foreach ($categories as $key => $value) {
-                $type = strtolower($value);
-                $responseArr[$type] = Post::published()->$type()->get();
-            }
-            
-            $responseArr['events'] = $this->getMediaFiles();
-
-            return $this->sendResponse($responseArr, __("messages.success"));
-
-        } catch (\Exception $ex) {
-            
-        }
-    }
-
-    public function getMediaFiles()
+    /**
+     * 
+     * @OA\Get(
+     *      path="/post-menu",
+     *      operationId="postMenus",
+     *      tags={"Posts"},
+     *      summary="Get post categories menu list",
+     *      description="Get post categories menu list",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function postMenus()
     {
-        $libraries = MediaLibrary::select("id", "name", "description", "directory")->with('mediaFiles:file,media_library_id')->get();
+        try {
+            // These are the post categories, 
+            // These will be dynamic when we create little module for it.
+            // Currently, these categories are being handled from App/Models/Post Model
+            $categories = [1 => 'News', 2 => 'Blogs', 3 => 'Announcements'];
 
-        foreach ($libraries as $mediaLibrary) {
-            $files = $mediaLibrary->mediaFiles;
-            foreach ($files as $mediaFile) {
-                $mediaFile->file = serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $mediaFile->file);
-                unset($mediaFile->id);
-                unset($mediaFile->media_library_id);
+            $menus = [];
+            foreach ($categories as $menuItem) {
+                $slug = Str::slug($menuItem);
+                $menus[] = [
+                    'title' => $menuItem,
+                    'slug' => $slug,
+                    'link_prefix' => '/' . $slug
+                ];
             }
-            unset($mediaLibrary->directory);
-            unset($mediaLibrary->id);
-        }
 
-        return $libraries;
+            return $this->sendResponse($menus, 'success');
+        } catch (\Exception $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
+        }
     }
+
+    /**
+     * 
+     * @OA\Get(
+     *      path="/posts/{category}",
+     *      operationId="getPostsByCategory",
+     *      tags={"Posts"},
+     *      summary="Get post categories menu list",
+     *      description="Get post categories menu list",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Parameter(
+     *          name="category",
+     *          description="Post category listed in post menu",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function getPostsByCategory($category)
+    {
+        try {
+            $posts = Post::published()->$category()->latest()->applyFilters(request())->get();
+
+            return $this->sendResponse($posts, 'success');
+        } catch (\Throwable $th) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
+        }
+    }
+
+    // public function getMediaFiles()
+    // {
+    //     $libraries = MediaLibrary::select("id", "name", "description", "directory")->with('mediaFiles:file,media_library_id')->get();
+
+    //     foreach ($libraries as $mediaLibrary) {
+    //         $files = $mediaLibrary->mediaFiles;
+    //         foreach ($files as $mediaFile) {
+    //             $mediaFile->file = serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $mediaFile->file);
+    //             unset($mediaFile->id);
+    //             unset($mediaFile->media_library_id);
+    //         }
+    //         unset($mediaLibrary->directory);
+    //         unset($mediaLibrary->id);
+    //     }
+
+    //     return $libraries;
+    // }
 }

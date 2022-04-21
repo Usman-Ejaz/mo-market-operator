@@ -47,7 +47,7 @@
 						<div class="float-right">
 
 							<input type="hidden" name="action" id="action">
-							<input type="hidden" name="removeFile" id="removeFile" value="0">
+							<input type="hidden" name="removeFile" id="removeFile">
 
 							@if ($document->isPublished())
 								<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
@@ -56,13 +56,12 @@
 								@endif
 							@else
 								<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
-								@if( hasPermission('documents', 'publish'))
+								@if (hasPermission('documents', 'publish'))
 									<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
 								@endif
 							@endif
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
