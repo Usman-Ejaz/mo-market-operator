@@ -309,11 +309,12 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Contact Us',
                 'identifier' => 'contact_us',
-                'contents' => '<p><strong>Email</strong>: info@mo.gov.pk</p>
-
-                <p><strong>Contact</strong>:&nbsp;051-111-922-772</p>
-                
-                <p><strong>Address</strong>:&nbsp;Shaheen Plaza, Plot No. 73-West, Fazl-Ul-Haq Road, Blue Area, Islamabad, Pakistan.</p>'
+                'contents' => '<ul>
+                                    <li><strong>Email</strong>: <a href="mailto:info@mo.gov.pk">info@mo.gov.pk</a></li>
+                                    <li><strong>Contact</strong>:&nbsp;<a href="tel:051-111-922-772">051-111-922-772</a></li>
+                                    <li><strong>Address</strong>:&nbsp;Shaheen Plaza, Plot No. 73-West, Fazl-Ul-Haq Road, Blue Area, Islamabad, Pakistan.</li>
+                                </ul>
+                                '
             ]
         );
 
@@ -321,7 +322,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'MO.',
                 'identifier' => 'site_slogan',
-                'contents' => ''
+                'contents' => 'Simply Dummy Text Of The Printing And Typesetting Industry.'
             ]
         );
     }

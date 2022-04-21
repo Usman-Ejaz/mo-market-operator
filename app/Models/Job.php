@@ -22,7 +22,7 @@ class Job extends Model
 
     const STORAGE_DIRECTORY = 'jobs/';
 
-    protected $appends = ['link'];
+    protected $appends = ['image_path'];
 
     /********* Getters ***********/
     public function getActiveAttribute($attribute){
@@ -42,7 +42,15 @@ class Job extends Model
     }    
 
     public function getImageAttribute ($value) {
-        return serveFile(self::STORAGE_DIRECTORY, $value);
+        return !empty($value) ? explode(",", $value) : [];
+    }
+
+    public function getImagePathAttribute($value) {
+        $links = [];
+        foreach($this->image as $img) {
+            array_push($links, serveFile(self::STORAGE_DIRECTORY, $img));
+        }
+        return $links;
     }
 
     public function getLinkAttribute($value) {

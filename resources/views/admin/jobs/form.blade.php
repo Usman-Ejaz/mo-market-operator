@@ -62,7 +62,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="specialization">Specialization <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="specialization" placeholder="Enter Job specialization" name="specialization"
+                <input type="input" class="form-control" id="specialization" placeholder="Enter Job Specialization" name="specialization"
                     value="{{ old('specialization') ?? $job->specialization }}">
                 <span class="form-text text-danger">{{ $errors->first('specialization') }} </span>
             </div>
@@ -71,7 +71,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="salary">Salary </label>
-                <input type="number" class="form-control" id="salary"
+                <input type="number" class="form-control" id="salary" min="0" step="1"
                     placeholder="Enter Salary For Job" name="salary"
                     value="{{ old('salary') ?? $job->salary }}">
                 <span class="form-text text-danger">{{ $errors->first('salary') }} </span>
@@ -83,21 +83,23 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="image">Job Image <small>(Max allowed size is 2MB. Allowed types are jpg, jpeg, png, ico, bmp, pdf)</small> </label>
-                <input type="file" class="form-control" id="image" name="image">
+                <input type="file" class="form-control" id="image[]" name="image[]" multiple>
                 <span class="form-text text-danger">{{ $errors->first('image') }} </span>
-                @if(isset($job->image))
-                    <small class="text-primary imageExists">
-                        @if (strtolower(explode(".", basename($job->image))[1]) === "pdf")
-                        <a href="{{ $job->image }}" target="_blank">
-                            {{ __("View File") }}
-                        </a>
+                @if(isset($job->image_path) && count($job->image_path) > 0)
+                    @foreach ($job->image_path as $file)
+                    <small class="text-primary imageExists" style="display: block;">
+                        @if (strtolower(explode('.', basename($file))[1]) === "pdf")
+                            <a href="{{ $file }}" target="_blank">
+                                {{ __("View File") }}
+                            </a>
                         @else
-                        <a href="{{ $job->image }}" target="_blank">
-                            <img src="{{ $job->image }}" target="_blank" class="img-thumbnail" style="width: 23%;" />
-                        </a>    
-                        @endif                        
-                        <span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span>
+                        <a href="{{ $file }}" target="_blank">
+                            <img src="{{ $file }}" target="_blank" class="img-thumbnail" style="width: 23%;" />
+                        </a>
+                        @endif
+                        <span class="btn-sm btn-danger float-right remove-file" data-file="{{ basename($file) }}" id="deleteImage"><i class="fa fa-trash"></i></span>
                     </small>
+                    @endforeach
                 @endif
             </div>
         </div>

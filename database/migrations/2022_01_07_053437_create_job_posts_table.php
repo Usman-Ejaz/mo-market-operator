@@ -24,7 +24,7 @@ class CreateJobPostsTable extends Migration
             $table->string('specialization');
             $table->integer('salary')->nullable();
             $table->integer('total_positions')->nullable();
-            $table->string('image')->nullable();
+            $table->text('image')->nullable();
             $table->timestamp('start_datetime')->nullable();
             $table->timestamp('end_datetime')->nullable();
             $table->timestamp('published_at')->nullable();

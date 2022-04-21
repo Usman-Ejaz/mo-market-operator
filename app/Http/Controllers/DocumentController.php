@@ -59,7 +59,7 @@ class DocumentController extends Controller
         if (count($data['file']) > 0) {
 
             foreach ($data['file'] as $file) {
-                $filename = storeFile(Document::STORAGE_DIRECTORY, $file, null);
+                $filename = storeFile(Document::STORAGE_DIRECTORY, $file);
 
                 if ($convertFiles) {
                     $extension = $file->getClientOriginalExtension();
@@ -68,7 +68,7 @@ class DocumentController extends Controller
                     }
                 }
                 $filenames .= $filename . ",";
-            }            
+            }
         }
         
         $data['file'] = trim($filenames, ",");
@@ -124,49 +124,7 @@ class DocumentController extends Controller
 
         $data = $this->validateRequest($document);
 
-        $files = $document->file;
-        $convertFiles = $request->convert !== null && $request->convert == '1';
-        $filenames = "";
-
-        if ($request->hasFile('file')) {
-
-            // remove previous files
-            foreach($files as $file) {
-                removeFile(Document::STORAGE_DIRECTORY, $file);
-            }
-
-            $files = $request->file('file');
-            
-            if (count($files) > 0) {
-                foreach ($files as $file) {
-                    $filename = storeFile(Document::STORAGE_DIRECTORY, $file, null);
-    
-                    if ($convertFiles) { // convert file checkbox is checked
-    
-                        $extension = $file->getClientOriginalExtension();
-                        if (in_array($extension, $this->allowedFileExtensions)) {
-                            $filename = $this->convertFile($filename);
-                        }
-                    }
-                    $filenames .= $filename . ",";
-                }
-
-                $data['file'] = trim($filenames, ",");
-            }
-        } else if ($convertFiles) {
-
-            foreach ($files as $key => $file) {
-                $extension = basename($file);
-                $extension = $extension[$extension - 1];
-                if (in_array($extension, $this->allowedFileExtensions)) {
-                    $filename = $this->convertFile($file);
-                    $filenames .= $filename . ",";
-                }
-            }
-
-            $data['file'] = trim($filenames, ",");
-        }
-        
+        $data['file'] = $this->handleFileUpload($document, $request);
         
         if ($request->action === "Published") {
             $data['published_at'] = now();
@@ -297,6 +255,61 @@ class DocumentController extends Controller
                 }
             }
         }
+    }
+
+    private function handleFileUpload($document, $request)
+    {
+        $oldFiles = implode(",", $document->file);
+        $convertFiles = $request->convert !== null && $request->convert == '1';
+        $filenames = "";
+
+        if ($request->get('removeFile') !== null)
+        {
+            $removedFiles = explode(",", $request->get('removeFile'));
+            foreach ($removedFiles as $file) {
+                removeFile(Document::STORAGE_DIRECTORY, $file);
+                $oldFiles = str_replace($file, "", $oldFiles);
+                $oldFiles = str_replace(",,", ",", $oldFiles);
+                $oldFiles = trim($oldFiles, ",");
+            }
+        }
+
+        if ($request->hasFile('file')) 
+        {
+            $oldFiles = explode(",", $oldFiles);
+            foreach ($oldFiles as $file) {
+                serveFile(Document::STORAGE_DIRECTORY, $file);
+            }
+
+            $uploadedFiles = $request->file('file');
+
+            if (count($uploadedFiles) > 0) {
+                foreach ($uploadedFiles as $file) {
+                    $filename = storeFile(Document::STORAGE_DIRECTORY, $file);
+                    $filenames .= $filename . ",";
+                }
+
+                $filenames = trim($filenames, ",");
+            }
+        } else {
+            $filenames = trim($oldFiles, ",");
+        }
+
+        if ($convertFiles) { // convert file checkbox is checked
+            $filenames = explode(",", $filenames);
+            $tempnames = "";
+            foreach ($filenames as $filename) {
+                $extension = explode(".", basename($filename))[1];
+                if (in_array($extension, $this->allowedFileExtensions)) {
+                    $filename = $this->convertFile($filename);
+                    $tempnames .= $filename . ",";
+                }
+            }
+
+            $filenames = $tempnames;
+        }
+
+        return $filenames;
     }
 }
 

@@ -763,7 +763,7 @@
         "/announcements": {
             "get": {
                 "tags": [
-                    "Announcements"
+                    "Posts"
                 ],
                 "summary": "Get list of Published Announcements",
                 "description": "Returns list of Announcements",
@@ -792,7 +792,7 @@
         "/announcement/{slug}": {
             "get": {
                 "tags": [
-                    "Announcements"
+                    "Posts"
                 ],
                 "summary": "Get Specific Announcement against slug",
                 "description": "Returns single Announcement",
@@ -802,6 +802,69 @@
                         "name": "slug",
                         "in": "path",
                         "description": "Announcement slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/post-menu": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get post categories menu list",
+                "description": "Get post categories menu list",
+                "operationId": "postMenus",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/posts/{category}": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get post categories menu list",
+                "description": "Get post categories menu list",
+                "operationId": "getPostsByCategory",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Post category listed in post menu",
                         "required": true,
                         "schema": {
                             "type": "string"

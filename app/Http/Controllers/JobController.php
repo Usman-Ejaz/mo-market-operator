@@ -52,13 +52,22 @@ class JobController extends Controller
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $job['start_datetime'] = $this->parseDate($request->start_datetime);
         $job['end_datetime'] = $this->parseDate($request->end_datetime);
+        $job['image'] = null;
         
         $job = Job::create($job);
-        $this->storeImage($job);
+        
+        if ($request->hasFile('image')) {
+            $images = $request->file('image');
+            $filenames = "";
+            foreach ($images as $file) {
+                $name = storeFile(Job::STORAGE_DIRECTORY, $file);
+                $filenames .= $name . ',';
+            }
+            $job->update(['image' => trim($filenames, ",")]);
+        }
 
         if ($request->action === "Published") {
-            $job->published_at = now();
-            $job->save();
+            $job->update(['published_at' => now()]);
         }
 
         $request->session()->flash('success', "Job {$request->action} Successfully!");
@@ -206,7 +215,7 @@ class JobController extends Controller
 
     public function getJobApplications (Job $job) {
 
-        // abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
         return view('admin.applications.index',compact('job'));
     }
@@ -319,7 +328,7 @@ class JobController extends Controller
             'total_positions' => 'required',
             'specialization' => 'required|string',
             'salary' => 'nullable',
-            'image' => 'sometimes|file|max:' . config('settings.maxImageSize'),
+            'image.*' => 'sometimes',
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'nullable',

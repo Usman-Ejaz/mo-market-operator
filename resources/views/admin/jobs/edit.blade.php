@@ -62,6 +62,7 @@
 
 					<input type="hidden" name="active" id="status">
 					<input type="hidden" name="action" id="action">
+					<input type="hidden" name="remove-file" id="remove-file">
 
 					@if($job->isPublished())
 						<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
