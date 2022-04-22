@@ -929,43 +929,6 @@
                 ]
             }
         },
-        "/news-and-blogs/{slug}": {
-            "get": {
-                "tags": [
-                    "Posts"
-                ],
-                "summary": "Get Specific Post against slug",
-                "description": "Returns single Post",
-                "operationId": "getSinglePost",
-                "parameters": [
-                    {
-                        "name": "slug",
-                        "in": "path",
-                        "description": "Post slug",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "402": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    }
-                },
-                "security": [
-                    {
-                        "BearerAppKey": []
-                    }
-                ]
-            }
-        },
         "/announcements": {
             "get": {
                 "tags": [
@@ -986,43 +949,6 @@
                     },
                     "404": {
                         "description": "Could not found"
-                    }
-                },
-                "security": [
-                    {
-                        "BearerAppKey": []
-                    }
-                ]
-            }
-        },
-        "/announcement/{slug}": {
-            "get": {
-                "tags": [
-                    "Posts"
-                ],
-                "summary": "Get Specific Announcement against slug",
-                "description": "Returns single Announcement",
-                "operationId": "getAnnouncement",
-                "parameters": [
-                    {
-                        "name": "slug",
-                        "in": "path",
-                        "description": "Announcement slug",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation"
-                    },
-                    "402": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -1071,6 +997,52 @@
                         "name": "category",
                         "in": "path",
                         "description": "Post category listed in post menu",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/posts/{category}/{slug}": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get Specific Post against slug",
+                "description": "Returns single Post",
+                "operationId": "getSinglePost",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Post category",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Post slug",
                         "required": true,
                         "schema": {
                             "type": "string"

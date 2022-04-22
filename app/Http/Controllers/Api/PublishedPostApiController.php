@@ -65,54 +65,7 @@ class PublishedPostApiController extends BaseApiController
         } catch (\Exception $e) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
         }
-    }
-
-    /**
-     * 
-     * @OA\Get(
-     *      path="/news-and-blogs/{slug}",
-     *      operationId="getSinglePost",
-     *      tags={"Posts"},
-     *      summary="Get Specific Post against slug",
-     *      description="Returns single Post",
-     *      security={{"BearerAppKey": {}}},
-     *      @OA\Parameter(
-     *          name="slug",
-     *          description="Post slug",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation"          
-     *       ),
-     *      @OA\Response(
-     *          response=402,
-     *          description="Unauthorized",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     *  )
-     */
-    public function getSinglePost ($slug) {
-        try {
-            $post = Post::published()->newsAndBlogs()->where("slug", "=", $slug)->first();
-
-            if ($post) {
-                return $this->sendResponse($post, "Success");
-            } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
-            }
-        } catch (\Exception $e) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 402);
-        }
-    }
-
+    }    
 
     /** 
      * @OA\Get(
@@ -152,53 +105,7 @@ class PublishedPostApiController extends BaseApiController
         } catch (\Exception $e) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
         }
-    }
-
-    /**
-     * 
-     * @OA\Get(
-     *      path="/announcement/{slug}",
-     *      operationId="getAnnouncement",
-     *      tags={"Posts"},
-     *      summary="Get Specific Announcement against slug",
-     *      description="Returns single Announcement",
-     *      security={{"BearerAppKey": {}}},
-     *      @OA\Parameter(
-     *          name="slug",
-     *          description="Announcement slug",
-     *          required=true,
-     *          in="path",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation"          
-     *       ),
-     *      @OA\Response(
-     *          response=402,
-     *          description="Unauthorized",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     *  )
-     */
-    public function getAnnouncement ($slug) {
-        try {
-            $post = Post::published()->announcements()->where("slug", "=", $slug)->first();
-
-            if ($post) {
-                return $this->sendResponse($post, __("messages.success"));
-            } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
-            }
-        } catch (\Exception $e) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
-        }
-    }    
+    } 
 
     /**
      * 
@@ -287,6 +194,70 @@ class PublishedPostApiController extends BaseApiController
             return $this->sendResponse($posts, 'success');
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+        }
+    }
+
+    /**
+     * 
+     * @OA\Get(
+     *      path="/posts/{category}/{slug}",
+     *      operationId="getSinglePost",
+     *      tags={"Posts"},
+     *      summary="Get Specific Post against slug",
+     *      description="Returns single Post",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Parameter(
+     *          name="category",
+     *          description="Post category",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="slug",
+     *          description="Post slug",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function getSinglePost ($category, $slug) 
+    {
+        if ($category === null || $category === "") {
+            return $this->sendError('error', ["errors" => 'category field is missing.'], 500);
+        }
+
+        if ($slug === null || $slug === "") {
+            return $this->sendError('error', ["errors" => 'slug field is missing.'], 500);
+        }
+
+        try {
+            $post = Post::published()->$category()->where("slug", "=", $slug)->first();
+
+            if ($post) {
+                return $this->sendResponse($post, "Success");
+            } else {
+                return $this->sendResponse([], __("messages.data_not_found"));
+            }
+        } catch (\Exception $e) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
         }
     }
 
