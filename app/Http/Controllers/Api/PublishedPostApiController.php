@@ -243,7 +243,7 @@ class PublishedPostApiController extends BaseApiController
 
             return $this->sendResponse($menus, 'success');
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }
     }
 
@@ -285,8 +285,8 @@ class PublishedPostApiController extends BaseApiController
             $posts = Post::published()->$category()->latest()->applyFilters(request())->get();
 
             return $this->sendResponse($posts, 'success');
-        } catch (\Throwable $th) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
+        } catch (\Exception $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }
     }
 

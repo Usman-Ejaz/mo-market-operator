@@ -139,7 +139,7 @@ class DatabaseSeeder extends Seeder
         $this->createSliderImages();
         // SliderImage::factory(5)->create();
 
-        for ($i = 1; $i < 6; $i++) { 
+        for ($i = 1; $i <= 6; $i++) { 
             $this->createMediaLibraries($i);
         }
 
@@ -379,6 +379,7 @@ class DatabaseSeeder extends Seeder
         $mediaLibrary = MediaLibrary::factory()->create([
             'name' => $name,
             'description' => 'This is test description for ' . $name,
+            'slug' => $slug,
             'directory' => $slug
         ]);
 

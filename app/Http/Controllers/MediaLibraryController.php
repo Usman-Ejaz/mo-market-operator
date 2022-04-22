@@ -65,6 +65,7 @@ class MediaLibraryController extends Controller
         $mediaLibrary = new MediaLibrary;
         $data = $this->validateRequest($mediaLibrary);
         $data['directory'] = strtolower(Str::slug($data['name'], '_'));
+        $data['slug'] = $data['directory'];
         $this->makeDirectory($data);
         
         MediaLibrary::create($data);
@@ -110,7 +111,7 @@ class MediaLibraryController extends Controller
 
         $data = $this->validateRequest($mediaLibrary);
         $data['directory'] = strtolower(Str::slug($data['name'], '_'));
-
+        $data['slug'] = $data['directory'];
         $this->makeDirectory($data, $mediaLibrary->directory);
 
         $mediaLibrary->update($data);

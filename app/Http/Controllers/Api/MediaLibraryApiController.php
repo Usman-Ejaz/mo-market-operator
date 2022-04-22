@@ -21,11 +21,11 @@ class MediaLibraryApiController extends BaseApiController
 
     /** 
      * @OA\Get(
-     *      path="/media-library",
-     *      operationId="getFiles",
+     *      path="/media-libraries",
+     *      operationId="mediaLibraryList",
      *      tags={"Media Library"},
-     *      summary="Get list of Media Library files",
-     *      description="Returns Media Library files",
+     *      summary="Get list of Media Libraries with featured image",
+     *      description="Returns Media Libraries with featured image",
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
@@ -45,7 +45,7 @@ class MediaLibraryApiController extends BaseApiController
      *      ),
      *  )
      */
-    public function getFiles()
+    public function mediaLibraryList()
     {
         try {
             $mediaFiles = MediaLibraryFile::featuredImages()->with('mediaLibrary')->select("id", "file", "media_library_id")->get();
@@ -57,6 +57,63 @@ class MediaLibraryApiController extends BaseApiController
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+        }
+    }
+
+    /** 
+     * @OA\Get(
+     *      path="/media-libraries/{slug}",
+     *      operationId="mediaFiles",
+     *      tags={"Media Library"},
+     *      summary="Get list of Media Library files",
+     *      description="Returns Media Library files",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\Parameter(
+     *          name="slug",
+     *          description="Media Library slug",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Success"          
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Could not found",
+     *      ),
+     *  )
+     */
+    public function mediaFiles($slug)
+    {
+        if ($slug === null || $slug === "" || $slug === true || $slug === "true" || $slug === false || $slug === "false") {
+            return $this->sendError('error', ['errors' => 'slug is missing']);
+        }
+
+        try {
+            $mediaLibrary = MediaLibrary::whereSlug($slug)->select("id", "name", "slug", "description")->first();
+
+            if ($mediaLibrary) {
+                $mediaLibrary->mediaFiles = $mediaLibrary->files();
+                return $this->sendResponse($mediaLibrary, 'succcess');
+            } else {
+                return $this->sendResponse([], 'succcess', 204);
+            }
+        } catch (\Exception $ex) {
+            return $this->sendError('error', ['errors' => $ex->getMessage()], 500);
         }
     }
 }

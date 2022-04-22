@@ -50,7 +50,9 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get("news-and-blogs", [PublishedPostApiController::class, "getPublishedPosts"])->name("posts.published");
     Route::get("news-and-blogs/{slug}", [PublishedPostApiController::class, "getSinglePost"])->name("posts.show");
 
-    Route::get('media-library', [MediaLibraryApiController::class, 'getFiles'])->name('media-library.files');
+    Route::get('media-libraries', [MediaLibraryApiController::class, 'mediaLibraryList'])->name('media-libraries.list');
+    Route::get('media-libraries/{slug}', [MediaLibraryApiController::class, 'mediaFiles'])->name('media-libraries.files');
+
     Route::get('slider-images', [SliderImageApiController::class, 'getSliderImages'])->name('slider-images.getSliderImages');
     Route::get('menus', [MenuApiController::class, 'getMenus'])->name('menus.getMenus');
     Route::get('static-blocks', [StaticBlockApiController::class, 'show'])->name('static-blocks.show');
@@ -74,7 +76,7 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
 
     Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'store'])->name('chatbot.store-details');
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');
-    Route::post('close-chat', [ChatbotQueriesController::class, 'sendChatHistoryEmail'])->name('chatbot.send-emails');
+    Route::get('close-chat', [ChatbotQueriesController::class, 'sendChatHistoryEmail'])->name('chatbot.send-emails');
 
     Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
 });

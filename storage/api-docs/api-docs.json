@@ -188,6 +188,172 @@
                 ]
             }
         },
+        "/save-chat-initiator-details": {
+            "post": {
+                "tags": [
+                    "Chatbot Queries"
+                ],
+                "summary": "save chat initiator details",
+                "description": "save chat initiator details in the resource",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone",
+                                    "send_chat_history"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "title": "Name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "title": "email",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "title": "phone",
+                                        "type": "string"
+                                    },
+                                    "company": {
+                                        "title": "company",
+                                        "type": "string"
+                                    },
+                                    "send_chat_history": {
+                                        "title": "send_chat_history",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "John Doe",
+                                    "email": "johndoe@email.com",
+                                    "phone": "03001234567",
+                                    "send_chat_history": "0"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/chatbot-query": {
+            "post": {
+                "tags": [
+                    "Chatbot Queries"
+                ],
+                "summary": "Submit asked query and matches it",
+                "description": "Submit asked query and matches it in the resource",
+                "operationId": "askQuestion",
+                "parameters": [
+                    {
+                        "name": "x-initiator-key",
+                        "in": "header",
+                        "description": "Chat initiator unique token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "question"
+                                ],
+                                "properties": {
+                                    "question": {
+                                        "title": "question",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "question": "Is this a question?"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/close-chat": {
+            "get": {
+                "tags": [
+                    "Chatbot Queries"
+                ],
+                "summary": "Initimate Client and admin about the chat history",
+                "description": "Initimate Client and admin about the chat history by sending emails to them.",
+                "operationId": "sendChatHistoryEmail",
+                "parameters": [
+                    {
+                        "name": "x-initiator-key",
+                        "in": "header",
+                        "description": "Chat initiator unique token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
         "/upload-attachments": {
             "post": {
                 "tags": [
@@ -588,14 +754,54 @@
                 ]
             }
         },
-        "/media-library": {
+        "/media-libraries": {
+            "get": {
+                "tags": [
+                    "Media Library"
+                ],
+                "summary": "Get list of Media Libraries with featured image",
+                "description": "Returns Media Libraries with featured image",
+                "operationId": "mediaLibraryList",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/media-libraries/{slug}": {
             "get": {
                 "tags": [
                     "Media Library"
                 ],
                 "summary": "Get list of Media Library files",
                 "description": "Returns Media Library files",
-                "operationId": "getFiles",
+                "operationId": "mediaFiles",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Media Library slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success"
