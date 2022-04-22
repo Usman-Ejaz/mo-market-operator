@@ -16,6 +16,7 @@ class CreateMediaLibrariesTable extends Migration
         Schema::create('media_libraries', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique()->index();
+            $table->string('slug');
             $table->text('description')->nullable();
             $table->string('directory');
             $table->timestamps();

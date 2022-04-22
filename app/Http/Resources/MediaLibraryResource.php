@@ -22,6 +22,7 @@ class MediaLibraryResource extends JsonResource
         return [
             'title' => $mediaLibrary->name,
             'description' => $mediaLibrary->description,
+            'slug' => $mediaLibrary->slug,
             'image' => $filePath
         ];
     }

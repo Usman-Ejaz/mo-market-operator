@@ -14,10 +14,78 @@ use Illuminate\Support\Str;
 class ChatbotQueriesController extends BaseApiController
 {    
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 
+     * @OA\Tag(
+     *     name="Chatbot Queries",
+     *     description="API Endpoints of Chatbot Queries"
+     * )
+     * 
+     */ 
+
+     /**
+     * 
+     * @OA\Post(
+     *      path="/save-chat-initiator-details",
+     *      operationId="store",
+     *      tags={"Chatbot Queries"},
+     *      summary="save chat initiator details",
+     *      description="save chat initiator details in the resource",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      title="Name",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="email",
+     *                      title="email",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="phone",
+     *                      title="phone",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="company",
+     *                      title="company",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="send_chat_history",
+     *                      title="send_chat_history",
+     *                      type="string"
+     *                  ),     
+     *                  required={"name", "email", "phone", "send_chat_history"},
+     *                  example={
+     *                      "name": "John Doe", 
+     *                      "email": "johndoe@email.com",
+     *                      "phone": "03001234567", 
+     *                      "send_chat_history": "0",
+     *                  }
+     *             )
+     *         )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
      */
     public function store(Request $request)
     {
@@ -73,10 +141,56 @@ class ChatbotQueriesController extends BaseApiController
     }
     
     /**
-     * askQuestion
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * 
+     * @OA\Post(
+     *      path="/chatbot-query",
+     *      operationId="askQuestion",
+     *      tags={"Chatbot Queries"},
+     *      summary="Submit asked query and matches it",
+     *      description="Submit asked query and matches it in the resource",
+     *      security={{"BearerAppKey": {}}},
+     *      
+     *      @OA\Parameter(
+     *          name="x-initiator-key",
+     *          description="Chat initiator unique token",
+     *          required=true,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * 
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                      property="question",
+     *                      title="question",
+     *                      type="string"
+     *                  ),  
+     *                  required={"question"},
+     *                  example={
+     *                      "question": "Is this a question?",
+     *                  }
+     *             )
+     *         )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
      */
     public function askQuestion(Request $request)
     {
@@ -99,7 +213,7 @@ class ChatbotQueriesController extends BaseApiController
             foreach ($questions as $knowledgebase) {
                 similar_text(strtolower($request->question), strtolower($knowledgebase->question), $similarity_pst);
 
-                if (number_format($similarity_pst, 0) > 85) {
+                if (number_format($similarity_pst, 0) > 30) {
                     $chatbotAnswer = $knowledgebase;
                     break;
                 }
@@ -125,6 +239,40 @@ class ChatbotQueriesController extends BaseApiController
         }
     }
 
+    /**
+     * 
+     * @OA\Get(
+     *      path="/close-chat",
+     *      operationId="sendChatHistoryEmail",
+     *      tags={"Chatbot Queries"},
+     *      summary="Initimate Client and admin about the chat history",
+     *      description="Initimate Client and admin about the chat history by sending emails to them.",
+     *      security={{"BearerAppKey": {}}},
+     *      
+     *      @OA\Parameter(
+     *          name="x-initiator-key",
+     *          description="Chat initiator unique token",
+     *          required=true,
+     *          in="header",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
     public function sendChatHistoryEmail(Request $request)
     {
         $initiatorKey = $request->header('x-initiator-key');
