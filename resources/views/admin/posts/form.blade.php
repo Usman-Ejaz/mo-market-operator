@@ -36,7 +36,7 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group">
-				<label for="post_image" class="form-label">Post Image <small>(Allowed max size is 2MB. Allowed types are jpg, jpeg, png)</small></label>
+				<label for="post_image" class="form-label">Post Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
 				<input class="form-control" type="file" id="post_image" name="image">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if( isset($post->image) )
