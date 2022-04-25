@@ -66,9 +66,9 @@ if (!function_exists("removeFile")) {
     }
 }
 
-if (!function_exists('donwloadFile')) {
+if (!function_exists('downloadFile')) {
 
-    function donwloadFile($dir, $file)
+    function downloadFile($dir, $file)
     {
         $filename = basename($file);
         list($filename, $ext) = explode(".", $filename);

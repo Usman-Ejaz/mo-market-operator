@@ -14,12 +14,12 @@ class StaticBlockFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->userName;
+        $name = $this->faker->name();
         
         return [
             'name' => $name,
             'identifier' => Str::slug($name),
-            'contents' => $this->faker->sentence(10)
+            'contents' => $this->faker->realText(1000)
         ];
     }
 }

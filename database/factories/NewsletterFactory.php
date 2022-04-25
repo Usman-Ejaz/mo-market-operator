@@ -15,8 +15,8 @@ class NewsletterFactory extends Factory
     public function definition()
     {
         return [
-            'subject' => $this->faker->sentence,
-            'description' => $this->faker->paragraph(10),
+            'subject' => $this->faker->realText(50),
+            'description' => $this->faker->realText(500),
             'created_by' => User::all()->random()->id,
             'modified_by' => User::all()->random()->id,
         ];

@@ -16,8 +16,8 @@ class PermissionFactory extends Factory
     {
         return [
             'role_id' => Role::factory()->create()->id,
-            'name' => $this->faker->userName,
-            'capability' => $this->faker->userName,
+            'name' => $this->faker->name(),
+            'capability' => $this->faker->name(),
         ];
     }
 }

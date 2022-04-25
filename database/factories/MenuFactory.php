@@ -15,7 +15,7 @@ class MenuFactory extends Factory
     public function definition()
     {
         return [
-            'name' => implode(" ", $this->faker->words(2)),
+            'name' => $this->faker->name(),
             'theme' => $this->faker->randomKey(config('settings.themes')),
             'identifier' => Str::slug($this->faker->name()),
             'submenu_json' => null,
