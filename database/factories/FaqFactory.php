@@ -16,8 +16,8 @@ class FaqFactory extends Factory
     public function definition()
     {
         return [
-            'question' => $this->faker->paragraph(3),
-            'answer' => $this->faker->paragraph(8),
+            'question' => $this->faker->realText(50),
+            'answer' => $this->faker->realText(700),
             'created_by' => User::all()->random()->id,
             'modified_by' => User::all()->random()->id,
             'category_id' => FaqCategory::all()->random()->id,

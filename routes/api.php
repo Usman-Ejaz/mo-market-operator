@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\FaqApiController;
 use App\Http\Controllers\Api\MediaLibraryApiController;
 use App\Http\Controllers\Api\MenuApiController;
 use App\Http\Controllers\Api\NewsletterSubscriptionController;
+use App\Http\Controllers\Api\PagesApiController;
 use App\Http\Controllers\Api\PublishedPostApiController;
 use App\Http\Controllers\Api\RegisterApiController;
 use App\Http\Controllers\Api\SitemapApiController;
@@ -74,6 +75,8 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get('posts', [PublishedPostApiController::class, "listPosts"])->name('posts.list');
     Route::get('posts/{category}', [PublishedPostApiController::class, "getPostsByCategory"])->name('posts.list');
     Route::get('posts/{category}/{slug}', [PublishedPostApiController::class, "getSinglePost"])->name('posts.show');
+
+    Route::get('pages/{slug}', [PagesApiController::class, "show"])->name('pages.show');
 
     Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'store'])->name('chatbot.store-details');
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');

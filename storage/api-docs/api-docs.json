@@ -900,6 +900,43 @@
                 ]
             }
         },
+        "/pages/{slug}": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "summary": "Get Specific Page against slug",
+                "description": "Returns single Page",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Page slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
         "/news-and-blogs": {
             "get": {
                 "tags": [

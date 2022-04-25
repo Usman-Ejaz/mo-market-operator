@@ -22,7 +22,7 @@ class ClientAttachmentFactory extends Factory
         return [
             'client_id' => $client->id,
             'category_id' => $this->faker->randomElement([$categories[$randomCategory], null]),
-            'phrase' => $this->faker->paragraph(2),
+            'phrase' => $this->faker->realText(500),
             'file' => $this->faker->image(config('settings.storage_disk_base_path') . ClientAttachment::DIR, 640, 480, 'cats', false),
         ];
     }

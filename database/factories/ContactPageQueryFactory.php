@@ -15,10 +15,10 @@ class ContactPageQueryFactory extends Factory
     public function definition()
     {
         return [
-            "name" => $this->faker->name,
-            "email" => $this->faker->email,
-            "subject" => $this->faker->sentence(10),
-            "message" => $this->faker->sentence(100),
+            "name" => $this->faker->name(),
+            "email" => $this->faker->safeEmail(),
+            "subject" => $this->faker->realText(40),
+            "message" => $this->faker->realText(700),
             "status" => $this->faker->randomElement(ContactPageQuery::STATUS_ENUMS),
             "comments" => null,
         ];

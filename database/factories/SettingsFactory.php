@@ -14,8 +14,8 @@ class SettingsFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->userName,
-            'value' => $this->faker->userName
+            'name' => $this->faker->name(),
+            'value' => $this->faker->name()
         ];
     }
 }

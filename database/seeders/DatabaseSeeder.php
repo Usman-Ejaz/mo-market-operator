@@ -88,6 +88,8 @@ class DatabaseSeeder extends Seeder
         // Create Posts
         Post::factory(30)->create();
 
+        $this->mapPostImages();
+
         DocumentCategory::factory(10)->create();
 
         //Create Documents
@@ -397,5 +399,25 @@ class DatabaseSeeder extends Seeder
             'featured' => 1,
             'media_library_id' => $mediaLibrary->id,
         ]);
+    }
+
+    private function mapPostImages()
+    {
+        $basePath = config('settings.storage_disk_base_path') . Post::STORAGE_DIRECTORY;
+
+        $posts = Post::all();
+
+        foreach ($posts as $post) {
+            $counter = random_int(1, 5);
+            $filename = 'post' . $counter . '.png';
+            $randomString = Str::random(20) . '.png';
+            copy(public_path('posts_images/' . $filename), $basePath . '/' . $randomString);
+
+            removeFile(Post::STORAGE_DIRECTORY, $post->image);
+
+            $post->update(['image' => $randomString]);
+        }
+
+        
     }
 }

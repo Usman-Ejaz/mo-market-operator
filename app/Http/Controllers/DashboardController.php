@@ -34,6 +34,6 @@ class DashboardController extends Controller
 
     public function downloadAttachment($module, $file)
     {
-        return donwloadFile($module, $file);
+        return downloadFile($module, $file);
     }
 }
