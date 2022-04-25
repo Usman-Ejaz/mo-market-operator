@@ -82,7 +82,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="image">Job Image <small>(Max allowed size is 2MB. Allowed types are jpg, jpeg, png, ico, bmp, pdf)</small> </label>
+                <label for="image[]">Job Image <small>(Max allowed size is 2MB. Allowed types are jpg, jpeg, png, ico, bmp, pdf)</small> </label>
                 <input type="file" class="form-control" id="image[]" name="image[]" multiple>
                 <span class="form-text text-danger">{{ $errors->first('image') }} </span>
                 @if(isset($job->image_path) && count($job->image_path) > 0)
