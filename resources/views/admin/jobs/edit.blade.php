@@ -62,7 +62,7 @@
 
 					<input type="hidden" name="active" id="status">
 					<input type="hidden" name="action" id="action">
-					<input type="hidden" name="remove-file" id="remove-file">
+					<input type="hidden" name="removeFile" id="removeFile">
 
 					@if($job->isPublished())
 						<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
@@ -171,25 +171,15 @@
 			$('#action').val("Unpublished");
 		});
 
-
+		let images = [];
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-		$("#deleteImage").click(function() {
+		$(".remove-file").on('click', function() {
+			let { file } = $(this).data();
+
 			if (confirm('Are you sure you want to this image?')) {
-				$.ajax({
-					url: "{{ route('admin.jobs.deleteImage') }}",
-					type: 'POST',
-					data: {
-						_token: "{{ csrf_token() }}",
-						job_id: "{{$job->id}}"
-					},
-					dataType: 'JSON',
-					success: function(data) {
-						if (data.success) {
-							alert('Image Deleted Successfully');
-							$('.imageExists').remove();
-						}
-					}
-				});
+				images.push(file);
+				$(this).parent().remove();
+				$("#removeFile").val(`${images.toString()}`);
 			}
 		});
 

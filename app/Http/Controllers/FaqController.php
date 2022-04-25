@@ -133,6 +133,9 @@ class FaqController extends Controller
                 ->addColumn('category', function ($row) {
                     return truncateWords($row->category->name, 30);
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->isPublished() ? 'Published' : 'Draft';
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

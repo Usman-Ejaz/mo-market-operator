@@ -278,7 +278,7 @@ class DocumentController extends Controller
         {
             $oldFiles = explode(",", $oldFiles);
             foreach ($oldFiles as $file) {
-                serveFile(Document::STORAGE_DIRECTORY, $file);
+                removeFile(Document::STORAGE_DIRECTORY, $file);
             }
 
             $uploadedFiles = $request->file('file');

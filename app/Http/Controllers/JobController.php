@@ -117,8 +117,10 @@ class JobController extends Controller
         $data['slug'] = Str::slug($data['title']);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
+
+        $data['image'] = $this->handleFileUpload($job, $request);
+
         $job->update($data);
-        $this->storeImage($job, $previousImage);
 
         if ($request->action === "Unpublished") {
             $job->published_at = null;
@@ -340,11 +342,44 @@ class JobController extends Controller
         ]);
     }
 
+    private function handleFileUpload($job, $request)
+    {
+        $oldFiles = implode(",", $job->image);
+        $filenames = "";
 
-    private function storeImage($job, $oldFile = null) {
-        if (request()->hasFile('image')) {
-            $job->update(['image' => storeFile(Job::STORAGE_DIRECTORY, request()->file('image'), $oldFile)]);
+        if ($request->get('removeFile') !== null)
+        {
+            $removedFiles = explode(",", $request->get('removeFile'));
+            foreach ($removedFiles as $file) {
+                removeFile(Job::STORAGE_DIRECTORY, $file);
+                $oldFiles = str_replace($file, "", $oldFiles);
+                $oldFiles = str_replace(",,", ",", $oldFiles);
+                $oldFiles = trim($oldFiles, ",");
+            }
         }
+
+        if ($request->hasFile('image'))
+        {
+            $oldFiles = explode(",", $oldFiles);
+            foreach ($oldFiles as $file) {
+                removeFile(Job::STORAGE_DIRECTORY, $file);
+            }
+
+            $uploadedFiles = $request->file('image');
+
+            if (count($uploadedFiles) > 0) {
+                foreach ($uploadedFiles as $file) {
+                    $filename = storeFile(Job::STORAGE_DIRECTORY, $file);
+                    $filenames .= $filename . ",";
+                }
+
+                $filenames = trim($filenames, ",");
+            }
+        } else {
+            $filenames = trim($oldFiles, ",");
+        }
+
+        return $filenames;
     }
 
     public function deleteImage(Request $request) {
