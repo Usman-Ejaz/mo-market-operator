@@ -100,7 +100,7 @@
 				@if( hasPermission('media_library', 'list') )
 				<li class="nav-item">
 					<a href="{{ route('admin.media-library.index') }}" class="nav-link {{ Request()->is('admin/media-library*') ? 'active' : '' }}">
-						<i class="nav-icon fa fa-images"></i>
+						<i class="nav-icon fa fa-photo-video"></i>
 						<p>
 							{{ __("Media Library") }}
 						</p>

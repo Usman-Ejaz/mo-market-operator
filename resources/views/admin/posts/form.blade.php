@@ -36,6 +36,16 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group">
+				<label for="post_image" class="form-label">Post Image <small>(Allowed max size is 2MB. Allowed types are jpg, jpeg, png)</small></label>
+				<input class="form-control" type="file" id="post_image" name="image">
+				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
+				@if( isset($post->image) )
+				<small class="text-primary imageExists"><a href="{{ $post->image }}" target="_blank"><img src="{{ $post->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
+				@endif
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
 				<label>Category <span class="text-danger">*</span></label>
 				<select class="custom-select" name="post_category" id="post_category">
 					<option value="">Please select an option</option>
@@ -49,17 +59,7 @@
 				</select>
 				<span class="form-text text-danger">{{ $errors->first('post_category') }} </span>
 			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="form-group">
-				<label for="post_image" class="form-label">Post Image <small>(Allowed max size is 2MB. Allowed types are jpg, jpeg, png)</small></label>
-				<input class="form-control" type="file" id="post_image" name="image">
-				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
-				@if( isset($post->image) )
-				<small class="text-primary imageExists"><a href="{{ $post->image }}" target="_blank"><img src="{{ $post->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
-				@endif
-			</div>
-		</div>
+		</div>		
 	</div>
 
 </div>

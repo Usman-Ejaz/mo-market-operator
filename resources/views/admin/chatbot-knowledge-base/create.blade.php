@@ -131,6 +131,19 @@
 				}
 			}
 		});
+
+		$('.bootstrap-tagsinput > input').on('blur keypress', function (e) {
+			if ((e.which === 13 && $(this).val().trim().length > 0) || document.getElementsByClassName('label-info').length > 0) {
+				$(this).attr('placeholder', '');
+				return;
+			}
+
+			$(this).attr('placeholder', '{{ __("Enter Keywords") }}');
+		});
+
+		if (document.getElementsByClassName('label-info').length > 0) {
+			$('.bootstrap-tagsinput > input').attr('placeholder', '');
+		}
 	});
 </script>
 
