@@ -26,7 +26,7 @@ class ChatbotQueriesController extends BaseApiController
      * 
      * @OA\Post(
      *      path="/save-chat-initiator-details",
-     *      operationId="store",
+     *      operationId="storeInitiatorDetails",
      *      tags={"Chatbot Queries"},
      *      summary="save chat initiator details",
      *      description="save chat initiator details in the resource",
@@ -87,7 +87,7 @@ class ChatbotQueriesController extends BaseApiController
      *      )
      *  )
      */
-    public function store(Request $request)
+    public function storeInitiatorDetails(Request $request)
     {
         $validator = Validator::make($request->all(), $this->getRules(), $this->getMessages());
 

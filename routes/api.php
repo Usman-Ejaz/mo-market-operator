@@ -44,9 +44,9 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
 });
 
 Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
-    Route::post("submit-query", [ContactFormQueryController::class, "store"])->name("contact-form-query.store");
+    Route::post("submit-query", [ContactFormQueryController::class, "submit"])->name("contact-form-query.submit");
     Route::post("subscribe-to-newsletter", [NewsletterSubscriptionController::class, "subscribe"])->name("newsletters.subscribe");
-    Route::get("faqs", [FaqApiController::class, "show"])->name("faqs.show");
+    Route::get("faqs", [FaqApiController::class, "showFaqs"])->name("faqs.showFaqs");
 
     Route::get("news-and-blogs", [PublishedPostApiController::class, "getPublishedPosts"])->name("posts.published");
     // Route::get("news-and-blogs/{slug}", [PublishedPostApiController::class, "getSinglePost"])->name("posts.show");
@@ -76,9 +76,9 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get('posts/{category}', [PublishedPostApiController::class, "getPostsByCategory"])->name('posts.list');
     Route::get('posts/{category}/{slug}', [PublishedPostApiController::class, "getSinglePost"])->name('posts.show');
 
-    Route::get('pages/{slug}', [PagesApiController::class, "show"])->name('pages.show');
+    Route::get('pages/{slug}', [PagesApiController::class, "showPage"])->name('pages.showPage');
 
-    Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'store'])->name('chatbot.store-details');
+    Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'storeInitiatorDetails'])->name('chatbot.store-details');
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');
     Route::get('close-chat', [ChatbotQueriesController::class, 'sendChatHistoryEmail'])->name('chatbot.send-emails');
 
