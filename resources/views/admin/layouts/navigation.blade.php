@@ -110,7 +110,7 @@
 
 				@if( hasPermission('slider_images', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.slider-images.index') }}" class="nav-link {{ Request()->is('admin/slider-images*') ? 'active' : '' }}">
+					<a href="{{ route('admin.slider-images.index') }}" class="nav-link {{ (Request()->is('admin/slider-images*') || Request()->is('admin/slider-settings*'))? 'active' : '' }}">
 						<i class="nav-icon fa fa-images"></i>
 						<p>
 							{{ __("Slider Images") }}
