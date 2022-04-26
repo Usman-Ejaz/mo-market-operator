@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="name">Speed <span class="text-danger">*</span></label>
+                <label for="name">Speed <span class="text-danger">*</span> <small> (Speed range 1000 - 10,000)</small></label>
                 <input type="text" class="form-control" id="speed" placeholder="Enter Speed" name="speed" value="{{ old('speed') ?? $sliderSetting->speed }}">
                 <span class="form-text text-danger">{{ $errors->first('speed') }} </span>
             </div>
