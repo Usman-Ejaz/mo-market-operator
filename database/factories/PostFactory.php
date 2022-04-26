@@ -21,7 +21,7 @@ class PostFactory extends Factory
         return [
             'title' => $title,
             'slug' => $slug,
-            'description' => $this->faker->realText(1000),
+            'description' => '<p>' . $this->faker->realText(1000) . '</p>',
             'keywords' => implode( ",", $this->faker->randomElements(['pakistan', 'international', 'sports', 'finance', 'entertainment'], 2) ),
             'image' => $this->faker->image( 'storage/app/' . config('filepaths.postImagePath.internal_path'), 640, 480, 'cats', false),
             'start_datetime' => null,
