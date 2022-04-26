@@ -34,10 +34,6 @@
 	</div>
 	<!-- /.row -->
 </div>
-<!-- /.container-fluid -->
-</div>
-
-
 @endsection
 
 @push('optional-styles')
@@ -55,6 +51,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
+			order: [[2, 'desc']],
 			ajax: "{{ route('admin.document-categories.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {

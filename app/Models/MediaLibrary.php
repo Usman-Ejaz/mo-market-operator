@@ -13,15 +13,21 @@ class MediaLibrary extends Model
     const MEDIA_STORAGE = 'medias/';
 
     protected $guarded = [];
+
+
+    public function mediaFiles()
+    {
+        return $this->hasMany(MediaLibraryFile::class, 'media_library_id', 'id');
+    }
     
     /**
      * files
      *
-     * @return
+     * @return mixed
      */
     public function files()
     {
-        $mediaFiles = $this->hasMany(MediaLibraryFile::class, 'media_library_id', 'id')->get();
+        $mediaFiles = $this->mediaFiles()->select( "file", "featured")->get();
 
         foreach ($mediaFiles as $media) {
             $media->file = serveFile(self::MEDIA_STORAGE . $this->directory . '/', $media->file);

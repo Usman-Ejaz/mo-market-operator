@@ -11,8 +11,12 @@ return [
         'theme3' => 'Theme 3'
     ],
     "createPassowrdLinkExpiryTime" => 30, // in mins
-
-    // Size in MBs.
+    
     "maxImageSize" => 2000,     // 2 MB
-    "maxDocumentSize" => 5000   // 5 MB
+    "maxDocumentSize" => 5000,   // 5 MB
+    "image_file_extensions" => "jpg|jpeg|png|ico|bmp",
+
+    "storage_disk_base_path" => config('filesystems.disks.app.root') . '/',
+
+    "google_credentials" => storage_path('app/ismo-346411-3bcba68c89a3.json'),
 ];

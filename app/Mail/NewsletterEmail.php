@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Newsletter;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,7 +19,7 @@ class NewsletterEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($newsletter)
+    public function __construct(Newsletter $newsletter)
     {
         $this->newsletter = $newsletter;
     }

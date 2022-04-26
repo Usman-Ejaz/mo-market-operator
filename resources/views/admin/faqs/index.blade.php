@@ -24,6 +24,7 @@
 						<th>Id</th>
 						<th>Question</th>
 						<th>Category</th>
+						<th>Status</th>
 						<th>Created date</th>
 						<th>Action</th>
 					</tr>
@@ -37,10 +38,6 @@
 	</div>
 	<!-- /.row -->
 </div>
-<!-- /.container-fluid -->
-</div>
-
-
 @endsection
 
 @push('optional-styles')
@@ -58,6 +55,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
+			order: [[4, 'desc']],
 			ajax: "{{ route('admin.faqs.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
@@ -79,6 +77,10 @@
 				{
 					data: 'category',
 					name: 'category'
+				},
+				{
+					data: 'status',
+					name: 'status'
 				},
 				{
 					data: 'created_at',

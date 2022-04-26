@@ -53,6 +53,13 @@ class ContactPageQueryController extends Controller
     {
         abort_if(!hasPermission("contact_page_queries", "view"), 401, __('messages.unauthorized_action'));
 
+        if (request()->query('notification')) {
+            $notification = auth()->user()->notifications()->where('id', '=', request()->query('notification'))->first();
+            if ($notification) {
+                $notification->markAsRead();
+            }
+        }
+
         return view("admin.contact-page-queries.show", compact('contactPageQuery'));
     }
 
@@ -134,7 +141,7 @@ class ContactPageQueryController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
+                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

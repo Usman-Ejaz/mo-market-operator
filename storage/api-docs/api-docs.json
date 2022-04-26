@@ -4,7 +4,7 @@
         "title": "ISMO API Documentation",
         "description": "Ismo Api documentation description",
         "contact": {
-            "email": "usman.ejaz@nxb.com.pk"
+            "email": "contact@nxb.com.pk"
         },
         "license": {
             "name": "Apache 2.0",
@@ -19,7 +19,7 @@
         }
     ],
     "paths": {
-        "/get-jobs": {
+        "/jobs": {
             "get": {
                 "tags": [
                     "Jobs & Job Applications"
@@ -45,7 +45,7 @@
                 ]
             }
         },
-        "/show-job/{slug}": {
+        "/job/{slug}": {
             "get": {
                 "tags": [
                     "Jobs & Job Applications"
@@ -170,6 +170,172 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/save-chat-initiator-details": {
+            "post": {
+                "tags": [
+                    "Chatbot Queries"
+                ],
+                "summary": "save chat initiator details",
+                "description": "save chat initiator details in the resource",
+                "operationId": "store",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone",
+                                    "send_chat_history"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "title": "Name",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "title": "email",
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "title": "phone",
+                                        "type": "string"
+                                    },
+                                    "company": {
+                                        "title": "company",
+                                        "type": "string"
+                                    },
+                                    "send_chat_history": {
+                                        "title": "send_chat_history",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "John Doe",
+                                    "email": "johndoe@email.com",
+                                    "phone": "03001234567",
+                                    "send_chat_history": "0"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/chatbot-query": {
+            "post": {
+                "tags": [
+                    "Chatbot Queries"
+                ],
+                "summary": "Submit asked query and matches it",
+                "description": "Submit asked query and matches it in the resource",
+                "operationId": "askQuestion",
+                "parameters": [
+                    {
+                        "name": "x-initiator-key",
+                        "in": "header",
+                        "description": "Chat initiator unique token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "question"
+                                ],
+                                "properties": {
+                                    "question": {
+                                        "title": "question",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "question": "Is this a question?"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/close-chat": {
+            "get": {
+                "tags": [
+                    "Chatbot Queries"
+                ],
+                "summary": "Initimate Client and admin about the chat history",
+                "description": "Initimate Client and admin about the chat history by sending emails to them.",
+                "operationId": "sendChatHistoryEmail",
+                "parameters": [
+                    {
+                        "name": "x-initiator-key",
+                        "in": "header",
+                        "description": "Chat initiator unique token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
@@ -493,7 +659,7 @@
                 ]
             }
         },
-        "/get-documents": {
+        "/documents": {
             "get": {
                 "tags": [
                     "Documents"
@@ -588,6 +754,104 @@
                 ]
             }
         },
+        "/media-libraries": {
+            "get": {
+                "tags": [
+                    "Media Library"
+                ],
+                "summary": "Get list of Media Libraries with featured image",
+                "description": "Returns Media Libraries with featured image",
+                "operationId": "mediaLibraryList",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/media-libraries/{slug}": {
+            "get": {
+                "tags": [
+                    "Media Library"
+                ],
+                "summary": "Get list of Media Library files",
+                "description": "Returns Media Library files",
+                "operationId": "mediaFiles",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Media Library slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/menus": {
+            "get": {
+                "tags": [
+                    "Menus"
+                ],
+                "summary": "Get list of Menus by active theme",
+                "description": "Returns Menus by active theme",
+                "operationId": "getMenus",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
         "/subscribe-to-newsletter": {
             "post": {
                 "tags": [
@@ -602,14 +866,9 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
                                     "email"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "title": "name",
-                                        "type": "string"
-                                    },
                                     "email": {
                                         "title": "email",
                                         "type": "string"
@@ -617,7 +876,6 @@
                                 },
                                 "type": "object",
                                 "example": {
-                                    "name": "John Doe",
                                     "email": "johndoe@email.com"
                                 }
                             }
@@ -642,7 +900,44 @@
                 ]
             }
         },
-        "/get-posts": {
+        "/pages/{slug}": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "summary": "Get Specific Page against slug",
+                "description": "Returns single Page",
+                "operationId": "show",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Page slug",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/news-and-blogs": {
             "get": {
                 "tags": [
                     "Posts"
@@ -671,7 +966,99 @@
                 ]
             }
         },
-        "/show-post/{slug}": {
+        "/announcements": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get list of Published Announcements",
+                "description": "Returns list of Announcements",
+                "operationId": "getPublishedAnnouncements",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/post-menu": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get post categories menu list",
+                "description": "Get post categories menu list",
+                "operationId": "postMenus",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/posts/{category}": {
+            "get": {
+                "tags": [
+                    "Posts"
+                ],
+                "summary": "Get post categories menu list",
+                "description": "Get post categories menu list",
+                "operationId": "getPostsByCategory",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Post category listed in post menu",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "402": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/posts/{category}/{slug}": {
             "get": {
                 "tags": [
                     "Posts"
@@ -680,6 +1067,15 @@
                 "description": "Returns single Post",
                 "operationId": "getSinglePost",
                 "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Post category",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "slug",
                         "in": "path",
@@ -769,6 +1165,64 @@
                 "summary": "Get list of Published Pages",
                 "description": "Returns list of Pages",
                 "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/slider-images": {
+            "get": {
+                "tags": [
+                    "Slider Images"
+                ],
+                "summary": "Get list of Slider Images",
+                "description": "Returns Slider Images",
+                "operationId": "getSliderImages",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Could not found"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerAppKey": []
+                    }
+                ]
+            }
+        },
+        "/static-blocks": {
+            "get": {
+                "tags": [
+                    "Static Blocks"
+                ],
+                "summary": "Get list of Static Blocks",
+                "description": "Returns Static Blocks",
+                "operationId": "show",
                 "responses": {
                     "200": {
                         "description": "Success"

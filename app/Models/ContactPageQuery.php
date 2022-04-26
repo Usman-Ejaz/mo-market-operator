@@ -12,6 +12,8 @@ class ContactPageQuery extends Model
 
     protected $guarded = [];
 
+    const STATUS_ENUMS = ["pending", "inprocess", "resolved"];
+
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }    

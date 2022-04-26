@@ -47,7 +47,7 @@ class FaqApiController extends BaseApiController
     public function show()
     {
         try {
-            $faqs = Faq::published()->latest()->get();
+            $faqs = Faq::published()->oldest()->get();
         
             if ($faqs->count() > 0) {
                 return $this->sendResponse($faqs, "Found");
@@ -56,6 +56,6 @@ class FaqApiController extends BaseApiController
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
-        }        
+        }
     }
 }

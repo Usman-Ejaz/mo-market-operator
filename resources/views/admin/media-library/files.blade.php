@@ -40,42 +40,13 @@
 	</div>	
 </div>
 
-<div class="modal fade" id="imageEditorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
-		<div class="modal-content" style="height: 100vh;">
-			<div class="modal-header">
-				<button type="button" class="close editor-modal">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-8">
-						<img src="" alt="" id="cropper-image">
-					</div>
-					<div class="col-md-4">
-						<div class="image-preview">
-
-						</div>
-					</div>
-				</div>
-				<canvas id="canvas"> Your browser does not support the HTML5 canvas element. </canvas>
-			</div>
-			<div class="modal-footer">
-				{{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-				<button type="submit" class="btn btn-primary" id="saveFinalImage">Save changes</button>
-			</div>
-		</div>
-	</div>
-</div>
-
 <div class="modal fade" id="imageViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<form action="" method="POST" id="create-submenus-form" onsubmit="return false;">
 				<div class="modal-header bg-primary">
 					<h5 class="modal-title" id="exampleModalLabel">Edit Image</h5>
-					<button type="button" class="close editor-modal" data-dismiss="modal">
+					<button type="button" class="close editor-modal-close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
@@ -133,18 +104,18 @@
 												<span class="dropdown-item" data-value="80">80%</span>
 												<span class="dropdown-item" data-value="90">90%</span>
 												<span class="dropdown-item" data-value="100">100%</span>
-												<span class="dropdown-item" data-value="0">None</span>
+												<span class="dropdown-item" data-value="100">None</span>
 											</div>
 										</div>
 										<div class="btn-group mt-2">
 											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="crop" title="Crop">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.crop()">
-													Crop
+													Cropper
 												</span>
 											</button>
 											<button type="button" class="btn btn-primary btn-sm cropper-action-button" data-method="clear" title="Clear">
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.clear()">
-													Clear
+													Clear Cropper
 												</span>
 											</button>
 										</div>
@@ -152,7 +123,7 @@
 											<span class="input-group-prepend">
 												<label class="input-group-text" for="dataWidth">Width</label>
 											</span>
-											<input type="text" class="form-control crop-box-ratio" id="dataWidth" placeholder="width">
+											<input type="number" class="form-control crop-box-ratio" id="dataWidth" placeholder="width">
 											<span class="input-group-append">
 												<span class="input-group-text">px</span>
 											</span>
@@ -161,10 +132,17 @@
 											<span class="input-group-prepend">
 												<label class="input-group-text" for="dataHeight">Height</label>
 											</span>
-											<input type="text" class="form-control crop-box-ratio" id="dataHeight" placeholder="Height">
+											<input type="number" class="form-control crop-box-ratio" id="dataHeight" placeholder="Height">
 											<span class="input-group-append">
 												<span class="input-group-text">px</span>
 											</span>
+										</div>
+										<div class="form-group mt-4">
+											{{-- <div class="row">
+												<input type="checkbox" name="keepAspectRatio" id="keepAspectRatio" style="margin: 3px 5px 0px 10px;" checked />
+												<label for="keepAspectRatio" class="" style="font-size: 14px; font-weight: unset;">Keep Aspect Ratio</label>
+											</div> --}}
+											<input type="range" class="custom-range custom-range-primary" min="1" max="100" value="100">
 										</div>
 									</div>
 								</div>
@@ -175,7 +153,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" id="customizeImage">Customize Image</button>
-					<button type="button" class="btn btn-secondary editor-modal" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-secondary editor-modal-close" data-dismiss="modal">Close</button>
 					<button type="submit" class="btn btn-primary" id="saveImageInfo">Save changes</button>
 				</div>
 			</form>
@@ -214,7 +192,7 @@
 		overflow: hidden;
 		background: #f6f8f9;
 		display: flex;
-		width: 20%;
+		/* width: 20%; */
 	}
 
 	.folder-container:hover {
@@ -252,9 +230,29 @@
 		transform: none;
 	}
 
-	.image-aspact-ratio {
-		object-fit: contain;
+	.folder-icon {
+		/* display: flex; */
+		/* margin: auto; */
+		width: 100%;
+	}
+
+	.image-aspact-ratio {		
+		/* object-fit: contain; */
 		height: 150px;
+	}
+
+	.btn-container {
+    	text-align: center;
+	}
+
+	.featured {
+		border: 2px solid #4da7e8;
+		box-shadow: 5px 5px #d2d6d3;
+	}
+
+	.dropdown-menu span {
+		cursor: pointer;
+		margin: 2px 0px;
 	}
 </style>
 @endpush

@@ -107,8 +107,8 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date').val(mapDate(dp));
-				let endDate = $("#end_datetime").val();
-				if (endDate.trim().length > 0 && $input.val() >= endDate) {
+				let endDate = new Date($("#end_date").val());
+				if (dp >= endDate) {
 					$input.val("");
 					$input.parent().next().text("Start Date cannot be less than end date");
 				} else {
@@ -130,8 +130,8 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#end_date').val(mapDate(dp));
-				let startDate = $("#start_datetime").val();
-				if (startDate.trim().length > 0 && $input.val() <= startDate) {
+				let startDate = new Date($("#start_date").val());
+				if (dp <= startDate) {
 					$input.val("");
 					$input.parent().next().text("{{ __('messages.min_date') }}");
 				} else {
@@ -164,6 +164,13 @@
 			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
 			return messageLength !== 0;
 		}, '{{ __("messages.ckeditor_required") }}');
+
+		$.validator.addMethod('extension', function (value, element, param) {
+			let files = Array.from(element.files);
+			param = param.split('|');
+			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
+			return this.optional(element) || invalidFiles.length === 0;
+		}, '');
 
 		$('#create-job-form').validate({
 			errorElement: 'span',
@@ -202,8 +209,16 @@
 					min: 1,
 					maxlength: 4
 				},
-				image: {
-					extension: "jpg|jpeg|png|ico|bmp"
+				specialization: {
+					required: true,
+					minlength: 5,
+					notNumericValues: true,
+				},
+				salary: {
+					number: true,
+				},
+				'image[]': {
+					extension: "{{ config('settings.image_file_extensions') }}|pdf"
 				},
 				enable: {
 					required: false,
@@ -225,7 +240,7 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				image: '{{ __("messages.valid_file_extension") }}',
+				'image[]': '{{ __("messages.valid_file_extension") }}',
 				title: {
 					required: "This field is required.",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",

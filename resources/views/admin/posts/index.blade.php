@@ -1,82 +1,104 @@
 @extends('admin.layouts.app')
 @section('header', 'Posts')
 @section('breadcrumbs')
-  <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-  <li class="breadcrumb-item active">Posts</li>
+<li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+<li class="breadcrumb-item active">Posts</li>
 @endsection
 
 @section('addButton')
-    @if( hasPermission('posts', 'create') )
-        <a class="btn btn-primary float-right" href="{{ route('admin.posts.create') }}">Add Post</a>
-    @endif
+@if( hasPermission('posts', 'create') )
+<a class="btn btn-primary float-right" href="{{ route('admin.posts.create') }}">Add Post</a>
+@endif
 @endsection
 
 @section('content')
-  <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
 
-              <table class="table table-bordered yajra-datatable">
-                  <thead>
-                      <tr>
-                          <th>Id</th>
-                          <th>Title</th>
-                          <th>Slug</th>
-                          <th>Category</th>
-                          <th>Keywords</th>
-                          <th>Created date</th>
-                          <th>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-              </table>
+            <table class="table table-bordered yajra-datatable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        {{-- <th>Slug</th> --}}
+                        <th>Category</th>
+                        <th>Keywords</th>
+                        <th>Status</th>
+                        <th>Created date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
 
-              <br/>
-            </div>
-          </div>
-          <!-- /.row -->
+            <br />
         </div>
-        <!-- /.container-fluid -->
     </div>
-
-
+    <!-- /.row -->
+</div>
 @endsection
 
 @push('optional-styles')
-    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 @endpush
 
 @push('optional-scripts')
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 
-    <script type="text/javascript">
-      $(function () {
+<script type="text/javascript">
+    $(function () {
 
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
             pageLength: 25,
+            order: [[5, 'desc']],
             ajax: "{{ route('admin.posts.list') }}",
             fnDrawCallback: function () {
-              if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
-                const searchedRecods = this.fnSettings()._iRecordsDisplay;
-                const totalRecords = this.fnSettings()._iRecordsTotal;
-                $('.dataTables_info').text(`Showing ${searchedRecods} to ${searchedRecods} of ${searchedRecods} entry ${"("}filtered from ${totalRecords} total entries${")"}`);
-              } else {
-                $('.dataTables_info').show();
-              }
+                if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()
+                    ._iRecordsDisplay === 1) {
+                    const searchedRecods = this.fnSettings()._iRecordsDisplay;
+                    const totalRecords = this.fnSettings()._iRecordsTotal;
+                    $('.dataTables_info').text(
+                        `Showing ${searchedRecods} to ${searchedRecods} of ${searchedRecods} entry ${"("}filtered from ${totalRecords} total entries${")"}`
+                        );
+                } else {
+                    $('.dataTables_info').show();
+                }
             },
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'title', name: 'title'},
-                {data: 'slug', name: 'slug'},
-                {data: 'post_category', name: 'post_category'},
-                {data: 'keywords', name: 'keywords'},
-                {data: 'created_at', name: 'created_at'},
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'title',
+                    name: 'title'
+                },
+                // {
+                //     data: 'slug',
+                //     name: 'slug'
+                // },
+                {
+                    data: 'post_category',
+                    name: 'post_category'
+                },
+                {
+                    data: 'keywords',
+                    name: 'keywords'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
                 {
                     data: 'action',
                     name: 'action',
@@ -86,6 +108,7 @@
             ]
         });
 
-      });
-    </script>
+    });
+
+</script>
 @endpush

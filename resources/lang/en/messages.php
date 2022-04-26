@@ -20,6 +20,7 @@ return [
     "unique" => ":attribute already exist.",
     "required" => "This field is required.",
     "max_file" => "The file is too large. Allowed max size is :limit.",
+    "record_delete" => "Are you sure you want to delete this record?",
     
     
     /*
@@ -29,9 +30,9 @@ return [
     |
     */
 
-    "success" => "",
-    "error" => "",
-    "not_found" => "",
-    "something_wrong" => "Something went wrong.",
+    "success" => "Success",
+    "error" => "Error",
+    "data_not_found" => "Data not found",
+    "something_wrong" => "Something went wrong",
     "unauthorized_action" => "Unauthorized Action"
 ];

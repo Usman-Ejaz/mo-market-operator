@@ -67,6 +67,12 @@
 				},
 				active: {
 					required: true,
+				},
+				identifier: {
+					required: true,
+					maxlength: 64,
+					minlength: 3,
+					notNumericValues: true
 				}
 			},
 			messages: {

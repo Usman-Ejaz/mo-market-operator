@@ -221,4 +221,14 @@ return [
             "manage_files" => "Manage Files"
         ]
     ],
+    [
+        "name" => "slider_images",
+        "display_name" => "Slider Images",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+        ]
+    ],
 ];

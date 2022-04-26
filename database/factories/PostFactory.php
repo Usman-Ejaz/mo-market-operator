@@ -15,13 +15,13 @@ class PostFactory extends Factory
      */
     public function definition()
     {
-        $title = $this->faker->sentence;
+        $title = $this->faker->realText(50);
         $slug = Str::slug($title);
 
         return [
             'title' => $title,
             'slug' => $slug,
-            'description' => $this->faker->paragraph(10),
+            'description' => $this->faker->realText(1000),
             'keywords' => implode( ",", $this->faker->randomElements(['pakistan', 'international', 'sports', 'finance', 'entertainment'], 2) ),
             'image' => $this->faker->image( 'storage/app/' . config('filepaths.postImagePath.internal_path'), 640, 480, 'cats', false),
             'start_datetime' => null,

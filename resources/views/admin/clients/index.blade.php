@@ -9,15 +9,6 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-
-			<div class="flash-message">
-				@foreach (['danger', 'warning', 'success', 'info'] as $msg)
-				@if(Session::has('alert-' . $msg))
-				<p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-				@endif
-				@endforeach
-			</div>
-
 			<table class="table table-bordered yajra-datatable">
 				<thead>
 					<tr>
@@ -39,10 +30,6 @@
 	</div>
 	<!-- /.row -->
 </div>
-<!-- /.container-fluid -->
-</div>
-
-
 @endsection
 
 @push('optional-styles')
@@ -62,6 +49,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
+			order: [[5, 'desc']],
 			ajax: "{{ route('admin.clients.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {

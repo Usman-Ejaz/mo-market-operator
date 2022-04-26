@@ -1,16 +1,16 @@
 @extends('admin.layouts.app')
-@section('header', 'Contact Page Query')
+@section('header', 'View Query')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.contact-page-queries.index') }}">Contact Page Queries</a></li>
-<li class="breadcrumb-item active">View</li>
+<li class="breadcrumb-item active">View Query</li>
 @endsection
 @section('addButton')
 @if(hasPermission('contact_page_queries', 'delete'))
 <form method="POST" action="{{ route('admin.contact-page-queries.destroy', $contactPageQuery->id) }}" class="float-right">
 	@method('DELETE')
 	@csrf
-	<button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?')">Delete</button>
+	<button class="btn btn-danger" onclick="return confirm('{{ __('messages.record_delete') }}')">Delete</button>
 </form>
 @endif
 @endsection

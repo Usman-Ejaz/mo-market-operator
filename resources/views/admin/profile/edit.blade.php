@@ -72,7 +72,7 @@
 					number: true
 				},
 				image: {
-					extension: "jpg|jpeg|png"
+					extension: "{{ config('settings.image_file_extensions') }}"
 				},
 				active: {
 					required: true,
@@ -97,7 +97,7 @@
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$("#deleteImage").click(function() {
 
-			if (confirm('Are you sure you want to this image?')) {
+			if (confirm('Are you sure you want to delete this image?')) {
 				$.ajax({
 					url: "{{ route('admin.profile.deleteImage') }}",
 					type: 'POST',

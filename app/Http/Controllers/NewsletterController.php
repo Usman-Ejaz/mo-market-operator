@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\NewsletterEmail;
+use App\Jobs\SendNewsletterEmail;
 use App\Models\Newsletter;
-use App\Models\Subscriber;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 
 class NewsletterController extends Controller
@@ -175,12 +172,8 @@ class NewsletterController extends Controller
     public function sendNewsLetter(Request $request, Newsletter $newsletter) 
     {
         abort_if(!hasPermission("newsletters", "sendNewsLetter"), 401, __('messages.unauthorized_action'));
-        
-        $subscribers = Subscriber::active()->select("email")->get();
 
-        foreach ($subscribers as $subscriber) {
-            Mail::to($subscriber->email)->send(new NewsletterEmail($newsletter));
-        }
+        dispatch(new SendNewsletterEmail($newsletter));
 
         $request->session()->flash('success', 'Newsletter Sent Successfully!');
         return redirect()->route('admin.newsletters.index');

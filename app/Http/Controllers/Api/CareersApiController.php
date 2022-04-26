@@ -21,7 +21,7 @@ class CareersApiController extends BaseApiController
 
     /** 
      * @OA\Get(
-     *      path="/get-jobs",
+     *      path="/jobs",
      *      operationId="getPublishedJobs",
      *      tags={"Jobs & Job Applications"},
      *      summary="Get list of Published Jobs",
@@ -59,7 +59,7 @@ class CareersApiController extends BaseApiController
     /**
      * 
      * @OA\Get(
-     *      path="/show-job/{slug}",
+     *      path="/job/{slug}",
      *      operationId="showSingleJob",
      *      tags={"Jobs & Job Applications"},
      *      summary="Get Specific Job against slug",

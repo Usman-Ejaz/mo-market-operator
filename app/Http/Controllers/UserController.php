@@ -49,7 +49,10 @@ class UserController extends Controller
         abort_if(!hasPermission("users", "create"), 401, __('messages.unauthorized_action'));
 
         $user = new User();
-        $user = User::create( $this->validateRequest($user) );
+        $data = $this->validateRequest($user);
+        $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
+        
+        $user = User::create($data);
 
         if ($user->exists) {
             $this->storeImage($user);
@@ -104,8 +107,11 @@ class UserController extends Controller
         abort_if(!hasPermission("users", "edit"), 401, __('messages.unauthorized_action'));
         
         $previousImage = $user->image;
+        $data = $this->validateRequest($user);
+        
+        $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
 
-        if ($user->update($this->validateRequest($user))) {
+        if ($user->update($data)) {
             $this->storeImage($user, $previousImage);
 
             if ($request->get("sendEmail") == "1") {
@@ -147,7 +153,7 @@ class UserController extends Controller
         abort_if(! hasPermission('users', 'list'), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
-            $data = User::latest()->get();
+            $data = User::skipOwnAccount()->latest()->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -168,12 +174,12 @@ class UserController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( hasPermission('users', 'edit') ) {
+                    if (hasPermission('users', 'edit')) {
                         $options .= '<a href="' . route('admin.users.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( hasPermission('users', 'delete') ) {
+                    if (hasPermission('users', 'delete')) {
                         $options .= ' <form action="' . route('admin.users.destroy', $row->id) . '" method="POST" style="display: inline-block;">
                             ' . csrf_field() . '
                             ' . method_field("DELETE") . '
@@ -200,6 +206,7 @@ class UserController extends Controller
             'department' => 'nullable',
             'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
             'active' => 'required',
+            'notifications' => 'sometimes|accepted',
             'created_by' => '',
             'modified_by' => ''
         ], [

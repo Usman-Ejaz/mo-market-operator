@@ -21,7 +21,7 @@ class DocumentsApiController extends BaseApiController
 
     /** 
      * @OA\Get(
-     *      path="/get-documents",
+     *      path="/documents",
      *      operationId="getPublishedDocs",
      *      tags={"Documents"},
      *      summary="Get list of Published Documents",
@@ -53,7 +53,7 @@ class DocumentsApiController extends BaseApiController
             if ($docs->count() > 0) {
                 return $this->sendResponse(DocumentResource::collection($docs), "Success");
             } else {
-                return $this->sendError("Could not found documents", ["errors" => "Could not found documents"], 404);
+                return $this->sendResponse([], __("messages.data_not_found"));
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);

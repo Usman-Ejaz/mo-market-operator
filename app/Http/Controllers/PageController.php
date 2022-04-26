@@ -153,6 +153,9 @@ class PageController extends Controller
                 ->addColumn('slug', function ($row) {
                     return truncateWords($row->slug, 35);
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->isPublished() ? __("Published") : __("Draft");
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })

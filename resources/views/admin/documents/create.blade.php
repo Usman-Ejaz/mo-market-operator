@@ -66,6 +66,7 @@
 <script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
 
 <script>
+	let oldFiles = [];
 	$(document).ready(function() {
 
 		// Set hidden fields based on button click
@@ -80,6 +81,18 @@
 		$.validator.addMethod("notNumericValues", function(value, element) {
 			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
+
+		$.validator.addMethod('extension', function (value, element, param) {
+			let files = Array.from(element.files);
+			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
+			return this.optional(element) || invalidFiles.length === 0;
+		}, '');
+
+		// $.validator.addMethod('maxfilesize', function (value, element, param) {
+		// 	let files = Array.from(element.files);
+		// 	let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
+		// 	return this.optional(element) || invalidFiles.length === 0;
+		// }, '');
 
 		$('#create-document-form').validate({
 			errorElement: 'span',
@@ -98,9 +111,10 @@
 				keywords: {
 					notNumericValues: true
 				},
-				file: {
+				'file[]': {
 					required: true,
-					extension: "doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt"
+					extension: ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'],
+					// maxfilesize: '{{ config("settings.maxDocumentSize") }}'
 				}
 			},
 			errorPlacement: function(error, element) {
@@ -110,9 +124,10 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				file: {
+				'file[]': {
 					required: "{{ __('messages.required') }}",
 					extension: '{{ __("messages.valid_file_extension") }}',
+					// maxfilesize: '{{ __("messages.max_file") }}'
 				},
 				title: {
 					required: "{{ __('messages.required') }}",
@@ -134,6 +149,10 @@
 		if (document.getElementsByClassName('label-info').length > 0) {
 			$('.bootstrap-tagsinput > input').attr('placeholder', '');
 		}
+
+		$(document).on('focusin', 'input[type="file"]', function(e){
+			oldFiles = e.target.files;
+		});
 	});
 
 	function validateFileExtension(e) {
@@ -141,21 +160,57 @@
 		if (!e.target.checked) return;
 
 		const convertableExtensions = ['doc', 'docx', 'txt', 'ppt', 'pptx', 'odt'];
-		if ($("#file").get(0).files.length > 0) {
 
-			let uploadedFilename = $("#file").get(0).files[0].name;
-			let extension = uploadedFilename.split(".");
-			extension = extension[extension.length - 1];
+		const uploadedFiles = $("#file").get(0).files;
 
-			if (!convertableExtensions.includes(extension)) {
-				alert("This document extension is not allowed for conversion.");
+		if (uploadedFiles.length > 0) {
+			let invalidFiles = [];
+
+			for (let file of uploadedFiles) {
+				if (!convertableExtensions.includes(getFileExtension(file))) {
+					invalidFiles.push(file.name);
+				}
+			}
+
+			if (invalidFiles.length > 0) {
+				alert(`${invalidFiles.toString()} document(s) extension is not allowed for conversion.`);
 				e.target.checked = false;
 			}
+		} else {
+			alert('Please select document first.');
+			e.target.checked = false;
 		}
 	}
 
-	function resetConvertCheckbox() {
+	function resetConvertCheckbox(e) {
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			e.target.files = oldFiles;
+			return false;
+		}
+
+		const allowedUploedFiles = ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'];
+		const invalidFiles = [];
+
+		let uploadedFiles = e.target.files;
+
+		for (let file of uploadedFiles) {			
+			if (!allowedUploedFiles.includes(getFileExtension(file))) {
+				invalidFiles.push(file.name);
+			}
+		}
+		
+		if (invalidFiles.length > 0) {
+			message = `${invalidFiles.toString()} file(s) are not allowed for upload.`
+			$(`#${e.target.id}`).append(`<span class="my-error-class">${message}</span>`);
+		}
+
 		document.getElementById('convert').checked = false;
+	}
+
+	function getFileExtension(file) {
+		let uploadedFilename = file.name;
+		return uploadedFilename.split(".").at(-1);
 	}
 </script>
 

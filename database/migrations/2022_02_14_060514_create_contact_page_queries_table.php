@@ -17,9 +17,13 @@ class CreateContactPageQueriesTable extends Migration
             $table->id();
             $table->string("name");
             $table->string("email");
-            $table->string("subject");
+            $table->string("subject")->nullable();
             $table->text("message");
+            $table->text("phone")->nullable();
+            $table->string("company")->nullable();
+            $table->enum("type", ['contact', 'chatbot'])->default('contact');
             $table->enum("status", ['pending', 'inprocess', 'resolved'])->default('pending');
+            $table->text('comments')->nullable();
             $table->unsignedBigInteger("resolved_by")->nullable();
             $table->timestamps();
         });

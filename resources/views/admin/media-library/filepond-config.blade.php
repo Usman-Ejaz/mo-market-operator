@@ -8,6 +8,8 @@
 	
 	let cropper = null;    
     let cropperEnabled = false;
+    let imageOpacity = 1;
+    let imageScale = null; // in percent
 
 	$(document).ready(function () {
 
@@ -26,25 +28,58 @@
 			$('#imageViewModal').modal({backdrop: 'static', keyboard: false});
 		});
 
-		$('.editor-modal').on('click', function () {
+        $('body').on('click', '.btn-remove', (e) => {
+            if(confirm('Are you sure you want to delete this record?')) {                
+                let { id } = e.target.dataset;
+
+                if (!id) { console.log(id); toastr.error("Could not find media file."); return; }
+
+                $.ajax({
+                    url: '{{ route("admin.media-library.files.remove") }}',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: { id },
+                    success: (response) => {
+                        let { status, message } = response;
+                        if (status === 'success') {
+                            toastr.success(message);
+                            loadAllImages();
+                        }
+                    },
+                    error: (error) => {
+                        console.log(error);
+                        toastr.error("Something went wrong");
+                    }
+                })
+            }
+        });
+
+		$('.editor-modal-close').on('click', function () {
 			disableCropper();
 			$('#imageViewModal').modal('hide');
-		})
+		});
 
 		$('#saveImageInfo').on('click', function (e) {
 			saveImageInfo();
 		});
 
-        $('.crop-box-ratio').on('keyup', function (e) {
+        $('.crop-box-ratio').on('keyup mouseup', function (e) {
             let val = $(this).val().replace(/[^0-9]/g, '');
-            let data = cropper.getData();
+            $(this).val(val);
+            let data = cropper.canvasData;
             if ($(this).attr('id') === "dataWidth") {
                 data.width = val;
             } else {
                 data.height = val;
             }
-            cropper.setData(data);
-            $(this).val(val);
+            $('.cropper-canvas > img').css({
+                width: data.width,
+                height: data.height
+            });
+
+            imageScale = -1;
         });
         
         $('#customizeImage').on('click', () => {
@@ -52,16 +87,39 @@
             cropperEnabled ? enableCropper() : disableCropper();
         });
 
-
         $('#opcaityDropdown').on('click', (e) => {
             let { value } = e.target.dataset;
             value /= 100;
-            $('.cropper-drag-box.cropper-crop').css({
-                opacity: value,
-            })
+            imageOpacity = value;
+            $('.cropper-canvas, .cropper-img-preview').css({
+                opacity: `${value}`,
+            });
+        });
+
+        $('input[type="range"]').on('input', (e) => {
+            let img = $('.cropper-canvas > img');
+            var d = cropper.getImageData();
+            var ratio = e.target.value;  // Used for aspect ratio
+            var width = d.width;    // Current image width
+            var height = d.height;  // Current image height
+
+            width = (width / 100) * parseInt(ratio);
+            height = (height / 100) * parseInt(ratio);
+            img.css("width", width);
+            img.css("height", height);
+
+            $('#dataWidth').val(Math.round(width));
+            $('#dataHeight').val(Math.round(height));
+
+            imageScale = ratio;
         });
 	});	
 
+    /**
+     * Load all images against the selected event from the resource.
+     * 
+     * @retrun void
+     */
     function loadAllImages() {
         $.ajax({
             url: '{{ route("admin.media-library.files.list", $mediaLibrary->id) }}',
@@ -73,15 +131,17 @@
 
                     data.forEach(item => {
                         html += `
-                            <div class="folder-container" data-id="${ item.id }" data-featured="${ item.featured }" data-src="${ item.file }">
-								<div class="folder-icon">
-									<img src="${ item.file}" alt="" class="image-aspact-ratio">
-								</div>
-							</div>                            
+                            <div class="" style="width: 22%">
+                                <div class="folder-container ${item.featured === 1 ? 'featured' : ''}" data-id="${ item.id }" data-featured="${ item.featured }" data-src="${ item.file }">
+                                    <div class="folder-icon">
+                                        <img src="${ item.file}" alt="" class="image-aspact-ratio" style="width: 100%;">
+                                    </div>
+                                </div>
+                                <div class="btn-container">
+                                    <button class="btn btn-danger btn-sm btn-remove" data-id="${ item.id }"><i class="fa fa-trash" aria-hidden="true" data-id="${ item.id }"></i></button>
+                                </div>
+                            </div>
                         `;
-                        // <div style="position: relative;top: 182px;right: 30px; height: 1px; display:inline-block; bottom: 0;">
-                        // <a style="color:red; cursor:pointer" href="javascript:void(0);" data-id="${item.id}" class="image-remove"><i class="fa fa-times"></i></button>
-                        // </div>
                     });
 
                     $('#mediafiles').html(html);
@@ -93,6 +153,11 @@
         })
     }
 
+    /**
+     * Register a new Fileponf object in the DOM with the options object.
+     * 
+     * @return void
+    */
     function registerFilePondObject() {
         const inputElement = document.getElementById('filepond');
 
@@ -105,9 +170,13 @@
         const pond = FilePond.create(inputElement, {
             acceptedFileTypes: ['image/*'],
             maxFileSize: '2MB',
+            maxParallelUploads: 5,
             credits: false,
             allowMultiple: true,
             required: true,
+            labelTapToUndo: '',
+            labelTapToCancel: '',
+            labelTapToRetry: '',
             server: {
                 process: {
                     url: '{{ route("admin.media-library.files.upload", $mediaLibrary->id) }}',
@@ -115,24 +184,37 @@
                     onload: (response) => {
                         
                     },
-                    onerror: (response) => console.log('response.data => ', response.data),
+                    onerror: (response) => {
+                        toastr.error('Something went wrong.');
+                    },
                 },
                 revert: null,
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             },
-            // onprocessfile: (error, file) => {
-            //     loadAllImages()
-            //     setTimeout(() => { pond.removeFile(); }, 600);
-            // },
-            onprocessfiles: (error, file) => {
-                loadAllImages()
-                setTimeout(() => { pond.removeFiles(); }, 600);
-            }
+            onprocessfile: (error, file) => {
+                setTimeout(() => {
+                    pond.removeFile(file.id); 
+                    loadAllImages();
+                    toastr.success('Media file uploaded successfully!');
+                }, 16);
+            },
+            // onprocessfiles: (error, file) => {
+            //     setTimeout(() => { 
+            //         pond.removeFiles(); 
+            //         loadAllImages();
+            //         toastr.success('Media file uploaded successfully!');
+            //     }, 16);
+            // }
         });
     }
 
+    /**
+     * Enables CropperJs library to the given image tag with some cropper default actions
+     * 
+     * @return void
+    */
     function enableCropper() {
 
         let elem = document.getElementById('imageSrc');
@@ -154,23 +236,28 @@
             autoCrop: false,
             viewMode: 1,
             preview: '.cropper-img-preview',
-            ready: () => {
-                this.cropper.clear();
+            ready: (e) => {
+                let el = $('.cropper-canvas > img');
+                $('#dataWidth').val(Math.round(el.width()));
+                $('#dataHeight').val(Math.round(el.height()));
             },
             crop: (e) => {
                 $('#dataWidth').val(Math.round(e.detail.width));
                 $('#dataHeight').val(Math.round(e.detail.height));
+                imageScale = null;
             },
+            // zoom: (e) => {
+            //     $('#dataWidth').val(Math.round(e.detail.width));
+            //     $('#dataHeight').val(Math.round(e.detail.height));
+            // }
         });
 
-        let flipX = 1, flipY = 1, rotationAngle = 45, data = null;
+        let flipX = 1, flipY = 1, rotationForward = 45, rotationBackward = -45, data = null, rotation = 0;
         $('.cropper-action-button').on('click', function () {
             let { method, option } = $(this).data();
             data = cropper.getCropBoxData();
 
             let editorHidden = document.getElementsByClassName('cropper-crop-box cropper-hidden').length > 0;
-            
-            // cropper.getImageData();
 
             switch(method) {
                 case 'scaleX':
@@ -178,49 +265,64 @@
                     cropper.scaleX(flipX);
                     if (editorHidden) {
                         let e = cropper.getImageData();
-                        $('.cropper-img-preview').css({
-                            width: '100%',
-                            overflow: 'hidden',
-                            height: e.height,
-                            maxWidth: e.width,
-                            maxHeight: e.height / 2
-                        });
                         $('.cropper-img-preview > img').css({
                             width: '100%',
                             overflow: 'hidden',
                             height: e.height,
-                            maxWidth: e.width,
+                            maxWidth: e.width / 2,
                             maxHeight: e.height / 2,
-                            transform: `scaleX(${flipX}) scaleY(${flipY})`
+                            transform: `scaleX(${flipX}) scaleY(${flipY}) rotate(${rotation}deg)`
                         })
                     }
+                    var el = $('.cropper-canvas > img');
+                    $('#dataWidth').val(Math.round(el.width()));
+                    $('#dataHeight').val(Math.round(el.height()));
                     break;
                 case 'scaleY':
                     flipY = -flipY;
                     cropper.scaleY(flipY);
+                    if (editorHidden) {
+                        let e = cropper.getImageData();
+                        $('.cropper-img-preview > img').css({
+                            width: '100%',
+                            overflow: 'hidden',
+                            height: e.height,
+                            maxWidth: e.width / 2,
+                            maxHeight: e.height / 2,
+                            transform: `scaleX(${flipX}) scaleY(${flipY}) rotate(${rotation}deg)`
+                        })
+                    }
+                    var el = $('.cropper-canvas > img');
+                    $('#dataWidth').val(Math.round(el.width()));
+                    $('#dataHeight').val(Math.round(el.height()));
+                    break;
+                case 'rotate':
+                    if (option > 0) {
+                        rotation += 45;
+                    } else {
+                        rotation -= 45;
+                    }
+                    cropper.rotate(option);
                     let e = cropper.getImageData();
-                    $('.cropper-img-preview').css({
-                        width: '100%',
-                        overflow: 'hidden',
-                        height: e.height,
-                        maxWidth: e.width,
-                        maxHeight: e.height / 2
-                    });
                     $('.cropper-img-preview > img').css({
                         width: '100%',
                         overflow: 'hidden',
                         height: e.height,
-                        maxWidth: e.width,
+                        maxWidth: e.width / 2,
                         maxHeight: e.height / 2,
-                        transform: `scaleX(${flipX}) scaleY(${flipY})`
+                        transform: `scaleX(${flipX}) scaleY(${flipY}) rotate(${rotation}deg)`
                     })
-                    break;
-                case 'rotate':
-                    cropper.rotate(option);
+                    var el = $('.cropper-canvas > img');
+                    $('#dataWidth').val(Math.round(el.width()));
+                    $('#dataHeight').val(Math.round(el.height()));
                     break;
                 case 'crop':
                 case 'clear':
                     cropper[method]();
+                    if (method === "clear") {
+                        $('#dataWidth').val(Math.round(cropper.getImageData().width));
+                        $('#dataHeight').val(Math.round(cropper.getImageData().height));
+                    }
                     break;
             }
             cropper.setCropBoxData(data);
@@ -228,9 +330,9 @@
     }
 
     /**
+     * Disables CropperJs library from the DOM.
      * 
-     * 
-     * 
+     * @return void
      */
     function disableCropper () {
         $('#cropper-actions').css({display: 'none'});
@@ -239,26 +341,57 @@
             cropperEnabled = false;
             cropper.destroy();
             cropper = null;
+            imageOpacity = 1;
+            $('.cropper-canvas, .cropper-img-preview').css({
+                opacity: imageOpacity,
+            });
         }
     }
 
     /**
+     * Saves customized image in the resource.
      * 
-     * 
-     * 
+     * @return void
      */
-    function saveImageInfo() {
+    async function saveImageInfo() {
         let payload = {};
+
         if (cropper !== null) {
             let canvas = cropper.getCroppedCanvas({maxWidth: 4096, maxHeight: 4096});
             let dataURL = canvas.toDataURL();
+            
+            if (imageOpacity < 1) {
+                const image = await getImage(canvas, imageOpacity);
+                dataURL = await convertBlobToBase64(image);
+            }
+
+            if (imageScale !== null) {
+                // let imageURL = await convertBase64ToBlobURL(dataURL);
+                var img = new Image();
+                img.src = dataURL;
+
+                if (imageScale >= 0) {
+                    img.width = (cropper.getImageData().width / 100) * imageScale;
+                    img.height = (cropper.getImageData().height / 100) * imageScale;
+                } else {
+                    img.width = $('.cropper-canvas > img').width();
+                    img.height = $('.cropper-canvas > img').height();
+                }
+
+                payload.imageWidth = img.width;
+                payload.imageHeight = img.height;
+            
+                // const image = await getImage(img, 1);
+                // dataURL = await convertBlobToBase64(image);
+            }
+            
             payload.dataURL = dataURL;
         }
 
         payload.id = $('#imageId').val();
         payload.featured = $('#featured').prop('checked');
 
-        $('#saveImageInfo').prop('disable', true);
+        $('#saveImageInfo').prop('disabled', true);
 
         $.ajax({
             url: '{{ route("admin.media-library.updateFile") }}',
@@ -271,9 +404,10 @@
                 let { status } = response;
                 if (status === "success") {
                     loadAllImages();
-                    $('.editor-modal').click();
-                    $('#saveImageInfo').prop('disable', false);
-                    toastr.success("Image updated successfully!");
+                    $('.editor-modal-close').click();
+                    disableCropper();
+                    $('#saveImageInfo').prop('disabled', false);
+                    toastr.success("Media file updated successfully!");
                 }
             },
             error: () => {
@@ -281,4 +415,36 @@
             }
         })
     }
+
+    /**
+     * Get the latest image after applying opacity.
+     * 
+     * @return promise
+    */
+    async function getImage(canvas, opacity) {
+        return new Promise(resolve => {
+            const tmpCanvas = document.createElement('canvas');
+            tmpCanvas.width = canvas.width;
+            tmpCanvas.height = canvas.height;
+
+            const ctx = tmpCanvas.getContext('2d');
+            ctx.globalAlpha = opacity;
+            ctx.drawImage(canvas, 0, 0);
+            tmpCanvas.toBlob(resolve, 'image/png', 0.9);
+        });
+    }
+
+    /**
+     * Converts Blob to Base64 string
+     * 
+     * @return promise
+    */
+    async function convertBlobToBase64(image) {
+        return new Promise((resolve, _) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(image);
+        });
+    }
+
 </script>

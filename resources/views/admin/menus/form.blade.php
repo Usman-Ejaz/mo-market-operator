@@ -33,6 +33,20 @@
                 <span class="form-text text-danger">{{ $errors->first('status') }} </span>
             </div>
         </div>
+        @if (Route::is('admin.menus.create'))
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Identifier <span class="text-danger">*</span></label>
+                    <input type="input" class="form-control" id="identifier" placeholder="Enter identifier" name="identifier" value="{{ old('identifier') ?? $menu->identifier }}">
+                    <span class="form-text text-danger">{{ $errors->first('identifier') }} </span>
+                </div>
+            </div>
+        @endif
+
+        @if (Route::is('admin.menus.edit'))        
+            <input type="hidden" class="form-control" id="identifier" placeholder="Enter identifier" name="identifier" value="{{ old('identifier') ?? $menu->identifier }}">
+        @endif
+        
     </div>
 
 </div>

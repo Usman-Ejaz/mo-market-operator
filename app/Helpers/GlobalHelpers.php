@@ -1,7 +1,11 @@
 <?php
 
 use App\Models\ApiKey;
+use App\Models\Settings;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 if (!function_exists("truncateWords")) {
 
@@ -28,7 +32,8 @@ if (!function_exists("storeFile")) {
         }
         
         try {
-            $filename = (md5(time()) . md5(time()) . '.' . $file->getClientOriginalExtension());
+            $fileOriginalName = explode(".", $file->getClientOriginalName())[0];
+            $filename = $fileOriginalName . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
             $contents = $file->get();
             Storage::disk('app')->put($dir . $filename, $contents);
         } catch (\Exception $ex) {
@@ -61,16 +66,66 @@ if (!function_exists("removeFile")) {
     }
 }
 
+if (!function_exists('downloadFile')) {
+
+    function downloadFile($dir, $file)
+    {
+        $filename = basename($file);
+        list($filename, $ext) = explode(".", $filename);
+        $filename = explode("_", $filename);
+
+        if (count($filename) > 1) {
+            unset($filename[count($filename) - 1]);
+        }
+        
+        $actualFilename = implode("_", $filename)  . '.' . $ext;
+        return Storage::disk('app')->download($dir . '/' . $file, $actualFilename);
+    }
+}
+
 if (!function_exists("hasPermission")) {
 
-    function hasPermission($capability, $permission) 
+    function hasPermission($module, $permission) 
     {
-        if ($capability === "" || $permission === "") return false;
+        if ($module === "" || $permission === "") return false;
 
-        if (auth()->check() && auth()->user()->role->hasPermission($capability, $permission)) {
+        if (auth()->check() && auth()->user()->role->hasPermission($module, $permission)) {
             return true;
         }
 
         return false;        
+    }
+}
+
+if (!function_exists('getNotifiableUsers')) {
+
+    function getNotifiableUsers() {
+        return User::notifiable()->get();
+    }
+}
+
+if (!function_exists('settings')) {
+    
+    function settings($option) {
+
+        if ($option === null || $option === "") return null;
+
+        return Settings::get_option($option);
+    }
+}
+
+if (!function_exists('parseDate')) {
+
+    function parseDate($date)
+    {
+        if ($date === null || $date === "") return null;
+
+        $d = Carbon::createFromFormat(config('settings.datetime_format'), $date);
+
+        if (strpos($date, "PM") !== false) {
+            $d = $d->addHours(12);
+        }
+
+        return Carbon::parse($date)->format('Y-m-d H:i:s');
     }
 }

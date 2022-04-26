@@ -139,6 +139,9 @@ class ChatBotKnowledgeBaseController extends Controller
                 ->addColumn('question', function ($row) {
                     return truncateWords($row->question, 80);
                 })
+                ->addColumn('keywords', function ($row) {
+                    return $row->keywords;
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
@@ -170,6 +173,7 @@ class ChatBotKnowledgeBaseController extends Controller
         return request()->validate([
             'question' => 'required|min:5|unique:chat_bot_knowledge_bases,question,'.$knowledgeBase->id,
             'answer' => 'required',
+            'keywords' => 'required|string',
             'created_by' => '',
             'modified_by' => ''
         ]);

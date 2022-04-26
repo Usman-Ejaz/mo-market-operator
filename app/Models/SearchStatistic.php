@@ -21,4 +21,17 @@ class SearchStatistic extends Model
     public function scopeOrderByCount($query) {
         return $query->orderBy('count', 'desc');
     }
+
+    public function scopeGroupByKeyword($query, $startFrom = null, $endsAt = null)
+    {
+        if ($startFrom !== null) {
+            $query->where('created_at', '>=', Carbon::parse($startFrom));
+        }
+
+        if ($endsAt !== null) {
+            $query->where('created_at', '<=',  Carbon::parse($endsAt));
+        }
+
+        return $query->groupBy('keyword')->selectRaw('keyword, sum(count) as count_sum');
+    }
 }

@@ -16,7 +16,7 @@ class DocumentFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->sentence(),
+            'title' => $this->faker->realText(50),
             'keywords' => implode(",", $this->faker->randomElements(['pakistan', 'international', 'sports', 'finance', 'entertainment'], 2)),
             'file' => '',
             'published_at' => $this->faker->randomElement([null, now()]),

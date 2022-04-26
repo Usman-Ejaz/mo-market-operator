@@ -16,6 +16,7 @@ class CreateMenusTable extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
+            $table->string('identifier', 50);
             $table->string('theme', 100);
             $table->integer('active')->default(0);
             $table->json('submenu_json')->nullable();

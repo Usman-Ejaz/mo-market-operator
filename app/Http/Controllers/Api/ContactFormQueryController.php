@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewContactQueryHasArrived;
 use App\Http\Controllers\Controller;
 use App\Models\ContactPageQuery;
+use App\Notifications\ContactFormQueryReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -86,14 +88,18 @@ class ContactFormQueryController extends BaseApiController
                 'email' => 'required|email',
                 'subject' => 'required|min:5|max:100',
                 'message' => 'required|min:5|max:255',
+                'type' => 'sometimes|string|max:10'
             ]);
      
             if ($validator->fails()) {
                 return $this->sendError("Error", ['errors' => $validator->errors()], 400);
             }
 
-            ContactPageQuery::create($request->all());
-            return $this->sendResponse([], "Query Submitted Successfully");
+            $contactPageQuery = ContactPageQuery::create($request->all());
+
+            event(new NewContactQueryHasArrived($contactPageQuery));
+            
+            return $this->sendResponse([], __("Query Submitted Successfully"));
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }

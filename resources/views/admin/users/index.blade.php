@@ -47,10 +47,6 @@
 	</div>
 	<!-- /.row -->
 </div>
-<!-- /.container-fluid -->
-</div>
-
-
 @endsection
 
 @push('optional-styles')
@@ -70,6 +66,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
+			order: [[6, 'desc']],
 			ajax: "{{ route('admin.users.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {

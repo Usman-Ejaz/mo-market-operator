@@ -8,6 +8,11 @@
             </div>
         </div>
     </div>
+    <div class="form-group">
+		<label for="description">Description </label>
+		<textarea class="form-control ckeditor" id="description" placeholder="Enter Description" name="description" rows="400" cols="50">{{ old('description') ?? $mediaLibrary->description }}</textarea>
+		<span class="form-text text-danger">{{ $errors->first('description') }} </span>
+	</div>
 </div>
 
 @csrf

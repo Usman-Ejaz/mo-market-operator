@@ -16,6 +16,8 @@ class Document extends Model
 
     protected $attributes = [];
 
+    protected $appends = ['document_links'];
+
     public const STORAGE_DIRECTORY = 'documents/';
 
     // Model Relation goes here
@@ -33,14 +35,35 @@ class Document extends Model
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getFileAttribute ($value) {
-        return !empty($value) ? asset(config('filepaths.documentsFilePath.internal_path') . $value) : null;
+    
+    /**
+     * getFileAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getFileAttribute($value)
+    {
+        return !empty($value) ? explode(",", $value) : [];
+    }
+    
+    /**
+     * getDocumentLinksAttribute
+     *
+     * @return void
+     */
+    public function getDocumentLinksAttribute()
+    {
+        $filePaths = [];
+        foreach($this->file as $filename) {
+            array_push($filePaths, serveFile(self::STORAGE_DIRECTORY, $filename));
+        }    
+        return $filePaths;
     }
 
     // Scope Queries
     public function scopePublished ($query) {
-        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id");
+        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "created_at");
     }
 
     public function isPublished() {

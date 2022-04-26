@@ -51,21 +51,27 @@ class DocumentController extends Controller
 
         $document = new Document();
         $data = $this->validateRequest($document);
-        $filename = null;
+                
+        $convertFiles = $request->convert !== null && $request->convert == '1';
 
-        if ($request->hasFile('file')) {            
-            $filename = storeFile(Document::STORAGE_DIRECTORY, $request->file('file'), null);
+        $filenames = "";
 
-            if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked
+        if (count($data['file']) > 0) {
 
-                $extension = $request->file('file')->getClientOriginalExtension();
-                if (in_array($extension, $this->allowedFileExtensions)) {
-                    $filename = $this->convertFile($filename);
+            foreach ($data['file'] as $file) {
+                $filename = storeFile(Document::STORAGE_DIRECTORY, $file);
+
+                if ($convertFiles) {
+                    $extension = $file->getClientOriginalExtension();
+                    if (in_array($extension, $this->allowedFileExtensions)) {
+                        $filename = $this->convertFile($filename);
+                    }
                 }
+                $filenames .= $filename . ",";
             }
         }
         
-        $data['file'] = $filename;
+        $data['file'] = trim($filenames, ",");
 
         if ($request->action === "Published") {
             $data['published_at'] = now();
@@ -118,31 +124,14 @@ class DocumentController extends Controller
 
         $data = $this->validateRequest($document);
 
-        $filename = $document->file ? basename($document->file) : null;
-        $extension = $filename ? explode('.', $filename)[1] : "";
-
-        if ($request->hasFile('file')) {
-            $filename = storeFile(Document::STORAGE_DIRECTORY, $request->file('file'), $filename);
-            $extension = $request->file('file')->getClientOriginalExtension();
-        }
-
-        if ($request->convert !== null && $request->convert == '1') { // convert file checkbox is checked
-            if ($filename !== null) {
-                if (in_array($extension, $this->allowedFileExtensions)) {
-                    $filename = $this->convertFile($filename);
-                }
-            } else {
-                // please upload the document first.
-            }
-        }
-        $data['file'] = $filename;
+        $data['file'] = $this->handleFileUpload($document, $request);
         
         if ($request->action === "Published") {
             $data['published_at'] = now();
         } else if ($request->action === "Unpublished") {
             $data['published_at'] = null;
         }
-
+        
         $document->update($data);
 
         $request->session()->flash('success', "Document {$request->action} Successfully!");
@@ -186,6 +175,9 @@ class DocumentController extends Controller
                 ->addColumn('category', function ($row) {
                     return truncateWords($row->category->name, 50);
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->isPublished() ? 'Published' : 'Draft';
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
@@ -218,7 +210,7 @@ class DocumentController extends Controller
             'title' => 'required|min:3',
             'keywords' => 'nullable',
             'category_id' => 'required',
-            'file' => 'required|file|max:' . config('settings.maxDocumentSize'),
+            'file' => 'required',
             'created_by' => '',
             'modified_by' => ''
         ];
@@ -234,7 +226,7 @@ class DocumentController extends Controller
 
     private function convertFile($filename)
     {
-        $storagePath = config('filesystems.disks.app.root') . '/' . Document::STORAGE_DIRECTORY;
+        $storagePath = config('settings.storage_disk_base_path') . Document::STORAGE_DIRECTORY;
 
         $storageFile = $storagePath . $filename;
         
@@ -263,6 +255,61 @@ class DocumentController extends Controller
                 }
             }
         }
+    }
+
+    private function handleFileUpload($document, $request)
+    {
+        $oldFiles = implode(",", $document->file);
+        $convertFiles = $request->convert !== null && $request->convert == '1';
+        $filenames = "";
+
+        if ($request->get('removeFile') !== null)
+        {
+            $removedFiles = explode(",", $request->get('removeFile'));
+            foreach ($removedFiles as $file) {
+                removeFile(Document::STORAGE_DIRECTORY, $file);
+                $oldFiles = str_replace($file, "", $oldFiles);
+                $oldFiles = str_replace(",,", ",", $oldFiles);
+                $oldFiles = trim($oldFiles, ",");
+            }
+        }
+
+        if ($request->hasFile('file')) 
+        {
+            $oldFiles = explode(",", $oldFiles);
+            foreach ($oldFiles as $file) {
+                removeFile(Document::STORAGE_DIRECTORY, $file);
+            }
+
+            $uploadedFiles = $request->file('file');
+
+            if (count($uploadedFiles) > 0) {
+                foreach ($uploadedFiles as $file) {
+                    $filename = storeFile(Document::STORAGE_DIRECTORY, $file);
+                    $filenames .= $filename . ",";
+                }
+
+                $filenames = trim($filenames, ",");
+            }
+        } else {
+            $filenames = trim($oldFiles, ",");
+        }
+
+        if ($convertFiles) { // convert file checkbox is checked
+            $filenames = explode(",", $filenames);
+            $tempnames = "";
+            foreach ($filenames as $filename) {
+                $extension = explode(".", basename($filename))[1];
+                if (in_array($extension, $this->allowedFileExtensions)) {
+                    $filename = $this->convertFile($filename);
+                    $tempnames .= $filename . ",";
+                }
+            }
+
+            $filenames = $tempnames;
+        }
+
+        return $filenames;
     }
 }
 

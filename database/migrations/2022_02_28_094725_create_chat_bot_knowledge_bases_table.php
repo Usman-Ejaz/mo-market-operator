@@ -17,6 +17,7 @@ class CreateChatBotKnowledgeBasesTable extends Migration
             $table->id();
             $table->text('question')->nullable();
             $table->text('answer')->nullable();
+            $table->string('keywords');
             $table->unsignedBigInteger('created_by')->default(0);
             $table->unsignedBigInteger('modified_by')->default(0);
             $table->timestamp('published_at')->nullable();

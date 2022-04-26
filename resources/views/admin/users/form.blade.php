@@ -68,6 +68,16 @@
         </div> -->
 		<div class="col-md-6">
 			<div class="form-group">
+				<label for="image" class="form-label">User Profile Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
+				<input class="form-control" type="file" id="image" name="image">
+				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
+				@if( isset($user->image) )
+				<span class="text-primary imageExists"><a href="{{ $user->image }}" target="_blank"><img src="{{ $user->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </span>
+				@endif
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
 				<label>Status <span class="text-danger">*</span></label>
 				<select class="custom-select" name="active" id="active">
 					<option value="">Please select a status</option>
@@ -84,16 +94,16 @@
 				</select>
 				<span class="form-text text-danger">{{ $errors->first('active') }} </span>
 			</div>
-		</div>
+		</div>		
+	</div>
 
+	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group">
-				<label for="image" class="form-label">User Profile Image <small>(Allowed max size is 2MB. Allowed types are jpg, jpeg, png)</small></label>
-				<input class="form-control" type="file" id="image" name="image">
-				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
-				@if( isset($user->image) )
-				<span class="text-primary imageExists"><a href="{{ $user->image }}" target="_blank"><img src="{{ $user->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </span>
-				@endif
+				<div class="form-check">
+					<input type="checkbox" class="form-control-custom form-check-input" id="notifications" name="notifications" {{ $user->show_notifications === 1 ? 'checked' : '' }} value="1">
+					<label for="notifications" class="form-check-label">Send Notifications</label>
+				</div>
 			</div>
 		</div>
 	</div>

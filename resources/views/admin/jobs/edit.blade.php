@@ -62,6 +62,7 @@
 
 					<input type="hidden" name="active" id="status">
 					<input type="hidden" name="action" id="action">
+					<input type="hidden" name="removeFile" id="removeFile">
 
 					@if($job->isPublished())
 						<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
@@ -111,8 +112,8 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date').val(mapDate(dp));
-				let endDate = $("#end_datetime").val();
-				if (endDate.trim().length > 0 && $input.val() >= endDate) {
+				let endDate = new Date($("#end_date").val());
+				if (dp >= endDate) {
 					$input.val("");
 					$input.parent().next().text("Start Date cannot be less than end date");
 				} else {
@@ -134,8 +135,8 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#end_date').val(mapDate(dp));
-				let startDate = $("#start_datetime").val();
-				if (startDate.trim().length > 0 && $input.val() <= startDate) {
+				let startDate = new Date($("#start_date").val());
+				if (dp <= startDate) {
 					$input.val("");
 					$input.parent().next().text("{{ __('messages.min_date') }}");
 				} else {
@@ -170,25 +171,15 @@
 			$('#action').val("Unpublished");
 		});
 
-
+		let images = [];
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-		$("#deleteImage").click(function() {
+		$(".remove-file").on('click', function() {
+			let { file } = $(this).data();
+
 			if (confirm('Are you sure you want to this image?')) {
-				$.ajax({
-					url: "{{ route('admin.jobs.deleteImage') }}",
-					type: 'POST',
-					data: {
-						_token: "{{ csrf_token() }}",
-						job_id: "{{$job->id}}"
-					},
-					dataType: 'JSON',
-					success: function(data) {
-						if (data.success) {
-							alert('Image Deleted Successfully');
-							$('.imageExists').remove();
-						}
-					}
-				});
+				images.push(file);
+				$(this).parent().remove();
+				$("#removeFile").val(`${images.toString()}`);
 			}
 		});
 
@@ -239,8 +230,16 @@
 					min: 1,
 					maxlength: 4
 				},
+				specialization: {
+					required: true,
+					minlength: 5,
+					notNumericValues: true,
+				},
+				salary: {
+					number: true,
+				},
 				image: {
-					extension: "jpg|jpeg|png|ico|bmp"
+					extension: "{{ config('settings.image_file_extensions') }}|pdf"
 				},
 				enable: {
 					required: false,

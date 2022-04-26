@@ -24,6 +24,7 @@
 						<th>Experience</th>
 						<th>Total Positions</th>
 						<th>Applications</th>
+						<th>Status</th>
 						<th>Created date</th>
 						<th>Action</th>
 					</tr>
@@ -37,10 +38,6 @@
 	</div>
 	<!-- /.row -->
 </div>
-<!-- /.container-fluid -->
-</div>
-
-
 @endsection
 
 @push('optional-styles')
@@ -58,6 +55,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
+			order: [[7, 'desc']],
 			ajax: "{{ route('admin.jobs.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
@@ -91,6 +89,10 @@
 				{
 					data: 'applications',
 					name: 'applications'
+				},
+				{
+					data: 'status',
+					name: 'status'
 				},
 				{
 					data: 'created_at',

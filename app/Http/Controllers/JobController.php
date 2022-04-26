@@ -52,13 +52,22 @@ class JobController extends Controller
         $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
         $job['start_datetime'] = $this->parseDate($request->start_datetime);
         $job['end_datetime'] = $this->parseDate($request->end_datetime);
+        $job['image'] = null;
         
         $job = Job::create($job);
-        $this->storeImage($job);
+        
+        if ($request->hasFile('image')) {
+            $images = $request->file('image');
+            $filenames = "";
+            foreach ($images as $file) {
+                $name = storeFile(Job::STORAGE_DIRECTORY, $file);
+                $filenames .= $name . ',';
+            }
+            $job->update(['image' => trim($filenames, ",")]);
+        }
 
         if ($request->action === "Published") {
-            $job->published_at = now();
-            $job->save();
+            $job->update(['published_at' => now()]);
         }
 
         $request->session()->flash('success', "Job {$request->action} Successfully!");
@@ -108,8 +117,10 @@ class JobController extends Controller
         $data['slug'] = Str::slug($data['title']);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
+
+        $data['image'] = $this->handleFileUpload($job, $request);
+
         $job->update($data);
-        $this->storeImage($job, $previousImage);
 
         if ($request->action === "Unpublished") {
             $job->published_at = null;
@@ -169,6 +180,9 @@ class JobController extends Controller
                 ->addColumn('total_positions', function ($row) {
                     return ($row->total_positions) ? $row->total_positions : '';
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->isPublished() ? 'Published' : 'Draft';
+                })
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
@@ -203,7 +217,7 @@ class JobController extends Controller
 
     public function getJobApplications (Job $job) {
 
-        // abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
         return view('admin.applications.index',compact('job'));
     }
@@ -229,13 +243,13 @@ class JobController extends Controller
                 })
                 ->addColumn('phone', function ($row) {
                     return truncateWords($row->phone, 20);
-                })
+                })                
                 ->addColumn('city', function ($row) {
                     return truncateWords($row->city, 25);
                 })
                 ->addColumn('experience', function ($row) {
                     return truncateWords($row->experience, 10);
-                })
+                })               
                 ->addColumn('created_at', function ($row) {
                     return ($row->created_at) ? $row->created_at : '';
                 })
@@ -258,19 +272,18 @@ class JobController extends Controller
                     }
                     return $options;
                 })
-                ->rawColumns(['action'])                
+                ->rawColumns(['action'])
                 ->make(true);
         }
     }
 
-    public function exportApplicationsList(Request $request,Job $job) {
+    public function exportApplicationsList(Request $request, Job $job) {
 
         abort_if(!hasPermission("jobs", "export_applications"), 401, __('messages.unauthorized_action'));
-
-        $job = Job::find($job->id);
+        
         $data = $job->applications;
         
-        $fileName = $job->title.'.csv';
+        $fileName = $job->title . '.csv';
         $headers = array(
             "Content-type"        => "text/csv",
             "Content-Disposition" => "attachment; filename=$fileName",
@@ -315,7 +328,9 @@ class JobController extends Controller
             'qualification' => 'required',
             'experience' => 'required',
             'total_positions' => 'required',
-            'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
+            'specialization' => 'required|string',
+            'salary' => 'nullable',
+            'image.*' => 'sometimes',
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'nullable',
@@ -327,11 +342,44 @@ class JobController extends Controller
         ]);
     }
 
+    private function handleFileUpload($job, $request)
+    {
+        $oldFiles = implode(",", $job->image);
+        $filenames = "";
 
-    private function storeImage($job, $oldFile = null) {
-        if (request()->hasFile('image')) {
-            $job->update(['image' => storeFile(Job::STORAGE_DIRECTORY, request()->file('image'), $oldFile)]);
+        if ($request->get('removeFile') !== null)
+        {
+            $removedFiles = explode(",", $request->get('removeFile'));
+            foreach ($removedFiles as $file) {
+                removeFile(Job::STORAGE_DIRECTORY, $file);
+                $oldFiles = str_replace($file, "", $oldFiles);
+                $oldFiles = str_replace(",,", ",", $oldFiles);
+                $oldFiles = trim($oldFiles, ",");
+            }
         }
+
+        if ($request->hasFile('image'))
+        {
+            $oldFiles = explode(",", $oldFiles);
+            foreach ($oldFiles as $file) {
+                removeFile(Job::STORAGE_DIRECTORY, $file);
+            }
+
+            $uploadedFiles = $request->file('image');
+
+            if (count($uploadedFiles) > 0) {
+                foreach ($uploadedFiles as $file) {
+                    $filename = storeFile(Job::STORAGE_DIRECTORY, $file);
+                    $filenames .= $filename . ",";
+                }
+
+                $filenames = trim($filenames, ",");
+            }
+        } else {
+            $filenames = trim($oldFiles, ",");
+        }
+
+        return $filenames;
     }
 
     public function deleteImage(Request $request) {
