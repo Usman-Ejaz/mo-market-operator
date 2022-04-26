@@ -24,6 +24,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchStatisticController;
 use App\Http\Controllers\SliderImageController;
+use App\Http\Controllers\SliderSettingController;
 use App\Http\Controllers\StaticBlockController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
@@ -162,6 +163,8 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get('slider-images/list', [SliderImageController::class, 'list'])->name('slider-images.list');
     Route::post('slider-images/deleteImage', [SliderImageController::class, 'deleteImage'])->name('slider-images.deleteImage');    
     Route::resource('slider-images', SliderImageController::class);
+
+    Route::resource('slider-settings', SliderSettingController::class);
         
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");

@@ -33,7 +33,7 @@ if (!function_exists("storeFile")) {
         
         try {
             $fileOriginalName = explode(".", $file->getClientOriginalName())[0];
-            $filename = $fileOriginalName . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+            $filename = $fileOriginalName . '_ismo_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
             $contents = $file->get();
             Storage::disk('app')->put($dir . $filename, $contents);
         } catch (\Exception $ex) {
@@ -72,10 +72,11 @@ if (!function_exists('downloadFile')) {
     {
         $filename = basename($file);
         list($filename, $ext) = explode(".", $filename);
-        $filename = explode("_", $filename);
 
-        if (count($filename) > 1) {
+        if (strpos($filename, "_ismo_") !== false) {
+            $filename = explode("_", $filename);
             unset($filename[count($filename) - 1]);
+            unset($filename[count($filename) - 2]);
         }
         
         $actualFilename = implode("_", $filename)  . '.' . $ext;

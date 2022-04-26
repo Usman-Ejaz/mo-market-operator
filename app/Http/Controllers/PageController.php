@@ -50,9 +50,12 @@ class PageController extends Controller
         $data = $this->validateRequest($page);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
-        $page = Page::create($data);
 
-        $this->storeImage($page);
+        if ($request->hasFile('image')) {
+            $data['image'] = storeFile(Page::STORAGE_DIRECTORY, $request->file('image'));
+        }
+
+        $page = Page::create($data);
 
         if ($request->action === "Published") {
             $page->published_at = now();
@@ -104,17 +107,18 @@ class PageController extends Controller
         $data = $this->validateRequest($cms_page);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
-        $cms_page->update($data);
-
+        
         if ($request->action === "Unpublished") {
-            $cms_page->published_at = null;
-            $cms_page->save();
+            $data['published_at'] = null;
         } else if ($request->action === "Published") {
-            $cms_page->published_at = now();
-            $cms_page->save();
+            $date['published_at'] = now();
         }
 
-        $this->storeImage($cms_page, $previousImage);
+        if ($request->hasFile('image')) {
+            $data['image'] = storeFile(Page::STORAGE_DIRECTORY, $request->file('image'), $previousImage);
+        }
+        
+        $cms_page->update($data);
 
         $request->session()->flash('success', "Page {$request->action} Successfully!");
         return redirect()->route('admin.pages.index');
@@ -190,7 +194,7 @@ class PageController extends Controller
             'slug' => 'required|unique:pages,slug,'.$page->id,
             'description' => 'required',
             'keywords' => 'nullable',
-            'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
+            'image' => 'sometimes|file|mimes:'. str_replace("|", ",", config('settings.image_file_extensions')) .'|max:' . config('settings.maxImageSize'),
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'required',
