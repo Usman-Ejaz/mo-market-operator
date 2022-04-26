@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\SliderImage;
+use App\Models\SliderSetting;
 use Illuminate\Http\Request;
 
 class SliderImageApiController extends BaseApiController
@@ -47,11 +48,13 @@ class SliderImageApiController extends BaseApiController
     {
         try {
             $sliderImages = SliderImage::orderByImageOrder()->select("slot_one", "slot_two", "url", "image")->get();
-        
+
+            
             if ($sliderImages->count() > 0) {
-                return $this->sendResponse($sliderImages, "Found.");
+                $sliderSettings = SliderSetting::get();
+                return $this->sendResponse(['settings' => $sliderSettings, 'slider_images' => $sliderImages], __("messages.success"));
             } else {
-                return $this->sendResponse([], "Data not found.");
+                return $this->sendResponse([], __("messages.data_not_found"));
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);

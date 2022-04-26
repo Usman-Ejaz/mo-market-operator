@@ -193,7 +193,7 @@ class PostController extends Controller
             'slug' => 'required|unique:posts,slug,'.$post->id,
             'description' => 'required',
             'keywords' => 'nullable',
-            'image' => 'sometimes|file|image|max:' . config('settings.maxImageSize'),
+            'image' => 'sometimes|file|mimes:'. str_replace("|", ",", config('settings.image_file_extensions')) .'|max:' . config('settings.maxImageSize'),
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'post_category' => 'required|integer',

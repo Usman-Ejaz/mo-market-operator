@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-8">
 			<div class="form-group">
 				<label for="post_image" class="form-label">Post Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
 				<input class="form-control" type="file" id="post_image" name="image">
@@ -44,7 +44,7 @@
 				@endif
 			</div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<div class="form-group">
 				<label>Category <span class="text-danger">*</span></label>
 				<select class="custom-select" name="post_category" id="post_category">

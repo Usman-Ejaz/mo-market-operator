@@ -47,7 +47,13 @@ class FaqController extends Controller
         abort_if(!hasPermission("faqs", "create"), 401, __('messages.unauthorized_action'));
 
         $faq = new Faq();
-        $faq = Faq::create($this->validateRequest($faq) );
+        $data = $this->validateRequest($faq);
+
+        if ($request->action === "Published") {
+            $data['published_at'] = now();
+        }
+
+        $faq = Faq::create($data);
         
         $request->session()->flash('success', "Faq {$request->action} Successfully!");
         return redirect()->route('admin.faqs.index');
@@ -92,7 +98,15 @@ class FaqController extends Controller
     {   
         abort_if(!hasPermission("faqs", "edit"), 401, __('messages.unauthorized_action'));
 
-        $faq->update($this->validateRequest($faq));
+        $data = $this->validateRequest($faq);
+
+        if ($request->action === "Published") {
+            $data['published_at'] = now();
+        } else if ($request->action === "Unpublished") {
+            $data['published_at'] = null;
+        }
+
+        $faq->update($data);
 
         $request->session()->flash('success', "Faq {$request->action} Successfully!");
         return redirect()->route('admin.faqs.index');

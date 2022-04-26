@@ -24,6 +24,7 @@ use App\Models\Role;
 use App\Models\SearchStatistic;
 use App\Models\Settings;
 use App\Models\SliderImage;
+use App\Models\SliderSetting;
 use App\Models\StaticBlock;
 use App\Models\Subscriber;
 use App\Models\User;
@@ -150,6 +151,8 @@ class DatabaseSeeder extends Seeder
 
         // For Client Attachment
         ClientAttachment::factory(20)->create();
+
+        SliderSetting::factory(1)->create();
     }
 
 
