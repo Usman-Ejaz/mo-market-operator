@@ -21,7 +21,7 @@ class PagesApiController extends BaseApiController
      * 
      * @OA\Get(
      *      path="/pages/{slug}",
-     *      operationId="show",
+     *      operationId="showPage",
      *      tags={"Pages"},
      *      summary="Get Specific Page against slug",
      *      description="Returns single Page",
@@ -49,7 +49,7 @@ class PagesApiController extends BaseApiController
      *      )
      *  )
      */
-    public function show($pageSlug)
+    public function showPage($pageSlug)
     {
         if ($pageSlug === null || $pageSlug === "") {
             return $this->sendError('error', ["errors" => 'slug field is missing.'], 500);
