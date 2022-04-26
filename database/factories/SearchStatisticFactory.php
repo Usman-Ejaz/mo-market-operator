@@ -16,7 +16,7 @@ class SearchStatisticFactory extends Factory
     {
         return [
             'keyword' => $this->faker->name(),
-            'count' => $this->faker->randomElement([1, 1000])
+            'count' => $this->faker->numberBetween(1, 1000)
         ];
     }
 }
