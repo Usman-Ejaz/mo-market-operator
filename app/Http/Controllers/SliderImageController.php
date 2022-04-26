@@ -48,7 +48,7 @@ class SliderImageController extends Controller
         $data['image'] = storeFile(SliderImage::STORAGE_DIRECTORY, $request->file('image'), null);
         SliderImage::create($data);
 
-        $request->flash('success', 'Slider image created successfully!');
+        $request->session()->flash('success', 'Slider image created successfully!');
         return redirect()->route('admin.slider-images.index');
     }
 
@@ -96,7 +96,7 @@ class SliderImageController extends Controller
         }
         $sliderImage->update($data);
 
-        $request->flash('success', 'Slider image updated successfully!');
+        $request->session()->flash('success', 'Slider image updated successfully!');
         return redirect()->route('admin.slider-images.index');
     }
 
