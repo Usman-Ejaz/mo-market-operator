@@ -21,7 +21,7 @@ class FaqApiController extends BaseApiController
     /** 
      * @OA\Get(
      *      path="/faqs",
-     *      operationId="show",
+     *      operationId="showFaqs",
      *      tags={"Faqs"},
      *      summary="Get list of Published faqs",
      *      description="Returns list of faqs",
@@ -44,7 +44,7 @@ class FaqApiController extends BaseApiController
      *      ),
      *  )
      */
-    public function show()
+    public function showFaqs()
     {
         try {
             $faqs = Faq::published()->oldest()->get();

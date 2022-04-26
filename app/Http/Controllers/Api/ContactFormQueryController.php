@@ -24,7 +24,7 @@ class ContactFormQueryController extends BaseApiController
      * 
      * @OA\Post(
      *      path="/submit-query",
-     *      operationId="store",
+     *      operationId="submit",
      *      tags={"Contact Us"},
      *      summary="Submit Constact Form Query",
      *      description="Submit Constact Form Query in the resource",
@@ -80,7 +80,7 @@ class ContactFormQueryController extends BaseApiController
      *      )
      *  )
      */
-    public function store(Request $request) 
+    public function submit(Request $request) 
     {
         try {
             $validator = Validator::make($request->all(), [
