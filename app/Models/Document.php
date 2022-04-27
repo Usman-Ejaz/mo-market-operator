@@ -35,6 +35,11 @@ class Document extends Model
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
+
+    public function getImageAttribute($value)
+    {
+        return $value ? serveFile(Document::STORAGE_DIRECTORY, $value) : null;
+    }
     
     /**
      * getFileAttribute
@@ -63,7 +68,7 @@ class Document extends Model
 
     // Scope Queries
     public function scopePublished ($query) {
-        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "created_at");
+        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "created_at", "image");
     }
 
     public function isPublished() {

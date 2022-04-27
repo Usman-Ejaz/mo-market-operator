@@ -48,7 +48,7 @@ class DocumentsApiController extends BaseApiController
     public function getPublishedDocs()
     {
         try {
-            $docs = Document::published()->with('category')->latest()->get();
+            $docs = Document::published()->with('category:id,name')->latest()->get();
 
             if ($docs->count() > 0) {
                 return $this->sendResponse(DocumentResource::collection($docs), "Success");

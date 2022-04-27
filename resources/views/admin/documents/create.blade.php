@@ -111,6 +111,11 @@
 				keywords: {
 					notNumericValues: true
 				},
+				image: {
+					required: true,
+					extension: '{{ config("settings.image_file_extensions") }}',
+					maxfilesize: '{{ config("settings.maxImageSize") }}'
+				},
 				'file[]': {
 					required: true,
 					extension: ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'],
