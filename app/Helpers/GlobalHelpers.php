@@ -76,7 +76,7 @@ if (!function_exists('downloadFile')) {
         if (strpos($filename, "_ismo_") !== false) {
             $filename = explode("_", $filename);
             unset($filename[count($filename) - 1]);
-            unset($filename[count($filename) - 2]);
+            unset($filename[count($filename) - 1]);
         }
         
         $actualFilename = implode("_", $filename)  . '.' . $ext;
