@@ -7,41 +7,7 @@ use Illuminate\Http\Request;
 
 class SitemapApiController extends BaseApiController
 {
-    /**
-     * 
-     * @OA\Tag(
-     *     name="Sitemap",
-     *     description="API Endpoints of Sitemap"
-     * )
-     * 
-     */ 
-
-    /** 
-     * @OA\Get(
-     *      path="/sitemap",
-     *      operationId="index",
-     *      tags={"Sitemap"},
-     *      summary="Get list of Published Pages",
-     *      description="Returns list of Pages",
-     *      security={{"BearerAppKey": {}}},
-     *      @OA\Response(
-     *          response=200,
-     *          description="Success"          
-     *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthorized",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Could not found",
-     *      ),
-     *  )
-     */
+    
     public function index()
     {
         try {
