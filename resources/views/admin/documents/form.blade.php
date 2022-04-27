@@ -38,7 +38,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-12">
 			<div class="form-group">
 				<label for="file" class="form-label">Document File <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, txt, ppt, pptx, csv, xls, xlsx, pdf, odt)</small> </label>
 				<input class="form-control" type="file" id="file" name="file[]" onchange="resetConvertCheckbox(event)" multiple>
@@ -65,6 +65,24 @@
 					<input type="checkbox" class="form-check-input" id="convert" name="convert" value="1" onchange="validateFileExtension(event)">
 					<label class="form-check-label" for="convert"> Convert File To PDF <small>(Allowed conversion types are doc, docx, txt, ppt, pptx, odt)</small></label>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				<label for="image" class="form-label">Document Image <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are {{ str_replace("|", ",", config('settings.image_file_extensions')) }})</small> </label>
+				<input class="form-control" type="file" id="image" name="image">
+				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
+				@if(isset($document->image) && !empty($document->image))
+					<small class="imageExists">
+						<a href="{{ $document->image }}" target="_blank">
+							<img src="{{ $document->image }}" target="_blank" class="img-thumbnail" style="width: 23%;" />
+						</a>
+						<span class="btn-sm btn-danger float-right" id="deleteImage" title="Delete Image"><i class="fa fa-trash"></i></span>
+					</small>
+				@endif
 			</div>
 		</div>
 	</div>
