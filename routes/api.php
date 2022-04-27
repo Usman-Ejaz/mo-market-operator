@@ -82,5 +82,5 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');
     Route::get('close-chat', [ChatbotQueriesController::class, 'sendChatHistoryEmail'])->name('chatbot.send-emails');
 
-    Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
+    Route::get('sitemap', [MenuApiController::class, 'getSitemapMenu'])->name("menus.getSitemapMenu");
 });
