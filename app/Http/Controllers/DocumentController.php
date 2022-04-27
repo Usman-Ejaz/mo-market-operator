@@ -73,6 +73,10 @@ class DocumentController extends Controller
         
         $data['file'] = trim($filenames, ",");
 
+        if ($request->hasFile('image')) {
+            $data['image'] = storeFile(Document::STORAGE_DIRECTORY, $request->file('image'));
+        }
+
         if ($request->action === "Published") {
             $data['published_at'] = now();
         }
@@ -125,6 +129,10 @@ class DocumentController extends Controller
         $data = $this->validateRequest($document);
 
         $data['file'] = $this->handleFileUpload($document, $request);
+
+        if ($request->hasFile('image')) {
+            $data['image'] = storeFile(Document::STORAGE_DIRECTORY, $request->file('image'), $document->image);
+        }
         
         if ($request->action === "Published") {
             $data['published_at'] = now();
@@ -205,12 +213,13 @@ class DocumentController extends Controller
         }
     }
 
-    private function validateRequest($document){
+    private function validateRequest($document) {
         $rule = [
             'title' => 'required|min:3',
             'keywords' => 'nullable',
             'category_id' => 'required',
             'file' => 'required',
+            'image' => 'required|image|max:' . config('settings.maxImageSize'),
             'created_by' => '',
             'modified_by' => ''
         ];
@@ -219,8 +228,13 @@ class DocumentController extends Controller
             unset($rule['file']);
         }
 
+        if ($document->image != "" && $document->image != null) {
+            unset($rule['image']);
+        }
+
         return request()->validate($rule, [
-            'file.max' => __('messages.max_file', ['limit' => '5 MB'])
+            'file.max' => __('messages.max_file', ['limit' => '5 MB']),
+            'image.max' => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }
 

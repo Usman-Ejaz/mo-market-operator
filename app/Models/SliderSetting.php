@@ -16,7 +16,7 @@ class SliderSetting extends Model
         2 => ['label' => 'Linear', 'name' => 'linear'],
         3 => ['label' => 'Ease In', 'name' => 'ease-in'],
         4 => ['label' => 'Ease Out', 'name' => 'ease-out'],
-        5 => ['label' => 'Ease In Out', 'name' => 'ease-in-out'],
+        5 => ['label' => 'Ease In Out', 'name' => 'ease-in-out']
     ];
 
     public static function get()

@@ -121,6 +121,15 @@
 				keywords: {
 					notNumericValues: true
 				},
+				image: {
+					required: {
+						depends: function () {
+							return $(".imageExists").length > 0 ? false : true;
+						}
+					},
+					extension: '{{ config("settings.image_file_extensions") }}',
+					maxfilesize: '{{ config("settings.maxImageSize") }}'
+				},
 				'file[]': {
 					required: {
 						depends: function() {
@@ -159,6 +168,13 @@
 				$(this).parent().parent().remove();
 				// $('.fileExists').remove();
 				$("#removeFile").val(`${paths.toString()}`);
+			}
+		});
+
+		$('#deleteImage').on("click", function () {
+			if (confirm('Are you sure you want to delete this image?')) {
+				$(this).parent().remove();
+				// $("#removeFile").val(`${paths.toString()}`);
 			}
 		});
 
