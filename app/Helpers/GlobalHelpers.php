@@ -130,3 +130,11 @@ if (!function_exists('parseDate')) {
         return Carbon::parse($date)->format('Y-m-d H:i:s');
     }
 }
+
+if (!function_exists('str_slug')) {
+
+    function str_slug($string)
+    {
+        return \Illuminate\Support\Str::slug($string);
+    }
+}

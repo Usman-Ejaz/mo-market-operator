@@ -86,7 +86,7 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="postCategories[{{ $id }}]" value="" data-post="{{ $id }}" data-title="{{ $title }}">
+                                                <input type="checkbox" name="postCategories[{{ $id }}]" value="" data-slug="/{{ \Illuminate\Support\Str::plural(strtolower($title)) }}" data-post="{{ $id }}" data-title="{{ $title }}">
                                                 {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}
                                                 <!-- <a href="{{ route('admin.pages.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a> -->
                                             </label>
@@ -116,7 +116,7 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-doc="{{ $id }}" data-title="{{ $name }}">
+                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-slug="/{{ \Illuminate\Support\Str::plural(str_slug($name)) }}" data-doc="{{ $id }}" data-title="{{ $name }}">
                                                 {{ \Illuminate\Support\Str::limit($name, 35, $end='...') }}
                                                 <a href="{{ route('admin.document-categories.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a>
                                             </label>
@@ -303,7 +303,7 @@
                 $("input[name^='postCategories']:checkbox:checked").each(function () {
                     lastSubMenuId = lastSubMenuId + 1;
                     $('ol#submenu').append(`
-                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-post="${$(this).data('post')}" data-title="${$(this).data('title')}">
+                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-post="${$(this).data('post')}" data-title="${$(this).data('title')}" data-slug="${$(this).data('slug')}">
                             <div class="dd-handle dd3-handle"></div>
                             <div class="dd3-content">
                                 ${lastSubMenuId} ${'('} post category ${')'} ${$(this).data('title')}
@@ -323,7 +323,7 @@
                 $("input[name^='documentCategories']:checkbox:checked").each(function () {
                     lastSubMenuId = lastSubMenuId + 1;
                     $('ol#submenu').append(`
-                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}">
+                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}" data-slug="${$(this).data('slug')}">
                             <div class="dd-handle dd3-handle"></div>
                             <div class="dd3-content">
                                 ${lastSubMenuId} ${'('} document category ${')'} ${$(this).data('title')}
