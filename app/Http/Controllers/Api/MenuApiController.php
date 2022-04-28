@@ -17,10 +17,6 @@ class MenuApiController extends BaseApiController
      *     description="API Endpoints of Menus"
      * )
      * 
-     * @OA\Tag(
-     *     name="Sitemap",
-     *     description="API Endpoints of Sitemap"
-     * )
      */ 
 
     /** 
@@ -75,48 +71,5 @@ class MenuApiController extends BaseApiController
         }
     }
 
-    /** 
-     * @OA\Get(
-     *      path="/sitemap",
-     *      operationId="getSitemapMenu",
-     *      tags={"Sitemap"},
-     *      summary="Get list of Sitemap Links",
-     *      description="Returns list of Sitemap Links",
-     *      security={{"BearerAppKey": {}}},
-     *      @OA\Response(
-     *          response=200,
-     *          description="Success"          
-     *       ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthorized",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Could not found",
-     *      ),
-     *  )
-     */
-    public function getSitemapMenu()
-    {
-        try {
-            $currentTheme = settings('current_theme');
-
-            $menu = Menu::byTheme($currentTheme)->where('identifier', '=', 'sitemap')->select('name', 'submenu_json')->first();
-
-            $menu->submenu_json = json_decode($menu->submenu_json);
-
-            if ($menu) {
-                return $this->sendResponse($menu, __("messages.success"));
-            } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
-            }
-        } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
-        }
-    }
+    
 }
