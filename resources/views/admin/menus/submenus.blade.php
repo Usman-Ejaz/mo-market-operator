@@ -86,7 +86,7 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="postCategories[{{ $id }}]" value="" data-slug="/{{ \Illuminate\Support\Str::plural(strtolower($title)) }}" data-post="{{ $id }}" data-title="{{ $title }}">
+                                                <input type="checkbox" name="postCategories[{{ $id }}]" value="" data-slug="{{ \Illuminate\Support\Str::plural(strtolower($title)) }}" data-post="{{ $id }}" data-title="{{ $title }}">
                                                 {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}
                                                 <!-- <a href="{{ route('admin.pages.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a> -->
                                             </label>
@@ -116,7 +116,7 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-slug="/{{ \Illuminate\Support\Str::plural(str_slug($name)) }}" data-doc="{{ $id }}" data-title="{{ $name }}">
+                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-slug="{{ \Illuminate\Support\Str::plural(str_slug($name)) }}" data-doc="{{ $id }}" data-title="{{ $name }}">
                                                 {{ \Illuminate\Support\Str::limit($name, 35, $end='...') }}
                                                 <a href="{{ route('admin.document-categories.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a>
                                             </label>
