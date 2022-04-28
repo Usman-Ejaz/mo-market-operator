@@ -46,15 +46,34 @@ class SitemapApiController extends BaseApiController
         try {
             $currentTheme = settings('current_theme');
 
-            $menus = Menu::byTheme($currentTheme)->select('name', 'submenu_json')->get();
+            $menus = Menu::byTheme($currentTheme)->active()->select('name', 'submenu_json', 'identifier')->get();
 
+            $menuArr = [];
+            $additionalMenu = [];
             foreach ($menus as $menu) {
                 $menu->children = json_decode($menu->submenu_json);
                 unset($menu->submenu_json);
+
+                if ($menu->identifier === "main_menu") {
+                    $submenu = $menu->children;
+                    foreach ($submenu as $m) {
+                        $menuArr[] = $m;
+                    }
+                } else if ($menu->identifier === "top_menu_1") {
+                    $menuArr[] = $menu;
+                } else {
+                    $additionalMenu[] = $menu->children;
+                }
             }
 
-            if ($menus) {
-                return $this->sendResponse($menus, __("messages.success"));
+            $menuArr[] = [
+                'title' => 'Additional Links',
+                'anchor' => '#',
+                'children' => collect($additionalMenu)->flatten()
+            ];
+
+            if ($menuArr) {
+                return $this->sendResponse($menuArr, __("messages.success"));
             } else {
                 return $this->sendResponse([], __("messages.data_not_found"));
             }
