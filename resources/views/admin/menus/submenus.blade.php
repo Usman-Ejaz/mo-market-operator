@@ -109,7 +109,7 @@
 
                         <div class="card-body">
 
-                            @if( is_array($documentCategories) && count($documentCategories) )
+                            @if(is_array($documentCategories) && count($documentCategories))
                                 <input type="text" name="search-categories" id="document-categories" class="form-control mb-3 search-box" placeholder="Search Categories">
                                 <ul id="pages" class="document-category-list">
                                 @foreach($documentCategories as $name => $id)
@@ -220,27 +220,6 @@
                 }
             });
 
-            // Update json for submenu order
-            var updateOutput = function(e)
-            {
-                var list = e.length ? e : $(e.target),
-                output = list.data('output');
-                if (window.JSON) {
-                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
-                } else {
-                    output.val('JSON browser support required for this demo.');
-                }
-            };
-
-            // activate Nestable for list
-            $('#nestable').nestable({
-                group: 1,
-                maxDepth: 10
-            }).on('change', updateOutput);
-
-            // output initial serialised data
-            updateOutput($('#nestable').data('output', $('#nestable-output')));
-
             // Activate button based on page checkboxes
             $('#add_pages_to_menu').prop("disabled", true);
             $('#add_post_categories_to_menu').prop("disabled", true);
@@ -269,6 +248,27 @@
                     $('#add_doc_categories_to_menu').attr('disabled',true);
                 }
             }));
+
+            // Update json for submenu order
+            var updateOutput = function(e)
+            {
+                var list = e.length ? e : $(e.target),
+                output = list.data('output');
+                if (window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                } else {
+                    output.val('JSON browser support required for this demo.');
+                }
+            };
+
+            // activate Nestable for list
+            $('#nestable').nestable({
+                group: 1,
+                maxDepth: 10
+            }).on('change', updateOutput);
+
+            // output initial serialised data
+            updateOutput($('#nestable').data('output', $('#nestable-output')));            
 
             // Stop form to submit by clicking the enter button
             $(window).keydown(function(event){
@@ -450,10 +450,9 @@
                 e.preventDefault();
 
                 if (!validateFields()) return;
-
+                let menuIdToUpdate = $('#newCurrentMenuId').val();
                 if (isEditing) {
-                    let menuIdToUpdate = $('#newCurrentMenuId').val();
-
+                    
                     // Set title
                     let title = $('#NewMenuTitle').val();
                     $(`li[data-id="${menuIdToUpdate}"]`).attr('data-title', title);
@@ -486,12 +485,10 @@
                 }
 
                 lastSubMenuId = lastSubMenuId + 1;
-                let menuIdToUpdate = $('#newCurrentMenuId').val();
 
                 // Set title
-                let title = '';
-                if ($('#NewMenuTitle').val() !== '') {
-                    title = $('#NewMenuTitle').val();
+                let title = $('#NewMenuTitle').val();
+                if (title !== '') {
                     $(`li[data-id="${menuIdToUpdate}"]`).attr('data-title', title);
                     $(`li[data-id="${menuIdToUpdate}"]`).find('.dd3-content').text();
                 }

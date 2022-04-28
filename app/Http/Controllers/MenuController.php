@@ -176,9 +176,10 @@ class MenuController extends Controller
                 }
             }
 
-            $this->lastSubMenuId = $item['id'];
+            // $this->lastSubMenuId = $item['id'];
+            $this->lastSubMenuId++;
 
-            $html .= '<li class="dd-item dd3-item" data-id="'.$item['id'].'" '.$dataAttribute.' data-title="'. $item['title'].'">
+            $html .= '<li class="dd-item dd3-item" data-id="'.$this->lastSubMenuId.'" '.$dataAttribute.' data-title="'. $item['title'].'">
                     <div class="dd-handle dd3-handle"></div><div class="dd3-content">'. $title .'</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>';
 
             if ( isset($item['children']) && count($item['children']) > 0) {
