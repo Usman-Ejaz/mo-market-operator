@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MediaLibraryResource;
+use App\Models\DocumentCategory;
 use App\Models\MediaLibrary;
 use App\Models\MediaLibraryFile;
 use App\Models\Post;
@@ -147,6 +148,24 @@ class PublishedPostApiController extends BaseApiController
                     'link_prefix' => '/' . $slug
                 ];
             }
+
+            $docsCategories = DocumentCategory::select('slug', 'name')->get();
+
+            $docsMenus = [];
+            foreach ($docsCategories as $category) {
+                $docsMenus[] = [
+                    'title' => $category->name,
+                    'slug' => $category->slug,
+                    'link_prefix' => '/' . $category->slug
+                ];
+            }
+
+            $menus[] = [
+                'title' => 'Publications',
+                'slug' => 'publications',
+                'link_prefix' => '#',
+                'children' => $docsMenus
+            ];
 
             return $this->sendResponse($menus, 'success');
         } catch (\Exception $ex) {
