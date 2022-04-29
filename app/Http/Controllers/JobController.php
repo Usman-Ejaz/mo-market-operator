@@ -338,7 +338,7 @@ class JobController extends Controller
             'created_by' => '',
             'modified_by' => ''
         ], [
-            "image.max" => __('messages.max_file', ['limit' => '2 MB']),
+            "image.*.max" => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }
 
