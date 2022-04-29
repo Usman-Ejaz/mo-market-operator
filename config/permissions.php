@@ -231,4 +231,24 @@ return [
             "delete" => "Delete",
         ]
     ],
+    [
+        "name" => "our_teams",
+        "display_name" => "Our Team",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+        ]
+    ],
+    [
+        "name" => "team_members",
+        "display_name" => "Team Members",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+        ]
+    ],
 ];

@@ -140,6 +140,17 @@ class ChatbotQueriesController extends BaseApiController
         ];
     }
     
+
+    // @OA\Parameter(
+    //     *          name="x-initiator-key",
+    //     *          description="Chat initiator unique token",
+    //     *          required=true,
+    //     *          in="header",
+    //     *          @OA\Schema(
+    //     *              type="string"
+    //     *          )
+    //     *      ),
+
     /**
      * 
      * @OA\Post(
@@ -149,16 +160,6 @@ class ChatbotQueriesController extends BaseApiController
      *      summary="Submit asked query and matches it",
      *      description="Submit asked query and matches it in the resource",
      *      security={{"BearerAppKey": {}}},
-     *      
-     *      @OA\Parameter(
-     *          name="x-initiator-key",
-     *          description="Chat initiator unique token",
-     *          required=true,
-     *          in="header",
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
      * 
      *      @OA\RequestBody(
      *          required=true,
@@ -194,18 +195,18 @@ class ChatbotQueriesController extends BaseApiController
      */
     public function askQuestion(Request $request)
     {
-        $initiatorKey = $request->header('x-initiator-key');
+        // $initiatorKey = $request->header('x-initiator-key');
 
-        if ($initiatorKey === null || $initiatorKey === "") {
-            return $this->sendError('error', ['errors' => 'Initiator key is missing.'], 400);
-        }
+        // if ($initiatorKey === null || $initiatorKey === "") {
+        //     return $this->sendError('error', ['errors' => 'Initiator key is missing.'], 400);
+        // }
 
         try {
-            $initiator = ChatbotInitiator::findByKey($initiatorKey)->select('name', 'email', 'company', 'phone', 'id')->first();
+            // $initiator = ChatbotInitiator::findByKey($initiatorKey)->select('name', 'email', 'company', 'phone', 'id')->first();
 
-            if (!$initiator) {
-                return $this->sendError('error', ['errors' => 'Chatbot initiator could not find.'], 404);
-            }
+            // if (!$initiator) {
+            //     return $this->sendError('error', ['errors' => 'Chatbot initiator could not find.'], 404);
+            // }
 
             $questions = ChatBotKnowledgeBase::select('question', 'answer')->get();
             $chatbotAnswer = null;
@@ -223,16 +224,16 @@ class ChatbotQueriesController extends BaseApiController
                 // 1. log question with answer against initiatorID in the DB.
                 // 2. send response to client with answer.
 
-                ChatbotHistory::create([
-                    'question' => $request->question,
-                    'answer' => $chatbotAnswer->answer,
-                    'chatbot_initiator_id' => $initiator->id
-                ]);
+                // ChatbotHistory::create([
+                //     'question' => $request->question,
+                //     'answer' => $chatbotAnswer->answer,
+                //     'chatbot_initiator_id' => $initiator->id
+                // ]);
 
                 return $this->sendResponse(['answer' => $chatbotAnswer->answer], 'success');
             }
 
-            return $this->sendResponse($initiator, 'answer not found', 203);
+            return $this->sendError(__('messages.error'), ['errors' => __('messages.data_not_found')], 404);
             // send initiator details with status code 203.
         } catch (\Exception $ex) {
             return $this->sendError(__('messages.something_wrong'), ['errors' => $ex->getMessage()], 500);

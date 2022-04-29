@@ -45,9 +45,13 @@ class DocumentCategoryController extends Controller
         abort_if(!hasPermission("document_categories", "create"), 401, __('messages.unauthorized_action'));
 
         $category = new DocumentCategory();
-        $category = DocumentCategory::create( $this->validateRequest($category) );
+        
+        $data = $this->validateRequest($category);
+        $data['slug'] = str_slug($data['name']);
 
-        $request->session()->flash('success', 'Category Added Successfully!');
+        $category = DocumentCategory::create($data);
+
+        $request->session()->flash('success', 'Category added successfully!');
         return redirect()->route('admin.document-categories.index');
     }
 
@@ -89,6 +93,7 @@ class DocumentCategoryController extends Controller
         abort_if(!hasPermission("document_categories", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($documentCategory);
+        $data['slug'] = str_slug($data['name']);
         $documentCategory->update($data);
 
         $request->session()->flash('success', 'Category Updated Successfully!');
