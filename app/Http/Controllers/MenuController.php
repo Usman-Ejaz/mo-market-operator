@@ -152,7 +152,7 @@ class MenuController extends Controller
         {
             $title = ''; $dataAttribute = ''; $type ='';
             if( isset($item['page']) ){
-                $dataAttribute = 'data-page="'.$item['page'].'" data-slug="'. $item['slug'] ?: str_slug($item['page']) .'"';
+                $dataAttribute = 'data-page="'.$item['page'].'" data-slug="'. isset($item['slug']) ? $item['slug'] : str_slug($item['page']) .'"';
                 $type="page";
             } else if ( isset($item['anchor']) ){
                 $dataAttribute = 'data-anchor="'.$item['anchor'].'"';
