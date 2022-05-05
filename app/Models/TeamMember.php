@@ -22,4 +22,9 @@ class TeamMember extends Model
     {
         return $this->belongsTo(Manager::class, 'manager_id', 'id');
     }
+
+    public function scopeSortByOrder($query)
+    {
+        return $query->orderBy('order', 'asc');
+    }
 }
