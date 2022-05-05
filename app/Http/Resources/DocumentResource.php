@@ -21,7 +21,7 @@ class DocumentResource extends JsonResource
             'filenames' => $this->file,
             'keywords' => $this->keywords,
             'slug' => $this->slug,
-            'category' => $this->category->name,
+            'category' => $this->category->slug,
             'date' => $this->created_at
         ];
     }
