@@ -158,10 +158,10 @@ class MenuController extends Controller
                 $dataAttribute = 'data-anchor="'.$item['anchor'].'"';
                 $type="anchor";
             } else if (isset($item['post'])) {
-                $dataAttribute = 'data-post="'.$item['post'].'" data-slug="'. $item['slug'] ?: str_slug($item['post']) .'"';
+                $dataAttribute = 'data-post="'.$item['post'].'" data-slug="'. isset($item['slug']) ? $item['slug'] : str_slug($item['post']) .'"';
                 $type="post category";
             } else if (isset($item['doc'])) {
-                $dataAttribute = 'data-doc="'.$item['doc'].'" data-slug="'. $item['slug'] ?: str_slug($item['doc']) .'"';
+                $dataAttribute = 'data-doc="'.$item['doc'].'" data-slug="'. isset($item['slug']) ? $item['slug'] : str_slug($item['doc']) .'"';
                 $type="document category";
             }
 
