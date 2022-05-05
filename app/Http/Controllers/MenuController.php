@@ -152,16 +152,16 @@ class MenuController extends Controller
         {
             $title = ''; $dataAttribute = ''; $type ='';
             if( isset($item['page']) ){
-                $dataAttribute = 'data-page="'.$item['page'].'" data-slug="'. array_key_exists("slug", $item['slug']) ? $item['slug'] : str_slug($item['page']) .'"';
+                $dataAttribute = 'data-page="'.$item['page'].'" data-slug="'. array_key_exists("slug", $item) ? $item['slug'] : str_slug($item['page']) .'"';
                 $type="page";
             } else if ( isset($item['anchor']) ){
                 $dataAttribute = 'data-anchor="'.$item['anchor'].'"';
                 $type="anchor";
             } else if (isset($item['post'])) {
-                $dataAttribute = 'data-post="'.$item['post'].'" data-slug="'. array_key_exists("slug", $item['slug']) ? $item['slug'] : str_slug($item['post']) .'"';
+                $dataAttribute = 'data-post="'.$item['post'].'" data-slug="'. array_key_exists("slug", $item) ? $item['slug'] : str_slug($item['post']) .'"';
                 $type="post category";
             } else if (isset($item['doc'])) {
-                $dataAttribute = 'data-doc="'.$item['doc'].'" data-slug="'. array_key_exists("slug", $item['slug']) ? $item['slug'] : str_slug($item['doc']) .'"';
+                $dataAttribute = 'data-doc="'.$item['doc'].'" data-slug="'. array_key_exists("slug", $item) ? $item['slug'] : str_slug($item['doc']) .'"';
                 $type="document category";
             }
 
