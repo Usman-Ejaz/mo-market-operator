@@ -15,8 +15,10 @@ class DocumentFactory extends Factory
      */
     public function definition()
     {
+        $title = $this->faker->realText(50);
         return [
-            'title' => $this->faker->realText(50),
+            'title' => $title,
+            'slug' => str_slug($title),
             'keywords' => implode(",", $this->faker->randomElements(['pakistan', 'international', 'sports', 'finance', 'entertainment'], 2)),
             'file' => '',
             'published_at' => $this->faker->randomElement([null, now()]),

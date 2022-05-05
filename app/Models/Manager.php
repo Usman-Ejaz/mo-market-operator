@@ -28,4 +28,14 @@ class Manager extends Model
     {
         removeFile(self::STORAGE_DIRECTORY, $this->image);
     }
+
+    public function teamMembers()
+    {
+        return $this->hasMany(TeamMember::class, 'manager_id', 'id');
+    }
+
+    public function scopeSortByOrder($query)
+    {
+        return $query->orderBy('order', 'asc');
+    }
 }
