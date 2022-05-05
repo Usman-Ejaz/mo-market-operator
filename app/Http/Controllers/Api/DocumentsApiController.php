@@ -48,7 +48,7 @@ class DocumentsApiController extends BaseApiController
     public function getPublishedDocs()
     {
         try {
-            $docs = Document::published()->with('category:id,name')->latest()->get();
+            $docs = Document::published()->with('category:id,slug')->latest()->get();
 
             if ($docs->count() > 0) {
                 return $this->sendResponse(DocumentResource::collection($docs), "Success");
@@ -218,7 +218,7 @@ class DocumentsApiController extends BaseApiController
             $document = Document::published()->filterByCategory($category)->where('slug', '=', $slug)->first();
 
             if ($document) {
-                return $this->sendResponse($document, __('messages.success'));
+                return $this->sendResponse(new DocumentResource($document), __('messages.success'));
             } else {
                 return $this->sendError(__("messages.error"), ["errors" => __("messages.data_not_found")], 404);
             }
