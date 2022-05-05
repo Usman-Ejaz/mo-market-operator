@@ -13,7 +13,7 @@ class DocumentsApiController extends BaseApiController
     /**
      * 
      * @OA\Tag(
-     *     name="Documents",
+     *     name="Publications",
      *     description="API Endpoints of Documents"
      * )
      * 
@@ -23,7 +23,7 @@ class DocumentsApiController extends BaseApiController
      * @OA\Get(
      *      path="/documents",
      *      operationId="getPublishedDocs",
-     *      tags={"Documents"},
+     *      tags={"Publications"},
      *      summary="Get list of Published Documents",
      *      description="Returns list of Documents",
      *      security={{"BearerAppKey": {}}},
@@ -48,7 +48,7 @@ class DocumentsApiController extends BaseApiController
     public function getPublishedDocs()
     {
         try {
-            $docs = Document::published()->with('category:id,name')->latest()->get();
+            $docs = Document::published()->with('category:id,slug')->latest()->get();
 
             if ($docs->count() > 0) {
                 return $this->sendResponse(DocumentResource::collection($docs), "Success");
@@ -66,7 +66,7 @@ class DocumentsApiController extends BaseApiController
      * @OA\Post(
      *      path="/search-document?key=",
      *      operationId="search",
-     *      tags={"Documents"},
+     *      tags={"Publications"},
      *      summary="Search Document from the resource",
      *      description="Search Document from the resource",
      *      security={{"BearerAppKey": {}}},
@@ -107,6 +107,120 @@ class DocumentsApiController extends BaseApiController
                 return $this->sendResponse(DocumentResource::collection($docs), "Success");
             } else {
                 return $this->sendError("Could not found documents", ["errors" => "Could not found documents"], 404);
+            }
+        } catch (\Exception $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+        }
+    }
+
+
+    /**
+     * 
+     * @OA\Get(
+     *      path="/publications/{category}",
+     *      operationId="getDocumentsByCategory",
+     *      tags={"Publications"},
+     *      summary="Search Document from the resource against the specified category",
+     *      description="Search Document from the resource against the specified category",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Parameter(
+     *          name="category",
+     *          description="Get publications by category",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function getDocumentsByCategory($category)
+    {
+        try {
+            $docs = Document::published()->filterByCategory($category)->latest()->applyFilters(request())->get();
+
+            if ($docs->count() > 0) {
+                return $this->sendResponse(DocumentResource::collection($docs), "Success");
+            } else {
+                return $this->sendError(__("messages.error"), ["errors" => __("messages.data_not_found")], 404);
+            }
+        } catch (\Exception $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+        }
+    }
+
+    /**
+     * 
+     * @OA\Get(
+     *      path="/publications/{category}/{slug}",
+     *      operationId="getSingleDocument",
+     *      tags={"Publications"},
+     *      summary="Search Document from the resource against the specified category",
+     *      description="Search Document from the resource against the specified category",
+     *      security={{"BearerAppKey": {}}},
+     *      
+     *      @OA\Parameter(
+     *          name="category",
+     *          description="Get publications by category",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="slug",
+     *          description="Get publications by slug",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function getSingleDocument($category, $slug)
+    {
+        if ($category === null || $category === "") {
+            return $this->sendError('error', ["errors" => 'category field is missing.'], 500);
+        }
+
+        if ($slug === null || $slug === "") {
+            return $this->sendError('error', ["errors" => 'slug field is missing.'], 500);
+        }
+
+        try {
+            $document = Document::published()->filterByCategory($category)->where('slug', '=', $slug)->first();
+
+            if ($document) {
+                return $this->sendResponse(new DocumentResource($document), __('messages.success'));
+            } else {
+                return $this->sendError(__("messages.error"), ["errors" => __("messages.data_not_found")], 404);
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);

@@ -20,7 +20,8 @@ class DocumentResource extends JsonResource
             'thumbnail' => $this->image,
             'filenames' => $this->file,
             'keywords' => $this->keywords,
-            'category' => $this->category->name,
+            'slug' => $this->slug,
+            'category' => $this->category->slug,
             'date' => $this->created_at
         ];
     }

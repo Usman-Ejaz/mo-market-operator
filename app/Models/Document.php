@@ -68,7 +68,31 @@ class Document extends Model
 
     // Scope Queries
     public function scopePublished ($query) {
-        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "created_at", "image");
+        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "created_at", "image", "slug");
+    }
+
+    public function scopeFilterByCategory($query, $category)
+    {
+        return $query->whereHas('category', function ($q) use ($category) {
+            $q->where('slug', '=', $category);
+        });
+    }
+
+    public function scopeApplyFilters($query, $request)
+    {
+        if ($request->has('month')) {
+            $query = $query->whereMonth('created_at', '=', $request->get('month'));
+        }
+
+        if ($request->has('year')) {
+            $query = $query->whereYear('created_at', '=', $request->get('year'));
+        }
+
+        if ($request->has('sort')) {
+            $query = $query->orderBy('created_at', $request->get('sort'));
+        }
+
+        return $query;
     }
 
     public function isPublished() {

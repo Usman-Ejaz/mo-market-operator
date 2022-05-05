@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\SitemapApiController;
 use App\Http\Controllers\Api\SiteSearchApiController;
 use App\Http\Controllers\Api\SliderImageApiController;
 use App\Http\Controllers\Api\StaticBlockApiController;
+use App\Http\Controllers\Api\TeamsApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -76,7 +77,13 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get('posts/{category}', [PublishedPostApiController::class, "getPostsByCategory"])->name('posts.list');
     Route::get('posts/{category}/{slug}', [PublishedPostApiController::class, "getSinglePost"])->name('posts.show');
 
+    Route::get('publications/{category}', [DocumentsApiController::class, 'getDocumentsByCategory'])->name('documents.by-category');
+    Route::get('publications/{category}/{slug}', [DocumentsApiController::class, 'getSingleDocument'])->name('documents.show');
+
     Route::get('pages/{slug}', [PagesApiController::class, "showPage"])->name('pages.showPage');
+
+    Route::get('managers', [TeamsApiController::class, "getManagers"])->name('teams.managers');
+    Route::get('team/{manager_id}', [TeamsApiController::class, "getTeam"])->name('teams.team');
 
     Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'storeInitiatorDetails'])->name('chatbot.store-details');
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');

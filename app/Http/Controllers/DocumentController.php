@@ -51,6 +51,8 @@ class DocumentController extends Controller
 
         $document = new Document();
         $data = $this->validateRequest($document);
+
+        $data['slug'] = str_slug($data['title']);
                 
         $convertFiles = $request->convert !== null && $request->convert == '1';
 
@@ -127,6 +129,8 @@ class DocumentController extends Controller
         abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($document);
+        
+        $data['slug'] = str_slug($data['title']);
 
         $data['file'] = $this->handleFileUpload($document, $request);
 
@@ -214,11 +218,12 @@ class DocumentController extends Controller
     }
 
     private function validateRequest($document) {
+        
         $rule = [
-            'title' => 'required|min:3',
+            'title' => 'required|min:3|unique:documents,title,'.$document->id,
             'keywords' => 'nullable',
             'category_id' => 'required',
-            'file' => 'required',
+            'file' => 'required|max: ' . config('settings.maxDocumentSize'),
             'image' => 'required|image|max:' . config('settings.maxImageSize'),
             'created_by' => '',
             'modified_by' => ''

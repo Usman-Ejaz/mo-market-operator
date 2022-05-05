@@ -30,6 +30,10 @@ if (!function_exists("storeFile")) {
         if ($oldFile !== null) {
             removeFile($dir, $oldFile);
         }
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
         
         try {
             $fileOriginalName = explode(".", $file->getClientOriginalName())[0];
@@ -128,5 +132,30 @@ if (!function_exists('parseDate')) {
         }
 
         return Carbon::parse($date)->format('Y-m-d H:i:s');
+    }
+}
+
+if (!function_exists('str_slug')) {
+
+    function str_slug($string)
+    {
+        return \Illuminate\Support\Str::slug($string);
+    }
+}
+
+if (! function_exists('encodeBase64')) {
+    
+    function encodeBase64($key)
+    {
+        return base64_encode(base64_encode(base64_encode($key)));
+    }
+
+}
+
+if (! function_exists('decodeBase64')) {
+
+    function decodeBase64($key)
+    {
+        return base64_decode(base64_decode(base64_decode($key)));
     }
 }

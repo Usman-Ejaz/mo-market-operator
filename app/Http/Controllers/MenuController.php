@@ -152,16 +152,16 @@ class MenuController extends Controller
         {
             $title = ''; $dataAttribute = ''; $type ='';
             if( isset($item['page']) ){
-                $dataAttribute = 'data-page="'.$item['page'].'"';
+                $dataAttribute = 'data-page="'.$item['page'].'" data-slug="'. $item['slug'] .'"';
                 $type="page";
             } else if ( isset($item['anchor']) ){
                 $dataAttribute = 'data-anchor="'.$item['anchor'].'"';
                 $type="anchor";
             } else if (isset($item['post'])) {
-                $dataAttribute = 'data-post="'.$item['post'].'"';
+                $dataAttribute = 'data-post="'.$item['post'].'" data-slug="'. $item['slug'] .'"';
                 $type="post category";
             } else if (isset($item['doc'])) {
-                $dataAttribute = 'data-doc="'.$item['doc'].'"';
+                $dataAttribute = 'data-doc="'.$item['doc'].'" data-slug="'. $item['slug'] .'"';
                 $type="document category";
             }
 
@@ -176,9 +176,10 @@ class MenuController extends Controller
                 }
             }
 
-            $this->lastSubMenuId = $item['id'];
+            // $this->lastSubMenuId = $item['id'];
+            $this->lastSubMenuId++;
 
-            $html .= '<li class="dd-item dd3-item" data-id="'.$item['id'].'" '.$dataAttribute.' data-title="'. $item['title'].'">
+            $html .= '<li class="dd-item dd3-item" data-id="'.$this->lastSubMenuId.'" '.$dataAttribute.' data-title="'. $item['title'].'">
                     <div class="dd-handle dd3-handle"></div><div class="dd3-content">'. $title .'</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>';
 
             if ( isset($item['children']) && count($item['children']) > 0) {

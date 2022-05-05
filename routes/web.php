@@ -11,6 +11,7 @@ use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MenuController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\SliderImageController;
 use App\Http\Controllers\SliderSettingController;
 use App\Http\Controllers\StaticBlockController;
 use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\TeamMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -165,7 +167,13 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('slider-images', SliderImageController::class);
 
     Route::resource('slider-settings', SliderSettingController::class);
-        
+
+    Route::get('team-members/list', [TeamMemberController::class, 'list'])->name('team-members.list');
+    Route::resource('team-members', TeamMemberController::class);
+
+    Route::get('managers/list', [ManagerController::class, 'list'])->name('managers.list');
+    Route::resource('managers', ManagerController::class);
+    
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");
 

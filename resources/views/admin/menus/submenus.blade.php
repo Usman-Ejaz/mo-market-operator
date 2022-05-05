@@ -86,7 +86,7 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="postCategories[{{ $id }}]" value="" data-post="{{ $id }}" data-title="{{ $title }}">
+                                                <input type="checkbox" name="postCategories[{{ $id }}]" value="" data-slug="{{ \Illuminate\Support\Str::plural(strtolower($title)) }}" data-post="{{ $id }}" data-title="{{ $title }}">
                                                 {{ \Illuminate\Support\Str::limit($title, 35, $end='...') }}
                                                 <!-- <a href="{{ route('admin.pages.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a> -->
                                             </label>
@@ -109,14 +109,14 @@
 
                         <div class="card-body">
 
-                            @if( is_array($documentCategories) && count($documentCategories) )
+                            @if(is_array($documentCategories) && count($documentCategories))
                                 <input type="text" name="search-categories" id="document-categories" class="form-control mb-3 search-box" placeholder="Search Categories">
                                 <ul id="pages" class="document-category-list">
                                 @foreach($documentCategories as $name => $id)
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-doc="{{ $id }}" data-title="{{ $name }}">
+                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-slug="{{ \Illuminate\Support\Str::plural(str_slug($name)) }}" data-doc="{{ $id }}" data-title="{{ $name }}">
                                                 {{ \Illuminate\Support\Str::limit($name, 35, $end='...') }}
                                                 <a href="{{ route('admin.document-categories.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a>
                                             </label>
@@ -220,27 +220,6 @@
                 }
             });
 
-            // Update json for submenu order
-            var updateOutput = function(e)
-            {
-                var list = e.length ? e : $(e.target),
-                output = list.data('output');
-                if (window.JSON) {
-                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
-                } else {
-                    output.val('JSON browser support required for this demo.');
-                }
-            };
-
-            // activate Nestable for list
-            $('#nestable').nestable({
-                group: 1,
-                maxDepth: 10
-            }).on('change', updateOutput);
-
-            // output initial serialised data
-            updateOutput($('#nestable').data('output', $('#nestable-output')));
-
             // Activate button based on page checkboxes
             $('#add_pages_to_menu').prop("disabled", true);
             $('#add_post_categories_to_menu').prop("disabled", true);
@@ -269,6 +248,27 @@
                     $('#add_doc_categories_to_menu').attr('disabled',true);
                 }
             }));
+
+            // Update json for submenu order
+            var updateOutput = function(e)
+            {
+                var list = e.length ? e : $(e.target),
+                output = list.data('output');
+                if (window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                } else {
+                    output.val('JSON browser support required for this demo.');
+                }
+            };
+
+            // activate Nestable for list
+            $('#nestable').nestable({
+                group: 1,
+                maxDepth: 10
+            }).on('change', updateOutput);
+
+            // output initial serialised data
+            updateOutput($('#nestable').data('output', $('#nestable-output')));            
 
             // Stop form to submit by clicking the enter button
             $(window).keydown(function(event){
@@ -303,7 +303,7 @@
                 $("input[name^='postCategories']:checkbox:checked").each(function () {
                     lastSubMenuId = lastSubMenuId + 1;
                     $('ol#submenu').append(`
-                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-post="${$(this).data('post')}" data-title="${$(this).data('title')}">
+                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-post="${$(this).data('post')}" data-title="${$(this).data('title')}" data-slug="${$(this).data('slug')}">
                             <div class="dd-handle dd3-handle"></div>
                             <div class="dd3-content">
                                 ${lastSubMenuId} ${'('} post category ${')'} ${$(this).data('title')}
@@ -323,7 +323,7 @@
                 $("input[name^='documentCategories']:checkbox:checked").each(function () {
                     lastSubMenuId = lastSubMenuId + 1;
                     $('ol#submenu').append(`
-                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}">
+                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}" data-slug="${$(this).data('slug')}">
                             <div class="dd-handle dd3-handle"></div>
                             <div class="dd3-content">
                                 ${lastSubMenuId} ${'('} document category ${')'} ${$(this).data('title')}
@@ -450,10 +450,9 @@
                 e.preventDefault();
 
                 if (!validateFields()) return;
-
+                let menuIdToUpdate = $('#newCurrentMenuId').val();
                 if (isEditing) {
-                    let menuIdToUpdate = $('#newCurrentMenuId').val();
-
+                    
                     // Set title
                     let title = $('#NewMenuTitle').val();
                     $(`li[data-id="${menuIdToUpdate}"]`).attr('data-title', title);
@@ -486,12 +485,10 @@
                 }
 
                 lastSubMenuId = lastSubMenuId + 1;
-                let menuIdToUpdate = $('#newCurrentMenuId').val();
 
                 // Set title
-                let title = '';
-                if ($('#NewMenuTitle').val() !== '') {
-                    title = $('#NewMenuTitle').val();
+                let title = $('#NewMenuTitle').val();
+                if (title !== '') {
                     $(`li[data-id="${menuIdToUpdate}"]`).attr('data-title', title);
                     $(`li[data-id="${menuIdToUpdate}"]`).find('.dd3-content').text();
                 }

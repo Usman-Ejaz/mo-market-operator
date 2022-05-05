@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class DocumentCategoryFactory extends Factory
+class TeamMemberFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -13,10 +13,8 @@ class DocumentCategoryFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->name();
         return [
-            'name' => $name,
-            'slug' => str_slug($name)
+            //
         ];
     }
 }
