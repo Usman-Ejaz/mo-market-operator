@@ -184,7 +184,7 @@ class TeamMemberController extends Controller
             'designation' => 'required|string',
             'description' => 'required|string',
             'order' => 'required|string',
-            'image' => 'required|file|max:2000',
+            'image' => 'sometimes|file|max:2000',
             'manager_id' => 'required|string'
         ];
 
