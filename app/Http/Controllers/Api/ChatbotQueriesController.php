@@ -200,13 +200,14 @@ class ChatbotQueriesController extends BaseApiController
                 return $this->sendError('error', ['errors' => 'Chatbot initiator could not find.'], 404);
             }
 
-            $questions = ChatBotKnowledgeBase::select('question', 'answer')->get();
+            $questions = ChatBotKnowledgeBase::select('question', 'answer', 'keywords')->get();
             $chatbotAnswer = null;
 
             foreach ($questions as $knowledgebase) {
-                similar_text(strtolower($request->question), strtolower($knowledgebase->question), $similarity_pst);
-
-                if (number_format($similarity_pst, 0) > 30) {
+                similar_text(strtolower($request->question), strtolower($knowledgebase->question), $question_similarity);
+                similar_text(strtolower($request->question), strtolower($knowledgebase->keywords), $keyword_similarity);
+                
+                if ((number_format($question_similarity, 0) > 80) || (number_format($keyword_similarity, 0) >= 50)) {
                     $chatbotAnswer = $knowledgebase;
                     break;
                 }

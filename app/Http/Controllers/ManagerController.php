@@ -6,7 +6,7 @@ use App\Models\Manager;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-define('MODULE', 'our_teams');
+const MODULE = 'our_teams';
 
 
 class ManagerController extends Controller
@@ -47,7 +47,11 @@ class ManagerController extends Controller
         abort_if(! hasPermission(MODULE, 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
         $data = $this->validateRequest();
 
-        $data['image'] = storeFile(Manager::STORAGE_DIRECTORY, $request->file('image'));
+        $data['image'] = '';
+
+        if ($request->hasFile('image')) {
+            $data['image'] = storeFile(Manager::STORAGE_DIRECTORY, $request->file('image'));            
+        }
         
         Manager::create($data);
 
@@ -180,7 +184,7 @@ class ManagerController extends Controller
             'designation' => 'required|string',
             'description' => 'required|string',
             'order' => 'required|string',
-            'image' => 'required|file|max:2000',
+            'image' => 'sometimes|nullable|file|max:2000',
         ];
 
         if ($manager && $manager->image !== "" && $manager->image !== null) {
