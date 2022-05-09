@@ -78,11 +78,11 @@
 					number: true
 				},
 				image: {
-					required: {
-						depends: function () {
-							return $(".imageExists").length > 0 ? false : true;
-						}
-					},
+					// required: {
+					// 	depends: function () {
+					// 		return $(".imageExists").length > 0 ? false : true;
+					// 	}
+					// },
 					extension: "{{ config('settings.image_file_extensions') }}"
 				}
 			},

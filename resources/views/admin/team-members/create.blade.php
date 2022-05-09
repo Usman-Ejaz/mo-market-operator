@@ -77,7 +77,7 @@
 					number: true
 				},
 				image: {
-					required: true,
+					// required: true,
 					extension: "{{ config('settings.image_file_extensions') }}"
 				}
 			},
