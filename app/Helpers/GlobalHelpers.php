@@ -30,10 +30,6 @@ if (!function_exists("storeFile")) {
         if ($oldFile !== null) {
             removeFile($dir, $oldFile);
         }
-
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
         
         try {
             $fileOriginalName = explode(".", $file->getClientOriginalName())[0];
