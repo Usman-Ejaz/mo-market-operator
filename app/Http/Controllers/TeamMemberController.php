@@ -7,8 +7,6 @@ use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-const MODULE = 'team_members';
-
 class TeamMemberController extends Controller
 {       
     /**
@@ -18,7 +16,7 @@ class TeamMemberController extends Controller
      */
     public function index()
     {
-        abort_if(! hasPermission(MODULE, 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('team_members', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         return view('admin.team-members.index');
     }
@@ -30,7 +28,7 @@ class TeamMemberController extends Controller
      */
     public function create()
     {
-        abort_if(! hasPermission(MODULE, 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('team_members', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $teamMember = new TeamMember;
         $managers = Manager::select('id', 'name')->get();
@@ -46,7 +44,7 @@ class TeamMemberController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(! hasPermission(MODULE, 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('team_members', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
         $data = $this->validateRequest();
 
         $data['image'] = '';
@@ -81,7 +79,7 @@ class TeamMemberController extends Controller
      */
     public function edit(TeamMember $teamMember)
     {
-        abort_if(! hasPermission(MODULE, 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('team_members', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
         
         $managers = Manager::select('id', 'name')->get();
 
@@ -97,7 +95,7 @@ class TeamMemberController extends Controller
      */
     public function update(Request $request, TeamMember $teamMember)
     {
-        abort_if(! hasPermission(MODULE, 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('team_members', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($teamMember);        
 
@@ -120,7 +118,7 @@ class TeamMemberController extends Controller
      */
     public function destroy(TeamMember $teamMember)
     {
-        abort_if(! hasPermission(MODULE, 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('team_members', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $teamMember->removeImage();
         $teamMember->delete();
@@ -129,7 +127,7 @@ class TeamMemberController extends Controller
 
     public function list(Request $request)
     {
-        abort_if(! hasPermission(MODULE, 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('team_members', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
         
         if ($request->ajax()) 
         {
@@ -157,13 +155,13 @@ class TeamMemberController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if (hasPermission(MODULE, 'edit')) {
+                    if (hasPermission('team_members', 'edit')) {
                         $options .= ' <a href="'. route('admin.team-members.edit',$row->id) .'" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
-                    if (hasPermission(MODULE, 'delete')) {
+                    if (hasPermission('team_members', 'delete')) {
                         $options .= ' <form action="'. route('admin.team-members.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
