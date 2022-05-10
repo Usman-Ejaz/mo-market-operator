@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +13,11 @@ class TeamMember extends Model
     const STORAGE_DIRECTORY = 'teams/';
 
     protected $guarded = [];
+
+    public function getCreatedAtAttribute($attribute)
+    {
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+    }
 
     public function getImageAttribute($value)
     {
