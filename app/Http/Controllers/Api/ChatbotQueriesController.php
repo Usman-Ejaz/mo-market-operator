@@ -53,7 +53,7 @@ class ChatbotQueriesController extends BaseApiController
      *                      property="company",
      *                      title="company",
      *                      type="string"
-     *                  ),  
+     *                  ),
      *                  required={"name", "email", "phone"},
      *                  example={
      *                      "name": "John Doe", 
@@ -115,7 +115,7 @@ class ChatbotQueriesController extends BaseApiController
             'email' => 'required|email|string',
             'phone' => 'required',
             'company' => 'sometimes',
-            // 'send_chat_history' => 'sometimes|boolean'
+            'send_chat_history' => 'sometimes|boolean'
         ];
     }
     

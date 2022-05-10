@@ -6,8 +6,6 @@ use App\Models\Manager;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-const MODULE = 'our_teams';
-
 
 class ManagerController extends Controller
 {
@@ -18,7 +16,7 @@ class ManagerController extends Controller
      */
     public function index()
     {
-        abort_if(! hasPermission(MODULE, 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('our_teams', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         return view('admin.managers.index');
     }
@@ -30,7 +28,7 @@ class ManagerController extends Controller
      */
     public function create()
     {
-        abort_if(! hasPermission(MODULE, 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('our_teams', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $manager = new Manager;
         return view('admin.managers.create', compact('manager'));
@@ -44,7 +42,7 @@ class ManagerController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(! hasPermission(MODULE, 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('our_teams', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
         $data = $this->validateRequest();
 
         $data['image'] = '';
@@ -79,7 +77,7 @@ class ManagerController extends Controller
      */
     public function edit(Manager $manager)
     {
-        abort_if(! hasPermission(MODULE, 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('our_teams', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         return view('admin.managers.edit', compact('manager'));
     }
@@ -93,7 +91,7 @@ class ManagerController extends Controller
      */
     public function update(Request $request, Manager $manager)
     {
-        abort_if(! hasPermission(MODULE, 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('our_teams', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($manager);
 
@@ -116,7 +114,7 @@ class ManagerController extends Controller
      */
     public function destroy(Manager $manager)
     {
-        abort_if(! hasPermission(MODULE, 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('our_teams', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $manager->removeImage();
         $manager->delete();
@@ -125,7 +123,7 @@ class ManagerController extends Controller
 
     public function list(Request $request)
     {
-        abort_if(! hasPermission(MODULE, 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('our_teams', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
         
         if ($request->ajax()) 
         {
@@ -153,13 +151,13 @@ class ManagerController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if (hasPermission(MODULE, 'edit')) {
+                    if (hasPermission('our_teams', 'edit')) {
                         $options .= ' <a href="'. route('admin.managers.edit',$row->id) .'" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
-                    if (hasPermission(MODULE, 'delete')) {
+                    if (hasPermission('our_teams', 'delete')) {
                         $options .= ' <form action="'. route('admin.managers.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
