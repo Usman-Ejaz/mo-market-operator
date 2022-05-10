@@ -159,10 +159,11 @@ class DocumentController extends Controller
     public function destroy(Document $document)
     {
         abort_if(!hasPermission("documents", "delete"), 401, __('messages.unauthorized_action'));
-
+        
         if ($document->file !== null) {
-            $file_path = storage_path('app/' . config('filepaths.documentsFilePath.public_path')) . basename($document->file);
-            unlink($file_path);
+            foreach ($document->file as $file) {
+                removeFile(Document::STORAGE_DIRECTORY, $file);
+            }
         }
 
         $document->delete();
