@@ -56,7 +56,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			order: [[5, 'desc']],
+			order: [[0, 'desc']],
 			ajax: "{{ route('admin.documents.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
