@@ -45,7 +45,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			order: [[4, 'desc']],
+			order: [[0, 'desc']],
 			ajax: "{{ route('admin.contact-page-queries.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {

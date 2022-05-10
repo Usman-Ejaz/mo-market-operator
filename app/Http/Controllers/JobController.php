@@ -144,7 +144,11 @@ class JobController extends Controller
     {
         abort_if(!hasPermission("jobs", "delete"), 401, __('messages.unauthorized_action'));
 
-        $job->image !== null && removeFile(Job::STORAGE_DIRECTORY, $job->image);
+        if ($job->image !== null) {
+            foreach ($job->image as $image) {
+                removeFile(Job::STORAGE_DIRECTORY, $image);
+            }
+        }
 
         $job->delete();
         return redirect()->route('admin.jobs.index')->with('success', 'Job Deleted Successfully!');

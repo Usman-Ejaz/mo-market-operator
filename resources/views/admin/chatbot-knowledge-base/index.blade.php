@@ -51,7 +51,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			order: [[3, 'desc']],
+			order: [[0, 'desc']],
 			ajax: "{{ route('admin.knowledge-base.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
