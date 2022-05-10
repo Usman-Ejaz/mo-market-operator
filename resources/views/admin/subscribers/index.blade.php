@@ -59,7 +59,7 @@
 	$(function() {
 
 		var table = $('.yajra-datatable').DataTable({
-			order: [[4, 'desc']],
+			order: [[1, 'desc']],
 			processing: true,
 			serverSide: true,
 			pageLength: 25,

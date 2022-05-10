@@ -49,7 +49,7 @@ class SitemapApiController extends BaseApiController
             $menus = Menu::byTheme($currentTheme)->active()->select('name', 'submenu_json', 'identifier')->get();
 
             $menuArr = [];
-            $additionalMenu = [];
+            // $additionalMenu = [];
             foreach ($menus as $menu) {
                 $menu->children = json_decode($menu->submenu_json);
                 unset($menu->submenu_json);
@@ -59,18 +59,19 @@ class SitemapApiController extends BaseApiController
                     foreach ($submenu as $m) {
                         $menuArr[] = $m;
                     }
-                } else if ($menu->identifier === "top_menu_1") {
-                    $menuArr[] = $menu;
-                } else {
-                    $additionalMenu[] = $menu->children;
                 }
+                // } else if ($menu->identifier === "top_menu_1") {
+                //     //$menuArr[] = $menu;
+                // } else {
+                //     //$additionalMenu[] = $menu->children;
+                // }
             }
 
-            $menuArr[] = [
-                'title' => 'Additional Links',
-                'anchor' => '#',
-                'children' => collect($additionalMenu)->flatten()
-            ];
+            // $menuArr[] = [
+            //     'title' => 'Additional Links',
+            //     'anchor' => '#',
+            //     'children' => collect($additionalMenu)->flatten()
+            // ];
 
             if ($menuArr) {
                 return $this->sendResponse($menuArr, __("messages.success"));

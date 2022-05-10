@@ -52,7 +52,7 @@
             serverSide: true,
             pageLength: 25,
             order: [
-                [2, 'desc']
+                [0, 'desc']
             ],
             ajax: "{{ route('admin.faq-categories.list') }}",
             fnDrawCallback: function () {

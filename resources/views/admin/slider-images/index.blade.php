@@ -53,7 +53,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			order: [],
+			order: [[0, 'desc']],
 			ajax: "{{ route('admin.slider-images.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {

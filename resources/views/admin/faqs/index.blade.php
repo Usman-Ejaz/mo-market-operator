@@ -55,7 +55,7 @@
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			order: [[4, 'desc']],
+			order: [[0, 'desc']],
 			ajax: "{{ route('admin.faqs.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {

@@ -52,7 +52,7 @@
 <script type="text/javascript">
 	$(function() {
 		var table = $('.yajra-datatable').DataTable({
-			order: [[2, 'desc']],
+			order: [[0, 'desc']],
 			processing: true,
 			serverSide: true,
 			pageLength: 25,

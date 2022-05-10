@@ -61,7 +61,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="form-group">
-				<label for="image">Profile Image</label>
+				<label for="image">Profile Image <small>(Max allowed size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
 				<input type="file" class="form-control" id="image" name="image">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if(isset($teamMember->image))
