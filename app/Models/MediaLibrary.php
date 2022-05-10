@@ -27,7 +27,7 @@ class MediaLibrary extends Model
      */
     public function files()
     {
-        $mediaFiles = $this->mediaFiles()->select( "file", "featured")->get();
+        $mediaFiles = $this->mediaFiles()->select("id", "file", "featured")->get();
 
         foreach ($mediaFiles as $media) {
             $media->file = serveFile(self::MEDIA_STORAGE . $this->directory . '/', $media->file);

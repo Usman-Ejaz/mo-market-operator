@@ -91,7 +91,9 @@
 				},
 				{
 					data: 'image',
-					name: 'image'
+					name: 'image',
+					orderable: false,
+					searchable: false
 				},
 				{
 					data: 'created_at',

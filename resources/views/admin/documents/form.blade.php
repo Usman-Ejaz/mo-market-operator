@@ -78,7 +78,7 @@
 				@if(isset($document->image) && !empty($document->image))
 					<small class="imageExists">
 						<a href="{{ $document->image }}" target="_blank">
-							<img src="{{ $document->image }}" target="_blank" class="img-thumbnail" style="width: 23%;" />
+							<img src="{{ $document->image }}" target="_blank" class="img-thumbnail" style="width: 25%;height: 25%;" />
 						</a>
 						<span class="btn-sm btn-danger float-right" id="deleteImage" title="Delete Image"><i class="fa fa-trash"></i></span>
 					</small>
