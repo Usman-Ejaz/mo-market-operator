@@ -49,7 +49,11 @@ class TeamMemberController extends Controller
         abort_if(! hasPermission(MODULE, 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
         $data = $this->validateRequest();
 
-        $data['image'] = storeFile(TeamMember::STORAGE_DIRECTORY, $request->file('image'));
+        $data['image'] = '';
+
+        if ($request->hasFile('image')) {
+            $data['image'] = storeFile(TeamMember::STORAGE_DIRECTORY, $request->file('image'));
+        }
         
         TeamMember::create($data);
 
@@ -95,7 +99,7 @@ class TeamMemberController extends Controller
     {
         abort_if(! hasPermission(MODULE, 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        $data = $this->validateRequest($teamMember);
+        $data = $this->validateRequest($teamMember);        
 
         if ($request->hasFile('image')) {
             $data['image'] = storeFile(TeamMember::STORAGE_DIRECTORY, $request->file('image'), $teamMember->image);

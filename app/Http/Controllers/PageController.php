@@ -102,7 +102,7 @@ class PageController extends Controller
     public function update(Request $request, Page $cms_page)
     {
         abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
-
+        
         $previousImage = $cms_page->image;
         $data = $this->validateRequest($cms_page);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
@@ -111,9 +111,9 @@ class PageController extends Controller
         if ($request->action === "Unpublished") {
             $data['published_at'] = null;
         } else if ($request->action === "Published") {
-            $date['published_at'] = now();
+            $data['published_at'] = now();
         }
-
+                
         if ($request->hasFile('image')) {
             $data['image'] = storeFile(Page::STORAGE_DIRECTORY, $request->file('image'), $previousImage);
         }

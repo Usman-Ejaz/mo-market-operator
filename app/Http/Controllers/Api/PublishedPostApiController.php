@@ -163,7 +163,7 @@ class PublishedPostApiController extends BaseApiController
             $menus[] = [
                 'title' => 'Publications',
                 'slug' => 'publications',
-                'link_prefix' => '#',
+                'link_prefix' => '/publications',
                 'children' => $docsMenus
             ];
 
