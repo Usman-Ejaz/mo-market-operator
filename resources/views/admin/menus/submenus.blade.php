@@ -543,13 +543,22 @@
                         let regex = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
                         if (value === '#') {
                             // do nothing
-                        } else if(regex.test(value)) {
-                            $('#addNewSubmenuModal #newUrlError').hide();
-                        } else {
+                        } else if (! isNaN(value)) {
                             if (! ($('#newMenuAnchor').next().hasClass("my-error-class"))) {
-                                $('#newMenuAnchor').after(`<span class="my-error-class">Please enter a valid URL.</span>`);
+                                $('#newMenuAnchor').after(`<span class="my-error-class">Only numbers are not allowed.</span>`);
                                 hasURLError = true;
                             }
+                        } else if(value.includes('https')) {
+                            if (regex.test(value)) {
+                                $('#addNewSubmenuModal #newUrlError').hide();
+                            } else {
+                                if (! ($('#newMenuAnchor').next().hasClass("my-error-class"))) {
+                                    $('#newMenuAnchor').after(`<span class="my-error-class">Please enter a valid URL.</span>`);
+                                    hasURLError = true;
+                                }
+                            }
+                        } else {
+                            $('#addNewSubmenuModal #newUrlError').hide();
                         }
                     }
                 } else {
