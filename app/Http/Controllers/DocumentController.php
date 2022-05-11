@@ -180,13 +180,13 @@ class DocumentController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return truncateWords($row->title, 50);
+                    return truncateWords($row->title, 35);
                 })
                 ->addColumn('keywords', function ($row) {
-                    return truncateWords($row->keywords, 30);
+                    return truncateWords($row->keywords, 20);
                 })
                 ->addColumn('category', function ($row) {
-                    return truncateWords($row->category->name, 50);
+                    return truncateWords($row->category->name, 15);
                 })
                 ->addColumn('status', function ($row) {
                     return $row->isPublished() ? 'Published' : 'Draft';
