@@ -545,7 +545,7 @@
                             // do nothing
                         } else if (! isNaN(value)) {
                             if (! ($('#newMenuAnchor').next().hasClass("my-error-class"))) {
-                                $('#newMenuAnchor').after(`<span class="my-error-class">Only numbers are not allowed.</span>`);
+                                $('#newMenuAnchor').after(`<span class="my-error-class">Numbers are not allowed.</span>`);
                                 hasURLError = true;
                             }
                         } else if(value.includes('https')) {
