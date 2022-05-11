@@ -21,7 +21,7 @@
 						<th>Id</th>
 						<th>Title</th>
 						<th>Location</th>
-						<th>Experience</th>
+						{{-- <th>Experience</th> --}}
 						<th>Total Positions</th>
 						<th>Applications</th>
 						<th>Status</th>
@@ -78,10 +78,10 @@
 					data: 'location',
 					name: 'location'
 				},
-				{
-					data: 'experience',
-					name: 'experience'
-				},
+				// {
+				// 	data: 'experience',
+				// 	name: 'experience'
+				// },
 				{
 					data: 'total_positions',
 					name: 'total_positions'

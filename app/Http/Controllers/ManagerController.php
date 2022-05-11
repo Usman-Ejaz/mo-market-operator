@@ -132,13 +132,10 @@ class ManagerController extends Controller
             return DataTables::of($managers)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return (isset($row->name)) ? $row->name : '';
+                    return (isset($row->name)) ? truncateWords($row->name, 30) : '';
                 })
                 ->addColumn('designation', function ($row) {
-                    return (isset($row->designation)) ? $row->designation : '';
-                })
-                ->addColumn('description', function ($row) {
-                    return (isset($row->description)) ? truncateWords($row->description, 20) : '';
+                    return (isset($row->designation)) ? truncateWords($row->designation, 15) : '';
                 })
                 ->addColumn('order', function ($row) {
                     return (isset($row->order)) ? $row->order : '';

@@ -136,10 +136,10 @@ class TeamMemberController extends Controller
             return DataTables::of($teamMembers)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return (isset($row->name)) ? $row->name : '';
+                    return (isset($row->name)) ? truncateWords($row->name, 30) : '';
                 })
                 ->addColumn('designation', function ($row) {
-                    return (isset($row->designation)) ? $row->designation : '';
+                    return (isset($row->designation)) ? truncateWords($row->designation, 15) : '';
                 })
                 ->addColumn('manager', function ($row) {
                     return (isset($row->manager)) ? $row->manager->name : '';
