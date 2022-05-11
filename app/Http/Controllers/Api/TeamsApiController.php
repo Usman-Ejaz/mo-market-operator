@@ -106,8 +106,11 @@ class TeamsApiController extends BaseApiController
             $manager_id = decodeBase64($manager_id);
 
             $teamMembers = TeamMember::select('name', 'description', 'designation', 'image')->where('manager_id', '=', $manager_id)->sortByOrder()->get();
+            
+            $manager = Manager::select('name', 'description', 'designation', 'image')->where('id', '=', $manager_id)->first();
 
             if ($teamMembers->count() > 0) {
+                $teamMembers->prepend($manager);
                 return $this->sendResponse($teamMembers, __('messages.success'));
             } else {
                 return $this->sendResponse([], __("messages.data_not_found"));
