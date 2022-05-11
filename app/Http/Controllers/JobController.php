@@ -170,16 +170,16 @@ class JobController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('title', function ($row) {
-                    return truncateWords($row->title, 30);
+                    return truncateWords($row->title, 25);
                 })
                 ->addColumn('location', function ($row) {
-                    return truncateWords($row->location, 25);
+                    return truncateWords($row->location, 20);
                 })
                 ->addColumn('applications', function ($row) {
                     return $row->applications->count();
                 })
                 ->addColumn('experience', function ($row) {
-                    return truncateWords($row->experience, 15);
+                    return truncateWords($row->experience, 10);
                 })
                 ->addColumn('total_positions', function ($row) {
                     return ($row->total_positions) ? $row->total_positions : '';
