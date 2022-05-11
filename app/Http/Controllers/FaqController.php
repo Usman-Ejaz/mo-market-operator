@@ -142,7 +142,7 @@ class FaqController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('question', function ($row) {
-                    return truncateWords($row->question, 80);
+                    return truncateWords($row->question, 50);
                 })
                 ->addColumn('category', function ($row) {
                     return truncateWords($row->category->name, 30);
