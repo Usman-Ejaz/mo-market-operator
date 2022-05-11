@@ -193,4 +193,20 @@ class ManagerController extends Controller
             'image.max' => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }
+
+    public function deleteImage(Request $request){
+
+        if ($request->ajax()) {
+
+            if (isset($request->id)) {
+                $manager = Manager::find($request->id);
+
+                if (removeFile(Manager::STORAGE_DIRECTORY, $manager->image)) {
+                    $manager->update(['image' => '']);
+                }
+
+                return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
+            }
+        }
+    }
 }

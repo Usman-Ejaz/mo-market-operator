@@ -82,7 +82,7 @@
 			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
-		$.validator.addMethod('extension', function (value, element, param) {
+		$.validator.addMethod('docx_extension', function (value, element, param) {
 			let files = Array.from(element.files);
 			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
 			return this.optional(element) || invalidFiles.length === 0;
@@ -118,7 +118,7 @@
 				},
 				'file[]': {
 					required: true,
-					extension: ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'],
+					docx_extension: ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'],
 					// maxfilesize: '{{ config("settings.maxDocumentSize") }}'
 				}
 			},

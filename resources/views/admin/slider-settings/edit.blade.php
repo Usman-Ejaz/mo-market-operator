@@ -58,8 +58,8 @@
 				},
 				speed: {
 					required: true,
-					maxlength: 255,
-					minlength: 3,
+					maxlength: 5,
+					minlength: 4,
 					// notNumericValues: true
 				},
 			},
