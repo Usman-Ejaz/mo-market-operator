@@ -169,9 +169,11 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('slider-settings', SliderSettingController::class);
 
     Route::get('team-members/list', [TeamMemberController::class, 'list'])->name('team-members.list');
+    Route::post('team-members/deleteImage', [TeamMemberController::class, 'deleteImage'])->name('team-members.deleteImage');
     Route::resource('team-members', TeamMemberController::class);
 
     Route::get('managers/list', [ManagerController::class, 'list'])->name('managers.list');
+    Route::post('managers/deleteImage', [ManagerController::class, 'deleteImage'])->name('managers.deleteImage');
     Route::resource('managers', ManagerController::class);
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");

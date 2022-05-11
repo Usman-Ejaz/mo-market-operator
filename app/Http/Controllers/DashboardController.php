@@ -26,9 +26,11 @@ class DashboardController extends Controller
         // $client->setApplicationName("Hello Analytics Reporting");
         // $client->setAuthConfig(config('settings.google_credentials'));
         // $client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);
-        // $analytics = new Google_AnalyticsService($client);
+        // $analytics = new Google_Service_AnalyticsReporting($client);
 
         // return $analytics;
+
+        // $analytics = new Google_Service_AnalyticsReporting();
         return view('admin.dashboard.index');
     }
 
