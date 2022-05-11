@@ -200,4 +200,20 @@ class TeamMemberController extends Controller
             'manager_id' => 'manager'
         ]);
     }
+
+    public function deleteImage(Request $request){
+
+        if ($request->ajax()) {
+
+            if (isset($request->id)) {
+                $teamMember = TeamMember::find($request->id);
+
+                if (removeFile(TeamMember::STORAGE_DIRECTORY, $teamMember->image)) {
+                    $teamMember->update(['image' => '']);
+                }
+
+                return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
+            }
+        }
+    }
 }
