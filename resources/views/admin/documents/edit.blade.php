@@ -106,6 +106,7 @@
 
 		$('#update-document-form').validate({
 			errorElement: 'span',
+			ignore: [],
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
 			rules: {
@@ -148,7 +149,7 @@
 			messages: {
 				'file[]': {
 					required: "{{ __('messages.required') }}",
-					extension: '{{ __("messages.valid_file_extension") }}'
+					docx_extension: '{{ __("messages.valid_file_extension") }}'
 				},
 				title: {
 					required: "{{ __('messages.required') }}",
