@@ -47,12 +47,6 @@
 			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
-		$.validator.addMethod("ckeditor_required", function(value, element) {
-			var editorId = $(element).attr('id');
-			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-			return messageLength !== 0;
-		}, '{{ __("messages.ckeditor_required") }}');
-
 		$('#update-slider-images-form').validate({
 			ignore: [],
 			errorElement: 'span',
@@ -100,30 +94,17 @@
 					required: "{{ __('messages.required') }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'slot two', 'limit' => 100]) }}"
 				},
+				image: {
+					required: "{{ __('messages.required') }}",
+					extension: "{{ __('messages.valid_file_extension') }}"
+				}
 			}
 		});
 
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$("#deleteImage").click(function() {
-
 			if (confirm('Are you sure you want to delete this image?')) {
 				$('.imageExists').remove();
-				return;
-				// $.ajax({
-				// 	url: "{{ route('admin.slider-images.deleteImage') }}",
-				// 	type: 'POST',
-				// 	data: {
-				// 		_token: "{{ csrf_token() }}",
-				// 		slider_id: "{{ $sliderImage->id }}"
-				// 	},
-				// 	dataType: 'JSON',
-				// 	success: function(data) {
-				// 		if (data.success) {
-				// 			toastr.success(data.message);							
-				// 			$('.imageExists').remove();
-				// 		}
-				// 	}
-				// });
 			}
 		});
 	});

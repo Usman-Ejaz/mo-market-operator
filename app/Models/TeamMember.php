@@ -21,7 +21,7 @@ class TeamMember extends Model
 
     public function getImageAttribute($value)
     {
-        return $value ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
+        return $value ? serveFile(self::STORAGE_DIRECTORY, $value) : asset('images/no-image.png');
     }
 
     public function manager()
