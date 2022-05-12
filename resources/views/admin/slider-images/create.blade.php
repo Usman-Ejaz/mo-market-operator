@@ -41,18 +41,12 @@
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
 <script>
-	//Date and time picker
+	// Date and time picker
 	$(document).ready(function() {
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
 			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
-
-		$.validator.addMethod("ckeditor_required", function(value, element) {
-			var editorId = $(element).attr('id');
-			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-			return messageLength !== 0;
-		}, '{{ __("messages.ckeditor_required") }}');
 
 		$('#create-slider-images-form').validate({
 			ignore: [],
@@ -95,6 +89,10 @@
 					required: "{{ __('messages.required') }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'slot two', 'limit' => 100]) }}"
 				},
+				image: {
+					required: "{{ __('messages.required') }}",
+					extension: "{{ __('messages.valid_file_extension') }}"
+				}
 			}
 		});
 	});

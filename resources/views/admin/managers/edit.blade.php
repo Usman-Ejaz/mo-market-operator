@@ -44,6 +44,13 @@
 			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
 		}, '{{ __("messages.not_numeric") }}');
 
+		CKEDITOR.instances.description.on('blur', function(e) {
+			var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
+			if (messageLength !== 0) {
+				$('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
+			}
+		});	
+
 		$.validator.addMethod("ckeditor_required", function(value, element) {
 			var editorId = $(element).attr('id');
 			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
