@@ -194,7 +194,7 @@ class ChatbotQueriesController extends BaseApiController
         }
 
         try {
-            $initiator = ChatbotInitiator::findByKey($initiatorKey)->select('name', 'email', 'company', 'phone', 'id')->first();
+            $initiator = ChatbotInitiator::findByKey($initiatorKey)->select('id')->first();
 
             if (!$initiator) {
                 return $this->sendError('error', ['errors' => 'Chatbot initiator could not find.'], 404);
