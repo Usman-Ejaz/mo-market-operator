@@ -201,15 +201,28 @@ class ChatbotQueriesController extends BaseApiController
             }
 
             $questions = ChatBotKnowledgeBase::select('question', 'answer', 'keywords')->get();
-            $chatbotAnswer = null;
+            $chatbotAnswer = null;            
 
             foreach ($questions as $knowledgebase) {
                 similar_text(strtolower($request->question), strtolower($knowledgebase->question), $question_similarity);
-                similar_text(strtolower($request->question), strtolower($knowledgebase->keywords), $keyword_similarity);
                 
-                if ((number_format($question_similarity, 0) > 80) || (number_format($keyword_similarity, 0) >= 50)) {
+                if ((number_format($question_similarity, 0) >= 70)) {
                     $chatbotAnswer = $knowledgebase;
                     break;
+                }
+            }
+
+            if ($chatbotAnswer === null) {
+                foreach ($questions as $knowledgebase) {
+                    $keywords = explode(",", $knowledgebase->keywords);
+                    foreach ($keywords as $keyword) {
+                        similar_text(strtolower($request->question), strtolower($keyword), $keyword_similarity);
+
+                        if ((number_format($keyword_similarity, 0) >= 90)) {
+                            $chatbotAnswer = $knowledgebase;
+                            break;
+                        }
+                    }
                 }
             }
             
