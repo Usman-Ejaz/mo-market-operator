@@ -87,10 +87,10 @@
                 <span class="form-text text-danger">{{ $errors->first('image') }} </span>
                 @if(isset($job->image_path) && count($job->image_path) > 0)
                     @foreach ($job->image_path as $file)
-                    <small class="text-primary imageExists" style="display: block;">
+                    <small class="text-primary imageExists" style="display: block; margin-bottom: 15px;">
                         @if (strtolower(explode('.', basename($file))[1]) === "pdf")
                             <a href="{{ $file }}" target="_blank">
-                                {{ __("View File") }}
+                                {{ explode('.', basename($file))[0] }}
                             </a>
                         @else
                         <a href="{{ $file }}" target="_blank">
