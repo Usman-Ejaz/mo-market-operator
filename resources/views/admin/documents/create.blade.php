@@ -120,6 +120,10 @@
 					required: "{{ __('messages.required') }}",
 					docx_extension: '{{ __("messages.valid_file_extension") }}'
 				},
+				image: {
+					required: "{{ __('messages.required') }}",
+					extension: '{{ __("messages.valid_file_extension") }}'
+				},
 				title: {
 					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
