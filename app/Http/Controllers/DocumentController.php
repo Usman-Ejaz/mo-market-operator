@@ -134,7 +134,7 @@ class DocumentController extends Controller
 
         $data['file'] = $this->handleFileUpload($document, $request);
 
-        if ($request->hasFile('image')) {
+        if ($request->has('image')) {
             $data['image'] = storeFile(Document::STORAGE_DIRECTORY, $request->file('image'), $document->image);
         }
         
@@ -236,7 +236,7 @@ class DocumentController extends Controller
             unset($rule['file']);
         }
 
-        if (! $request->hasFile('image')) {
+        if (! $request->has('image')) {
             unset($rule['image']);
         }
 
