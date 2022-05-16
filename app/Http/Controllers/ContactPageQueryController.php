@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\QueryReplyEvent;
+use App\Mail\ContactQueryReplyMail;
 use App\Models\ChatbotInitiator;
 use App\Models\ContactPageQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -130,9 +133,6 @@ class ContactPageQueryController extends Controller
                 ->addColumn('subject', function ($row) {
                     return truncateWords($row->subject, 25);
                 })
-                ->addColumn('status', function ($row) {
-                    return $row->status;
-                })
                 ->addColumn('message', function ($row) {
                     return truncateWords($row->message, 25);
                 })
@@ -180,7 +180,9 @@ class ContactPageQueryController extends Controller
             'resolved_by' => auth()->id()
         ]);
 
-        $request->session()->flash('success', 'Reply added successfully!');
+        event(new QueryReplyEvent($contactPageQuery));        
+
+        $request->session()->flash('success', 'Reply has been sent successfully!');
 
         return redirect()->route('admin.contact-page-queries.index');
     }
