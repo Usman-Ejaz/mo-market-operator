@@ -348,30 +348,14 @@ class JobController extends Controller
 
     private function handleFileUpload($job, $request)
     {
-        $oldFiles = implode(",", $job->image);
-        $filenames = "";
-
-        if ($request->get('removeFile') !== null)
-        {
-            $removedFiles = explode(",", $request->get('removeFile'));
-            foreach ($removedFiles as $file) {
-                removeFile(Job::STORAGE_DIRECTORY, $file);
-                $oldFiles = str_replace($file, "", $oldFiles);
-                $oldFiles = str_replace(",,", ",", $oldFiles);
-                $oldFiles = trim($oldFiles, ",");
-            }
-        }
+        $filenames = implode(",", $job->image);
 
         if ($request->hasFile('image'))
         {
-            $oldFiles = explode(",", $oldFiles);
-            foreach ($oldFiles as $file) {
-                removeFile(Job::STORAGE_DIRECTORY, $file);
-            }
-
             $uploadedFiles = $request->file('image');
 
             if (count($uploadedFiles) > 0) {
+                $filenames = $filenames . ',';
                 foreach ($uploadedFiles as $file) {
                     $filename = storeFile(Job::STORAGE_DIRECTORY, $file);
                     $filenames .= $filename . ",";
@@ -379,8 +363,17 @@ class JobController extends Controller
 
                 $filenames = trim($filenames, ",");
             }
-        } else {
-            $filenames = trim($oldFiles, ",");
+        }
+
+        if ($request->get('removeFile') !== null)
+        {
+            $removedFiles = explode(",", $request->get('removeFile'));
+            foreach ($removedFiles as $file) {
+                removeFile(Job::STORAGE_DIRECTORY, $file);
+                $filenames = str_replace($file, "", $filenames);
+                $filenames = str_replace(",,", ",", $filenames);
+                $filenames = trim($filenames, ",");
+            }
         }
 
         return $filenames;

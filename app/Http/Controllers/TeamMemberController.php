@@ -31,7 +31,7 @@ class TeamMemberController extends Controller
         abort_if(! hasPermission('team_members', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $teamMember = new TeamMember;
-        $managers = Manager::select('id', 'name')->get();
+        $managers = Manager::select('id', 'name')->orderBy('created_at', 'desc')->get();
         
         return view('admin.team-members.create', compact('teamMember', 'managers'));
     }

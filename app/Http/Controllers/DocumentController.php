@@ -230,11 +230,13 @@ class DocumentController extends Controller
             'modified_by' => ''
         ];
 
-        if ($document->file != "" && $document->file != null) {
+        $request = request();
+
+        if (! $request->hasFile('file')) {
             unset($rule['file']);
         }
 
-        if ($document->image != "" && $document->image != null) {
+        if (! $request->hasFile('image')) {
             unset($rule['image']);
         }
 
@@ -279,31 +281,15 @@ class DocumentController extends Controller
 
     private function handleFileUpload($document, $request)
     {
-        $oldFiles = implode(",", $document->file);
         $convertFiles = $request->convert !== null && $request->convert == '1';
-        $filenames = "";
-
-        if ($request->get('removeFile') !== null)
-        {
-            $removedFiles = explode(",", $request->get('removeFile'));
-            foreach ($removedFiles as $file) {
-                removeFile(Document::STORAGE_DIRECTORY, $file);
-                $oldFiles = str_replace($file, "", $oldFiles);
-                $oldFiles = str_replace(",,", ",", $oldFiles);
-                $oldFiles = trim($oldFiles, ",");
-            }
-        }
+        $filenames = implode(",", $document->file);        
 
         if ($request->hasFile('file')) 
         {
-            $oldFiles = explode(",", $oldFiles);
-            foreach ($oldFiles as $file) {
-                removeFile(Document::STORAGE_DIRECTORY, $file);
-            }
-
             $uploadedFiles = $request->file('file');
 
             if (count($uploadedFiles) > 0) {
+                $filenames = $filenames . ',';
                 foreach ($uploadedFiles as $file) {
                     $filename = storeFile(Document::STORAGE_DIRECTORY, $file);
                     $filenames .= $filename . ",";
@@ -311,11 +297,20 @@ class DocumentController extends Controller
 
                 $filenames = trim($filenames, ",");
             }
-        } else {
-            $filenames = trim($oldFiles, ",");
         }
 
-        if ($convertFiles) { // convert file checkbox is checked
+        if ($request->get('removeFile') !== null)
+        {
+            $removedFiles = explode(",", $request->get('removeFile'));
+            foreach ($removedFiles as $file) {
+                removeFile(Document::STORAGE_DIRECTORY, $file);
+                $filenames = str_replace($file, "", $filenames);
+                $filenames = str_replace(",,", ",", $filenames);
+                $filenames = trim($filenames, ",");
+            }
+        }
+
+        if ($convertFiles) {
             $filenames = explode(",", $filenames);
             $tempnames = "";
             foreach ($filenames as $filename) {

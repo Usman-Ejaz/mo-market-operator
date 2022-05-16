@@ -100,9 +100,10 @@
 
 		$.validator.addMethod('docx_extension', function (value, element, param) {
 			let files = Array.from(element.files);
+			param = param.split('|');
 			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
 			return this.optional(element) || invalidFiles.length === 0;
-		}, '');
+		}, '{{ __("messages.valid_file_extension") }}');
 
 		$('#update-document-form').validate({
 			errorElement: 'span',
@@ -128,8 +129,7 @@
 							return $(".imageExists").length > 0 ? false : true;
 						}
 					},
-					extension: '{{ config("settings.image_file_extensions") }}',
-					maxfilesize: '{{ config("settings.maxImageSize") }}'
+					extension: '{{ config("settings.image_file_extensions") }}'
 				},
 				'file[]': {
 					required: {
@@ -137,14 +137,8 @@
 							return $(".fileExists").length > 0 ? false : true;
 						}
 					},
-					docx_extension: ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'],
+					docx_extension: 'doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt',
 				}
-			},
-			errorPlacement: function(error, element) {
-				if (element.attr("id") == "file") {
-					element.next().text('');
-				}
-				error.insertAfter(element);
 			},
 			messages: {
 				'file[]': {
