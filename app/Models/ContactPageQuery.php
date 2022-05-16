@@ -16,5 +16,10 @@ class ContactPageQuery extends Model
 
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
-    }    
+    }
+
+    public function getStatusAttribute($value)
+    {
+        return ucfirst($value);
+    }
 }

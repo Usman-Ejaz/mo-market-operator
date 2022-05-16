@@ -16,6 +16,7 @@
 						<th>Name</th>
 						<th>Email</th>
 						<th>Subject</th>
+						<th>Status</th>
 						<!-- <th>Message</th> -->
 						<th>Created date</th>
 						<th>Action</th>
@@ -61,6 +62,7 @@
 				{ data: 'name', name: 'name' },
 				{ data: 'email', name: 'email' },
 				{ data: 'subject', name: 'subject' },
+				{ data: 'status', name: 'status' },
 				// { data: 'message', name: 'message' },
 				{ data: 'created_at', name: 'created_at' },
 				{

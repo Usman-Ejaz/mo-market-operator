@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatbotInitiator;
 use App\Models\ContactPageQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,8 +60,19 @@ class ContactPageQueryController extends Controller
                 $notification->markAsRead();
             }
         }
+        
+        $chatbotQuery = ChatbotInitiator::where('email', '=', $contactPageQuery->email)->first();
+        $isChatbotQuery = false;
 
-        return view("admin.contact-page-queries.show", compact('contactPageQuery'));
+        if ($chatbotQuery) {
+            $contactPageQuery->phone = $chatbotQuery->phone;
+            $contactPageQuery->company = $chatbotQuery->company;
+            $contactPageQuery->update();
+
+            $isChatbotQuery = true;
+        }
+
+        return view("admin.contact-page-queries.show", compact('contactPageQuery', 'isChatbotQuery'));
     }
 
     /**
@@ -118,6 +130,9 @@ class ContactPageQueryController extends Controller
                 ->addColumn('subject', function ($row) {
                     return truncateWords($row->subject, 25);
                 })
+                ->addColumn('status', function ($row) {
+                    return $row->status;
+                })
                 ->addColumn('message', function ($row) {
                     return truncateWords($row->message, 25);
                 })
@@ -151,5 +166,22 @@ class ContactPageQueryController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+    }
+
+    public function addReply(Request $request, ContactPageQuery $contactPageQuery)
+    {
+        $request->validate([
+            'reply' => 'required|string|min:2|max:200'
+        ]);
+
+        $contactPageQuery->update([
+            'comments' => $request->reply,
+            'status' => 'resolved',
+            'resolved_by' => auth()->id()
+        ]);
+
+        $request->session()->flash('success', 'Reply added successfully!');
+
+        return redirect()->route('admin.contact-page-queries.index');
     }
 }

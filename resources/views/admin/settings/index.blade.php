@@ -87,6 +87,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="from_emails">From Emails </label>
+                                        <input type="input" class="form-control" id="from_emails" placeholder="Notification Receiver Emails" name="from_emails" data-role="tagsinput" value={{ old('from_emails') ?? $from_emails ? $from_emails->value : '' }}>
+                                        <span class="form-text text-danger">{{ $errors->first('from_emails') }} </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer text-right">
                             <button type="submit" class="btn btn-primary draft_button">Update</button>
