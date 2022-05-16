@@ -137,6 +137,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     
     // Routes for Document Module
     Route::get('contact-page-queries/list', [ContactPageQueryController::class, 'list'])->name('contact-page-queries.list');
+    Route::post('contact-page-queries/add-reply/{contactPageQuery}', [ContactPageQueryController::class, 'addReply'])->name('contact-page-queries.add-reply');
     Route::resource('contact-page-queries', ContactPageQueryController::class);
     
     // Routes for Search Statistics
