@@ -98,6 +98,25 @@ class Job extends Model
         return $query->where("published_at", "!=", null)->select("title", "slug", "description", "location", "qualification", "experience", "published_at", "total_positions", "image");
     }
 
+    public function scopeApplyFilters($query)
+    {
+        $request = request();
+
+        if ($request->has('month')) {
+            $query = $query->whereMonth('created_at', '=', $request->get('month'));
+        }
+
+        if ($request->has('year')) {
+            $query = $query->whereYear('created_at', '=', $request->get('year'));
+        }
+
+        if ($request->has('sort')) {
+            $query = $query->orderBy('created_at', $request->get('sort'));
+        }
+
+        return $query;
+    }
+
     public function isPublished() {
         return $this->published_at !== null;
     }

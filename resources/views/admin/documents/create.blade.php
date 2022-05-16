@@ -84,15 +84,10 @@
 
 		$.validator.addMethod('docx_extension', function (value, element, param) {
 			let files = Array.from(element.files);
+			param = param.split('|');
 			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
 			return this.optional(element) || invalidFiles.length === 0;
-		}, '');
-
-		// $.validator.addMethod('maxfilesize', function (value, element, param) {
-		// 	let files = Array.from(element.files);
-		// 	let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
-		// 	return this.optional(element) || invalidFiles.length === 0;
-		// }, '');
+		}, '{{ __("messages.valid_file_extension") }}');
 
 		$('#create-document-form').validate({
 			errorElement: 'span',
@@ -113,26 +108,17 @@
 				},
 				image: {
 					required: true,
-					extension: '{{ config("settings.image_file_extensions") }}',
-					maxfilesize: '{{ config("settings.maxImageSize") }}'
+					extension: '{{ config("settings.image_file_extensions") }}'
 				},
 				'file[]': {
 					required: true,
-					docx_extension: ['doc', 'docx', 'txt', 'ppt', 'pptx', 'csv', 'xls', 'xlsx', 'pdf', 'odt'],
-					// maxfilesize: '{{ config("settings.maxDocumentSize") }}'
+					docx_extension: 'doc|docx|txt|ppt|pptx|csv|xls|xlsx|pdf|odt'
 				}
-			},
-			errorPlacement: function(error, element) {
-				if (element.attr("id") == "file") {
-					element.next().text('');
-				}
-				error.insertAfter(element);
 			},
 			messages: {
 				'file[]': {
 					required: "{{ __('messages.required') }}",
-					extension: '{{ __("messages.valid_file_extension") }}',
-					// maxfilesize: '{{ __("messages.max_file") }}'
+					docx_extension: '{{ __("messages.valid_file_extension") }}'
 				},
 				title: {
 					required: "{{ __('messages.required') }}",
