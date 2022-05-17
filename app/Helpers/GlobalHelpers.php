@@ -129,14 +129,19 @@ if (!function_exists('parseDate')) {
     function parseDate($date)
     {
         if ($date === null || $date === "") return null;
-
-        $d = Carbon::createFromFormat(config('settings.datetime_format'), $date);
-
+        
         if (strpos($date, "PM") !== false) {
-            $d = $d->addHours(12);
+            $date = str_replace(" PM", ":00", $date);
+        }
+        
+        if (strpos($date, "AM") !== false) {
+            $date = str_replace(" AM", ":00", $date);
         }
 
-        return Carbon::parse($date)->format('Y-m-d H:i:s');
+        $date = str_replace("/", "-", $date);
+        $d = Carbon::parse($date);
+
+        return $d->format('Y-m-d H:i:s');
     }
 }
 

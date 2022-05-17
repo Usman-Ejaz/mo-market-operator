@@ -251,4 +251,14 @@ return [
             "delete" => "Delete",
         ]
     ],
+    [
+        "name" => "trainings",
+        "display_name" => "Trainings",
+        "capabilities" => [
+            "list" => "List",
+            "create" => "Create",
+            "edit" => "Edit",
+            "delete" => "Delete",
+        ]
+    ],
 ];

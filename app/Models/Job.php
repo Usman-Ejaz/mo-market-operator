@@ -22,7 +22,7 @@ class Job extends Model
 
     const STORAGE_DIRECTORY = 'jobs/';
 
-    protected $appends = ['filenames'];
+    protected $appends = ['attachment_links'];
 
     /********* Getters ***********/
     public function getActiveAttribute($attribute){
@@ -51,26 +51,19 @@ class Job extends Model
     }
 
     public function getAttachmentsAttribute($value) {
-        if (! $value) return [];
 
+        return isset($value) ? explode(',', $value) : [];
+    }
+
+    public function getAttachmentLinksAttribute($value)
+    {
         $links = [];
         
-        $value = explode(",", $value);
-        foreach ($value as $attachment) {
+        foreach ($this->attachments as $attachment) {
             array_push($links, serveFile(self::STORAGE_DIRECTORY, $attachment));
         }
 
         return $links;
-    }
-
-    public function getFilenamesAttribute($value)
-    {
-        $filenames = [];
-        foreach ($this->attachments as $file) {
-            array_push($filenames, getFileOriginalName($file));
-        }
-
-        return $filenames;
     }
 
     public function getLinkAttribute($value) {

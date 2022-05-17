@@ -113,8 +113,8 @@
                 <label for="attachments[]">Job Attechments <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, pdf)</small> </label>
                 <input type="file" class="form-control" id="attachments[]" name="attachments[]" multiple>
                 <span class="form-text text-danger">{{ $errors->first('attachments') }} </span>                
-                @if(isset($job->attachments) && count($job->attachments) > 0)
-                    @foreach ($job->attachments as $file)
+                @if(isset($job->attachment_links) && count($job->attachment_links) > 0)
+                    @foreach ($job->attachment_links as $file)
                     <small class="text-primary fileExists" style="display: block; margin-bottom: 15px;">
                         <a href="{{ $file }}" target="_blank">
                             {{ getFileOriginalName($file) }}
