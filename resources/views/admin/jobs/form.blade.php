@@ -10,6 +10,16 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="short_description">Short Description <span class="text-danger">*</span></label>
+                <textarea class="form-control" id="short_description" placeholder="Enter Job Short Description" name="short_description" cols="50" rows="3">{{ old('short_description') ?? $job->short_description }}</textarea>
+                <span class="form-text text-danger">{{ $errors->first('short_description') }} </span>
+            </div>
+        </div>
+    </div>
+
     <div class="form-group">
         <label for="description">Description <span class="text-danger">*</span></label>
         <textarea class="form-control ckeditor" id="description" placeholder="Enter Job Description" name="description"
@@ -80,24 +90,36 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="form-group">
-                <label for="image[]">Job Image <small>(Max allowed size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }}, pdf)</small> </label>
-                <input type="file" class="form-control" id="image[]" name="image[]" multiple>
+                <label for="image">Job Image <span class="text-danger">*</span> <small>(Max allowed size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small> </label>
+                <input type="file" class="form-control" id="image" name="image">
                 <span class="form-text text-danger">{{ $errors->first('image') }} </span>
-                @if(isset($job->image_path) && count($job->image_path) > 0)
-                    @foreach ($job->image_path as $file)
+                @if(isset($job->image))
                     <small class="text-primary imageExists" style="display: block; margin-bottom: 15px;">
-                        @if (strtolower(explode('.', basename($file))[1]) === "pdf")
-                            <a href="{{ $file }}" target="_blank">
-                                {{ explode('.', basename($file))[0] }}
-                            </a>
-                        @else
-                        <a href="{{ $file }}" target="_blank">
-                            <img src="{{ $file }}" target="_blank" class="img-thumbnail" style="width: 23%;" />
+                        <a href="{{ $job->image }}" target="_blank">
+                            <img src="{{ $job->image }}" target="_blank" class="img-thumbnail" style="width: 23%;" />
                         </a>
-                        @endif
-                        <span class="btn-sm btn-danger float-right remove-file" data-file="{{ basename($file) }}" id="deleteImage"><i class="fa fa-trash"></i></span>
+                        <span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span>
+                    </small>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="attachments[]">Job Attechments <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, pdf)</small> </label>
+                <input type="file" class="form-control" id="attachments[]" name="attachments[]" multiple>
+                <span class="form-text text-danger">{{ $errors->first('attachments') }} </span>                
+                @if(isset($job->attachments) && count($job->attachments) > 0)
+                    @foreach ($job->attachments as $file)
+                    <small class="text-primary fileExists" style="display: block; margin-bottom: 15px;">
+                        <a href="{{ $file }}" target="_blank">
+                            {{ getFileOriginalName($file) }}
+                        </a>
+                        <span class="btn-sm btn-danger float-right remove-file" data-file="{{ basename($file) }}" id="deleteFile"><i class="fa fa-trash"></i></span>
                     </small>
                     @endforeach
                 @endif

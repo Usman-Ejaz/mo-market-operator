@@ -44,10 +44,10 @@ class CareersApiController extends BaseApiController
     public function getPublishedJobs()
     {
         try {
-            $jobs = Job::published()->applyFilters()->get();
+            $jobs = Job::published()->applyFilters()->select("title", "slug", "short_description", "qualification", "experience", "published_at", "total_positions", "enable")->get();
 
             if ($jobs->count() > 0) {
-                return $this->sendResponse($jobs, "Success");
+                return $this->sendResponse($jobs, __('messages.success'));
             } else {
                 return $this->sendError(__('messages.data_not_found'), [], 404);
             }
