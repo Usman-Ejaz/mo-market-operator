@@ -21,8 +21,8 @@ class CreateTrainingsTable extends Migration
             $table->string('topics');
             $table->string('target_audience');
             $table->string('location');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('start_date')->nullable();
+            $table->timestamp('end_date')->nullable();
             $table->string('status');
             $table->text('attachment')->nullable();
             $table->timestamps();
