@@ -47,28 +47,29 @@ class JobController extends Controller
         abort_if(!hasPermission("jobs", "create"), 401, __('messages.unauthorized_action'));
 
         $job = new Job();
-        $job = $this->validateRequest($job);
-        $job['slug'] = Str::slug($job['title']);
-        $job['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
-        $job['start_datetime'] = $this->parseDate($request->start_datetime);
-        $job['end_datetime'] = $this->parseDate($request->end_datetime);
-        $job['image'] = null;
-        
-        $job = Job::create($job);
-        
-        if ($request->hasFile('image')) {
-            $images = $request->file('image');
+        $data = $this->validateRequest($job);
+        $data['slug'] = Str::slug($data['title']);
+        $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
+        $data['start_datetime'] = $this->parseDate($request->start_datetime);
+        $data['end_datetime'] = $this->parseDate($request->end_datetime);
+
+        $data['image'] = storeFile(Job::STORAGE_DIRECTORY, $request->file('image'));
+
+        if ($request->hasFile('attachments')) {
+            $attachments = $request->file('attachments');
             $filenames = "";
-            foreach ($images as $file) {
+            foreach ($attachments as $file) {
                 $name = storeFile(Job::STORAGE_DIRECTORY, $file);
                 $filenames .= $name . ',';
             }
-            $job->update(['image' => trim($filenames, ",")]);
+            $data['attachments'] = trim($filenames, ",");
         }
-
+        
         if ($request->action === "Published") {
-            $job->update(['published_at' => now()]);
+            $data['published_at'] = now();
         }
+        
+        Job::create($data);
 
         $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
@@ -110,25 +111,27 @@ class JobController extends Controller
     public function update(Request $request, Job $job)
     {      
         abort_if(!hasPermission("jobs", "edit"), 401, __('messages.unauthorized_action'));
-
-        $previousImage = $job->image;
+        
         $data = $this->validateRequest($job);
-        $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
+        
+        $data['enable'] = ($request->get('enable') == null) ? '0' : $request->get('enable');
         $data['slug'] = Str::slug($data['title']);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
+    
+        if ($request->hasFile('image')) {
+            $data['image'] = storeFile(Job::STORAGE_DIRECTORY, $request->file('image'), $job->image);
+        }
 
-        $data['image'] = $this->handleFileUpload($job, $request);
+        $data['attachments'] = $this->handleFileUpload($job, $request);
+        
+        if ($request->action === "Unpublished") {
+            $data['published_at'] = null;
+        } else if ($request->action === "Published") {
+            $data['published_at'] = now();
+        }
 
         $job->update($data);
-
-        if ($request->action === "Unpublished") {
-            $job->published_at = null;
-            $job->save();
-        } else if ($request->action === "Published") {
-            $job->published_at = now();
-            $job->save();
-        }
 
         $request->session()->flash('success', "Job {$request->action} Successfully!");
         return redirect()->route('admin.jobs.index');
@@ -143,12 +146,9 @@ class JobController extends Controller
     public function destroy(Job $job)
     {
         abort_if(!hasPermission("jobs", "delete"), 401, __('messages.unauthorized_action'));
-
-        if ($job->image !== null) {
-            foreach ($job->image as $image) {
-                removeFile(Job::STORAGE_DIRECTORY, $image);
-            }
-        }
+        
+        $job->removeImage();
+        $job->removeAttachments();
 
         $job->delete();
         return redirect()->route('admin.jobs.index')->with('success', 'Job Deleted Successfully!');
@@ -324,9 +324,10 @@ class JobController extends Controller
     }
 
     private function validateRequest($job){
-        
-        return request()->validate([
+
+        $rules = [
             'title' => 'required|min:3',
+            'short_description' => 'required|min:10|max:300',
             'description' => 'required',
             'location' => 'required',
             'qualification' => 'required',
@@ -334,25 +335,39 @@ class JobController extends Controller
             'total_positions' => 'required',
             'specialization' => 'required|string',
             'salary' => 'nullable',
-            'image.*' => 'sometimes',
+            'image' => 'required|image|max: ' . config('settings.maxImageSize'),
+            'attachments.*' => 'required|file|max: ' . config('settings.maxDocumentSize'),
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'nullable',
             'enable' => 'nullable|boolean',
             'created_by' => '',
             'modified_by' => ''
-        ], [
-            "image.*.max" => __('messages.max_file', ['limit' => '2 MB']),
+        ];
+
+        $request = request();
+
+        if (! $request->has('image')) {
+            unset($rules['image']);
+        }
+
+        if (! $request->has('attachments')) {
+            unset($rules['attachments']);
+        }
+        
+        return request()->validate($rules, [
+            "image.max" => __('messages.max_file', ['limit' => '2 MB']),
+            "attachments.*.max" => __('messages.max_file', ['limit' => '5 MB']),
         ]);
     }
 
     private function handleFileUpload($job, $request)
     {
-        $filenames = implode(",", $job->image);
-
-        if ($request->hasFile('image'))
+        $filenames = implode(",", $job->attachments);
+        
+        if ($request->hasFile('attachments'))
         {
-            $uploadedFiles = $request->file('image');
+            $uploadedFiles = $request->file('attachments');
 
             if (count($uploadedFiles) > 0) {
                 $filenames = $filenames . ',';

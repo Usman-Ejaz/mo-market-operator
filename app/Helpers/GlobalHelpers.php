@@ -70,6 +70,15 @@ if (!function_exists('downloadFile')) {
 
     function downloadFile($dir, $file)
     {
+        $filename = getFileOriginalName($file);
+        return Storage::disk('app')->download($dir . '/' . $file, $filename);
+    }
+}
+
+if (! function_exists('getFileOriginalName')) {
+    
+    function getFileOriginalName($file)
+    {
         $filename = basename($file);
         list($filename, $ext) = explode(".", $filename);
 
@@ -77,10 +86,10 @@ if (!function_exists('downloadFile')) {
             $filename = explode("_", $filename);
             unset($filename[count($filename) - 1]);
             unset($filename[count($filename) - 1]);
+            $filename = implode("_", $filename);
         }
-        
-        $actualFilename = implode("_", $filename)  . '.' . $ext;
-        return Storage::disk('app')->download($dir . '/' . $file, $actualFilename);
+
+        return $filename . '.' . $ext;
     }
 }
 

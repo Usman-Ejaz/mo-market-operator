@@ -171,15 +171,20 @@
 			$('#action').val("Unpublished");
 		});
 
-		let images = [];
-		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+		$("#deleteImage").on('click', function() {
+			if (confirm('Are you sure you want to this image?')) {
+				$(this).parent().remove();
+			}
+		});
+
+		let attachments = [];		
 		$(".remove-file").on('click', function() {
 			let { file } = $(this).data();
 
-			if (confirm('Are you sure you want to this image?')) {
-				images.push(file);
+			if (confirm('Are you sure you want to this file?')) {
+				attachments.push(file);
 				$(this).parent().remove();
-				$("#removeFile").val(`${images.toString()}`);
+				$("#removeFile").val(`${attachments.toString()}`);
 			}
 		});
 
@@ -193,7 +198,7 @@
 			return messageLength !== 0;
 		}, '{{ __("messages.ckeditor_required") }}');
 
-		$.validator.addMethod('extension', function (value, element, param) {
+		$.validator.addMethod('docx_extension', function (value, element, param) {
 			let files = Array.from(element.files);
 			param = param.split('|');
 			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
@@ -210,6 +215,12 @@
 					required: true,
 					minlength: 3,
 					maxlength: 255,
+					notNumericValues: true,
+				},
+				short_description: {
+					required: true,
+					minlength: 10,
+					maxlength: 300,
 					notNumericValues: true,
 				},
 				description: {
@@ -245,8 +256,21 @@
 				salary: {
 					number: true,
 				},
-				'image[]': {
-					extension: "{{ config('settings.image_file_extensions') }}|pdf"
+				image: {
+					required: {
+						depends: function () {
+							return $('.imageExists').length > 0 ? false : true;
+						}
+					},
+					extension: "{{ config('settings.image_file_extensions') }}"
+				},
+				'attachments[]': {
+					required: {
+						depends: function () {
+							return $('.fileExists').length > 0 ? false : true;
+						}
+					},
+					docx_extension: "doc|docx|pdf"
 				},
 				enable: {
 					required: false,
@@ -262,10 +286,17 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				'image[]': '{{ __("messages.valid_file_extension") }}',
+				image: {
+					required: '{{ __("messages.required") }}',
+					extension: '{{ __("messages.valid_file_extension") }}'
+				},
+				'attachments[]': {
+					required: '{{ __("messages.required") }}',
+					docx_extension: '{{ __("messages.valid_file_extension") }}'
+				},
 				title: {
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
-					required: "This field is required.",
+					required: '{{ __("messages.required") }}',
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
 				}
 			}
