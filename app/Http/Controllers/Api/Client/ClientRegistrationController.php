@@ -240,6 +240,7 @@ class ClientRegistrationController extends BaseApiController
 
         $client = Client::create($data);
         $token = $client->createToken(__('auth.apiTokenKey'))->accessToken;
+        
         return $token;
     }
     
@@ -250,6 +251,6 @@ class ClientRegistrationController extends BaseApiController
      * @return void
      */
     private function saveSignatures($file) {
-        return storeFile(Client::SIGNATURE_DIR, $file, null);
+        return storeFile(Client::SIGNATURE_DIR, $file);
     }
 }

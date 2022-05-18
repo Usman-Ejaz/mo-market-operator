@@ -13,11 +13,24 @@ class ContactPageQuery extends Model
     protected $guarded = [];
 
     const STATUS_ENUMS = ["pending", "inprocess", "resolved"];
-
-    public function getCreatedAtAttribute($attribute){
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
+    
+    /**
+     * getStatusAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
     public function getStatusAttribute($value)
     {
         return ucfirst($value);
