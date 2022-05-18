@@ -201,7 +201,7 @@ class PageController extends Controller
             'created_by' => '',
             'modified_by' => ''
         ], [
-            "slug.unique" => __('messages.unique', ['attribute' => 'Slug']),
+            "slug.unique" => __('messages.unique', ['attribute' => 'slug']),
             "image.max" => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }

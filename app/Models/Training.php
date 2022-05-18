@@ -19,7 +19,7 @@ class Training extends Model
     protected $appends = ['attachment_links'];
 
 
-     /**
+    /**
      * ======================================================
      *                 Model Mutator Functions
      * ======================================================

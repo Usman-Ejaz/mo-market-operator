@@ -129,19 +129,10 @@ if (!function_exists('parseDate')) {
     function parseDate($date)
     {
         if ($date === null || $date === "") return null;
-        
-        if (strpos($date, "PM") !== false) {
-            $date = str_replace(" PM", ":00", $date);
-        }
-        
-        if (strpos($date, "AM") !== false) {
-            $date = str_replace(" AM", ":00", $date);
-        }
 
-        $date = str_replace("/", "-", $date);
-        $d = Carbon::parse($date);
+        $date = str_replace("/", "-", str_replace(" PM", ":00", str_replace(" AM", ":00", $date)));
 
-        return $d->format('Y-m-d H:i:s');
+        return Carbon::parse($date)->format('Y-m-d H:i:s');
     }
 }
 

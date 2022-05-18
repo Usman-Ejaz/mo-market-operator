@@ -253,4 +253,45 @@ class ClientRegistrationController extends BaseApiController
     private function saveSignatures($file) {
         return storeFile(Client::SIGNATURE_DIR, $file);
     }
+
+    /**
+     * @OA\Get(
+     *      path="/client-registration-form",
+     *      operationId="getRegistrationFormData",
+     *      tags={"Clients"},
+     *      summary="Get client registration form Data",
+     *      description="Get client registration form Data",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Response(
+     *          response=200,
+     *          description="Success"          
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Could not found",
+     *      ),
+     *  )
+     * 
+     */
+    public function getRegistrationFormData()
+    {
+        try {
+            return $this->sendResponse([
+                'categories' => config('client.categories'),
+                'general_keys' => config('client.general_keys'),
+                'category_keys' => config('client.keys'),
+                'registration_types' => config('client.registration_types')                
+            ], __('messages.success'));
+        } catch (\Exception $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage(), 'type' => get_class($ex)], 500);
+        }
+    }
 }
