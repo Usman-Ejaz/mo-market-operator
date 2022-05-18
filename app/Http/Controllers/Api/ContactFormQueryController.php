@@ -104,8 +104,8 @@ class ContactFormQueryController extends BaseApiController
                 'subject' => 'bail|required|min:5|max:100',
                 'message' => 'bail|required|min:5|max:255',
                 'type' => 'sometimes|bail|string|max:10',
-                'company' => 'sometimes|bail|string|min:3|max:100',
-                'role' => 'sometimes|bail|string|min:3|max:50'
+                'company' => 'nullable|bail|string|min:3|max:100',
+                'role' => 'nullable|bail|string|min:3|max:50'
             ]);
      
             if ($validator->fails()) {

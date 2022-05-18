@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\SiteSearchApiController;
 use App\Http\Controllers\Api\SliderImageApiController;
 use App\Http\Controllers\Api\StaticBlockApiController;
 use App\Http\Controllers\Api\TeamsApiController;
+use App\Http\Controllers\Api\TrainingsApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -84,6 +85,9 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
 
     Route::get('managers', [TeamsApiController::class, "getManagers"])->name('teams.managers');
     Route::get('team/{manager_id}', [TeamsApiController::class, "getTeam"])->name('teams.team');
+
+    Route::get("trainings", [TrainingsApiController::class, "getTrainings"])->name("trainings.index");
+    Route::get("trainings/{slug}", [TrainingsApiController::class, "getTrainingDetails"])->name("trainings.show");
 
     Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'storeInitiatorDetails'])->name('chatbot.store-details');
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');
