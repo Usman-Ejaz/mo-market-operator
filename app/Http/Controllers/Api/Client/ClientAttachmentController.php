@@ -62,11 +62,11 @@ class ClientAttachmentController extends BaseApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'attachment' => 'required|file|max:' . config('settings.maxDocumentSize'),
+            'attachment' => 'required|file|max:' . config('settings.maxDocumentSize') * 4,
             'category' => 'sometimes|string',
             'phrase' => 'required|string'
         ], [
-            'attachment.max' => __('messages.max_file', ['limit' => '5 MB'])
+            'attachment.max' => __('messages.max_file', ['limit' => '20 MB'])
         ]);
 
         if ($validator->fails()) {
@@ -74,7 +74,7 @@ class ClientAttachmentController extends BaseApiController
         }
 
         try {
-            $filename = storeFile(ClientAttachment::DIR, $request->file('attachment'), null);
+            $filename = storeFile(ClientAttachment::DIR, $request->file('attachment'));
             ClientAttachment::create([
                 'file' => $filename,
                 'category_id' => $request->category ?? null,

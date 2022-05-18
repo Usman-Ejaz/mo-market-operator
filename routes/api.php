@@ -45,7 +45,7 @@ Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('remove-attachments', [ClientAttachmentController::class, 'destroy'])->name('client.attachment.delete');
 });
 
-Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
+Route::prefix("v1")->middleware('verifyApiKey')->group(function () {    
     Route::post("submit-query", [ContactFormQueryController::class, "submit"])->name("contact-form-query.submit");
     Route::post("subscribe-to-newsletter", [NewsletterSubscriptionController::class, "subscribe"])->name("newsletters.subscribe");
     Route::get("faqs", [FaqApiController::class, "showFaqs"])->name("faqs.showFaqs");
@@ -88,6 +88,8 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
 
     Route::get("trainings", [TrainingsApiController::class, "getTrainings"])->name("trainings.index");
     Route::get("trainings/{slug}", [TrainingsApiController::class, "getTrainingDetails"])->name("trainings.show");
+
+    Route::get('client-registration-form', [ClientRegistrationController::class, 'getRegistrationFormData'])->name('client.registration-form');
 
     Route::post('save-chat-initiator-details', [ChatbotQueriesController::class, 'storeInitiatorDetails'])->name('chatbot.store-details');
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');
