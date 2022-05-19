@@ -153,11 +153,11 @@ class Training extends Model
      * */
 
     /**
-     * getStatus
+     * status
      *
      * @return string
      */
-    public function getStatus()
+    public function status()
     {
         return ucfirst($this->status);
     }

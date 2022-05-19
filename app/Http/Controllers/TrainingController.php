@@ -143,7 +143,7 @@ class TrainingController extends Controller
                     return (isset($row->location)) ? truncateWords($row->location, 20) : '';
                 })
                 ->addColumn('status', function ($row) {
-                    return (isset($row->status)) ? $row->getStatus() : '';
+                    return (isset($row->status)) ? $row->status() : '';
                 })
                 ->addColumn('topics', function ($row) {
                     return (isset($row->topics)) ? truncateWords($row->topics, 15) : '';
@@ -184,6 +184,8 @@ class TrainingController extends Controller
     {
         $rules = [
             'title' => 'required|string|min:3|unique:trainings,title,' . $training->id,
+            'short_description' => 'nullable',
+            'description' => 'nullable',
             'location' => 'required|string',
             'topics' => 'required|string',
             'target_audience' => 'required|string',

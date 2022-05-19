@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Menu;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 
 class AuditBrokenLinks extends Command
 {
@@ -20,6 +22,8 @@ class AuditBrokenLinks extends Command
      */
     protected $description = 'Audit the broken links of the client site.';
 
+    private $brokenLinks = null;
+
     /**
      * Create a new command instance.
      *
@@ -28,6 +32,7 @@ class AuditBrokenLinks extends Command
     public function __construct()
     {
         parent::__construct();
+        $this->brokenLinks = [];
     }
 
     /**
@@ -49,10 +54,12 @@ class AuditBrokenLinks extends Command
          */        
 
         $menus = $this->getMenusByActiveTheme();
+        
+        $this->auditLinks($menus);
+        
+        $brokenLinks = $this->brokenLinks;
 
-        $brokenLinks = $this->auditLinks($menus);
-
-        if ($brokenLinks) {
+        if (count($brokenLinks) > 0) {
             $this->removePrviousBrokenLinks();
 
             foreach ($brokenLinks as $link) {
@@ -68,7 +75,7 @@ class AuditBrokenLinks extends Command
      */
     private function getMenusByActiveTheme()
     {
-        
+        return Menu::byTheme()->active()->select('id', 'submenu_json')->latest()->get();
     }
     
     /**
@@ -78,18 +85,65 @@ class AuditBrokenLinks extends Command
      * @return array
      */
     private function auditLinks($menus)
-    {
-        return [];
+    {        
+        foreach ($menus as $menu) 
+        {
+            $submenuJson = json_decode($menu->submenu_json, true);
+
+            $this->searchMenu($submenuJson, $menu->id);
+        }
     }
     
+    /**
+     * searchMenu
+     *
+     * @param  mixed $submenu
+     * @param  mixed $menuId
+     * @return void
+     */
+    private function searchMenu($submenu, $menuId)
+    {
+        foreach ($submenu as $menu) 
+        {
+            if (isset($menu['children']) && is_array($menu['children'])) 
+            {
+                $this->searchMenu($menu['children'], $menuId);
+            }
+
+            $link = config('settings.client_app_base_url');
+            
+            if (isset($menu['anchor'])) {
+
+                if (strpos($menu['anchor'], "https:") !== false) {
+                    $link = $menu['anchor'];
+                } else if ($menu['anchor'] === "#") {
+                    continue;
+                } else {
+                    $link .= $menu['anchor'];
+                }
+
+            } else if (isset($menu['slug'])) {
+                $link .= $menu['slug'];
+            }
+
+            $this->checkURL($link, $menuId);
+        }
+    }
+    
+        
     /**
      * checkURL
      *
      * @param  mixed $link
+     * @param  mixed $menuId
      * @return void
      */
-    private function checkURL($link)
+    private function checkURL($link, $menuId)
     {
+        $response = Http::get($link);
         
+        if (! $response->ok()) {
+            array_push($this->brokenLinks, ['link' => $link, 'menu_id' => $menuId]);
+        }
     }
 }

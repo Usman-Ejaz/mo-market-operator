@@ -41,7 +41,7 @@
 		@if(\Route::current()->getName() == 'admin.trainings.edit' )
 		<div class="col-md-12">
 			<label for="status">Status:</label>
-			<span>{{ $training->getStatus() }}</span>
+			<span>{{ $training->status() }}</span>
 		</div>
 		@endif
 

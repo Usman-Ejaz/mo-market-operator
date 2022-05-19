@@ -31,11 +31,9 @@ class Menu extends Model
     public function scopeByTheme($query, $theme = null)
     {
         if ($theme === null) {
-            $theme = Settings::where('name', 'current_theme')->first();
-            return $query->where('theme', $theme->value);
-        } else {
-            return $query->where('theme', $theme);
+            $theme = Settings::get_option('current_theme');
         }
+        return $query->where('theme', $theme);
     }
 
     public function scopeActive($query)
