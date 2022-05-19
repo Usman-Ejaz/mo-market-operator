@@ -147,10 +147,10 @@ class DatabaseSeeder extends Seeder
         }
 
         // For Client
-        Client::factory(4)->create();
+        // Client::factory(4)->create();
 
         // For Client Attachment
-        ClientAttachment::factory(20)->create();
+        // ClientAttachment::factory(20)->create();
 
         SliderSetting::factory(1)->create();
     }

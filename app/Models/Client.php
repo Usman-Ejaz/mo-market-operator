@@ -32,17 +32,46 @@ class Client extends Authenticatable
         5 => 'captive_generator', 
         6 => 'competitive_supplier', 
         7 => 'international_trader',
-
         8 => 'transmission_service_provider', 
         9 => 'distribution_service_provider', 
         10 => 'metering_service_provider'
     ];
 
+
+    /**
+     * ======================================================
+     *                 Model Mutators Functions
+     * ======================================================
+     */
+    
+        
+    /**
+     * setCategoriesAttribute
+     *
+     * @param  string $value
+     * @return void
+     */
+    public function setCategoriesAttribute($value)
+    {
+        $value = explode(",", $value);
+        $cats = [];
+
+        foreach (self::REGISTER_CATEGORIES as $key => $category) {
+            if (in_array($category, $value)) {
+                array_push($cats, $key);
+            }
+        }
+
+        sort($cats);
+
+        $this->attributes['categories'] = implode(",", $cats);
+    }
+
     /**
      * ======================================================
      *                 Model Accessor Functions
      * ======================================================
-     * */
+     */
         
     /**
      * Mutates the comma separated ids into comma separated category names.
@@ -152,11 +181,29 @@ class Client extends Authenticatable
             ->groupBy('category_id');
     }
 
+
+    public function primaryDetails()
+    {
+        return $this->authorizedDetails()->where('type', '=', ClientDetail::PRIMARY)->first();
+    }
+
+    public function secondaryDetails()
+    {
+        return $this->authorizedDetails()->where('type', '=', ClientDetail::SECONDARY)->first();
+    }
+
     /**
      * ======================================================
      *                  Model Relations
      * ======================================================
-     * */
+    **/
+
+    
+    public function authorizedDetails()
+    {
+        return $this->hasMany(ClientDetail::class, 'client_id', 'id');
+    }
+
     
     /**
      * attachments

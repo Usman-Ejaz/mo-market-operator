@@ -10,6 +10,16 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="short_description">Short Description</label>
+                <textarea class="form-control" id="short_description" placeholder="Enter short description" name="short_description" cols="50" rows="3">{{ old('short_description') ?? $training->short_description }}</textarea>
+                <span class="form-text text-danger">{{ $errors->first('short_description') }} </span>
+            </div>
+        </div>
+    </div>
+
     <div class="form-group">
         <label for="description">Description</label>
         <textarea class="form-control ckeditor" id="description" placeholder="Enter training description" name="description"
