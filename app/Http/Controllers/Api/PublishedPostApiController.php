@@ -167,6 +167,12 @@ class PublishedPostApiController extends BaseApiController
                 'children' => $docsMenus
             ];
 
+            $menus[] = [
+                'title' => 'Events',
+                'slug' => 'media-library',
+                'link_prefix' => '/media-library',
+            ];
+
             return $this->sendResponse($menus, 'success');
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);

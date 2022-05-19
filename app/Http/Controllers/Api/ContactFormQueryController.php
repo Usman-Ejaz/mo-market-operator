@@ -33,7 +33,7 @@ class ContactFormQueryController extends BaseApiController
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
-     *             mediaType="application/json",
+     *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                  @OA\Property(
      *                      property="name",
@@ -53,6 +53,21 @@ class ContactFormQueryController extends BaseApiController
      *                  @OA\Property(
      *                      property="message",
      *                      title="message",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="type",
+     *                      title="type",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="company",
+     *                      title="company",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="role",
+     *                      title="role",
      *                      type="string"
      *                  ),
      *                  required={"name", "email", "subject", "message"},
@@ -86,9 +101,11 @@ class ContactFormQueryController extends BaseApiController
             $validator = Validator::make($request->all(), [
                 'name' => 'required|min:3|max:100',
                 'email' => 'required|email',
-                'subject' => 'required|min:5|max:100',
-                'message' => 'required|min:5|max:255',
-                'type' => 'sometimes|string|max:10'
+                'subject' => 'bail|required|min:5|max:100',
+                'message' => 'bail|required|min:5|max:255',
+                'type' => 'sometimes|bail|string|max:10',
+                'company' => 'nullable|bail|string|min:3|max:100',
+                'role' => 'nullable|bail|string|min:3|max:50'
             ]);
      
             if ($validator->fails()) {

@@ -19,7 +19,9 @@ class SettingsController extends Controller
         
         $theme = Settings::where('name', 'current_theme')->first();
         $notification_emails = Settings::where('name', 'notification_emails')->first();
-        return view('admin.settings.index', compact('theme', 'notification_emails'));
+        $from_emails = Settings::where('name', 'from_emails')->first();
+        
+        return view('admin.settings.index', compact('theme', 'notification_emails', 'from_emails'));
     }
 
     /**

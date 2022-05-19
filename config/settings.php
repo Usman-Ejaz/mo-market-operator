@@ -16,6 +16,8 @@ return [
     "maxDocumentSize" => 5000,   // 5 MB
     "image_file_extensions" => "jpg|jpeg|png|ico|bmp",
 
+    "client_app_base_url" => env('CLIENT_BASE_URL'),
+
     "storage_disk_base_path" => config('filesystems.disks.app.root') . '/',
 
     "google_credentials" => storage_path('app/ismo-346411-3bcba68c89a3.json'),

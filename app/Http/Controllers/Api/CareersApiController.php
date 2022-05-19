@@ -44,12 +44,12 @@ class CareersApiController extends BaseApiController
     public function getPublishedJobs()
     {
         try {
-            $jobs = Job::published()->withCount("applications")->latest()->get();
+            $jobs = Job::published()->applyFilters()->select("title", "slug", "short_description", "qualification", "experience", "published_at", "total_positions", "enable")->get();
 
             if ($jobs->count() > 0) {
-                return $this->sendResponse($jobs, "Success");
+                return $this->sendResponse($jobs, __('messages.success'));
             } else {
-                return $this->sendError("Error", ['errors' => 'Could not found jobs'], 404);
+                return $this->sendError(__('messages.data_not_found'), [], 404);
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
@@ -91,12 +91,12 @@ class CareersApiController extends BaseApiController
     public function showSingleJob($slug)
     {
         try {
-            $job = Job::published()->where("slug", "=", $slug)->first();
+            $job = Job::published()->where("slug", "=", $slug)->withCount('applications')->first();
 
             if ($job) {
-                return $this->sendResponse($job, "Success");
+                return $this->sendResponse($job, __('messages.success'));
             } else {
-                return $this->sendError("Could not found jobs", [], 404);
+                return $this->sendError(__('messages.data_not_found'), null, 404);
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
@@ -204,7 +204,7 @@ class CareersApiController extends BaseApiController
      *  )
      */
     public function submitApplication (Request $request) {
-        $validator = Validator::make($request->all(), $this->getApplicationRules(), $this->getApplicationMessages());
+        $validator = Validator::make($request->all(), $this->getRules(), $this->getMessages());
 
         if ($validator->fails()) {
             return $this->sendError("Error", ['errors' => $validator->errors()], 400);
@@ -216,25 +216,24 @@ class CareersApiController extends BaseApiController
             if ($job) {
                 $data = $validator->validate();
                 unset($data['job_slug']);
-                $application = Application::create($data);
-                $application->job_id = $job->id;
-
+                $data['job_id'] = $job->id;
+                
                 if ($request->hasFile("resume")) {
-                    $application->resume = storeFile(Application::STORAGE_DIRECTORY, $request->file('resume'), null);
+                    $data['resume'] = storeFile(Application::STORAGE_DIRECTORY, $request->file('resume'));
                 }
                 
-                $application->save();
+                Application::create($data);
 
-                return $this->sendResponse([], "Application submitted successfully");
+                return $this->sendResponse([], __('messages.success'));
             } else {
-                return $this->sendError("Error", ["errors" => "Could not find the job."], 404);
+                return $this->sendError(__('messages.data_not_found'), null, 404);
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }
     }
 
-    private function getApplicationRules() {
+    private function getRules() {
         return [
             'name' => 'required|string|min:3|max:255',
             'email' => 'required|string|email|max:255|unique:applications,email',
@@ -250,7 +249,7 @@ class CareersApiController extends BaseApiController
         ];
     }
 
-    private function getApplicationMessages() {
+    private function getMessages() {
         return [
             'resume.max' => __('messages.max_file', ['limit' => '5 MB'])
         ];

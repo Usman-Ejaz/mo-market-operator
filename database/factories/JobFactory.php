@@ -19,6 +19,7 @@ class JobFactory extends Factory
         return [
             'title' => $this->faker->name(),
             'slug' => Str::slug($this->faker->name()),
+            'short_description' => $this->faker->realText(200),
             'description' => $this->faker->realText(800),
             'location' => implode(",", $this->faker->randomElements(['Lahore', 'Karachi', 'Islamabad', 'Quetta', 'Peshawar'], 2)),
             'experience' => implode(",", $this->faker->randomElements(['2 years', '3 years', '4 years', '5 years', '6 years'], 1)),

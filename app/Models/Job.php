@@ -22,7 +22,7 @@ class Job extends Model
 
     const STORAGE_DIRECTORY = 'jobs/';
 
-    protected $appends = ['image_path'];
+    protected $appends = ['attachment_links'];
 
     /********* Getters ***********/
     public function getActiveAttribute($attribute){
@@ -39,17 +39,30 @@ class Job extends Model
 
     public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
-    }    
-
-    public function getImageAttribute ($value) {
-        return !empty($value) ? explode(",", $value) : [];
     }
 
-    public function getImagePathAttribute($value) {
+    public function getEnableAttribute($value)
+    {
+        return $value === 1 ? true : false;
+    }
+
+    public function getImageAttribute ($value) {
+        return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
+    }
+
+    public function getAttachmentsAttribute($value) {
+
+        return isset($value) ? explode(',', $value) : [];
+    }
+
+    public function getAttachmentLinksAttribute($value)
+    {
         $links = [];
-        foreach($this->image as $img) {
-            array_push($links, serveFile(self::STORAGE_DIRECTORY, $img));
+        
+        foreach ($this->attachments as $attachment) {
+            array_push($links, serveFile(self::STORAGE_DIRECTORY, $attachment));
         }
+
         return $links;
     }
 
@@ -95,7 +108,26 @@ class Job extends Model
 
     // Scope Queries
     public function scopePublished ($query) {
-        return $query->where("published_at", "!=", null)->select("title", "slug", "description", "location", "qualification", "experience", "published_at", "total_positions", "image");
+        return $query->where("published_at", "!=", null)->select("title", "slug", "description", "location", "salary", "enable", "qualification", "experience", "published_at", "total_positions", "image", "attachments");
+    }
+
+    public function scopeApplyFilters($query)
+    {
+        $request = request();
+
+        if ($request->has('month')) {
+            $query = $query->whereMonth('created_at', '=', $request->get('month'));
+        }
+
+        if ($request->has('year')) {
+            $query = $query->whereYear('created_at', '=', $request->get('year'));
+        }
+
+        if ($request->has('sort')) {
+            $query = $query->orderBy('created_at', $request->get('sort'));
+        }
+
+        return $query;
     }
 
     public function isPublished() {

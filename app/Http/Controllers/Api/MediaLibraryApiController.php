@@ -104,7 +104,7 @@ class MediaLibraryApiController extends BaseApiController
         }
 
         try {
-            $mediaLibrary = MediaLibrary::whereSlug($slug)->select("id", "name", "slug", "description")->first();
+            $mediaLibrary = MediaLibrary::whereSlug($slug)->select("id", "name", "slug", "description", "directory")->first();
 
             if ($mediaLibrary) {
                 $mediaLibrary->mediaFiles = $mediaLibrary->files();

@@ -26,17 +26,52 @@ class Client extends Authenticatable
     /* Register categories e.g Market Participant, Service Provider */
     const REGISTER_CATEGORIES = [
         1 => 'generator',
-        2 => 'base supplier', 
-        3 => 'pakistani trader', 
+        2 => 'base_supplier', 
+        3 => 'pakistani_trader', 
         4 => 'bpc', 
-        5 => 'captive generator', 
-        6 => 'competitive supplier', 
-        7 => 'international trader',
-                
-        8 => 'transmission service provider', 
-        9 => 'distribution service provider', 
-        10 => 'metering service provider'
+        5 => 'captive_generator', 
+        6 => 'competitive_supplier', 
+        7 => 'international_trader',
+        8 => 'transmission_service_provider', 
+        9 => 'distribution_service_provider', 
+        10 => 'metering_service_provider'
     ];
+
+
+    /**
+     * ======================================================
+     *                 Model Mutators Functions
+     * ======================================================
+     */
+    
+        
+    /**
+     * setCategoriesAttribute
+     *
+     * @param  string $value
+     * @return void
+     */
+    public function setCategoriesAttribute($value)
+    {
+        $value = explode(",", $value);
+        $cats = [];
+
+        foreach (self::REGISTER_CATEGORIES as $key => $category) {
+            if (in_array($category, $value)) {
+                array_push($cats, $key);
+            }
+        }
+
+        sort($cats);
+
+        $this->attributes['categories'] = implode(",", $cats);
+    }
+
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
         
     /**
      * Mutates the comma separated ids into comma separated category names.
@@ -66,7 +101,8 @@ class Client extends Authenticatable
      * @param  string $value
      * @return string
      */
-    public function getCreatedAtAttribute($value): string {
+    public function getCreatedAtAttribute($value): string 
+    {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : "";
     }
     
@@ -76,7 +112,8 @@ class Client extends Authenticatable
      * @param  mixed $value
      * @return string
      */
-    public function getPriSignatureAttribute($value): string {
+    public function getPriSignatureAttribute($value): string 
+    {
         return serveFile(self::SIGNATURE_DIR, $value);
     }
     
@@ -86,16 +123,25 @@ class Client extends Authenticatable
      * @param  mixed $value
      * @return string
      */
-    public function getSecSignatureAttribute($value): string {
+    public function getSecSignatureAttribute($value): string 
+    {
         return serveFile(self::SIGNATURE_DIR, $value);
     }
+
+
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     * */
     
     /**
      * Checks if client is approved by admin or not.
      *
      * @return boolean true|false
      */
-    public function isApproved() {
+    public function isApproved() 
+    {
         return $this->approved == 1;
     }
     
@@ -112,16 +158,7 @@ class Client extends Authenticatable
 
         return __('Pending');
     }
-    
-    /**
-     * attachments
-     * 
-     */
-    public function attachments() 
-    {
-        return $this->hasMany(ClientAttachment::class);
-    }
-    
+
     /**
      * generalAttachments
      *
@@ -143,4 +180,38 @@ class Client extends Authenticatable
             ->get()
             ->groupBy('category_id');
     }
+
+
+    public function primaryDetails()
+    {
+        return $this->authorizedDetails()->where('type', '=', ClientDetail::PRIMARY)->first();
+    }
+
+    public function secondaryDetails()
+    {
+        return $this->authorizedDetails()->where('type', '=', ClientDetail::SECONDARY)->first();
+    }
+
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+    **/
+
+    
+    public function authorizedDetails()
+    {
+        return $this->hasMany(ClientDetail::class, 'client_id', 'id');
+    }
+
+    
+    /**
+     * attachments
+     * 
+     */
+    public function attachments() 
+    {
+        return $this->hasMany(ClientAttachment::class);
+    }
+    
 }

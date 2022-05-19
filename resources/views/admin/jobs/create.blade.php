@@ -165,7 +165,7 @@
 			return messageLength !== 0;
 		}, '{{ __("messages.ckeditor_required") }}');
 
-		$.validator.addMethod('extension', function (value, element, param) {
+		$.validator.addMethod('docx_extension', function (value, element, param) {
 			let files = Array.from(element.files);
 			param = param.split('|');
 			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
@@ -182,6 +182,12 @@
 					required: true,
 					minlength: 3,
 					maxlength: 255,
+					notNumericValues: true,
+				},
+				short_description: {
+					required: true,
+					minlength: 10,
+					maxlength: 300,
 					notNumericValues: true,
 				},
 				description: {
@@ -217,8 +223,13 @@
 				salary: {
 					number: true,
 				},
-				'image[]': {
-					extension: "{{ config('settings.image_file_extensions') }}|pdf"
+				image: {
+					required: true,
+					extension: "{{ config('settings.image_file_extensions') }}"
+				},
+				'attachments[]': {
+					required: true,
+					docx_extension: "doc|docx|pdf"
 				},
 				enable: {
 					required: false,
@@ -240,7 +251,14 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				'image[]': '{{ __("messages.valid_file_extension") }}',
+				image: {
+					required: '{{ __("messages.required") }}',
+					extension: '{{ __("messages.valid_file_extension") }}'
+				},
+				'attachments[]': {
+					required: '{{ __("messages.required") }}',
+					docx_extension: '{{ __("messages.valid_file_extension") }}'
+				},
 				title: {
 					required: "This field is required.",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",

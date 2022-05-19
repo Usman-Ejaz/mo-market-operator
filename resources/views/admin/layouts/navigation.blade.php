@@ -130,6 +130,17 @@
 				</li>
 				@endif
 
+				@if(hasPermission('trainings', 'list'))
+				<li class="nav-item">
+					<a href="{{ route('admin.trainings.index') }}" class="nav-link {{ Request()->is('admin/trainings*') ? 'active' : '' }}">
+						<i class="nav-icon fa fa-graduation-cap"></i>
+						<p>
+							{{ __("Trainings") }}
+						</p>
+					</a>
+				</li>
+				@endif
+
 				@if (hasPermission('contact_page_queries', 'list'))
 				<li class="nav-item">
 					<a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('admin/contact-page-queries*') ? 'active' : '' }}">

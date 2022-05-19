@@ -29,6 +29,7 @@ use App\Http\Controllers\SliderSettingController;
 use App\Http\Controllers\StaticBlockController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\TeamMemberController;
+use App\Http\Controllers\TrainingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -137,6 +138,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     
     // Routes for Document Module
     Route::get('contact-page-queries/list', [ContactPageQueryController::class, 'list'])->name('contact-page-queries.list');
+    Route::post('contact-page-queries/add-reply/{contactPageQuery}', [ContactPageQueryController::class, 'addReply'])->name('contact-page-queries.add-reply');
     Route::resource('contact-page-queries', ContactPageQueryController::class);
     
     // Routes for Search Statistics
@@ -175,6 +177,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get('managers/list', [ManagerController::class, 'list'])->name('managers.list');
     Route::post('managers/deleteImage', [ManagerController::class, 'deleteImage'])->name('managers.deleteImage');
     Route::resource('managers', ManagerController::class);
+
+    Route::get('trainings/list', [TrainingController::class, 'list'])->name('trainings.list');
+    Route::resource('trainings', TrainingController::class);
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");
