@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\ClientAttachment;
+use App\Models\ClientDetail;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -122,16 +124,6 @@ class ClientRegistrationController extends BaseApiController
      *                      "address": "USA",
      *                      "type": "service_provider",
      *                      "categories": "2,3,4",
-     *                      "pri_name": "John",
-     *                      "pri_email": "johndoe@gmail.com", 
-     *                      "pri_address": "USA, California",
-     *                      "pri_telephone": "03001234567", 
-     *                      "pri_facsimile_telephone": "03001234567",
-     *                      "sec_name": "Doe", 
-     *                      "sec_email": "johndoe@gmail.com", 
-     *                      "sec_address": "USA, California",
-     *                      "sec_telephone": "03001234567", 
-     *                      "sec_facsimile_telephone": "03001234567",
      *                  }
      *             )
      *         )
@@ -153,7 +145,7 @@ class ClientRegistrationController extends BaseApiController
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), $this->getRules(), $this->getMessages(), $this->getAttributes());
+        $validator = Validator::make($request->all(), $this->getRules($request), $this->getMessages(), $this->getAttributes());
 
         if ($validator->fails()) {
             return $this->sendError("Error", ['errors' => $validator->errors()], 400);
@@ -161,7 +153,7 @@ class ClientRegistrationController extends BaseApiController
 
         try {
             $clientToken = $this->createClient($request);
-            return $this->sendResponse($clientToken, "Success");
+            return $this->sendResponse($clientToken, __("messages.success"));
         } catch (\Illuminate\Database\QueryException $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         } catch (\Exception $ex) {
@@ -174,25 +166,20 @@ class ClientRegistrationController extends BaseApiController
      *
      * @return array
      */
-    private function getRules(): array {
+    private function getRules($request): array {
         return [
             'name' => 'required|string|min:3',
-            // 'email' => 'required|email|string|unique:email,clients',
-            'address' => 'required|string|min:5',
             'type' => 'required|string|in:' . implode(",", Client::TYPE),
             'categories' => 'required|string',
-            'pri_name' => 'required|string',
-            'pri_address' => 'required|string',
-            'pri_telephone' => 'required|string',
-            'pri_facsimile_telephone' => 'required|string',
-            'pri_email' => 'required|email|unique:clients,pri_email',
-            'pri_signature' => 'required|file|image|max:' . config('settings.maxImageSize'),
-            'sec_name' => 'required|string',
-            'sec_address' => 'required|string',
-            'sec_telephone' => 'required|string',
-            'sec_facsimile_telephone' => 'required|string',
-            'sec_email' => 'required|email',
-            'sec_signature' => 'required|file|image|max:' . config('settings.maxImageSize')
+            'business' => 'required|string|min:5',
+            'address_line_one' => 'required|string|min:5',
+            'address_line_two' => 'required|string|min:5',
+            'city' => 'required|string|min:5',
+            'state' => 'required|string|min:5',
+            'zipcode' => 'required|string|min:5',
+            'country' => 'required|string|min:5',
+            'primary_details' => 'required',
+            'secondary_details' => Rule::requiredIf($request->has('secondary_details')),
         ];
     }
     
@@ -214,7 +201,7 @@ class ClientRegistrationController extends BaseApiController
      */
     private function getAttributes(): array {
         return [
-            'pri_email' => 'primary email'
+            
         ];
     }
     
@@ -226,31 +213,72 @@ class ClientRegistrationController extends BaseApiController
      */
     private function createClient($request)
     {
-        if ($request->has('pri_signature')) {
-            $primarySign = $this->saveSignatures($request->file('pri_signature'));
-        }
-
-        if ($request->has('sec_signature')) {
-            $secondarySign = $this->saveSignatures($request->file('sec_signature'));
-        }
-
         $data = $request->all();
-        $data['pri_signature'] = $primarySign;
-        $data['sec_signature'] = $secondarySign;
 
-        $client = Client::create($data);
-        $token = $client->createToken(__('auth.apiTokenKey'))->accessToken;
+        $client = Client::create([
+            'name'              => $data['name'],
+            'type'              => $data['type'],
+            'business'          => $data['business'],
+            'address_line_one'  => $data['address_line_one'],
+            'address_line_two'  => $data['address_line_two'],
+            'city'              => $data['city'],
+            'state'	            => $data['state'],
+            'zipcode'           => $data['zipcode'],
+            'country'           => $data['country'],
+            'categories'        => $data['categories']
+        ]);
+
+        if ($client !== null) {
+
+            $this->storeClientDetails($data['primary_details'], ClientDetail::PRIMARY, $client->id);
+
+            if ($request->has('secondary_details')) {
+                $this->storeClientDetails($data['secondary_details'], ClientDetail::SECONDARY, $client->id);
+            }
+
+            $token = $client->createToken(__('auth.apiTokenKey'))->accessToken;
+
+            return ['token' => $token];
+        }
         
-        return $token;
+        return ['token' => null];
+    }
+
+    
+    /**
+     * storeClientDetails
+     *
+     * @param  array $data
+     * @param  string $type
+     * @return void
+     */
+    private function storeClientDetails($data, $type, $clientId)
+    {
+        ClientDetail::create([
+            'client_id'             => $clientId,
+            'name'                  => $data['name'],
+            'email'                 => $data['email'],
+            'designation'           => $data['designation'],
+            'type'                  => $type,
+            'address_line_one'      => $data['address_line_one'],
+            'address_line_two'      => $data['address_line_two'],
+            'city'                  => $data['city'],
+            'state'	                => $data['state'],
+            'zipcode'               => $data['zipcode'],
+            'telephone'             => $data['telephone'],
+            'facsimile_telephone'   => $data['facsimile_telephone'],
+            'signature'             => $this->saveSignatures(request()->file($type . '_signature'))
+        ]);
     }
     
     /**
      * saveSignatures
      *
      * @param  mixed $file
-     * @return void
+     * @return string | null
      */
-    private function saveSignatures($file) {
+    private function saveSignatures($file) 
+    {
         return storeFile(Client::SIGNATURE_DIR, $file);
     }
 
@@ -285,10 +313,10 @@ class ClientRegistrationController extends BaseApiController
     {
         try {
             return $this->sendResponse([
-                'categories' => config('client.categories'),
-                'general_keys' => config('client.general_keys'),
-                'category_keys' => config('client.keys'),
-                'registration_types' => config('client.registration_types')                
+                'categories' => __('client.categories'),
+                'general_keys' => __('client.general_keys'),
+                'category_keys' => __('client.keys'),
+                'registration_types' => __('client.registration_types')
             ], __('messages.success'));
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage(), 'type' => get_class($ex)], 500);
