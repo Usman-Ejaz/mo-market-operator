@@ -67,6 +67,14 @@ return [
             'days' => 14,
         ],
 
+        'brokenLinksLog' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/broken-links.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'permission' => 0777,
+            'days' => 14,
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
