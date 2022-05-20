@@ -253,7 +253,7 @@
 			messages: {
 				image: {
 					required: '{{ __("messages.required") }}',
-					extension: '{{ __("messages.valid_file_extension") }}'
+					extension: '{{ __("messages.valid_image_extension") }}'
 				},
 				'attachments[]': {
 					required: '{{ __("messages.required") }}',

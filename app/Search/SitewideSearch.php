@@ -16,5 +16,6 @@ class SitewideSearch extends Aggregator
         \App\Models\Post::class,
         \App\Models\Job::class,
         \App\Models\Faq::class,
+        \App\Models\Training::class,
     ];
 }

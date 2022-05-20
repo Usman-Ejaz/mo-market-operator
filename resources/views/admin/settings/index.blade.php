@@ -52,14 +52,15 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="custom-control custom-radio text-center">
-                                        <input class="custom-control-input" type="radio" id="theme_1" name="current_theme" value="theme1" {{ $theme->value === "theme1" ? "checked" : "" }}>
-                                        <label for="theme_1" class="custom-control-label">Theme 1</label>
+                                        {{-- <input class="custom-control-input" type="radio" id="theme_1" name="current_theme" value="theme1" {{ $theme->value === "theme1" ? "checked" : "" }}> --}}
+                                        {{-- <label for="theme_1" class="custom-control-label">Theme 1</label> --}}
+                                        <input type="hidden" id="theme_1" name="current_theme" value="theme1">
                                         <div class="row d-flex" style="align-items: center;justify-content: center;">
-                                            <img src="{{ asset('themes/theme_1.png') }}" alt="Theme 1" height="200px" width="200px" class="mt-3 {{ $theme->value === 'theme1' ? 'active-theme' : '' }}">
+                                            <img src="{{ asset('themes/home_page_theme_1.png') }}" alt="Theme 1" height="200px" width="200px" class="mt-3 {{ $theme->value === 'theme1' ? 'active-theme' : '' }}">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                {{-- <div class="col-md-4">
                                     <div class="custom-control custom-radio text-center">
                                         <input class="custom-control-input" type="radio" id="theme_2" name="current_theme" value="theme2" {{ $theme->value === "theme2" ? "checked" : "" }}>
                                         <label for="theme_2" class="custom-control-label">Theme 2</label>
@@ -76,7 +77,7 @@
                                             <img src="{{ asset('themes/theme_3.png') }}" alt="Theme 1" height="200px" width="200px" class="mt-3 {{ $theme->value === 'theme3' ? 'active-theme' : '' }}">
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="row mt-5">
                                 <div class="col-md-12">
@@ -91,7 +92,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="from_emails">From Emails </label>
-                                        <input type="input" class="form-control" id="from_emails" placeholder="Notification Receiver Emails" name="from_emails" data-role="tagsinput" value={{ old('from_emails') ?? $from_emails ? $from_emails->value : '' }}>
+                                        <input type="text" class="form-control" id="from_emails" placeholder="Notification Receiver Emails" name="from_emails" data-role="tagsinput" value={{ old('from_emails') ?? $from_emails ? $from_emails->value : '' }}>
                                         <span class="form-text text-danger">{{ $errors->first('from_emails') }} </span>
                                     </div>
                                 </div>
@@ -129,7 +130,7 @@
                     return;
                 }
 
-                $(this).attr('placeholder', '{{ __("Notification Receiver Emails") }}');
+                $(this).attr('placeholder', $(this).attr('placeholder'));
             });
 
             if (document.getElementsByClassName('label-info').length > 0) {
