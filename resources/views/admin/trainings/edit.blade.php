@@ -222,8 +222,8 @@
 				$(this).attr('placeholder', '');
 				return;
 			}
-
-			$(this).attr('placeholder', '{{ __("Enter Job Location") }}');
+			var placeholder = $(this).attr('placeholder');
+			$(this).attr('placeholder', placeholder);
 		});
 
 		if (document.getElementsByClassName('label-info').length > 0) {
