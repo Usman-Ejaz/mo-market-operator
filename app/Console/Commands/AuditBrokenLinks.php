@@ -156,7 +156,7 @@ class AuditBrokenLinks extends Command
     {
         $response = Http::get($link);
         
-        if ($response->ok()) {
+        if (! $response->ok()) {
             array_push($this->brokenLinks, ['link' => $link, 'main_menu' => $mainMenu, 'menu' => $data]);
         }
     }
