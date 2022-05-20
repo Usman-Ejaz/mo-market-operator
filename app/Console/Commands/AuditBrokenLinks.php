@@ -7,6 +7,7 @@ use App\Models\Menu;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class AuditBrokenLinks extends Command
 {
@@ -53,13 +54,20 @@ class AuditBrokenLinks extends Command
          * 5. If link sends status code except 200 then add that link in broken links module.
          * 6. At each run of cron job, remove previous links from broken links module and add new ones.
          * 
-         */        
+         */
+        $currentDateTime = now()->format('Y-m-d H:i:s');
+
+        $this->writeLogs("--------------------- Start Working | {$currentDateTime} | ----------------------");
 
         $menus = $this->getMenusByActiveTheme();
         
+        $this->writeLogs("Total Menus found: " . $menus->count());
+
         $this->auditLinks($menus);
         
         $brokenLinks = $this->brokenLinks;
+        
+        $this->writeLogs("Total Broken Links Found: " . count($brokenLinks));
 
         if (count($brokenLinks) > 0) {
             $this->removePrviousBrokenLinks();
@@ -68,12 +76,14 @@ class AuditBrokenLinks extends Command
                 $this->addLinkToBrokenLinks($link);
             }
         }
+
+        $this->writeLogs("------------------ End Working | {$currentDateTime} | ------------------");
     }
     
     /**
      * getMenusByActiveTheme
      *
-     * @return void
+     * @return object
      */
     private function getMenusByActiveTheme()
     {
@@ -91,7 +101,9 @@ class AuditBrokenLinks extends Command
         foreach ($menus as $menu) 
         {
             $submenuJson = json_decode($menu->submenu_json, true);
-
+            
+            unset($menu->submenu_json);
+            
             $this->searchMenu($submenuJson, $menu);
         }
     }
@@ -157,17 +169,25 @@ class AuditBrokenLinks extends Command
     private function removePrviousBrokenLinks()
     {
         if (BrokenLink::all()->count() > 0) {
+            $this->writeLogs("Removing old broken links from broken_links table");
             BrokenLink::truncate();
         }
     }
 
     private function addLinkToBrokenLinks($data)
     {        
+        $this->writeLogs("Adding new broken link in broken_links table with data " . json_encode($data));
+
         BrokenLink::create([
             'link' => $data['link'],
             'title' => $data['menu']['title'],
             'menu_name' => $data['main_menu']['name'],
             'edit_link' => route('admin.menus.submenus', ['menu' => $data['main_menu']['id']])
         ]);
+    }
+
+    private function writeLogs($message, $type = 'info')
+    {
+        Log::channel('brokenLinksLog')->$type($message);
     }
 }
