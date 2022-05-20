@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\BrokenLinkController;
 use App\Http\Controllers\ChatBotKnowledgeBaseController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CkeditorImageUploader;
@@ -180,6 +181,9 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     Route::get('trainings/list', [TrainingController::class, 'list'])->name('trainings.list');
     Route::resource('trainings', TrainingController::class);
+
+    Route::get('broken-links/list', [BrokenLinkController::class, 'list'])->name('broken-links.list');
+    Route::resource('broken-links', BrokenLinkController::class);
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");

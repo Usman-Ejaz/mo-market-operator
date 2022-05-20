@@ -141,6 +141,17 @@
 				</li>
 				@endif
 
+				@if(hasPermission('broken_links', 'list'))
+				<li class="nav-item">
+					<a href="{{ route('admin.broken-links.index') }}" class="nav-link {{ Request()->is('admin/broken-links*') ? 'active' : '' }}">
+						<i class="nav-icon fa fa-unlink"></i>
+						<p>
+							{{ __("Broken Links") }}
+						</p>
+					</a>
+				</li>
+				@endif
+
 				@if (hasPermission('contact_page_queries', 'list'))
 				<li class="nav-item">
 					<a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('admin/contact-page-queries*') ? 'active' : '' }}">

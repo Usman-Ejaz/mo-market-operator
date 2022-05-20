@@ -119,7 +119,9 @@
 			},
 			columns: [{
 					data: 'DT_RowIndex',
-					name: 'DT_RowIndex'
+					name: 'DT_RowIndex',
+					orderable: false, 
+				    searchable: false
 				},
 				{
 					data: 'keyword',
@@ -128,14 +130,7 @@
 				{
 					data: 'count_sum',
 					name: 'count_sum'
-				},
-				// {data: 'created_at', name: 'created_at'},
-				// {
-				//     data: 'action', 
-				//     name: 'action', 
-				//     orderable: false, 
-				//     searchable: false
-				// },
+				}
 			]
 		});
 
