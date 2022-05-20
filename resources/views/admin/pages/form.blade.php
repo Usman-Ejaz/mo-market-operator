@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-12">
 			<div class="form-group">
 				<label for="page_image" class="form-label">Page Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
 				<input class="form-control" type="file" id="page_image" name="image">

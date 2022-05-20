@@ -16,6 +16,7 @@ class SiteSearchResource extends JsonResource
     {        
         return [
             'title' => $this->title ?: $this->question,
+            'slug' => $this->slug ?: null,
             'description' => $this->description ?: $this->answer ?: '',
             'keywords' => $this->keywords ?: $this->location ?: '',
             'category' => $this->category_id ? $this->category->name : '',

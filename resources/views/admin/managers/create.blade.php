@@ -95,7 +95,7 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				image: '{{ __("messages.valid_file_extension") }}',
+				image: '{{ __("messages.valid_image_extension") }}',
 				name: {
 					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
