@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\SiteSearchEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DocumentResource;
 use App\Http\Resources\SiteSearchResource;
 use App\Models\Document;
 use App\Search\SitewideSearch;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 class SiteSearchApiController extends BaseApiController
 {
 
-    const SEARCH_TYPE_DOC = "document";
+    const SEARCH_TYPE_DOC = "documents";
     const SEARCH_TYPE_WEB = "web_content";
 
      /**
@@ -119,7 +120,7 @@ class SiteSearchApiController extends BaseApiController
                         ->get();
 
             if ($docs->count() > 0) {
-                return $this->sendResponse(SiteSearchResource::collection($docs), "Success");
+                return $this->sendResponse(DocumentResource::collection($docs), "Success");
             } else {
                 return $this->sendResponse([], "Data not found");
             }

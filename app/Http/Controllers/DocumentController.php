@@ -53,7 +53,7 @@ class DocumentController extends Controller
         $data = $this->validateRequest($document);
 
         $data['slug'] = str_slug($data['title']);
-                
+        
         $convertFiles = $request->convert !== null && $request->convert == '1';
 
         $filenames = "";
@@ -224,8 +224,8 @@ class DocumentController extends Controller
             'title' => 'required|min:3|unique:documents,title,'.$document->id,
             'keywords' => 'nullable',
             'category_id' => 'required',
-            'file' => 'required|max: ' . config('settings.maxDocumentSize'),
-            'image' => 'required|image|max:' . config('settings.maxImageSize'),
+            'file.*' => 'required|max: ' . config('settings.maxDocumentSize'),
+            'image' => 'required|file|max:' . config('settings.maxImageSize'),
             'created_by' => '',
             'modified_by' => ''
         ];
@@ -233,7 +233,7 @@ class DocumentController extends Controller
         $request = request();
 
         if (! $request->hasFile('file')) {
-            unset($rule['file']);
+            unset($rule['file.*']);
         }
 
         if (! $request->has('image')) {
@@ -241,7 +241,7 @@ class DocumentController extends Controller
         }
 
         return request()->validate($rule, [
-            'file.max' => __('messages.max_file', ['limit' => '5 MB']),
+            'file.*.max' => __('messages.max_file', ['limit' => '5 MB']),
             'image.max' => __('messages.max_file', ['limit' => '2 MB']),
         ]);
     }
@@ -289,13 +289,14 @@ class DocumentController extends Controller
             $uploadedFiles = $request->file('file');
 
             if (count($uploadedFiles) > 0) {
-                $filenames = $filenames . ',';
+                $tempnames = "";
                 foreach ($uploadedFiles as $file) {
                     $filename = storeFile(Document::STORAGE_DIRECTORY, $file);
-                    $filenames .= $filename . ",";
+                    $tempnames .= $filename . ",";
                 }
 
-                $filenames = trim($filenames, ",");
+                $tempnames = trim($tempnames, ",");
+                $filenames = trim($tempnames . ',' . $filenames, ",");
             }
         }
 
