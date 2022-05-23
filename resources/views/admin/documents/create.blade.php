@@ -122,7 +122,7 @@
 				},
 				image: {
 					required: "{{ __('messages.required') }}",
-					extension: '{{ __("messages.valid_file_extension") }}'
+					extension: '{{ __("messages.valid_image_extension") }}'
 				},
 				title: {
 					required: "{{ __('messages.required') }}",
@@ -160,11 +160,21 @@
 
 		if (uploadedFiles.length > 0) {
 			let invalidFiles = [];
+			let pdfFiles = [];
 
 			for (let file of uploadedFiles) {
-				if (!convertableExtensions.includes(getFileExtension(file))) {
+				var ext = getFileExtension(file);
+
+				if (ext.toLowerCase() === "pdf") {
+					pdfFiles.push(file.name);
+				} else if (!convertableExtensions.includes(ext)) {
 					invalidFiles.push(file.name);
 				}
+			}
+
+			if (pdfFiles.length > 0) {
+				alert(`${pdfFiles.toString()} file(s) are already in PDF.`);
+				e.target.checked = false;
 			}
 
 			if (invalidFiles.length > 0) {
@@ -172,7 +182,7 @@
 				e.target.checked = false;
 			}
 		} else {
-			alert('Please select document first.');
+			alert('Please select the document first.');
 			e.target.checked = false;
 		}
 	}

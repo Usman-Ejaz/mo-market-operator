@@ -10,18 +10,20 @@ return [
     */
 
     "not_numeric" => "This field cannot contain only numbers.",
-    "valid_file_extension" => "Please attach a file with valid extension",
+    "valid_file_extension" => "Please attach a file with valid extension.",
+    "valid_image_extension" => "Please attach an image with valid extension.",
     "valid_date" => ":first date must be greater than :second date",
     "ckeditor_required" => "This field is required.",
-    "min_date" => "The end date must be a date after or equal to start date",
-    "max_date" => ":first date must be greater than :second date",
+    "min_date" => ":first date must be less than :second date",
+    "max_date" => ":first date must be greater than :second date.",
     "max_characters" => ":field should not exceed the max length than :limit.",
     "min_characters" => ":field must be at least :limit characters long.",
     "unique" => ":attribute already exist.",
     "required" => "This field is required.",
     "max_file" => "The file is too large. Allowed max size is :limit.",
     "record_delete" => "Are you sure you want to delete this record?",
-    
+    "same_date" => "start datetime cannot be same as end datetime.",
+    "todays_date" => "please select the date greater than todays datetime.",
     
     /*
     |--------------------------------------------------------------------------

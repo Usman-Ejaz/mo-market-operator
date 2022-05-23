@@ -107,15 +107,24 @@
 			step: 30,
 			roundTime: 'ceil',
 			minDate: new Date(),
+			minTime: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date').val(mapDate(dp));
-				let endDate = new Date($("#end_date").val());
-				if (dp >= endDate) {
-					$input.val("");
-					$input.parent().next().text("Start Date cannot be less than end date");
+				let endDate = new Date($("#end_date").val()).setSeconds(0, 0);
+				dp = dp.setSeconds(0, 0);
+				let curr = (new Date()).setSeconds(0, 0);
+
+				if (dp >= curr) {
+					if (dp >= endDate) {
+						$input.val("");
+						$input.parent().next().text("Start Date cannot be less than end date");
+					} else {
+						$input.parent().next().text("");
+					}
 				} else {
-					$input.parent().next().text("");
+					$input.val("");
+					$input.parent().next().text("please select the date greater than or equals to today's date.");
 				}
 			},
 			onShow: function () {
@@ -133,12 +142,20 @@
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#end_date').val(mapDate(dp));
-				let startDate = new Date($("#start_date").val());
-				if (dp <= startDate) {
-					$input.val("");
-					$input.parent().next().text("{{ __('messages.min_date') }}");
+				let startDate = new Date($("#start_date").val()).setSeconds(0, 0);
+				dp = dp.setSeconds(0, 0);
+				let curr = (new Date()).setSeconds(0, 0);
+
+				if (dp >= curr) {
+					if (dp <= startDate) {
+						$input.val("");
+						$input.parent().next().text("{{ __('messages.min_date') }}");
+					} else {
+						$input.parent().next().text("");
+					}
 				} else {
-					$input.parent().next().text("");
+					$input.val("");
+					$input.parent().next().text("please select the date greater than or equals to today's date.");
 				}
 			},
 			onShow: function () {
@@ -235,7 +252,7 @@
 				error.insertAfter(element);
 			},
 			messages: {
-				image: '{{ __("messages.valid_file_extension") }}',
+				image: '{{ __("messages.valid_image_extension") }}',
 				title: {
 					required: "This field is required.",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",

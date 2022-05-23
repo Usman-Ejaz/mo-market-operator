@@ -40,7 +40,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="topics">Topics <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="topics" placeholder="Enter topics for training"
+                <input type="input" class="form-control" id="topics" placeholder="Enter topics"
                     name="topics" value="{{ old('topics') ?? $training->topics }}" data-role="tagsinput">
                 <span class="form-text text-danger">{{ $errors->first('topics') }} </span>
             </div>

@@ -1,31 +1,22 @@
 @extends('admin.layouts.app')
-@section('header', 'Roles & Permissions')
+@section('header', 'Feedback Ratings')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-<li class="breadcrumb-item active">Roles & Permissions</li>
-@endsection
-
-@section('addButton')
-@if( hasPermission('roles_and_permissions', 'create') )
-<a class="btn btn-primary float-right" href="{{ route('admin.roles.create') }}">Add Role</a>
-@endif
-
-@if( hasPermission('roles_and_permissions', 'view_permission') )
-<a class="btn btn-primary float-right mr-2" href="{{ route('admin.permissions.index') }}">Permissions</a>
-@endif
+<li class="breadcrumb-item active">Feedback Ratings</li>
 @endsection
 
 @section('content')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
-
 			<table class="table table-bordered yajra-datatable">
 				<thead>
 					<tr>
 						<th>Id</th>
-						<th>Name</th>
-						<th>Created at</th>
+						<th>Email</th>
+						<th>Rating</th>
+						<th>Feedback</th>
+						<th>Created date</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -35,9 +26,8 @@
 
 			<br />
 		</div>
-		<!-- /.row -->
 	</div>
-	<!-- /.container-fluid -->
+	<!-- /.row -->
 </div>
 @endsection
 
@@ -46,17 +36,18 @@
 @endpush
 
 @push('optional-scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" defer></script>
+
 <script type="text/javascript">
 	$(function() {
+
 		var table = $('.yajra-datatable').DataTable({
-			order: [[0, 'desc']],
 			processing: true,
 			serverSide: true,
 			pageLength: 25,
-			ajax: "{{ route('admin.roles.list') }}",
+			order: [[0, 'desc']],
+			ajax: "{{ route('admin.feedback-ratings.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
 					const searchedRecods = this.fnSettings()._iRecordsDisplay;
@@ -71,8 +62,16 @@
 					name: 'id'
 				},
 				{
-					data: 'name',
-					name: 'name'
+					data: 'email',
+					name: 'email'
+				},
+				{
+					data: 'rating',
+					name: 'rating'
+				},
+				{
+					data: 'feedback',
+					name: 'feedback'
 				},
 				{
 					data: 'created_at',

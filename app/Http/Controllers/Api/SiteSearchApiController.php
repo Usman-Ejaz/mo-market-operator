@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\SiteSearchEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DocumentResource;
 use App\Http\Resources\SiteSearchResource;
 use App\Models\Document;
 use App\Search\SitewideSearch;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 class SiteSearchApiController extends BaseApiController
 {
 
-    const SEARCH_TYPE_DOC = "document";
+    const SEARCH_TYPE_DOC = "documents";
     const SEARCH_TYPE_WEB = "web_content";
 
      /**
@@ -32,7 +33,7 @@ class SiteSearchApiController extends BaseApiController
      *      operationId="siteSearch",
      *      tags={"Site Search"},
      *      summary="Search records from the whole site. (FAQs, Jobs, Documents, Posts, Pages)",
-     *      description="This search API will work for FAQs, Posts, Jobs and Pages when 'type' property is not set or 'type' property is set to 'web_content'. If the 'type' property is set to 'document' then the API will only search from the Documents Module",
+     *      description="This search API will work for FAQs, Posts, Jobs, Trainings and Pages when 'type' property is not set or 'type' property is set to 'web_content'. If the 'type' property is set to 'document' then the API will only search from the Documents Module",
      *      security={{"BearerAppKey": {}}},
      * 
      *      @OA\RequestBody(
@@ -119,7 +120,7 @@ class SiteSearchApiController extends BaseApiController
                         ->get();
 
             if ($docs->count() > 0) {
-                return $this->sendResponse(SiteSearchResource::collection($docs), "Success");
+                return $this->sendResponse(DocumentResource::collection($docs), "Success");
             } else {
                 return $this->sendResponse([], "Data not found");
             }
