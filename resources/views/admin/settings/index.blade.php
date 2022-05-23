@@ -45,7 +45,7 @@
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <label>Current Theme <span class="text-danger">*</span></label>
+                                <label>Current Theme</label>
                             </div>
                         </div>
                         <div class="card-body">
