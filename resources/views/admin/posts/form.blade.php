@@ -34,7 +34,26 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-12">
+			<div class="form-group">
+				<label>Category <span class="text-danger">*</span></label>
+				<select class="custom-select" name="post_category" id="post_category">
+					<option value="">Please select an option</option>
+					@foreach($post->postCategoryOptions() as $categoryId => $categoryValue)
+						@if(old('post_category') == $categoryId)
+							<option value="{{ $categoryId }}" selected>{{ $categoryValue }}</option>
+						@else
+							<option value="{{ $categoryId }}" {{ ($post->post_category === $categoryValue) ? 'selected' : '' }}>{{ $categoryValue }}</option>
+						@endif
+					@endforeach
+				</select>
+				<span class="form-text text-danger">{{ $errors->first('post_category') }} </span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
 			<div class="form-group">
 				<label for="post_image" class="form-label">Post Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
 				<input class="form-control" type="file" id="post_image" name="image">
@@ -42,22 +61,6 @@
 				@if( isset($post->image) )
 				<small class="text-primary imageExists"><a href="{{ $post->image }}" target="_blank"><img src="{{ $post->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
 				@endif
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="form-group">
-				<label>Category <span class="text-danger">*</span></label>
-				<select class="custom-select" name="post_category" id="post_category">
-					<option value="">Please select an option</option>
-					@foreach($post->postCategoryOptions() as $categoryId => $categoryValue)
-					@if(old('post_category') == $categoryId)
-					<option value="{{$categoryId}}" selected>{{ $categoryValue }}</option>
-					@else
-					<option value="{{$categoryId}}" {{ ($post->post_category === $categoryValue) ? 'selected' : '' }}>{{$categoryValue}}</option>
-					@endif
-					@endforeach
-				</select>
-				<span class="form-text text-danger">{{ $errors->first('post_category') }} </span>
 			</div>
 		</div>		
 	</div>
