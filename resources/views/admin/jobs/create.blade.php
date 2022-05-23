@@ -115,13 +115,13 @@
 				if (dp >= curr) {
 					if (dp >= endDate) {
 						$input.val("");
-						$input.parent().next().text("Start Date cannot be less than end date");
+						$input.parent().next().text("{{ __('messages.min_date', ['first' => 'start date', 'second' => 'end date']) }}");
 					} else {
 						$input.parent().next().text("");
 					}
 				} else {
 					$input.val("");
-					$input.parent().next().text("please select the date greater than or equals to today's date.");
+					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
 			},
 			onShow: function () {
@@ -146,18 +146,18 @@
 				if (dp >= curr) {
 					if (dp <= startDate) {
 						$input.val("");
-						$input.parent().next().text("{{ __('messages.min_date') }}");
+						$input.parent().next().text("{{ __('messages.max_date', ['first' => 'end', 'second' => 'start']) }}");
 					} else {
 						$input.parent().next().text("");
 					}
 				} else {
 					$input.val("");
-					$input.parent().next().text("please select the date greater than or equals to today's date.");
+					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
 			},
 			onShow: function () {
 				this.setOptions({
-					minDate: $('#start_date').val() ? $('#start_date').val() : false
+					minDate: $('#start_date').val() ? $('#start_date').val() : new Date()
 				})
 			}
 		});
