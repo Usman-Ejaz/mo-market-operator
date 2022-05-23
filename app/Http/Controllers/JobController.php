@@ -370,13 +370,14 @@ class JobController extends Controller
             $uploadedFiles = $request->file('attachments');
 
             if (count($uploadedFiles) > 0) {
-                $filenames = $filenames . ',';
+                $tempnames = "";
                 foreach ($uploadedFiles as $file) {
                     $filename = storeFile(Job::STORAGE_DIRECTORY, $file);
-                    $filenames .= $filename . ",";
+                    $tempnames .= $filename . ",";
                 }
 
-                $filenames = trim($filenames, ",");
+                $tempnames = trim($tempnames, ",");
+                $filenames = trim($tempnames . ',' . $filenames, ",");
             }
         }
 

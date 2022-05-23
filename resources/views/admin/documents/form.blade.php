@@ -48,7 +48,7 @@
 					<small class="fileExists">
 						<p>
 							Open Attachment Of -
-							<a href="{{ route('admin.attachment.download', ['documents', $path]) }}" target="_blank"> {{ $document->title }} </a>
+							<a href="{{ route('admin.attachment.download', ['documents', $path]) }}" target="_blank"> {{ getFileOriginalName($path) }} </a>
 							<span class="btn-sm btn-danger float-right remove-file" data-path="{{ $path }}" id="{{ $key }}-filebutton" title="Delete File"><i class="fa fa-trash"></i></span>
 						</p>
 					</small>
