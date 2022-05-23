@@ -152,6 +152,17 @@
 				</li>
 				@endif
 
+				@if(hasPermission('feedback_ratings', 'list'))
+				<li class="nav-item">
+					<a href="{{ route('admin.feedback-ratings.index') }}" class="nav-link {{ Request()->is('admin/feedback-ratings*') ? 'active' : '' }}">
+						<i class="nav-icon fa fa-star"></i>
+						<p>
+							{{ __("Feedback Ratings") }}
+						</p>
+					</a>
+				</li>
+				@endif
+
 				@if (hasPermission('contact_page_queries', 'list'))
 				<li class="nav-item">
 					<a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('admin/contact-page-queries*') ? 'active' : '' }}">

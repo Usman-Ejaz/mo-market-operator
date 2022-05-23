@@ -271,4 +271,14 @@ return [
             "delete" => "Delete",
         ]
     ],
+    [
+        "name" => "feedback_ratings",
+        "display_name" => "Feedback Ratings",
+        "capabilities" => [
+            "list" => "List",
+            "view" => "View",
+            // "edit" => "Edit",
+            // "delete" => "Delete",
+        ]
+    ],
 ];
