@@ -17,9 +17,6 @@ class MediaLibraryApiController extends BaseApiController
      *     description="API Endpoints of Media Library"
      * )
      * 
-     */ 
-
-    /** 
      * @OA\Get(
      *      path="/media-libraries",
      *      operationId="mediaLibraryList",
@@ -48,12 +45,12 @@ class MediaLibraryApiController extends BaseApiController
     public function mediaLibraryList()
     {
         try {
-            $mediaFiles = MediaLibraryFile::featuredImages()->with('mediaLibrary')->select("id", "file", "media_library_id")->get();
+            $mediaFiles = MediaLibraryFile::featuredImage()->with('mediaLibrary')->filterRecords()->select("id", "file", "media_library_id")->get();
             
             if ($mediaFiles->count() > 0) {
                 return $this->sendResponse(MediaLibraryResource::collection($mediaFiles), __("messages.success"));
             } else {
-                return $this->sendResponse([], "Data not found.");
+                return $this->sendResponse([], __('messages.data_not_found'));
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
@@ -110,10 +107,10 @@ class MediaLibraryApiController extends BaseApiController
                 $mediaLibrary->mediaFiles = $mediaLibrary->files();
                 return $this->sendResponse($mediaLibrary, 'succcess');
             } else {
-                return $this->sendResponse([], 'succcess', 204);
+                return $this->sendResponse([], __('messages.data_not_found'));
             }
         } catch (\Exception $ex) {
-            return $this->sendError('error', ['errors' => $ex->getMessage()], 500);
+            return $this->sendError(__('messages.something_wrong'), ['errors' => $ex->getMessage()], 500);
         }
     }
 }
