@@ -83,7 +83,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="notification_emails">Notification Receiver Emails </label>
-                                        <input type="input" class="form-control" id="notification_emails" placeholder="Enter notification receiver emails" name="notification_emails" data-role="tagsinput" value={{ old('notification_emails') ?? $notification_emails ? $notification_emails->value : '' }}>
+                                        <input type="input" class="form-control" id="notification_emails" placeholder="Notification Receiver Emails" name="notification_emails" data-role="tagsinput" value={{ old('notification_emails') ?? $notification_emails ? $notification_emails->value : '' }}>
                                         <span class="form-text text-danger">{{ $errors->first('notification_emails') }} </span>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="from_emails">From Emails </label>
-                                        <input type="text" class="form-control" id="from_emails" placeholder="Enter from emails" name="from_emails" data-role="tagsinput" value={{ old('from_emails') ?? $from_emails ? $from_emails->value : '' }}>
+                                        <input type="text" class="form-control" id="from_emails" placeholder="From Emails" name="from_emails" data-role="tagsinput" value={{ old('from_emails') ?? $from_emails ? $from_emails->value : '' }}>
                                         <span class="form-text text-danger">{{ $errors->first('from_emails') }} </span>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                     $(this).attr('placeholder', '');
                     return;
                 }
-                var placeholder = 'Enter ' + $(this).parent().parent().find('> label').text().toLowerCase().replace('*', '');
+                var placeholder = $(this).parent().parent().find('> label').text().replace('*', '');
                 $(this).attr('placeholder', placeholder);
             });
 
