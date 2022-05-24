@@ -158,15 +158,14 @@ class Client extends Authenticatable
             ->groupBy('category_id');
     }
 
-
     public function primaryDetails()
     {
-        return $this->authorizedDetails()->where('type', '=', ClientDetail::PRIMARY)->first();
+        return $this->details()->where('type', '=', ClientDetail::PRIMARY)->first();
     }
 
     public function secondaryDetails()
     {
-        return $this->authorizedDetails()->where('type', '=', ClientDetail::SECONDARY)->first();
+        return $this->details()->where('type', '=', ClientDetail::SECONDARY)->first();
     }
 
     /**
@@ -176,7 +175,7 @@ class Client extends Authenticatable
     **/
 
     
-    public function authorizedDetails()
+    public function details()
     {
         return $this->hasMany(ClientDetail::class, 'client_id', 'id');
     }
