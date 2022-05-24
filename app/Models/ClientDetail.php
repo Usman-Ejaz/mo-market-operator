@@ -11,6 +11,20 @@ class ClientDetail extends Model
 
     const PRIMARY = 'primary';
     const SECONDARY = 'secondary';
+    const SIGNATURE_DIR = 'clients/signatures/';
 
     protected $guarded = [];
+
+
+    
+    /**
+     * getPriSignatureAttribute
+     *
+     * @param  mixed $value
+     * @return string
+     */
+    public function getSignatureAttribute($value): string 
+    {
+        return isset($value) ? serveFile(self::SIGNATURE_DIR, $value) : null;
+    }
 }
