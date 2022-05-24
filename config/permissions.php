@@ -278,7 +278,7 @@ return [
             "list" => "List",
             "view" => "View",
             // "edit" => "Edit",
-            // "delete" => "Delete",
+            "delete" => "Delete",
         ]
     ],
 ];

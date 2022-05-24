@@ -85,7 +85,11 @@ class FeedbackRatingController extends Controller
      */
     public function destroy(FeedbackRating $feedbackRating)
     {
-        //
+        abort_if(! hasPermission('feedback_ratings', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
+
+        $feedbackRating->delete();
+
+        return redirect()->route('admin.feedback-ratings.index')->with('success', 'Feedback rating deleted successfully');
     }
 
     public function list(Request $request)
@@ -123,7 +127,7 @@ class FeedbackRatingController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
+                                onclick="return confirm(\'Are you sure you want to delete this record?\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
