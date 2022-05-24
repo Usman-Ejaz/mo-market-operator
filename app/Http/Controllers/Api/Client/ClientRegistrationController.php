@@ -36,7 +36,7 @@ class ClientRegistrationController extends BaseApiController
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                  @OA\Property(
      *                      property="name",
@@ -44,8 +44,38 @@ class ClientRegistrationController extends BaseApiController
      *                      type="string"
      *                  ),
      *                  @OA\Property(
-     *                      property="address",
-     *                      title="Address",
+     *                      property="business",
+     *                      title="business",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address_line_one",
+     *                      title="address_line_one",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address_line_two",
+     *                      title="address_line_two",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="city",
+     *                      title="city",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="state",
+     *                      title="state",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="zipcode",
+     *                      title="zipcode",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="country",
+     *                      title="country",
      *                      type="string"
      *                  ),
      *                  @OA\Property(
@@ -58,72 +88,36 @@ class ClientRegistrationController extends BaseApiController
      *                      title="Categories",
      *                      type="string"
      *                  ),
-     *                  @OA\Property(
-     *                      property="pri_name",
-     *                      title="Primary Name",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_email",
-     *                      title="Primary Email",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_address",
-     *                      title="Primary Address",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_telephone",
-     *                      title="Primary Telephone",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_facsimile_telephone",
-     *                      title="Primary Facsimile Telephone",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_name",
-     *                      title="Secondary Name",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_email",
-     *                      title="Secondary Email",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_address",
-     *                      title="Secondary Address",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_telephone",
-     *                      title="Secondary Telephone",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_facsimile_telephone",
-     *                      title="Secondary Facsimile Telephone",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_signature",
-     *                      title="Primary Signature",
-     *                      type="file"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_signature",
-     *                      title="Secondary Signature",
-     *                      type="file"
-     *                  ),
-     *                  required={"name", "address", "type", "categories", "pri_name", "pri_email", "pri_address", "pri_telephone", "pri_facsimile_telephone", "sec_name", "sec_email", "sec_address", "sec_telephone", "sec_facsimile_telephone", "pri_signature", "sec_signature"},
+     *                  required={
+     *                      "name", "business", "address_line_one", "address_line_two", "type", "categories",
+     *                      "city", "state", "zipcode", "country", "primary_details"
+     *                  },
      *                  example={
      *                      "name": "John Doe", 
-     *                      "address": "USA",
+     *                      "business": "USA",
+     *                      "address_line_one": "USA",
+     *                      "address_line_two": "USA",
      *                      "type": "service_provider",
      *                      "categories": "2,3,4",
+     *                      "city": "",
+     *                      "state": "",
+     *                      "zipcode": "",
+     *                      "country": "",
+     *                      "primary_details": {
+     *                          "name": "",
+     *                          "email": "",
+     *                          "designation": "",
+     *                          "address_line_one": "",
+     *                          "address_line_two": "",
+     *                          "city": "",
+     *                          "state": "",
+     *                          "zipcode": "",
+     *                          "country": "",
+     *                          "telephone": "",
+     *                          "facsimile_telephone": "",
+     *                          "signature": "",
+     *                          "type": "",
+     *                      }
      *                  }
      *             )
      *         )

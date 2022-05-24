@@ -36,8 +36,8 @@
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Address: </label>
-								<span>{{ $client->address }}</span>
+								<label>Business: </label>
+								<span>{{ $client->business }}</span>
 							</div>
 						</div>
 					</div>
@@ -46,7 +46,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Type: </label>
-								<span>{{ ucwords(str_replace("_", " ", $client->type)) }}</span>
+								<span>{{ __('client.registration_types.' . $client->type) }}</span>
 							</div>
 						</div>
 						<div class="col-md-6">

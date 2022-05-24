@@ -14,9 +14,7 @@ class Client extends Authenticatable
 
     protected $appends = ['category_labels'];
 
-    protected $guarded = [];
-
-    const SIGNATURE_DIR = 'clients/signatures/';
+    protected $guarded = [];    
 
     const TYPE = [
         'market_participant', 
@@ -86,11 +84,12 @@ class Client extends Authenticatable
             $value = explode(',', $value);
             foreach (self::REGISTER_CATEGORIES as $key => $category) {
                 if (in_array($key, $value)) {
+                    $category = __('client.categories.' . $this->type .'.'. $category);
                     $categories .= $category . ', ';
                 }
             }
             $categories = trim($categories, ', ');
-            return ucwords($categories);
+            return $categories;
         }
         return "";
     }
@@ -104,28 +103,6 @@ class Client extends Authenticatable
     public function getCreatedAtAttribute($value): string 
     {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : "";
-    }
-    
-    /**
-     * getPriSignatureAttribute
-     *
-     * @param  mixed $value
-     * @return string
-     */
-    public function getPriSignatureAttribute($value): string 
-    {
-        return serveFile(self::SIGNATURE_DIR, $value);
-    }
-    
-    /**
-     * getSecSignatureAttribute
-     *
-     * @param  mixed $value
-     * @return string
-     */
-    public function getSecSignatureAttribute($value): string 
-    {
-        return serveFile(self::SIGNATURE_DIR, $value);
     }
 
 
