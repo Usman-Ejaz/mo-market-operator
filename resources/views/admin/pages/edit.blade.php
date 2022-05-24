@@ -140,7 +140,7 @@
 				if (dp >= curr) {
 					if (dp >= endDate) {
 						$input.val("");
-						$input.parent().next().text("{{ __('messages.min_date', ['first' => 'start date', 'second' => 'end date']) }}");
+						$input.parent().next().text("{{ __('messages.min_date', ['first' => 'Start', 'second' => 'end']) }}");
 					} else {
 						$input.parent().next().text("");
 					}
@@ -171,7 +171,7 @@
 				if (dp >= curr) {
 					if (dp <= startDate) {
 						$input.val("");
-						$input.parent().next().text("{{ __('messages.max_date', ['first' => 'end', 'second' => 'start']) }}");
+						$input.parent().next().text("{{ __('messages.max_date', ['first' => 'End', 'second' => 'start']) }}");
 					} else {
 						$input.parent().next().text("");
 					}

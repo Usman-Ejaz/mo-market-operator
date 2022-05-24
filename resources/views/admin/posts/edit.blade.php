@@ -93,6 +93,7 @@
 
 <script>
 	//Date and time picker
+	let oldFiles = [];
 	$(document).ready(function() {
 
 		CKEDITOR.instances.description.on('blur', function(e) {
@@ -118,13 +119,13 @@
 				if (dp >= curr) {
 					if (dp >= endDate) {
 						$input.val("");
-						$input.parent().next().text("Start Date cannot be less than end date");
+						$input.parent().next().text("{{ __('messages.max_date', ['first' => 'Start', 'second' => 'end']) }}");
 					} else {
 						$input.parent().next().text("");
 					}
 				} else {
 					$input.val("");
-					$input.parent().next().text("please select the date greater than or equals to today's date.");
+					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
 			},
 			onShow: function () {
@@ -149,13 +150,13 @@
 				if (dp >= curr) {
 					if (dp <= startDate) {
 						$input.val("");
-						$input.parent().next().text("{{ __('messages.min_date') }}");
+						$input.parent().next().text("{{ __('messages.max_date', ['first' => 'End', 'second' => 'start']) }}");
 					} else {
 						$input.parent().next().text("");
 					}
 				} else {
 					$input.val("");
-					$input.parent().next().text("please select the date greater than or equals to today's date.");
+					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
 			},
 			onShow: function () {
@@ -289,17 +290,30 @@
 				return;
 			}
 
-			$(this).attr('placeholder', '{{ __("Enter Keywords") }}');
+			$(this).attr('placeholder', '{{ __("Enter keywords") }}');
 		});
 
 		if (document.getElementsByClassName('label-info').length > 0) {
 			$('.bootstrap-tagsinput > input').attr('placeholder', '');
 		}
 
+		$(document).on('focusin', 'input[type="file"]', function(e){
+			oldFiles = e.target.files;
+		});
+
 	});
 
 	function mapDate(date) {
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
+	}
+
+	function handleFileChoose (e) 
+	{
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			e.target.files = oldFiles;
+			return false;
+		}
 	}
 </script>
 

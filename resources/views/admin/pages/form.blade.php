@@ -40,7 +40,12 @@
 				<input class="form-control" type="file" id="page_image" name="image">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if (isset($cms_page->image))
-				<small class="text-primary imageExists"><a href="{{ $cms_page->image }}" target="_blank"><img src="{{ $cms_page->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </small>
+				<small class="text-primary imageExists">
+					<a href="{{ $cms_page->image }}" target="_blank">
+						<img src="{{ $cms_page->image }}" target="_blank" class="img-thumbnail" style="height: 200px;">
+					</a>
+					<span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> 
+				</small>
 				@endif
 			</div>
 		</div>
