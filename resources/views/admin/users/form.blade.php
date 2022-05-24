@@ -72,7 +72,7 @@
 				<input class="form-control" type="file" id="image" name="image">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if( isset($user->image) )
-				<span class="text-primary imageExists"><a href="{{ $user->image }}" target="_blank"><img src="{{ $user->image }}" target="_blank" class="img-thumbnail" style="width: 23%;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </span>
+				<span class="text-primary imageExists"><a href="{{ $user->image }}" target="_blank"><img src="{{ $user->image }}" target="_blank" class="img-thumbnail" style="height: 200px;"></a><span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> </span>
 				@endif
 			</div>
 		</div>

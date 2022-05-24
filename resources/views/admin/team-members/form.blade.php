@@ -67,7 +67,7 @@
 				@if(isset($teamMember->image) && \Route::current()->getName() == 'admin.team-members.edit')
 					<small class="text-primary imageExists">
 						<a href="{{ $teamMember->image }}" target="_blank">
-							<img src="{{ $teamMember->image }}" target="_blank" class="img-thumbnail" style="width: 23%;">
+							<img src="{{ $teamMember->image }}" target="_blank" class="img-thumbnail" style="height: 200px;">
 						</a>
 						<span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> 
 					</small>
