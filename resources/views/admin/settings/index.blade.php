@@ -83,7 +83,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="notification_emails">Notification Receiver Emails </label>
-                                        <input type="input" class="form-control" id="notification_emails" placeholder="Notification Receiver Emails" name="notification_emails" data-role="tagsinput" value={{ old('notification_emails') ?? $notification_emails ? $notification_emails->value : '' }}>
+                                        <input type="input" class="form-control" id="notification_emails" placeholder="Enter notification receiver emails" name="notification_emails" data-role="tagsinput" value={{ old('notification_emails') ?? $notification_emails ? $notification_emails->value : '' }}>
                                         <span class="form-text text-danger">{{ $errors->first('notification_emails') }} </span>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="from_emails">From Emails </label>
-                                        <input type="text" class="form-control" id="from_emails" placeholder="Notification Receiver Emails" name="from_emails" data-role="tagsinput" value={{ old('from_emails') ?? $from_emails ? $from_emails->value : '' }}>
+                                        <input type="text" class="form-control" id="from_emails" placeholder="Enter from emails" name="from_emails" data-role="tagsinput" value={{ old('from_emails') ?? $from_emails ? $from_emails->value : '' }}>
                                         <span class="form-text text-danger">{{ $errors->first('from_emails') }} </span>
                                     </div>
                                 </div>
@@ -125,16 +125,16 @@
     <script>
         $(document).ready(function() {
             $('.bootstrap-tagsinput > input').on('blur keypress', function (e) {
-                if ((e.which === 13 && $(this).val().trim().length > 0) || document.getElementsByClassName('label-info').length > 0) {
+                if ((e.which === 13 && $(this).val().trim().length > 0) || $(this).parent().children("span").length > 0) {
                     $(this).attr('placeholder', '');
                     return;
                 }
-
-                $(this).attr('placeholder', $(this).attr('placeholder'));
+                var placeholder = 'Enter ' + $(this).parent().parent().find('> label').text().toLowerCase().replace('*', '');
+                $(this).attr('placeholder', placeholder);
             });
 
-            if (document.getElementsByClassName('label-info').length > 0) {
-                $('.bootstrap-tagsinput > input').attr('placeholder', '');
+            if ($('.bootstrap-tagsinput > .label-info').length > 0) {
+                $('.bootstrap-tagsinput > .label-info').parent().find('input').attr('placeholder', '');
             }
         });
     </script>

@@ -208,16 +208,16 @@
 		});
 
 		$('.bootstrap-tagsinput > input').on('blur keypress', function (e) {
-			if ((e.which === 13 && $(this).val().trim().length > 0) || document.getElementsByClassName('label-info').length > 0) {
+			if ((e.which === 13 && $(this).val().trim().length > 0) || $(this).parent().children("span").length > 0) {
 				$(this).attr('placeholder', '');
 				return;
 			}
-			var placeholder = $(this).attr('placeholder');
+			var placeholder = 'Enter ' + $(this).parent().parent().find('> label').text().toLowerCase().replace('*', '');
 			$(this).attr('placeholder', placeholder);
 		});
 
-		if (document.getElementsByClassName('label-info').length > 0) {
-			$('.bootstrap-tagsinput > input').attr('placeholder', '');
+		if ($('.bootstrap-tagsinput > .label-info').length > 0) {
+			$('.bootstrap-tagsinput > .label-info').parent().find('input').attr('placeholder', '');
 		}
 	});
 
