@@ -49,13 +49,17 @@ class FaqController extends Controller
         $faq = new Faq();
         $data = $this->validateRequest($faq);
 
+        $message = __('messages.record_created', ['module' => 'FAQ']);
+
         if ($request->action === "Published") {
             $data['published_at'] = now();
+
+            $message = __('messages.record_published', ['module' => 'FAQ']);
         }
 
         $faq = Faq::create($data);
         
-        $request->session()->flash('success', "Faq {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.faqs.index');
     }
 
@@ -100,15 +104,21 @@ class FaqController extends Controller
 
         $data = $this->validateRequest($faq);
 
+        $message = __('messages.record_updated', ['module' => 'FAQ']);
+
         if ($request->action === "Published") {
             $data['published_at'] = now();
+
+            $message = __('messages.record_published', ['module' => 'FAQ']);
         } else if ($request->action === "Unpublished") {
             $data['published_at'] = null;
+
+            $message = __('messages.record_unpublished', ['module' => 'FAQ']);
         }
 
         $faq->update($data);
 
-        $request->session()->flash('success', "Faq {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.faqs.index');
     }
 
@@ -123,7 +133,7 @@ class FaqController extends Controller
         abort_if(!hasPermission("faqs", "delete"), 401, __('messages.unauthorized_action'));
 
         $faq->delete();
-        return redirect()->route('admin.faqs.index')->with('success', 'FAQ Deleted Successfully!');
+        return redirect()->route('admin.faqs.index')->with('success', __('messages.record_deleted', ['module' => 'FAQ']));
     }
 
     /**

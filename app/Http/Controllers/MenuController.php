@@ -58,7 +58,7 @@ class MenuController extends Controller
         $menu = new Menu();
         $menu = Menu::create( $this->validateRequest($menu) );
 
-        $request->session()->flash('success', 'Menu Added Successfully!');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Menu']));
         return redirect()->route('admin.menus.index');
     }
 
@@ -101,7 +101,7 @@ class MenuController extends Controller
 
         $menu->update($this->validateRequest($menu));
 
-        $request->session()->flash('success', 'Menu Updated Successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Menu']));
         return redirect()->route('admin.menus.index');
     }
 
@@ -116,7 +116,7 @@ class MenuController extends Controller
         abort_if(!hasPermission("menus", "delete"), 401, __('messages.unauthorized_action'));
 
         $menu->delete();
-        return redirect()->route('admin.menus.index')->with('success', 'Menu Deleted Successfully!');
+        return redirect()->route('admin.menus.index')->with('success', __('messages.record_deleted', ['module' => 'Menu']));
     }
 
     /**
@@ -201,7 +201,7 @@ class MenuController extends Controller
 
         $menu->update(['submenu_json' => $menuOrder]);
 
-        $request->session()->flash('success', 'Submenus Updated Successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Submenus']));
         return redirect()->route('admin.menus.index');
     }
 

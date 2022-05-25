@@ -4,24 +4,24 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ChatbotInitiator;
-use App\Models\FeedbackRating;
+use App\Models\ChatbotFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class FeedbackRatingApiController extends BaseApiController
+class ChatbotFeedbackApiController extends BaseApiController
 {
 
     /**
      * 
      * @OA\Tag(
-     *     name="Feedback Rating",
-     *     description="API Endpoints of Feedback Rating"
+     *     name="Chatbot Rating",
+     *     description="API Endpoints of Chatbot Rating"
      * )
      * 
      * @OA\Post(
      *      path="/feedback-rating",
      *      operationId="submitFeedback",
-     *      tags={"Feedback Rating"},
+     *      tags={"Chatbot Rating"},
      *      summary="Submit Feedback with rating",
      *      description="Submit Feedback with rating in the resource",
      *      security={{"BearerAppKey": {}}},
@@ -84,7 +84,7 @@ class FeedbackRatingApiController extends BaseApiController
             $initiator = ChatbotInitiator::findByKey($data['key'])->first();
 
             if ($initiator) {
-                FeedbackRating::create([
+                ChatbotFeedback::create([
                     'chatbot_initiator_id' => $initiator->id,
                     'rating' => intval($data['rating']),
                     'feedback' => $data['feedback']

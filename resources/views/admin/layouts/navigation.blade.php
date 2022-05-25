@@ -150,18 +150,7 @@
 						</p>
 					</a>
 				</li>
-				@endif
-
-				@if(hasPermission('feedback_ratings', 'list'))
-				<li class="nav-item">
-					<a href="{{ route('admin.feedback-ratings.index') }}" class="nav-link {{ Request()->is('admin/feedback-ratings*') ? 'active' : '' }}">
-						<i class="nav-icon fa fa-star"></i>
-						<p>
-							{{ __("Feedback Ratings") }}
-						</p>
-					</a>
-				</li>
-				@endif
+				@endif				
 
 				@if (hasPermission('contact_page_queries', 'list'))
 				<li class="nav-item">
@@ -180,6 +169,17 @@
 						<i class="nav-icon fa fa-database"></i>
 						<p>
 							Chatbot Knowledge Base
+						</p>
+					</a>
+				</li>
+				@endif
+
+				@if(hasPermission('chatbot_feedback', 'list'))
+				<li class="nav-item">
+					<a href="{{ route('admin.chatbot-feedbacks.index') }}" class="nav-link {{ Request()->is('admin/chatbot-feedbacks*') ? 'active' : '' }}">
+						<i class="nav-icon fa fa-star"></i>
+						<p>
+							{{ __("Chatbot Feedback") }}
 						</p>
 					</a>
 				</li>

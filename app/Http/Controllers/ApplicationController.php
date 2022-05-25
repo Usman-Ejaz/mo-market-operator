@@ -23,6 +23,6 @@ class ApplicationController extends Controller
         $application = Application::find($application->id);
         $application->delete();
 
-        return redirect()->route('admin.job.applications',$application->job_id)->with('success', 'Application Deleted Successfully !');
+        return redirect()->route('admin.job.applications',$application->job_id)->with('success', __('messages.record_deleted', ['module' => 'Application']));
     }
 }

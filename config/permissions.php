@@ -232,6 +232,16 @@ return [
         ]
     ],
     [
+        "name" => "slider_settings",
+        "display_name" => "Slider Settings",
+        "capabilities" => [
+            "list" => "List",
+            // "create" => "Create",
+            "edit" => "Edit",
+            // "delete" => "Delete",
+        ]
+    ],
+    [
         "name" => "our_teams",
         "display_name" => "Our Team",
         "capabilities" => [
@@ -272,8 +282,8 @@ return [
         ]
     ],
     [
-        "name" => "feedback_ratings",
-        "display_name" => "Feedback Ratings",
+        "name" => "chatbot_feedback",
+        "display_name" => "Chatbot Feedback",
         "capabilities" => [
             "list" => "List",
             "view" => "View",

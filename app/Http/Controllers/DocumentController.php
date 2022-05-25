@@ -48,7 +48,7 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         abort_if(!hasPermission("documents", "create"), 401, __('messages.unauthorized_action'));
-
+        
         $document = new Document();
         $data = $this->validateRequest($document);
 
@@ -79,13 +79,17 @@ class DocumentController extends Controller
             $data['image'] = storeFile(Document::STORAGE_DIRECTORY, $request->file('image'));
         }
 
+        $message = __('messages.record_created', ['module' => 'Document']);
+
         if ($request->action === "Published") {
             $data['published_at'] = now();
+
+            $message = __('messages.record_published', ['module' => 'Document']);
         }
         
         $document = Document::create($data);
-                
-        $request->session()->flash('success', "Document {$request->action} Successfully!");
+
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.documents.index');
     }
 
@@ -137,16 +141,22 @@ class DocumentController extends Controller
         if ($request->has('image')) {
             $data['image'] = storeFile(Document::STORAGE_DIRECTORY, $request->file('image'), $document->image);
         }
+
+        $message = __('messages.record_updated', ['module' => 'Document']);
         
         if ($request->action === "Published") {
             $data['published_at'] = now();
+
+            $message = __('messages.record_published', ['module' => 'Document']);
         } else if ($request->action === "Unpublished") {
             $data['published_at'] = null;
+
+            $message = __('messages.record_unpublished', ['module' => 'Document']);
         }
         
         $document->update($data);
 
-        $request->session()->flash('success', "Document {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.documents.index');
     }
 
@@ -167,7 +177,7 @@ class DocumentController extends Controller
         }
 
         $document->delete();
-        return redirect()->route('admin.documents.index')->with('success', 'Document Deleted Successfully!');
+        return redirect()->route('admin.documents.index')->with('success', __('messages.record_deleted', ['module' => 'Document']));
     }
 
     public function list(Request $request)

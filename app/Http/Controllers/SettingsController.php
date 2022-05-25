@@ -38,7 +38,7 @@ class SettingsController extends Controller
             $updated = Settings::update_option($name, $value);
         }
 
-        request()->session()->flash('success', 'Site configuration updated successfully!');
+        request()->session()->flash('success', __('messages.record_updated', ['module' => 'Site configuration']));
         return redirect()->route('admin.site-configuration.index');
     }
 

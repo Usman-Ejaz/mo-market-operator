@@ -112,7 +112,7 @@ class ContactPageQueryController extends Controller
         abort_if(!hasPermission("contact_page_queries", "delete"), 401, __('messages.unauthorized_action'));
 
         $contactPageQuery->delete();
-        return redirect()->route('admin.contact-page-queries.index')->with('success', 'Query Deleted Successfully!');
+        return redirect()->route('admin.contact-page-queries.index')->with('success', __('messages.record_deleted', ['module' => 'Contact Query']));
     }
 
     public function list(Request $request)
@@ -182,7 +182,7 @@ class ContactPageQueryController extends Controller
 
         event(new QueryReplyEvent($contactPageQuery));        
 
-        $request->session()->flash('success', 'Reply has been sent successfully!');
+        $request->session()->flash('success', __('messages.reply_email'));
 
         return redirect()->route('admin.contact-page-queries.index');
     }

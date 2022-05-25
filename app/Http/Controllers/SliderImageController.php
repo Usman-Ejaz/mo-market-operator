@@ -48,7 +48,7 @@ class SliderImageController extends Controller
         $data['image'] = storeFile(SliderImage::STORAGE_DIRECTORY, $request->file('image'), null);
         SliderImage::create($data);
 
-        $request->session()->flash('success', 'Slider image created successfully!');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Slider image']));
         return redirect()->route('admin.slider-images.index');
     }
 
@@ -96,7 +96,7 @@ class SliderImageController extends Controller
         }
         $sliderImage->update($data);
 
-        $request->session()->flash('success', 'Slider image updated successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Slider image']));
         return redirect()->route('admin.slider-images.index');
     }
 
@@ -113,7 +113,7 @@ class SliderImageController extends Controller
         removeFile(SliderImage::STORAGE_DIRECTORY, $sliderImage->image);
         $sliderImage->delete();
 
-        return redirect()->route('admin.slider-images.index')->with('success', 'Slider image deleted successfully!');
+        return redirect()->route('admin.slider-images.index')->with('success', __('messages.record_deleted', ['module' => 'Slider image']));
     }
 
     public function list(Request $request)
@@ -169,7 +169,7 @@ class SliderImageController extends Controller
                 $sliderImage = SliderImage::find($request->slider_id);
                 removeFile(SliderImage::STORAGE_DIRECTORY, $sliderImage->image);
                 $sliderImage->update(['image' => '']);
-                return response()->json(['success' => 'true', 'message' => 'Image deleted successfully'], 200);
+                return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
             }
         }
     }

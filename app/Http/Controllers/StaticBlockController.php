@@ -49,7 +49,7 @@ class StaticBlockController extends Controller
         $staticBlock = new StaticBlock();
         $staticBlock = StaticBlock::create($this->validateRequest($staticBlock));
 
-        $request->session()->flash('success', 'Static Block Added Successfully!');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Static Block']));
         return redirect()->route('admin.static-block.index');
     }
 
@@ -92,7 +92,7 @@ class StaticBlockController extends Controller
 
         $staticBlock->update($this->validateRequest($staticBlock));
 
-        $request->session()->flash('success', 'Static Block Updated Successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Static Block']));
         return redirect()->route('admin.static-block.index');
     }
 
@@ -107,7 +107,7 @@ class StaticBlockController extends Controller
         abort_if(!hasPermission(self::MODULE, "delete"), 401, __('messages.unauthorized_action'));
 
         $staticBlock->delete();
-        return redirect()->route('admin.static-block.index')->with('success', 'Static Block Deleted Successfully!');
+        return redirect()->route('admin.static-block.index')->with('success', __('messages.record_deleted', ['module' => 'Static Block']));
     }
 
     public function list (Request $request) 
