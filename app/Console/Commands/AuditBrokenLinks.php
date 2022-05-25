@@ -104,24 +104,24 @@ class AuditBrokenLinks extends Command
             
             unset($menu->submenu_json);
             
-            $this->searchMenu($submenuJson, $menu);
+            $this->makeLink($submenuJson, $menu);
         }
     }
     
     /**
-     * searchMenu
+     * makeLink
      *
      * @param  mixed $submenu
      * @param  mixed $mainMenu
      * @return void
      */
-    private function searchMenu($submenu, $mainMenu)
+    private function makeLink($submenu, $mainMenu)
     {
         foreach ($submenu as $menu) 
         {
             if (isset($menu['children']) && is_array($menu['children'])) 
             {
-                $this->searchMenu($menu['children'], $mainMenu);
+                $this->makeLink($menu['children'], $mainMenu);
             }
 
             $link = config('settings.client_app_base_url');
@@ -140,19 +140,19 @@ class AuditBrokenLinks extends Command
                 $link .= $menu['slug'];
             }
 
-            $this->checkURL($link, $menu, $mainMenu);
+            $this->checkLink($link, $menu, $mainMenu);
         }
     }
     
         
     /**
-     * checkURL
+     * checkLink
      *
      * @param  mixed $link
      * @param  mixed $mainMenu
      * @return void
      */
-    private function checkURL($link, $data, $mainMenu)
+    private function checkLink($link, $data, $mainMenu)
     {
         $response = Http::get($link);
         
@@ -173,7 +173,13 @@ class AuditBrokenLinks extends Command
             BrokenLink::truncate();
         }
     }
-
+    
+    /**
+     * addLinkToBrokenLinks
+     *
+     * @param  mixed $data
+     * @return void
+     */
     private function addLinkToBrokenLinks($data)
     {        
         $this->writeLogs("Adding new broken link in broken_links table with data " . json_encode($data));
@@ -185,7 +191,14 @@ class AuditBrokenLinks extends Command
             'edit_link' => route('admin.menus.submenus', ['menu' => $data['main_menu']['id']])
         ]);
     }
-
+    
+    /**
+     * writeLogs
+     *
+     * @param  mixed $message
+     * @param  mixed $type
+     * @return void
+     */
     private function writeLogs($message, $type = 'info')
     {
         Log::channel('brokenLinksLog')->$type($message);
