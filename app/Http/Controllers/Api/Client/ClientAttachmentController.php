@@ -64,7 +64,7 @@ class ClientAttachmentController extends BaseApiController
     {
         $validator = Validator::make($request->all(), [
             'attachment' => 'required|file|max:' . config('settings.maxDocumentSize') * 4,
-            'category' => 'sometimes|string',
+            'category' => 'nullable|string',
             'phrase' => 'required|string'
         ], [
             'attachment.max' => __('messages.max_file', ['limit' => '20 MB'])
@@ -139,7 +139,7 @@ class ClientAttachmentController extends BaseApiController
     public function destroy(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category' => 'sometimes|string',
+            'category' => 'nullable|string',
             'phrase' => 'required|string'
         ]);
 
