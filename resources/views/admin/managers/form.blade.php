@@ -43,7 +43,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="image">Profile Image <small>(Max allowed size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
-				<input type="file" class="form-control" id="image" name="image">
+				<input type="file" class="form-control" id="image" name="image" onchange="handleFileChoose(event)">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if(isset($manager->image) && \Route::current()->getName() == 'admin.managers.edit')
 					<small class="text-primary imageExists">

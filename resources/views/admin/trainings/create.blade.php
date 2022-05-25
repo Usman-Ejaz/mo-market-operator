@@ -86,6 +86,7 @@
 
 <script>
 	//Date and time picker
+	let oldFiles = [];
 	$(document).ready(function() {
 
 		$('#start_date').datetimepicker({
@@ -219,10 +220,23 @@
 		if ($('.bootstrap-tagsinput > .label-info').length > 0) {
 			$('.bootstrap-tagsinput > .label-info').parent().find('input').attr('placeholder', '');
 		}
+
+		$(document).on('focusin', 'input[type="file"]', function(e){
+			oldFiles = e.target.files;
+		});
 	});
 
 	function mapDate(date) {
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
+	}
+
+	function handleFileChoose (e) 
+	{
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			e.target.files = oldFiles;
+			return false;
+		}
 	}
 </script>
 
