@@ -51,7 +51,7 @@ class ChatbotFeedbackController extends Controller
     {
         abort_if(! hasPermission('chatbot_feedback', 'view'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        return view('admin.chatbot-feedbacks.show', compact('feedbackRating'));
+        return view('admin.chatbot-feedbacks.show', compact('chatbotFeedback'));
     }
 
     /**
