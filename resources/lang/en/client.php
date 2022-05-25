@@ -35,11 +35,11 @@ return [
     ],
 
     'general_keys' => [
-        'general_01' => 'Power of Attorney of the persons signing the Application.',
+        'general_01' => 'Power of Attorney of the persons signing the Application',
         'general_02' => 'In case the Applicant is a juridic person, copy of its registration as a company according to the laws of Pakistan',
         'general_03' => 'In case the Applicant is a physical person, copy of its National Identity Card',
         'general_04' => 'Identification of the Bank Account which will be used to settle the market transactions',
-        'general_05' => 'Certification issued the Bank in which the Applicant’s Bank Account is opened stating that such account is fully operative, and it is not blocked, intervened or seized.',
+        'general_05' => 'Certification issued the Bank in which the Applicant’s Bank Account is opened stating that such account is fully operative, and it is not blocked, intervened or seized',
         'general_06' => 'A signed Declaration of Conformity, duly signed by the Applicant, in the form indicated in Annex 2',
         'general_07' => 'Copy of its NTN from FBR',
         'general_08' => 'Copy of its GST Registration Certificate'
