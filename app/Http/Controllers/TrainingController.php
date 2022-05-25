@@ -59,7 +59,7 @@ class TrainingController extends Controller
         
         Training::create($data);
 
-        $request->session()->flash('success', 'Training created successfully');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Training']));
 
         return redirect()->route('admin.trainings.index');
     }
@@ -105,7 +105,7 @@ class TrainingController extends Controller
 
         $training->update($data);
         
-        $request->session()->flash('success', 'Training updated successfully');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Training']));
 
         return redirect()->route('admin.trainings.index');
     }
@@ -123,7 +123,7 @@ class TrainingController extends Controller
         $training->removeAttachments();
         $training->delete();
 
-        return redirect()->route('admin.trainings.index')->with('success', 'Team member deleted successfully!');
+        return redirect()->route('admin.trainings.index')->with('success', __('messages.record_deleted', ['module' => 'Training']));
     }
 
     public function list(Request $request)
@@ -192,11 +192,11 @@ class TrainingController extends Controller
             'status' => 'required|string',
             'start_date' => 'required',
             'end_date' => 'required',
-            'attachment.*' => 'sometimes|file|max:' . config('settings.maxDocumentSize')
+            'attachments.*' => 'sometimes|file|mimes:doc,docx,pdf|max:' . config('settings.maxDocumentSize')
         ];
 
         return request()->validate($rules, [
-            'attachment.*.max' => __('messages.max_file', ['limit' => '5 MB']),
+            'attachments.*.max' => __('messages.max_file', ['limit' => '5 MB']),
         ]);
     }
 

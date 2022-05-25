@@ -64,14 +64,17 @@ class JobController extends Controller
             }
             $data['attachments'] = trim($filenames, ",");
         }
+
+        $message = __('messages.record_created', ['module' => 'Job']);
         
         if ($request->action === "Published") {
             $data['published_at'] = now();
+            $message = __('messages.record_published', ['module' => 'Job']);
         }
         
         Job::create($data);
 
-        $request->session()->flash('success', "Job {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.jobs.index');
     }
 
@@ -124,16 +127,22 @@ class JobController extends Controller
         }
 
         $data['attachments'] = $this->handleFileUpload($job, $request);
+
+        $message = __('messages.record_updated', ['module' => 'Job']);
         
         if ($request->action === "Unpublished") {
             $data['published_at'] = null;
+            
+            $message = __('messages.record_unpublished', ['module' => 'Job']);
         } else if ($request->action === "Published") {
             $data['published_at'] = now();
+
+            $message = __('messages.record_published', ['module' => 'Job']);
         }
 
         $job->update($data);
 
-        $request->session()->flash('success', "Job {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.jobs.index');
     }
 
@@ -151,7 +160,7 @@ class JobController extends Controller
         $job->removeAttachments();
 
         $job->delete();
-        return redirect()->route('admin.jobs.index')->with('success', 'Job Deleted Successfully!');
+        return redirect()->route('admin.jobs.index')->with('success', __('messages.record_deleted', ['module' => 'Job']));
     }
 
     /**

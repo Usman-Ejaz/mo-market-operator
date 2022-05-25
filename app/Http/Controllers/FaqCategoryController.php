@@ -47,7 +47,7 @@ class FaqCategoryController extends Controller
         $category = new FaqCategory();
         $category = FaqCategory::create($this->validateRequest($category));
 
-        $request->session()->flash('success', 'Category Added Successfully!');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Category']));
         return redirect()->route('admin.faq-categories.index');
     }
 
@@ -91,7 +91,7 @@ class FaqCategoryController extends Controller
         $data = $this->validateRequest($faqCategory);
         $faqCategory->update($data);
 
-        $request->session()->flash('success', 'Category Updated Successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Category']));
         return redirect()->route('admin.faq-categories.index');
     }
 
@@ -106,7 +106,7 @@ class FaqCategoryController extends Controller
         abort_if(!hasPermission("faq_categories", "delete"), 401, __('messages.unauthorized_action'));
 
         $faqCategory->delete();
-        return redirect()->route('admin.faq-categories.index')->with('success', 'Category Deleted Successfully!');
+        return redirect()->route('admin.faq-categories.index')->with('success', __('messages.record_deleted', ['module' => 'Category']));
     }
 
     public function list(Request $request)

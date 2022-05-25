@@ -72,7 +72,7 @@ class ClientController extends Controller
 
         // event(new ClientHasDeletedEvent($_client));
 
-        return redirect()->route('admin.clients.index')->with('success', 'Client deleted successfully!');
+        return redirect()->route('admin.clients.index')->with('success', __('messages.record_deleted', ['module' => 'Client']));
     }
 
     public function list(Request $request)

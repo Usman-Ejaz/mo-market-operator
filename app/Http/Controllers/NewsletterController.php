@@ -47,7 +47,7 @@ class NewsletterController extends Controller
         $newsletter = new Newsletter();
         $newsletter = Newsletter::create( $this->validateRequest($newsletter) );
 
-        $request->session()->flash('success', 'Newsletter Added Successfully!');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Newsletter']));
         return redirect()->route('admin.newsletters.index');
     }
 
@@ -90,7 +90,7 @@ class NewsletterController extends Controller
 
         $newsletter->update($this->validateRequest($newsletter));
 
-        $request->session()->flash('success', 'Newsletter Updated Successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Newsletter']));
         return redirect()->route('admin.newsletters.index');
     }
 
@@ -105,7 +105,7 @@ class NewsletterController extends Controller
         abort_if(!hasPermission("newsletters", "delete"), 401, __('messages.unauthorized_action'));
 
         $newsletter->delete();
-        return redirect()->route('admin.newsletters.index')->with('success', 'Newsletter Deleted Successfully!');
+        return redirect()->route('admin.newsletters.index')->with('success', __('messages.record_deleted', ['module' => 'Newsletter']));
     }
 
     public function list(Request $request)
@@ -175,7 +175,7 @@ class NewsletterController extends Controller
 
         dispatch(new SendNewsletterEmail($newsletter));
 
-        $request->session()->flash('success', 'Newsletter Sent Successfully!');
+        $request->session()->flash('success', 'Newsletter has been sent successfully!');
         return redirect()->route('admin.newsletters.index');
     }
 }

@@ -9,7 +9,9 @@
 @if(hasPermission('slider_images', 'create'))
 <a class="btn btn-primary float-right" href="{{ route('admin.slider-images.create') }}">Add Slider Image</a>
 @endif
+@if(hasPermission('slider_settings', 'edit'))
 <a class="btn btn-primary float-right mr-2" href="{{ route('admin.slider-settings.index') }}">Slider Settings</a>
+@endif
 @endsection
 
 @section('content')

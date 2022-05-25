@@ -52,12 +52,16 @@ class PostController extends Controller
 
         $this->storeImage($post);
 
+        $message = __('messages.record_created', ['module' => 'Post']);
+
         if ($request->action === "Published") {
             $post->published_at = now();
             $post->save();
+
+            $message = __('messages.record_published', ['module' => 'Post']);
         }
 
-        $request->session()->flash('success', "Post {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.posts.index');
     }
 
@@ -107,15 +111,21 @@ class PostController extends Controller
         
         $this->storeImage($post, $previousImage);
 
+        $message = __('messages.record_updated', ['module' => 'Post']);
+
         if ($request->action === "Unpublished") {
             $post->published_at = null;
             $post->save();
+
+            $message = __('messages.record_unpublished', ['module' => 'Post']);
         } else if ($request->action === "Published") {
             $post->published_at = now();
             $post->save();
+
+            $message = __('messages.record_published', ['module' => 'Post']);
         }
 
-        $request->session()->flash('success', "Post {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.posts.index');
     }
 
@@ -132,7 +142,7 @@ class PostController extends Controller
         $post->image !== null && removeFile(Post::STORAGE_DIRECTORY, $post->image);
 
         $post->delete();
-        return redirect()->route('admin.posts.index')->with('success', 'Post Deleted Successfully!');
+        return redirect()->route('admin.posts.index')->with('success', __('messages.record_deleted', ['module' => 'Post']));
     }
 
     public function list(Request $request)
@@ -219,7 +229,7 @@ class PostController extends Controller
                 if (removeFile(Post::STORAGE_DIRECTORY, $post->image)) {
                     $post->image = null;
                     $post->update();
-                    return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
                 }
             }
         }

@@ -70,7 +70,7 @@ class MediaLibraryController extends Controller
         
         MediaLibrary::create($data);
 
-        $request->session()->flash('success', 'Media Library Added successfully!');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Media Library']));
         return redirect()->route('admin.media-library.index');
     }
 
@@ -116,7 +116,7 @@ class MediaLibraryController extends Controller
 
         $mediaLibrary->update($data);
 
-        $request->session()->flash('success', 'Media Library Updated successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Media Library']));
         return redirect()->route('admin.media-library.index');
     }
 
@@ -137,7 +137,7 @@ class MediaLibraryController extends Controller
         }
         
         $mediaLibrary->delete();
-        $request->session()->flash('success', 'Media Library deleted successfully!');
+        $request->session()->flash('success', __('messages.record_deleted', ['module' => 'Media Library']));
         return redirect()->route('admin.media-library.index');
     }
     

@@ -11,7 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
-use App\Http\Controllers\FeedbackRatingController;
+use App\Http\Controllers\ChatbotFeedbackController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MediaFileController;
@@ -186,8 +186,8 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get('broken-links/list', [BrokenLinkController::class, 'list'])->name('broken-links.list');
     Route::resource('broken-links', BrokenLinkController::class);
 
-    Route::get('feedback-ratings/list', [FeedbackRatingController::class, 'list'])->name('feedback-ratings.list');
-    Route::resource('feedback-ratings', FeedbackRatingController::class);
+    Route::get('chatbot-feedbacks/list', [ChatbotFeedbackController::class, 'list'])->name('chatbot-feedbacks.list');
+    Route::resource('chatbot-feedbacks', ChatbotFeedbackController::class);
     
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");

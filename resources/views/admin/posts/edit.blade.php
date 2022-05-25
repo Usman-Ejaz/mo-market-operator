@@ -276,7 +276,7 @@
 					dataType: 'JSON',
 					success: function(data) {
 						if (data.success) {
-							alert('Image Deleted Successfully');
+							toastr.success(data.message);
 							$('.imageExists').remove();
 						}
 					}

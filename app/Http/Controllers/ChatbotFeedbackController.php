@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FeedbackRating;
+use App\Models\ChatbotFeedback;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class FeedbackRatingController extends Controller
+class ChatbotFeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class FeedbackRatingController extends Controller
      */
     public function index()
     {
-        abort_if(! hasPermission('feedback_ratings', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('chatbot_feedback', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        return view('admin.feedback-ratings.index');
+        return view('admin.chatbot-feedbacks.index');
     }
 
     /**
@@ -44,23 +44,23 @@ class FeedbackRatingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\FeedbackRating  $feedbackRating
+     * @param  \App\Models\ChatbotFeedback  $chatbotFeedback
      * @return \Illuminate\Http\Response
      */
-    public function show(FeedbackRating $feedbackRating)
+    public function show(ChatbotFeedback $chatbotFeedback)
     {
-        abort_if(! hasPermission('feedback_ratings', 'view'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('chatbot_feedback', 'view'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        return view('admin.feedback-ratings.show', compact('feedbackRating'));
+        return view('admin.chatbot-feedbacks.show', compact('feedbackRating'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\FeedbackRating  $feedbackRating
+     * @param  \App\Models\ChatbotFeedback  $chatbotFeedback
      * @return \Illuminate\Http\Response
      */
-    public function edit(FeedbackRating $feedbackRating)
+    public function edit(ChatbotFeedback $chatbotFeedback)
     {
         //
     }
@@ -69,10 +69,10 @@ class FeedbackRatingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\FeedbackRating  $feedbackRating
+     * @param  \App\Models\ChatbotFeedback  $chatbotFeedback
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, FeedbackRating $feedbackRating)
+    public function update(Request $request, ChatbotFeedback $chatbotFeedback)
     {
         //
     }
@@ -80,27 +80,27 @@ class FeedbackRatingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\FeedbackRating  $feedbackRating
+     * @param  \App\Models\ChatbotFeedback  $chatbotFeedback
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FeedbackRating $feedbackRating)
+    public function destroy(ChatbotFeedback $chatbotFeedback)
     {
-        abort_if(! hasPermission('feedback_ratings', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('chatbot_feedback', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        $feedbackRating->delete();
+        $chatbotFeedback->delete();
 
-        return redirect()->route('admin.feedback-ratings.index')->with('success', 'Feedback rating deleted successfully');
+        return redirect()->route('admin.chatbot-feedbacks.index')->with('success', __('messages.record_deleted', ['module' => 'Chatbot Feedback']));
     }
 
     public function list(Request $request)
     {
-        abort_if(! hasPermission('feedback_ratings', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('chatbot_feedback', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         if ($request->ajax())
         {
-            $feedbackRatings = FeedbackRating::latest()->get();
+            $chatbotFeedbacks = ChatbotFeedback::latest()->get();
 
-            return DataTables::of($feedbackRatings)
+            return DataTables::of($chatbotFeedbacks)
                 ->addIndexColumn()
                 ->addColumn('email', function ($row) {
                     return $row->owner ? $row->owner->email : '';
@@ -116,14 +116,14 @@ class FeedbackRatingController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if (hasPermission('feedback_ratings', 'view')) {
-                        $options .= ' <a href="'. route('admin.feedback-ratings.show',$row->id) .'" class="btn btn-primary" title="View">
+                    if (hasPermission('chatbot_feedback', 'view')) {
+                        $options .= ' <a href="'. route('admin.chatbot-feedbacks.show',$row->id) .'" class="btn btn-primary" title="View">
                             <i class="fas fa-eye"></i>
                         </a>';
                     }
 
-                    if (hasPermission('feedback_ratings', 'delete')) {
-                        $options .= ' <form action="'. route('admin.feedback-ratings.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
+                    if (hasPermission('chatbot_feedback', 'delete')) {
+                        $options .= ' <form action="'. route('admin.chatbot-feedbacks.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"

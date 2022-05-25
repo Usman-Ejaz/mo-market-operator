@@ -33,9 +33,6 @@ class SubscriberController extends Controller
                 ->addColumn('multiselect', function ($row) {
                     return '<input type="checkbox" id="checkbox_'. $row->id .'" class="multiselect" name="checkbox['.$row->id.']"/>';
                 })
-                // ->addColumn('name', function ($row) {
-                //     return ($row->name) ? $row->name : '';
-                // })
                 ->addColumn('email', function ($row) {
                     return ($row->email) ? $row->email : '';
                 })
@@ -75,7 +72,7 @@ class SubscriberController extends Controller
 
         $message = $status == 1 ? "Subscribed" : "Unsubscribed";
 
-        return redirect()->route('admin.subscribers.index')->with('success', "Subscriber {$message} Successfully!");
+        return redirect()->route('admin.subscribers.index')->with('success', __('messages.subscriber', ['status' => $message]));
     }
 
     public function bulkToggle(Request $request)

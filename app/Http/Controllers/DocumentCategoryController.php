@@ -51,7 +51,7 @@ class DocumentCategoryController extends Controller
 
         $category = DocumentCategory::create($data);
 
-        $request->session()->flash('success', 'Category added successfully!');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Category']));
         return redirect()->route('admin.document-categories.index');
     }
 
@@ -96,7 +96,7 @@ class DocumentCategoryController extends Controller
         $data['slug'] = str_slug($data['name']);
         $documentCategory->update($data);
 
-        $request->session()->flash('success', 'Category Updated Successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Category']));
         return redirect()->route('admin.document-categories.index');
     }
 
@@ -111,7 +111,7 @@ class DocumentCategoryController extends Controller
         abort_if(!hasPermission("document_categories", "delete"), 401, __('messages.unauthorized_action'));
 
         $documentCategory->delete();
-        return redirect()->route('admin.document-categories.index')->with('success', 'Category Deleted Successfully!');
+        return redirect()->route('admin.document-categories.index')->with('success', __('messages.record_deleted', ['module' => 'Category']));
     }
 
     public function list(Request $request)

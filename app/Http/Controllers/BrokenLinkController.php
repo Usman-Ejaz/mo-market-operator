@@ -89,7 +89,7 @@ class BrokenLinkController extends Controller
 
         $brokenLink->delete();
 
-        return redirect()->route('admin.broken-links.index')->with('success', 'Broken link deleted successfully!');
+        return redirect()->route('admin.broken-links.index')->with('success', __('messages.record_deleted', ['module' => 'Broken link']));
     }
 
     public function list(Request $request)

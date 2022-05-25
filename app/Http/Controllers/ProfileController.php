@@ -39,7 +39,7 @@ class ProfileController extends Controller
         if ($user->update($this->validateRequest($user))) {
             $this->storeImage($user, $previousImage);
 
-            $request->session()->flash('success', 'Pofile Updated Successfully!');
+            $request->session()->flash('success', __('messages.record_updated', ['module' => 'Profile']));
             return redirect()->route('admin.dashboard');
         }
 
@@ -112,7 +112,7 @@ class ProfileController extends Controller
 
                 if (unlink($image_path)) {
                     $user->update(['image' => null]);
-                    return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
                 }
             }
 
@@ -152,9 +152,9 @@ class ProfileController extends Controller
                 if (Hash::check($request->password, $user->password)) {
                     return redirect()->back()->withErrors("New Password should be different from Old Password.");
                 }
-                $user->password = bcrypt($request->get("password"));
-                $user->save();
-                $request->session()->flash("success", "Password Updated Successfully");
+                $user->update(['password' => bcrypt($request->get("password"))]);
+                
+                $request->session()->flash("success", __('messages.record_updated', ['module' => 'Password']));
                 return redirect()->route("admin.dashboard");
             } else {
                 return redirect()->back()->withErrors("Old Password is wrong.");
