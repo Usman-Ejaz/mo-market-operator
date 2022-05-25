@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Client;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Models\Client;
 use App\Models\ClientAttachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -77,7 +78,7 @@ class ClientAttachmentController extends BaseApiController
             $filename = storeFile(ClientAttachment::DIR, $request->file('attachment'));
             ClientAttachment::create([
                 'file' => $filename,
-                'category_id' => $request->category ?? null,
+                'category_id' => $request->category ? array_search($request->category, Client::REGISTER_CATEGORIES) : null,
                 'phrase' => strtolower($request->phrase),
                 'client_id' => $request->user()->id
             ]);

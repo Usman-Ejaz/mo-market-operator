@@ -206,10 +206,10 @@
 									</div>
 								</div>
 							@endforeach
-						</ul>						
+						</ul>
 
 						@foreach($client->categoryAttachments() as $categoryId => $attachments)
-							<h5 class="mt-3 mb-2" style="font-weight: bold;">{{ ucwords(\App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}</h5>
+							<h5 class="mt-3 mb-2" style="font-weight: bold;">{{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}</h5>
 							<ul>
 								@foreach($attachments as $attachment)
 									<div class="row">
