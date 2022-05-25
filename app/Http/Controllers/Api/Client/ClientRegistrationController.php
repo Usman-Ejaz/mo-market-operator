@@ -9,7 +9,9 @@ use App\Models\ClientAttachment;
 use App\Models\ClientDetail;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ClientRegistrationController extends BaseApiController
 {
@@ -165,13 +167,13 @@ class ClientRegistrationController extends BaseApiController
             'name' => 'required|string|min:3',
             'type' => 'required|string|in:' . implode(",", Client::TYPE),
             'categories' => 'required|string',
-            'business' => 'required|string|min:5',
-            'address_line_one' => 'required|string|min:5',
-            'address_line_two' => 'required|string|min:5',
-            'city' => 'required|string|min:5',
-            'state' => 'required|string|min:5',
-            'zipcode' => 'required|string|min:5',
-            'country' => 'required|string|min:5',
+            'business' => 'required|string|min:3',
+            'address_line_one' => 'required|string|min:3',
+            'address_line_two' => 'required|string|min:3',
+            'city' => 'required|string|min:3',
+            'state' => 'required|string|min:3',
+            'zipcode' => 'required|string|min:3',
+            'country' => 'required|string|min:3',
             'primary_details' => 'required',
             'secondary_details' => Rule::requiredIf($request->has('secondary_details')),
         ];
@@ -261,7 +263,7 @@ class ClientRegistrationController extends BaseApiController
             'zipcode'               => $data['zipcode'],
             'telephone'             => $data['telephone'],
             'facsimile_telephone'   => $data['facsimile_telephone'],
-            'signature'             => 'this-is-signature.png'//$this->saveSignatures(request()->file($type . '_signature'))
+            'signature'             => $this->saveSignatures($data['signature'])
         ]);
     }
     
@@ -271,9 +273,16 @@ class ClientRegistrationController extends BaseApiController
      * @param  mixed $file
      * @return string | null
      */
-    private function saveSignatures($file) 
+    private function saveSignatures($dataURL) 
     {
-        return storeFile(ClientDetail::SIGNATURE_DIR, $file);
+        list($type, $data) = explode(';', $dataURL);
+        list(, $data) = explode(',', $data);
+        $data = base64_decode($data);
+        list(, $extension) = explode('/', $type);
+        $filename = Str::random(20) . '.' . $extension;
+        Storage::disk('app')->put(ClientDetail::SIGNATURE_DIR . $filename, $data);
+
+        return $filename;
     }
 
     /**
