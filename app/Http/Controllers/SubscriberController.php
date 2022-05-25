@@ -67,10 +67,9 @@ class SubscriberController extends Controller
         abort_if(!hasPermission("subscribers", "subscribe"), 401, __('messages.unauthorized_action'));
         
         $status = intval($request->get("status"));
-        $subscriber->status = $status;
-        $subscriber->save();
+        $subscriber->update(['status' => $status]);
 
-        $message = $status == 1 ? "Subscribed" : "Unsubscribed";
+        $message = $status == 1 ? "subscribed" : "unsubscribed";
 
         return redirect()->route('admin.subscribers.index')->with('success', __('messages.subscriber', ['status' => $message]));
     }
@@ -90,6 +89,10 @@ class SubscriberController extends Controller
         foreach($subscribers as $subscriber) {
             $subscriber->update(['status' => $status]);
         }
+
+        $message = $status == 1 ? "subscribed" : "unsubscribed";
+
+        $request->session()->flash('success', __('messages.subscribers', ['status' => $message]));
         return response(['success' => true], 200);
     }
 }
