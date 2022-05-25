@@ -214,7 +214,7 @@ class PublishedPostApiController extends BaseApiController
     public function getPostsByCategory($category)
     {
         try {
-            $posts = Post::published()->$category()->latest()->applyFilters(request())->get();
+            $posts = Post::published()->$category()->applyFilters()->get();
 
             return $this->sendResponse($posts, 'success');
         } catch (\Exception $ex) {
@@ -285,22 +285,4 @@ class PublishedPostApiController extends BaseApiController
             return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
         }
     }
-
-    // public function getMediaFiles()
-    // {
-    //     $libraries = MediaLibrary::select("id", "name", "description", "directory")->with('mediaFiles:file,media_library_id')->get();
-
-    //     foreach ($libraries as $mediaLibrary) {
-    //         $files = $mediaLibrary->mediaFiles;
-    //         foreach ($files as $mediaFile) {
-    //             $mediaFile->file = serveFile(MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory . '/', $mediaFile->file);
-    //             unset($mediaFile->id);
-    //             unset($mediaFile->media_library_id);
-    //         }
-    //         unset($mediaLibrary->directory);
-    //         unset($mediaLibrary->id);
-    //     }
-
-    //     return $libraries;
-    // }
 }
