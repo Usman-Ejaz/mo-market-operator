@@ -34,6 +34,7 @@ return [
     "reply_email" => "Reply has been sent successfully!",
     "image_deleted" => "Image has been deleted successfully!",
     "subscriber" => "Subscriber has been :status successfully!",
+    "subscribers" => "Subscribers has been :status successfully!",
     
     /*
     |--------------------------------------------------------------------------

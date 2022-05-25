@@ -39,6 +39,7 @@
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 
 <script>
+	let oldFiles = [];
 	$(document).ready(function() {
 
 		$(".save-with-email").click(function() {
@@ -124,8 +125,19 @@
 			}
 		});
 
-
+		$(document).on('focusin', 'input[type="file"]', function(e){
+			oldFiles = e.target.files;
+		});
 	});
+
+	function handleFileChoose (e) 
+	{
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			e.target.files = oldFiles;
+			return false;
+		}
+	}
 </script>
 
 @endpush

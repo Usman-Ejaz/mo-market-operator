@@ -115,6 +115,7 @@
 
 <script>
 	//Date and time picker
+	let oldFiles = [];
 	$(document).ready(function() {
 
 		CKEDITOR.instances.description.on('blur', function(e) {
@@ -346,6 +347,10 @@
 			$('.bootstrap-tagsinput > input').attr('placeholder', '');
 		}
 
+		$(document).on('focusin', 'input[type="file"]', function(e){
+			oldFiles = e.target.files;
+		});
+
 	});
 
 	function socialWindow(url) {
@@ -357,6 +362,15 @@
 
 	function mapDate(date) {
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
+	}
+
+	function handleFileChoose (e) 
+	{
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			e.target.files = oldFiles;
+			return false;
+		}
 	}
 </script>
 

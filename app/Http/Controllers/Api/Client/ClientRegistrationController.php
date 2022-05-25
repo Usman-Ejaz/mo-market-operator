@@ -261,7 +261,7 @@ class ClientRegistrationController extends BaseApiController
             'zipcode'               => $data['zipcode'],
             'telephone'             => $data['telephone'],
             'facsimile_telephone'   => $data['facsimile_telephone'],
-            'signature'             => $this->saveSignatures(request()->file($type . '_signature'))
+            'signature'             => 'this-is-signature.png'//$this->saveSignatures(request()->file($type . '_signature'))
         ]);
     }
     
@@ -273,7 +273,7 @@ class ClientRegistrationController extends BaseApiController
      */
     private function saveSignatures($file) 
     {
-        return storeFile(Client::SIGNATURE_DIR, $file);
+        return storeFile(ClientDetail::SIGNATURE_DIR, $file);
     }
 
     /**

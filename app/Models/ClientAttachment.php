@@ -39,7 +39,7 @@ class ClientAttachment extends Model
             return $value ? __('client.general_keys.' . $value) : '';
         }
 
-        return $value ? __('client.keys.' . $this->category() . '.' . $value) : "";
+        return $value ? __('client.keys.' . strtolower($this->category()) . '.' . $value) : "";
     }
 
 }

@@ -37,7 +37,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="page_image" class="form-label">Page Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
-				<input class="form-control" type="file" id="page_image" name="image">
+				<input class="form-control" type="file" id="page_image" name="image" onchange="handleFileChoose(event)">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if (isset($cms_page->image))
 				<small class="text-primary imageExists">
