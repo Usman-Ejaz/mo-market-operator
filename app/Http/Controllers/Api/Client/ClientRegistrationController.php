@@ -176,7 +176,7 @@ class ClientRegistrationController extends BaseApiController
             'zipcode' => 'required|string|min:3',
             'country' => 'required|string|min:3',
             'primary_details.name' => 'required|string|min:3',
-            'primary_details.email' => ['required', 'string', 'email', Rule::unique('client_details')->ignore($client->id, 'client_id')],
+            'primary_details.email' => 'required|string|email|unique:client_details,email,' . $client->id . ',client_id',
             'primary_details.address_line_one' => 'required|string|min:3',
             'primary_details.address_line_two' => 'required|string|min:3',
             'primary_details.city' => 'required|string|min:3',
@@ -189,7 +189,7 @@ class ClientRegistrationController extends BaseApiController
 
 
             'secondary_details.name' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
-            'secondary_details.email' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'email', Rule::unique('client_details')->ignore($client->id, 'client_id')],
+            'secondary_details.email' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'email', 'unique:client_details,email,' . $client->id . ',client_id'],
             'secondary_details.address_line_one' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
             'secondary_details.address_line_two' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
             'secondary_details.city' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
@@ -209,7 +209,8 @@ class ClientRegistrationController extends BaseApiController
      */
     private function getMessages(): array {
         return [
-            // 
+            // 'primary_details' => [
+            // ]
         ];
     }
     
@@ -284,30 +285,46 @@ class ClientRegistrationController extends BaseApiController
     private function storeClientDetails($data, $type, $clientId, $isUpdating = false)
     {
         if (! $isUpdating) {
-            $clientDetails = new ClientDetail;
+            ClientDetail::create([
+                'client_id'             => $clientId,
+                'name'                  => $data['name'],
+                'email'                 => $data['email'],
+                'designation'           => $data['designation'],
+                'type'                  => $type,
+                'address_line_one'      => $data['address_line_one'],
+                'address_line_two'      => $data['address_line_two'],
+                'city'                  => $data['city'],
+                'state'	                => $data['state'],
+                'zipcode'               => $data['zipcode'],
+                'telephone'             => $data['telephone'],
+                'facsimile_telephone'   => $data['facsimile_telephone'],
+                'signature'             => $this->saveSignatures($data['signature'])
+            ]);
+
+            return;
         } else {
             $clientDetails = ClientDetail::where(['client_id' => $clientId, 'type' => $type])->first();
 
             if ($clientDetails) {
                 removeFile(ClientDetail::SIGNATURE_DIR ,$clientDetails->signature);
             }
-        }
 
-        $clientDetails->update([
-            'client_id'             => $clientId,
-            'name'                  => $data['name'],
-            'email'                 => $data['email'],
-            'designation'           => $data['designation'],
-            'type'                  => $type,
-            'address_line_one'      => $data['address_line_one'],
-            'address_line_two'      => $data['address_line_two'],
-            'city'                  => $data['city'],
-            'state'	                => $data['state'],
-            'zipcode'               => $data['zipcode'],
-            'telephone'             => $data['telephone'],
-            'facsimile_telephone'   => $data['facsimile_telephone'],
-            'signature'             => $this->saveSignatures($data['signature'])
-        ]);
+            $clientDetails->update([
+                'client_id'             => $clientId,
+                'name'                  => $data['name'],
+                'email'                 => $data['email'],
+                'designation'           => $data['designation'],
+                'type'                  => $type,
+                'address_line_one'      => $data['address_line_one'],
+                'address_line_two'      => $data['address_line_two'],
+                'city'                  => $data['city'],
+                'state'	                => $data['state'],
+                'zipcode'               => $data['zipcode'],
+                'telephone'             => $data['telephone'],
+                'facsimile_telephone'   => $data['facsimile_telephone'],
+                'signature'             => $this->saveSignatures($data['signature'])
+            ]);
+        }
     }
     
     /**
