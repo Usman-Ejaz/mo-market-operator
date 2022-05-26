@@ -67,6 +67,9 @@ class ClientController extends Controller
         abort_if(! hasPermission("clients", "delete"), 401, __('messages.unauthorized_action'));
 
         $_client = $client;
+
+        $client->removeDetails();
+        $client->removeAttachments();
         // $this->removeSignatures($client);
         $client->delete();
 

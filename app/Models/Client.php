@@ -157,15 +157,45 @@ class Client extends Authenticatable
             ->get()
             ->groupBy('category_id');
     }
-
+    
+    /**
+     * primaryDetails
+     *
+     * @return mixed
+     */
     public function primaryDetails()
     {
         return $this->details()->where('type', '=', ClientDetail::PRIMARY)->first();
     }
-
+    
+    /**
+     * secondaryDetails
+     *
+     * @return mixed
+     */
     public function secondaryDetails()
     {
         return $this->details()->where('type', '=', ClientDetail::SECONDARY)->first();
+    }
+
+    public function removeDetails()
+    {
+        foreach ($this->details as $data) {
+
+            removeFile(ClientDetail::SIGNATURE_DIR, $data->signature);
+
+            $data->delete();
+        }
+    }
+
+    public function removeAttachments()
+    {
+        foreach ($this->attachments as $attachment) {
+
+            removeFile(ClientAttachment::DIR, $attachment->file);
+
+            $attachment->delete();
+        }
     }
 
     /**
