@@ -76,9 +76,19 @@ class ClientAttachmentController extends BaseApiController
 
         try {
             $filename = storeFile(ClientAttachment::DIR, $request->file('attachment'));
+
+            if (! $request->has('category') || $request->category === null || $request->category === "") {
+                $categoryId = null;
+            } else {
+                $categoryId = array_search($request->category, Client::REGISTER_CATEGORIES);
+                if (! $categoryId) {
+                    $categoryId = null;
+                }
+            }
+
             ClientAttachment::create([
                 'file' => $filename,
-                'category_id' => $request->category !== null || $request->category !== "" ? array_search($request->category, Client::REGISTER_CATEGORIES) : NULL,
+                'category_id' => $categoryId,
                 'phrase' => strtolower($request->phrase),
                 'client_id' => $request->user()->id
             ]);

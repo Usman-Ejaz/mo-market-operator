@@ -51,6 +51,12 @@ class Client extends Authenticatable
      */
     public function setCategoriesAttribute($value)
     {
+        if ($value === null || $value === "")
+        {
+            $this->attributes['categories'] = null;
+            return;
+        }
+        
         $value = explode(",", $value);
         $cats = [];
 
