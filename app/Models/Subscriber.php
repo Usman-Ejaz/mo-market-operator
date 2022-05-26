@@ -31,4 +31,15 @@ class Subscriber extends Model
             1 => 'Subscribed'
         ];
     }
+    
+    /**
+     * scopeRss
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeRss($query)
+    {
+        return $query->where('rss_feed', '=', 1);
+    }
 }

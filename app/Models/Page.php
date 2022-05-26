@@ -95,11 +95,22 @@ class Page extends Model
      * scopeScheduledRecords
      *
      * @param  mixed $query
-     * @return void
+     * @return mixed
      */
     public function scopeScheduledRecords($query)
     {
         return $query->where('start_datetime', '!=', NULL)->where('end_datetime', '!=', NULL);
+    }
+    
+    /**
+     * scopeTodaysPublishedRecords
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeTodaysPublishedRecords($query)
+    {
+        return $query->whereDay('published_at', date('d'));
     }
 
     public function isPublished() {

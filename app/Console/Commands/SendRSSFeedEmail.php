@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\SendRssFeedSubscriberEmail;
+use App\Models\Subscriber;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class SendRSSFeedEmail extends Command
 {
@@ -11,7 +14,7 @@ class SendRSSFeedEmail extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'update-subscribers:rss-feed';
 
     /**
      * The console command description.
@@ -37,6 +40,33 @@ class SendRSSFeedEmail extends Command
      */
     public function handle()
     {
-        return 0;
+        $pages = $this->getRecords('Page');
+        $posts = $this->getRecords('Post');
+        $medias = $this->getRecords('MediaLibrary');
+
+        $rssFeedSubscribers = $this->getSubscribers();
+
+        $todaysPublishedRecords = collect([]);
+
+        $todaysPublishedRecords = $todaysPublishedRecords->merge($pages)->merge($posts)->merge($medias);
+
+        foreach ($rssFeedSubscribers as $subscriber) 
+        {
+            Mail::to($subscriber->email)->send(new SendRssFeedSubscriberEmail($todaysPublishedRecords));
+        }
+    }
+
+    private function getRecords($model)
+    {
+        $model = 'App\\Models\\' . $model;
+
+        $records = $model::todaysPublishedRecords()->get();
+
+        return $records;
+    }
+
+    private function getSubscribers()
+    {
+        return Subscriber::rss()->select('id', 'email')->get();
     }
 }
