@@ -166,7 +166,7 @@ class ClientRegistrationController extends BaseApiController
         return [
             'name' => 'required|string|min:3',
             'type' => 'required|string|in:' . implode(",", Client::TYPE),
-            'categories' => 'required|string',
+            'categories' => 'nullable|string',
             'business' => 'required|string|min:3',
             'address_line_one' => 'required|string|min:3',
             'address_line_two' => 'required|string|min:3',

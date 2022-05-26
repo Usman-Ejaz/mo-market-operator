@@ -181,4 +181,15 @@ class Post extends Model
 
         return $query;
     }
+
+    /**
+     * scopeScheduledRecords
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeScheduledRecords($query)
+    {
+        return $query->where('start_datetime', '!=', NULL)->where('end_datetime', '!=', NULL);
+    }
 }
