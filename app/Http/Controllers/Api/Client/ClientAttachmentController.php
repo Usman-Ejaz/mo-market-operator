@@ -158,8 +158,17 @@ class ClientAttachmentController extends BaseApiController
             return $this->sendError("Error", ['errors' => $validator->errors()], 400);
         }
 
+        if (! $request->has('category') || $request->category === null || $request->category === "") {
+            $categoryId = null;
+        } else {
+            $categoryId = array_search($request->category, Client::REGISTER_CATEGORIES);
+            if (! $categoryId) {
+                $categoryId = null;
+            }
+        }
+
         try {
-            $attachment = ClientAttachment::findRecord($request->user()->id, $request->category ?? null, $request->phrase)->first();
+            $attachment = ClientAttachment::findRecord($request->user()->id, $categoryId, $request->phrase)->first();
 
             if ($attachment) {
                 removeFile(ClientAttachment::DIR, $attachment->file);
