@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use PDF;
 
 class ClientRegistrationController extends BaseApiController
 {
@@ -588,5 +589,24 @@ class ClientRegistrationController extends BaseApiController
         }
         
         return ['token' => null];
+    }
+
+    public function downloadApplication(Request $request)
+    {
+        try {
+            $client = $request->user();
+            $primaryDetails = $client->primaryDetails();
+            $secondaryDetails = $client->secondaryDetails();
+            $clientFiles = $client->attachments;
+
+            $pdf = PDF::loadView('clients.registration-form-summary', [
+                'client' => $client
+            ]);
+
+            return $pdf->download('pdfview.pdf');
+        } catch (\Exception $ex) {
+
+        }
+        // Storage::put('somepath here with filename', $pdf->output());
     }
 }
