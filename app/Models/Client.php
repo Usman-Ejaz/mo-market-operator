@@ -153,6 +153,7 @@ class Client extends Authenticatable
     {
         return $this->attachments()
             ->where('category_id', '!=', null)
+            ->where('category_id', '!=', '')
             ->orderBy('category_id', 'ASC')
             ->get()
             ->groupBy('category_id');

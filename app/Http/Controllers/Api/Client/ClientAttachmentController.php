@@ -64,8 +64,8 @@ class ClientAttachmentController extends BaseApiController
     {
         $validator = Validator::make($request->all(), [
             'attachment' => 'required|file|mimes:pdf,docx,doc|max:' . config('settings.maxDocumentSize') * 4,
-            'category' => 'nullable|string',
-            'phrase' => 'required|string'
+            'category' => 'nullable|string|min:3',
+            'phrase' => 'required|string|min:3'
         ], [
             'attachment.max' => __('messages.max_file', ['limit' => '20 MB'])
         ]);
@@ -78,10 +78,11 @@ class ClientAttachmentController extends BaseApiController
             $filename = storeFile(ClientAttachment::DIR, $request->file('attachment'));
             ClientAttachment::create([
                 'file' => $filename,
-                'category_id' => $request->category ? array_search($request->category, Client::REGISTER_CATEGORIES) : null,
+                'category_id' => $request->category !== null || $request->category !== "" ? array_search($request->category, Client::REGISTER_CATEGORIES) : NULL,
                 'phrase' => strtolower($request->phrase),
                 'client_id' => $request->user()->id
             ]);
+
             return $this->sendResponse([], "Attachment uploaded successfully");
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
