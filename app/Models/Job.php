@@ -129,8 +129,25 @@ class Job extends Model
 
         return $query;
     }
-
-    public function isPublished() {
+    
+    /**
+     * scopeScheduledRecords
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeScheduledRecords($query)
+    {
+        return $query->where('start_datetime', '!=', NULL)->where('end_datetime', '!=', NULL);
+    }
+    
+    /**
+     * isPublished
+     *
+     * @return boolean true|false
+     */
+    public function isPublished() 
+    {
         return $this->published_at !== null;
     }
 }
