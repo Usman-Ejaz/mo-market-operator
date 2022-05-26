@@ -185,7 +185,19 @@ class ClientRegistrationController extends BaseApiController
             'primary_details.facsimile_telephone' => 'required|string|min:3',
             'primary_details.signature' => 'required|string',
             'primary_details.type' => 'required|string|min:3',
-            'secondary_details' => Rule::requiredIf($request->has('secondary_details')),
+
+
+            'secondary_details.name' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.email' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'email', 'unique:client_details,email'],
+            'secondary_details.address_line_one' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.address_line_two' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.city' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.state' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.zipcode' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.telephone' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.facsimile_telephone' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.signature' => [Rule::requiredIf($request->has('secondary_details')), 'string'],
+            'secondary_details.type' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
         ];
     }
     
