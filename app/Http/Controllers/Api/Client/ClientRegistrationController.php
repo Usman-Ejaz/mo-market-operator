@@ -174,7 +174,17 @@ class ClientRegistrationController extends BaseApiController
             'state' => 'required|string|min:3',
             'zipcode' => 'required|string|min:3',
             'country' => 'required|string|min:3',
-            'primary_details' => 'required',
+            'primary_details.name' => 'required|string|min:3',
+            'primary_details.email' => 'required|string|email|unique:client_details,email',
+            'primary_details.address_line_one' => 'required|string|min:3',
+            'primary_details.address_line_two' => 'required|string|min:3',
+            'primary_details.city' => 'required|string|min:3',
+            'primary_details.state' => 'required|string|min:3',
+            'primary_details.zipcode' => 'required|string|min:3',
+            'primary_details.telephone' => 'required|string|min:3',
+            'primary_details.facsimile_telephone' => 'required|string|min:3',
+            'primary_details.signature' => 'required|string',
+            'primary_details.type' => 'required|string|min:3',
             'secondary_details' => Rule::requiredIf($request->has('secondary_details')),
         ];
     }
@@ -186,7 +196,8 @@ class ClientRegistrationController extends BaseApiController
      */
     private function getMessages(): array {
         return [
-            
+            // 'primary_details' => [
+            // ]
         ];
     }
     
@@ -197,7 +208,17 @@ class ClientRegistrationController extends BaseApiController
      */
     private function getAttributes(): array {
         return [
-            
+            'primary_details.name' => 'name',
+            'primary_details.email' => 'email',
+            'primary_details.address_line_one' => 'address line one',
+            'primary_details.address_line_two' => 'address line two',
+            'primary_details.facsimile_telephone' => 'facsimile telephone',
+
+            'secondary_details.name' => 'name',
+            'secondary_details.email' => 'email',
+            'secondary_details.address_line_one' => 'address line one',
+            'secondary_details.address_line_two' => 'address line two',
+            'secondary_details.facsimile_telephone' => 'facsimile telephone',
         ];
     }
     
