@@ -192,4 +192,15 @@ class Post extends Model
     {
         return $query->where('start_datetime', '!=', NULL)->where('end_datetime', '!=', NULL);
     }
+
+    /**
+     * scopeTodaysPublishedRecords
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeTodaysPublishedRecords($query)
+    {
+        return $query->whereDay('published_at', date('d'));
+    }
 }
