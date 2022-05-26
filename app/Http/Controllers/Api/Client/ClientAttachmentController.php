@@ -63,7 +63,7 @@ class ClientAttachmentController extends BaseApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'attachment' => 'required|file|max:' . config('settings.maxDocumentSize') * 4,
+            'attachment' => 'required|file|mimes:pdf,docx,doc|max:' . config('settings.maxDocumentSize') * 4,
             'category' => 'nullable|string',
             'phrase' => 'required|string'
         ], [
