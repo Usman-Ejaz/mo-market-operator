@@ -112,7 +112,7 @@
             <ul>
                 @foreach ($generalAttachments as $item)
                     <li>
-                        <p style="display: inline">{{ $item->phrase }}</p>: {{ getFileOriginalName($item->file) }}
+                        <p style="display: inline">{{ $item->phrase_string }}</p>: {{ getFileOriginalName($item->file) }}
                     </li>
                 @endforeach
             </ul>
@@ -122,7 +122,7 @@
             <ul>
                 @foreach ($items as $item)
                     <li>
-                        <p style="display: inline">{{ $item->phrase }}</p>: {{ getFileOriginalName($item->file) }}
+                        <p style="display: inline">{{ $item->phrase_string }}</p>: {{ getFileOriginalName($item->file) }}
                     </li>
                 @endforeach
             </ul>

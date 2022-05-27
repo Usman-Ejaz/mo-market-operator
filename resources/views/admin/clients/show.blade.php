@@ -199,7 +199,7 @@
 									<div class="col-md-12">
 										<div class="form-group">
 											<li>
-												<p style="display: inline;">{{ $attachment->phrase }} </p>
+												<p style="display: inline;">{{ $attachment->phrase_string }} </p>
 												<a href="{{ route('admin.attachment.download', ["clients/attachments", basename($attachment->file)]) }}">{{ __("View") }}</a>
 											</li>
 										</div>
@@ -216,7 +216,7 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<li>
-													<p style="display: inline;">{{ $attachment->phrase }} </p>
+													<p style="display: inline;">{{ $attachment->phrase_string }} </p>
 													<a href="{{ route('admin.attachment.download', ["clients/attachments", basename($attachment->file)]) }}">{{ __("View") }}</a>
 												</li>
 											</div>

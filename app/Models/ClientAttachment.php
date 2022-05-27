@@ -11,6 +11,8 @@ class ClientAttachment extends Model
 
     protected $guarded = [];
 
+    protected $appends = ['phrase_string'];
+
     const DIR = 'clients/attachments/';
 
     public function getFileAttribute($value) 
@@ -23,23 +25,14 @@ class ClientAttachment extends Model
         return ucwords(Client::REGISTER_CATEGORIES[$this->category_id]);
     }
 
-    public function scopeFindRecord($query, $clientId, $categoryId, $phrase) 
-    {
-        return $query->where([
-            'client_id' => $clientId, 
-            'category_id' => $categoryId, 
-            'phrase' => strtolower($phrase)
-        ]);
-    }
-
-    public function getPhraseAttribute($value) 
+    public function getPhraseStringAttribute()
     {
         if ($this->category_id === null)
         {
-            return $value ? __('client.general_keys.' . $value) : '';
+            return $this->phrase ? __('client.general_keys.' . $this->phrase) : '';
         }
 
-        return $value ? __('client.keys.' . strtolower($this->category()) . '.' . $value) : "";
+        return $this->phrase ? __('client.keys.' . strtolower($this->category()) . '.' . $this->phrase) : "";
     }
 
 }

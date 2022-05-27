@@ -378,12 +378,35 @@ class ClientRegistrationController extends BaseApiController
 
     private function getClientInformations($client)
     {
-        $data['primary_details'] = $client->primaryDetails();
-        $data['secondary_details'] = $client->secondaryDetails();
-        $data['attachments'] = $client->attachments;
+        $data['general_docs'] = $client->generalAttachments()->map(function ($item) {
+            return [
+                'file' => $item->file,
+                'filename' => getFileOriginalName($item->file),
+                'key' => $item->phrase
+            ];
+        });
+        $data['categories_docs'] = $this->getCategoryAttachments($client);
         $data['token'] = $client->createToken(__('auth.apiTokenKey'))->accessToken;
 
         return $data;
+    }
+
+    public function getCategoryAttachments($client)
+    {
+        $attachments = $client->categoryAttachments();
+        $arr = [];
+        foreach ($attachments as $key => $items) {
+            $arr[Client::REGISTER_CATEGORIES[$key]] = [];
+
+            foreach ($items as $item) {
+                $arr[Client::REGISTER_CATEGORIES[$key]][] = [
+                    'file' => $item->file,
+                    'filename' => getFileOriginalName($item->file),
+                    'key' => $item->phrase
+                ];
+            }
+        }
+        return $arr;
     }
 
     /**
