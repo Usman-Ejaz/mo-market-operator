@@ -44,9 +44,11 @@ Route::prefix('v1/auth')->group(function() {
 Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('upload-attachments', [ClientAttachmentController::class, 'store'])->name('client.attachment.store');
     Route::post('remove-attachments', [ClientAttachmentController::class, 'destroy'])->name('client.attachment.delete');
-
+    
     Route::post('confirm-registration', [ClientRegistrationController::class, 'confirmRegistration'])->name('client.confirm-registation');
     Route::put('update-client', [ClientRegistrationController::class, 'updateClient'])->name('client.update');
+
+    Route::get('download-application', [ClientRegistrationController::class, 'downloadApplication'])->name('client.download-application');
 });
 
 Route::prefix("v1")->middleware('verifyApiKey')->group(function () {    

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use PDF;
 
 class ClientRegistrationController extends BaseApiController
 {
@@ -588,5 +589,36 @@ class ClientRegistrationController extends BaseApiController
         }
         
         return ['token' => null];
+    }
+
+    public function downloadApplication(Request $request)
+    {
+        try {
+            $client = $request->user();
+            $primaryDetails = $client->primaryDetails();
+            $secondaryDetails = $client->secondaryDetails();
+
+            set_time_limit(300);
+
+            $pdf = PDF::loadView('clients.registration-form-summary', [
+                'client' => $client,
+                'primaryDetails' => $primaryDetails,
+                'secondaryDetails' => $secondaryDetails,
+                'generalAttachments' => $client->generalAttachments(),
+                'categoryAttachments' => $client->categoryAttachments(),
+                'files_count' => $client->attachments->count()
+            ]);
+
+            $filename = Str::random(16) . '.PDF';
+
+            Storage::disk('app')->put('clients/forms/' . $filename, $pdf->output());
+
+            $link = serveFile('clients/forms/', $filename);
+
+            return $this->sendResponse($link, __('messages.success'));
+        } catch (\Exception $ex) {
+
+        }
+        // Storage::put('somepath here with filename', $pdf->output());
     }
 }
