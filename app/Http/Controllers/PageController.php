@@ -57,12 +57,16 @@ class PageController extends Controller
 
         $page = Page::create($data);
 
+        $message = __('messages.record_created', ['module' => 'Page']);
+
         if ($request->action === "Published") {
             $page->published_at = now();
             $page->save();
+
+            $message = __('messages.record_published', ['module' => 'Page']);
         }
 
-        $request->session()->flash('success', "Page {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.pages.index');
     }
 
@@ -107,11 +111,15 @@ class PageController extends Controller
         $data = $this->validateRequest($cms_page);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
+
+        $message = __('messages.record_created', ['module' => 'Page']);
         
         if ($request->action === "Unpublished") {
             $data['published_at'] = null;
+            $message = __('messages.record_unpublished', ['module' => 'Page']);
         } else if ($request->action === "Published") {
             $data['published_at'] = now();
+            $message = __('messages.record_published', ['module' => 'Page']);
         }
                 
         if ($request->hasFile('image')) {
@@ -120,7 +128,7 @@ class PageController extends Controller
         
         $cms_page->update($data);
 
-        $request->session()->flash('success', "Page {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.pages.index');
     }
 
@@ -139,7 +147,7 @@ class PageController extends Controller
         }
 
         $cms_page->delete();
-        return redirect()->route('admin.pages.index')->with('success', 'Page Deleted Successfully!');
+        return redirect()->route('admin.pages.index')->with('success', __('messages.record_deleted', ['module' => 'Page']));
     }
 
     public function list(Request $request)
@@ -236,7 +244,7 @@ class PageController extends Controller
                     $page->image = null;
                     $page->update();
 
-                    return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
                 }
             }
         }

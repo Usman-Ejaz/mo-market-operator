@@ -42,7 +42,7 @@
 			<div class="form-group">
 				<label for="file" class="form-label">Document File <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, txt, ppt, pptx, csv, xls, xlsx, pdf, odt)</small> </label>
 				<input class="form-control" type="file" id="file" name="file[]" onchange="resetConvertCheckbox(event)" multiple>
-				<span class="form-text text-danger">{{ $errors->first('file') }} </span>
+				<span class="form-text text-danger">{{ $errors->first('file.*') }} </span>
 				@if(isset($document->file) && !empty($document->file))
 					@foreach ($document->file as $key => $path)
 					<small class="fileExists">
@@ -78,7 +78,7 @@
 				@if(isset($document->image) && !empty($document->image))
 					<small class="imageExists">
 						<a href="{{ $document->image }}" target="_blank">
-							<img src="{{ $document->image }}" target="_blank" class="img-thumbnail" style="width: 25%;height: 25%;" />
+							<img src="{{ $document->image }}" target="_blank" class="img-thumbnail" style="height: 200px;" />
 						</a>
 						<span class="btn-sm btn-danger float-right" id="deleteImage" title="Delete Image"><i class="fa fa-trash"></i></span>
 					</small>

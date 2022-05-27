@@ -53,7 +53,7 @@ class ManagerController extends Controller
         
         Manager::create($data);
 
-        $request->session()->flash('success', 'Manager created successfully');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Manager']));
 
         return redirect()->route('admin.managers.index');
     }
@@ -101,7 +101,7 @@ class ManagerController extends Controller
 
         $manager->update($data);
         
-        $request->session()->flash('success', 'Manager updated successfully');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Manager']));
 
         return redirect()->route('admin.managers.index');
     }
@@ -118,7 +118,7 @@ class ManagerController extends Controller
 
         $manager->removeImage();
         $manager->delete();
-        return redirect()->route('admin.managers.index')->with('success', 'Manager deleted successfully!');
+        return redirect()->route('admin.managers.index')->with('success', __('messages.record_deleted', ['module' => 'Manager']));
     }
 
     public function list(Request $request)
@@ -179,7 +179,7 @@ class ManagerController extends Controller
             'designation' => 'required|string',
             'description' => 'required|string',
             'order' => 'required|string',
-            'image' => 'sometimes|nullable|file|max:2000',
+            'image' => 'sometimes|file|mimes:'. str_replace("|", ",", config('settings.image_file_extensions')) .'|max:' . config('settings.maxImageSize'),
         ];
 
         if ($manager && $manager->image !== "" && $manager->image !== null) {
@@ -202,7 +202,7 @@ class ManagerController extends Controller
                     $manager->update(['image' => '']);
                 }
 
-                return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
+                return response()->json(['success' => 'true', 'message' => __('messages.image_deleted', ['module' => 'Manager'])], 200);
             }
         }
     }

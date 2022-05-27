@@ -67,12 +67,15 @@ class ClientController extends Controller
         abort_if(! hasPermission("clients", "delete"), 401, __('messages.unauthorized_action'));
 
         $_client = $client;
+
+        $client->removeDetails();
+        $client->removeAttachments();
         // $this->removeSignatures($client);
         $client->delete();
 
         // event(new ClientHasDeletedEvent($_client));
 
-        return redirect()->route('admin.clients.index')->with('success', 'Client deleted successfully!');
+        return redirect()->route('admin.clients.index')->with('success', __('messages.record_deleted', ['module' => 'Client']));
     }
 
     public function list(Request $request)
@@ -86,11 +89,12 @@ class ClientController extends Controller
             ->addColumn('name', function ($row) {
                 return ( isset($row->name)) ? $row->name : '';
             })
-            ->addColumn('pri_email', function ($row) {
-                return ( isset($row->pri_email)) ? $row->pri_email : '';
+            ->addColumn('email', function ($row) {
+                $primaryDetails = $row->primaryDetails();
+                return ( isset($primaryDetails->email)) ? $primaryDetails->email : '';
             })
             ->addColumn('type', function ($row) {
-                return ( isset($row->type)) ? ucwords(str_replace("_", " ", $row->type)) : '';
+                return ( isset($row->type)) ? __("client.registration_types.{$row->type}") : '';
             })
             ->addColumn('status', function ($row) {
                 return $row->status();
@@ -103,8 +107,8 @@ class ClientController extends Controller
 
                 if (hasPermission('clients', 'view')) {
                     $options .= '<a href="' . route('admin.clients.show', $row->id) . '" class="btn btn-primary" title="View">
-                                    <i class="fas fa-eye"></i>
-                                </a>';
+                        <i class="fas fa-eye"></i>
+                    </a>';
                 }
 
                 if (hasPermission('clients', 'delete')) {

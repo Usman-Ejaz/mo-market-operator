@@ -33,9 +33,6 @@ class SubscriberController extends Controller
                 ->addColumn('multiselect', function ($row) {
                     return '<input type="checkbox" id="checkbox_'. $row->id .'" class="multiselect" name="checkbox['.$row->id.']"/>';
                 })
-                // ->addColumn('name', function ($row) {
-                //     return ($row->name) ? $row->name : '';
-                // })
                 ->addColumn('email', function ($row) {
                     return ($row->email) ? $row->email : '';
                 })
@@ -70,12 +67,11 @@ class SubscriberController extends Controller
         abort_if(!hasPermission("subscribers", "subscribe"), 401, __('messages.unauthorized_action'));
         
         $status = intval($request->get("status"));
-        $subscriber->status = $status;
-        $subscriber->save();
+        $subscriber->update(['status' => $status]);
 
-        $message = $status == 1 ? "Subscribed" : "Unsubscribed";
+        $message = $status == 1 ? "subscribed" : "unsubscribed";
 
-        return redirect()->route('admin.subscribers.index')->with('success', "Subscriber {$message} Successfully!");
+        return redirect()->route('admin.subscribers.index')->with('success', __('messages.subscriber', ['status' => $message]));
     }
 
     public function bulkToggle(Request $request)
@@ -93,6 +89,10 @@ class SubscriberController extends Controller
         foreach($subscribers as $subscriber) {
             $subscriber->update(['status' => $status]);
         }
+
+        $message = $status == 1 ? "subscribed" : "unsubscribed";
+
+        $request->session()->flash('success', __('messages.subscribers', ['status' => $message]));
         return response(['success' => true], 200);
     }
 }

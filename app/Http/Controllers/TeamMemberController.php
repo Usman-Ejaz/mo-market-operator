@@ -55,7 +55,7 @@ class TeamMemberController extends Controller
         
         TeamMember::create($data);
 
-        $request->session()->flash('success', 'Team member created successfully');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Team member']));
 
         return redirect()->route('admin.team-members.index');
     }
@@ -105,7 +105,7 @@ class TeamMemberController extends Controller
 
         $teamMember->update($data);
         
-        $request->session()->flash('success', 'Team member updated successfully');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Team member']));
 
         return redirect()->route('admin.team-members.index');
     }
@@ -122,7 +122,7 @@ class TeamMemberController extends Controller
 
         $teamMember->removeImage();
         $teamMember->delete();
-        return redirect()->route('admin.team-members.index')->with('success', 'Team member deleted successfully!');
+        return redirect()->route('admin.team-members.index')->with('success', __('messages.record_deleted', ['module' => 'Team member']));
     }
 
     public function list(Request $request)
@@ -186,11 +186,13 @@ class TeamMemberController extends Controller
             'designation' => 'required|string',
             'description' => 'required|string',
             'order' => 'required|string',
-            'image' => 'sometimes|file|max:2000',
+            'image' => 'sometimes|file|mimes:'. str_replace("|", ",", config('settings.image_file_extensions')) .'|max:' . config('settings.maxImageSize'),
             'manager_id' => 'required|string'
         ];
 
-        if ($teamMember && $teamMember->image !== "" && $teamMember->image !== null) {
+        $request = request();
+
+        if (! $request->has('image')) {
             unset($rules['image']);
         }
 
@@ -212,7 +214,7 @@ class TeamMemberController extends Controller
                     $teamMember->update(['image' => '']);
                 }
 
-                return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
+                return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
             }
         }
     }

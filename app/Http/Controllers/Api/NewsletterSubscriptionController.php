@@ -75,7 +75,7 @@ class NewsletterSubscriptionController extends BaseApiController
                 // 'name' => 'bail|required|string|min:3|max:100',
                 'email' => 'bail|required|email|string|unique:subscribers,email'
             ], [
-                'email.unique' => 'This email is already subscribed to newslettes.'
+                'email.unique' => 'This email is already subscribed to newsletters.'
             ]);
     
             if ($validator->fails()) {

@@ -24,6 +24,17 @@ return [
     "record_delete" => "Are you sure you want to delete this record?",
     "same_date" => "start datetime cannot be same as end datetime.",
     "todays_date" => "please select the date greater than todays datetime.",
+
+
+    "record_created" => ":module has been created successfully!",
+    "record_updated" => ":module has been updated successfully!",
+    "record_deleted" => ":module has been deleted successfully!",
+    "record_published" => ":module has been published successfully!",
+    "record_unpublished" => ":module has been unpublished successfully!",
+    "reply_email" => "Reply has been sent successfully!",
+    "image_deleted" => "Image has been deleted successfully!",
+    "subscriber" => "Subscriber has been :status successfully!",
+    "subscribers" => "Subscribers has been :status successfully!",
     
     /*
     |--------------------------------------------------------------------------

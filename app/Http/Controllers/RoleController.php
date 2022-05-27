@@ -48,7 +48,7 @@ class RoleController extends Controller
         $role = new Role();
         $role = Role::create($this->validateRequest($role));
 
-        $request->session()->flash('success', 'Role Added Successfully!');
+        $request->session()->flash('success', __('messages.record_created', ['module' => 'Role']));
         return redirect()->route('admin.permissions.index');
     }
 
@@ -91,7 +91,7 @@ class RoleController extends Controller
 
         $role->update($this->validateRequest($role));
 
-        $request->session()->flash('success', 'Role Updated Successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Role']));
         return redirect()->route('admin.roles.index');
     }
 
@@ -112,7 +112,7 @@ class RoleController extends Controller
         } catch (\Exception $ex) {
             return redirect()->route('admin.roles.index')->with('error', 'Could not delete role!');
         }
-        return redirect()->route('admin.roles.index')->with('success', 'Role Deleted Successfully!');
+        return redirect()->route('admin.roles.index')->with('success', __('messages.record_deleted', ['module' => 'Role']));
     }
 
     public function list(Request $request)

@@ -14,9 +14,7 @@ class Client extends Authenticatable
 
     protected $appends = ['category_labels'];
 
-    protected $guarded = [];
-
-    const SIGNATURE_DIR = 'clients/signatures/';
+    protected $guarded = [];    
 
     const TYPE = [
         'market_participant', 
@@ -53,6 +51,12 @@ class Client extends Authenticatable
      */
     public function setCategoriesAttribute($value)
     {
+        if ($value === null || $value === "")
+        {
+            $this->attributes['categories'] = null;
+            return;
+        }
+        
         $value = explode(",", $value);
         $cats = [];
 
@@ -86,13 +90,14 @@ class Client extends Authenticatable
             $value = explode(',', $value);
             foreach (self::REGISTER_CATEGORIES as $key => $category) {
                 if (in_array($key, $value)) {
+                    $category = __('client.categories.' . $this->type .'.'. $category);
                     $categories .= $category . ', ';
                 }
             }
             $categories = trim($categories, ', ');
-            return ucwords($categories);
+            return $categories;
         }
-        return "";
+        return "None";
     }
     
     /**
@@ -104,28 +109,6 @@ class Client extends Authenticatable
     public function getCreatedAtAttribute($value): string 
     {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : "";
-    }
-    
-    /**
-     * getPriSignatureAttribute
-     *
-     * @param  mixed $value
-     * @return string
-     */
-    public function getPriSignatureAttribute($value): string 
-    {
-        return serveFile(self::SIGNATURE_DIR, $value);
-    }
-    
-    /**
-     * getSecSignatureAttribute
-     *
-     * @param  mixed $value
-     * @return string
-     */
-    public function getSecSignatureAttribute($value): string 
-    {
-        return serveFile(self::SIGNATURE_DIR, $value);
     }
 
 
@@ -176,20 +159,50 @@ class Client extends Authenticatable
     {
         return $this->attachments()
             ->where('category_id', '!=', null)
+            ->where('category_id', '!=', '')
             ->orderBy('category_id', 'ASC')
             ->get()
             ->groupBy('category_id');
     }
-
-
+    
+    /**
+     * primaryDetails
+     *
+     * @return mixed
+     */
     public function primaryDetails()
     {
-        return $this->authorizedDetails()->where('type', '=', ClientDetail::PRIMARY)->first();
+        return $this->details()->where('type', '=', ClientDetail::PRIMARY)->first();
     }
-
+    
+    /**
+     * secondaryDetails
+     *
+     * @return mixed
+     */
     public function secondaryDetails()
     {
-        return $this->authorizedDetails()->where('type', '=', ClientDetail::SECONDARY)->first();
+        return $this->details()->where('type', '=', ClientDetail::SECONDARY)->first();
+    }
+
+    public function removeDetails()
+    {
+        foreach ($this->details as $data) {
+
+            removeFile(ClientDetail::SIGNATURE_DIR, $data->signature);
+
+            $data->delete();
+        }
+    }
+
+    public function removeAttachments()
+    {
+        foreach ($this->attachments as $attachment) {
+
+            removeFile(ClientAttachment::DIR, $attachment->file);
+
+            $attachment->delete();
+        }
     }
 
     /**
@@ -199,7 +212,7 @@ class Client extends Authenticatable
     **/
 
     
-    public function authorizedDetails()
+    public function details()
     {
         return $this->hasMany(ClientDetail::class, 'client_id', 'id');
     }

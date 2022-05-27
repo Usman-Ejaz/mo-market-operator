@@ -48,7 +48,7 @@ class PermissionController extends Controller
 
         Permission::insert( $records );
 
-        $request->session()->flash('success', 'Permissions Updated Successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Permissions']));
         $request->session()->flash('role_id', $data['role_id']);
         return redirect()->route('admin.permissions.index');
     }

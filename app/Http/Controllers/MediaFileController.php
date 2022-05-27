@@ -133,7 +133,7 @@ class MediaFileController extends Controller
             'featured' => $request->get('featured') == "true" ? 1 : 0
         ]);
 
-        return response(['message' => 'Media file updated successfully', 'status' => 'success'], 200);
+        return response(['message' => __('messages.record_updated', ['module' => 'Media file']), 'status' => 'success'], 200);
     }
 
     /**
@@ -154,7 +154,7 @@ class MediaFileController extends Controller
                 removeFile($directoryPrefix, $media->file);
 
                 $media->delete();
-                return response(['message' => 'Media file deleted successfully!', 'status' => 'success'], 200);
+                return response(['message' => __('messages.record_deleted', ['module' => 'Media file']), 'status' => 'success'], 200);
             }
 
             return response(['message' => 'Media file does not exist.', 'status' => 'error'], 400);

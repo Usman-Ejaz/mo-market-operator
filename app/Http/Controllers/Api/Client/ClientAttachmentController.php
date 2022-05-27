@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Client;
 
 use App\Http\Controllers\Api\BaseApiController;
+use App\Models\Client;
 use App\Models\ClientAttachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -62,9 +63,9 @@ class ClientAttachmentController extends BaseApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'attachment' => 'required|file|max:' . config('settings.maxDocumentSize') * 4,
-            'category' => 'sometimes|string',
-            'phrase' => 'required|string'
+            'attachment' => 'required|file|mimes:pdf,docx,doc|max:' . config('settings.maxDocumentSize') * 4,
+            'category' => 'nullable|string|min:3',
+            'phrase' => 'required|string|min:3'
         ], [
             'attachment.max' => __('messages.max_file', ['limit' => '20 MB'])
         ]);
@@ -75,12 +76,23 @@ class ClientAttachmentController extends BaseApiController
 
         try {
             $filename = storeFile(ClientAttachment::DIR, $request->file('attachment'));
+
+            if (! $request->has('category') || $request->category === null || $request->category === "") {
+                $categoryId = null;
+            } else {
+                $categoryId = array_search($request->category, Client::REGISTER_CATEGORIES);
+                if (! $categoryId) {
+                    $categoryId = null;
+                }
+            }
+
             ClientAttachment::create([
                 'file' => $filename,
-                'category_id' => $request->category ?? null,
+                'category_id' => $categoryId,
                 'phrase' => strtolower($request->phrase),
                 'client_id' => $request->user()->id
             ]);
+
             return $this->sendResponse([], "Attachment uploaded successfully");
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
@@ -138,7 +150,7 @@ class ClientAttachmentController extends BaseApiController
     public function destroy(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'category' => 'sometimes|string',
+            'category' => 'nullable|string',
             'phrase' => 'required|string'
         ]);
 
@@ -146,8 +158,17 @@ class ClientAttachmentController extends BaseApiController
             return $this->sendError("Error", ['errors' => $validator->errors()], 400);
         }
 
+        if (! $request->has('category') || $request->category === null || $request->category === "") {
+            $categoryId = null;
+        } else {
+            $categoryId = array_search($request->category, Client::REGISTER_CATEGORIES);
+            if (! $categoryId) {
+                $categoryId = null;
+            }
+        }
+
         try {
-            $attachment = ClientAttachment::findRecord($request->user()->id, $request->category ?? null, $request->phrase)->first();
+            $attachment = ClientAttachment::findRecord($request->user()->id, $categoryId, $request->phrase)->first();
 
             if ($attachment) {
                 removeFile(ClientAttachment::DIR, $attachment->file);

@@ -46,4 +46,15 @@ class MediaLibrary extends Model
     {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
     }
+
+    /**
+     * scopeTodaysPublishedRecords
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeTodaysPublishedRecords($query)
+    {
+        return $query->whereDay('created_at', date('d'));
+    }
 }

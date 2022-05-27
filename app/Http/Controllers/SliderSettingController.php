@@ -14,7 +14,7 @@ class SliderSettingController extends Controller
      */
     public function index()
     {
-        // abort_if(! hasPermission('slider_settings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('slider_settings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $sliderSetting = SliderSetting::first();
         return view('admin.slider-settings.edit', compact('sliderSetting'));
@@ -72,7 +72,7 @@ class SliderSettingController extends Controller
      */
     public function update(Request $request, SliderSetting $sliderSetting)
     {
-        // abort_if(! hasPermission('slider_settings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(! hasPermission('slider_settings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $data = $request->validate([
             'transition' => 'required|string',
@@ -81,7 +81,7 @@ class SliderSettingController extends Controller
 
         $sliderSetting->update($data);
 
-        $request->session()->flash('success', 'Slider settings updated successfully!');
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'Slider settings']));
         return redirect()->route('admin.slider-images.index');
     }
 

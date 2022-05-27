@@ -40,6 +40,7 @@
 
 <script>
 	//Date and time picker
+	let oldFiles = [];
 	$(document).ready(function() {
 
 		$.validator.addMethod("notNumericValues", function(value, element) {
@@ -103,7 +104,19 @@
 			}
 		});
 
+		$(document).on('focusin', 'input[type="file"]', function(e){
+			oldFiles = e.target.files;
+		});
 	});
+
+	function handleFileChoose (e) 
+	{
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			e.target.files = oldFiles;
+			return false;
+		}
+	}
 </script>
 
 @endpush

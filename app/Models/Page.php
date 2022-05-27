@@ -91,6 +91,28 @@ class Page extends Model
         return $query->where('published_at', '!=', null)->select('title', 'slug', 'keywords', 'description', 'image');
     }
 
+    /**
+     * scopeScheduledRecords
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeScheduledRecords($query)
+    {
+        return $query->where('start_datetime', '!=', NULL)->where('end_datetime', '!=', NULL);
+    }
+    
+    /**
+     * scopeTodaysPublishedRecords
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeTodaysPublishedRecords($query)
+    {
+        return $query->whereDay('published_at', date('d'));
+    }
+
     public function isPublished() {
         return $this->published_at !== null;
     }

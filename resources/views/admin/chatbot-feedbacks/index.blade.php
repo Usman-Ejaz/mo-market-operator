@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
-@section('header', 'Feedback Ratings')
+@section('header', 'Chatbot Feedback')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-<li class="breadcrumb-item active">Feedback Ratings</li>
+<li class="breadcrumb-item active">Chatbot Feedback</li>
 @endsection
 
 @section('content')
@@ -47,7 +47,7 @@
 			serverSide: true,
 			pageLength: 25,
 			order: [[0, 'desc']],
-			ajax: "{{ route('admin.feedback-ratings.list') }}",
+			ajax: "{{ route('admin.chatbot-feedbacks.list') }}",
 			fnDrawCallback: function() {
 				if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()._iRecordsDisplay === 1) {
 					const searchedRecods = this.fnSettings()._iRecordsDisplay;

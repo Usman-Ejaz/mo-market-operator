@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
-@section('header', 'Feedback Ratings')
+@section('header', 'Chatbot Feedback')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-<li class="breadcrumb-item"><a href="{{ route('admin.feedback-ratings.index') }}">Feedback Ratings</a></li>
+<li class="breadcrumb-item"><a href="{{ route('admin.chatbot-feedbacks.index') }}">Chatbot Feedback</a></li>
 <li class="breadcrumb-item active">View</li>
 @endsection
 
 @section('addButton')
-@if(hasPermission('feedback_ratings', 'delete'))
-<form method="POST" action="{{ route('admin.feedback-ratings.destroy', $feedbackRating->id) }}" class="float-right">
+@if(hasPermission('chatbot_feedback', 'delete'))
+<form method="POST" action="{{ route('admin.chatbot-feedbacks.destroy', $chatbotFeedback->id) }}" class="float-right">
     @method('DELETE')
     @csrf
     <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
@@ -23,7 +23,7 @@
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">View Feedback Ratings - {{ truncateWords($feedbackRating->feedback, 20) }}</h3>
+                    <h3 class="card-title">View Chatbot Feedback - {{ truncateWords($chatbotFeedback->feedback, 20) }}</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -32,7 +32,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Email: </label>
-                                <span>{{ $feedbackRating->owner->email }}</span>
+                                <span>{{ $chatbotFeedback->owner->email }}</span>
                             </div>
                         </div>						
                     </div>
@@ -41,7 +41,7 @@
 						<div class="col-md-12">
                             <div class="form-group">
                                 <label>Rating: </label>
-                                <span>{{ $feedbackRating->rating }}</span>
+                                <span>{{ $chatbotFeedback->rating }}</span>
                             </div>
                         </div>
 					</div>
@@ -50,7 +50,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Feedback: </label>
-                                <span>{{ $feedbackRating->feedback }}</span>
+                                <span>{{ $chatbotFeedback->feedback }}</span>
                             </div>
                         </div>
                     </div>

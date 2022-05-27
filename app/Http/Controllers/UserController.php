@@ -61,7 +61,7 @@ class UserController extends Controller
                 Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
             }
 
-            $request->session()->flash('success', 'User Added Successfully!');
+            $request->session()->flash('success', __('messages.record_created', ['module' => 'User']));
             return redirect()->route('admin.users.index');
         }
 
@@ -118,7 +118,7 @@ class UserController extends Controller
                 Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
             }
 
-            $request->session()->flash('success', 'User Updated Successfully!');
+            $request->session()->flash('success', __('messages.record_updated', ['module' => 'User']));
             return redirect()->route('admin.users.index');
         }
 
@@ -142,7 +142,7 @@ class UserController extends Controller
         }
 
         if( $user->delete() ) {
-            return redirect()->route('admin.users.index')->with('success', 'User Deleted Successfully!');
+            return redirect()->route('admin.users.index')->with('success', __('messages.record_deleted', ['module' => 'User']));
         }
 
         return redirect()->route('admin.users.index')->with('error', 'User was not deleted!');
@@ -245,7 +245,7 @@ class UserController extends Controller
                     $user->image = null;
                     $user->update();
 
-                    return response()->json(['success' => 'true', 'message' => 'Image Deleted Successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
                 }
             }
         }

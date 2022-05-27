@@ -19,7 +19,7 @@ use App\Http\Controllers\Api\SliderImageApiController;
 use App\Http\Controllers\Api\StaticBlockApiController;
 use App\Http\Controllers\Api\TeamsApiController;
 use App\Http\Controllers\Api\TrainingsApiController;
-use App\Http\Controllers\Api\FeedbackRatingApiController;
+use App\Http\Controllers\Api\ChatbotFeedbackApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +44,11 @@ Route::prefix('v1/auth')->group(function() {
 Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('upload-attachments', [ClientAttachmentController::class, 'store'])->name('client.attachment.store');
     Route::post('remove-attachments', [ClientAttachmentController::class, 'destroy'])->name('client.attachment.delete');
+    
+    Route::post('confirm-registration', [ClientRegistrationController::class, 'confirmRegistration'])->name('client.confirm-registation');
+    Route::put('update-client', [ClientRegistrationController::class, 'updateClient'])->name('client.update');
+
+    Route::get('download-application', [ClientRegistrationController::class, 'downloadApplication'])->name('client.download-application');
 });
 
 Route::prefix("v1")->middleware('verifyApiKey')->group(function () {    
@@ -96,7 +101,7 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::post('chatbot-query', [ChatbotQueriesController::class, 'askQuestion'])->name('chatbot.ask-query');
     Route::get('close-chat', [ChatbotQueriesController::class, 'sendChatHistoryEmail'])->name('chatbot.send-emails');
 
-    Route::post('feedback-rating', [FeedbackRatingApiController::class, 'submitFeedback'])->name('feedback.submit');
+    Route::post('feedback-rating', [ChatbotFeedbackApiController::class, 'submitFeedback'])->name('feedback.submit');
 
     Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
 });

@@ -156,9 +156,17 @@ class Post extends Model
     public function isPublished() {
         return $this->published_at !== null;
     }
-
-    public function scopeApplyFilters($query, $request)
+    
+    /**
+     * scopeApplyFilters
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeApplyFilters($query)
     {
+        $request = request();
+        
         if ($request->has('month')) {
             $query = $query->whereMonth('created_at', '=', $request->get('month'));
         }
@@ -172,5 +180,27 @@ class Post extends Model
         }
 
         return $query;
+    }
+
+    /**
+     * scopeScheduledRecords
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeScheduledRecords($query)
+    {
+        return $query->where('start_datetime', '!=', NULL)->where('end_datetime', '!=', NULL);
+    }
+
+    /**
+     * scopeTodaysPublishedRecords
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeTodaysPublishedRecords($query)
+    {
+        return $query->whereDay('published_at', date('d'));
     }
 }

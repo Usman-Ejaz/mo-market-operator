@@ -93,12 +93,12 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="image">Job Image <span class="text-danger">*</span> <small>(Max allowed size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small> </label>
-                <input type="file" class="form-control" id="image" name="image">
+                <input type="file" class="form-control" id="image" name="image" onchange="handleFileChoose(event)">
                 <span class="form-text text-danger">{{ $errors->first('image') }} </span>
                 @if(isset($job->image))
                     <small class="text-primary imageExists" style="display: block; margin-bottom: 15px;">
                         <a href="{{ $job->image }}" target="_blank">
-                            <img src="{{ $job->image }}" target="_blank" class="img-thumbnail" style="width: 23%;" />
+                            <img src="{{ $job->image }}" target="_blank" class="img-thumbnail" style="height: 200px;" />
                         </a>
                         <span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span>
                     </small>
@@ -110,9 +110,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="attachments[]">Job Attechments <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, pdf)</small> </label>
-                <input type="file" class="form-control" id="attachments[]" name="attachments[]" multiple>
-                <span class="form-text text-danger">{{ $errors->first('attachments') }} </span>                
+                <label for="attachments[]">Job Attachments <span class="text-danger">*</span> <small>(Max allowed size is 5MB. Allowed types are doc, docx, pdf)</small> </label>
+                <input type="file" class="form-control" id="attachments[]" name="attachments[]" multiple onchange="handleFileChoose(event)">
+                <span class="form-text text-danger">{{ $errors->first('attachments.*') }} </span>
                 @if(isset($job->attachment_links) && count($job->attachment_links) > 0)
                     @foreach ($job->attachment_links as $file)
                     <small class="text-primary fileExists" style="display: block; margin-bottom: 15px;">

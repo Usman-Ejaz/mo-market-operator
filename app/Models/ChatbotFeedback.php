@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FeedbackRating extends Model
+class ChatbotFeedback extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $table = 'feedback_ratings';
 
     /**
      * ======================================================

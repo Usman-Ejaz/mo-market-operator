@@ -36,8 +36,8 @@
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Address: </label>
-								<span>{{ $client->address }}</span>
+								<label>Business: </label>
+								<span>{{ $client->business }}</span>
 							</div>
 						</div>
 					</div>
@@ -46,7 +46,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Type: </label>
-								<span>{{ ucwords(str_replace("_", " ", $client->type)) }}</span>
+								<span>{{ __('client.registration_types.' . $client->type) }}</span>
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -57,27 +57,17 @@
 						</div>
 					</div>
 
-					<h4 class="mt-3">Primary Details</h4>
-					<hr />
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Name</label>
-								<span>{{ $client->pri_name }}</span>
+								<label>Address Line One: </label>
+								<span>{{ $client->address_line_one }}</span>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Email</label>
-								<span>{{ $client->pri_email }}</span>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>Address</label>
-								<span>{{ $client->pri_address }}</span>
+								<label>Address Line Two: </label>
+								<span>{{ $client->address_line_two }}</span>
 							</div>
 						</div>
 					</div>
@@ -85,74 +75,119 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Telephone</label>
-								<span>{{ $client->pri_telephone }}</span>
+								<label>City: </label>
+								<span>{{ $client->city }}</span>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Facsimile Telephone</label>
-								<span>{{ $client->pri_facsimile_telephone }}</span>
+								<label>State: </label>
+								<span>{{ $client->state }}</span>
 							</div>
 						</div>
 					</div>
 
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-6">
 							<div class="form-group">
-								<label>Signature: </label>
-								<img src="{{ $client->pri_signature }}" class="img-thumbnail" style="width: 23%; display: block;">
+								<label>Zip Code: </label>
+								<span>{{ $client->zipcode }}</span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Country: </label>
+								<span>{{ $client->country }}</span>
 							</div>
 						</div>
 					</div>
 
-					<h4 class="mt-3">Secondary Details</h4>
-					<hr />
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Name</label>
-								<span>{{ $client->sec_name }}</span>
+					@foreach ($client->details as $detail)
+						<h4 class="mt-3">{{ ucfirst($detail->type) }} Details</h4>
+						<hr />
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Name: </label>
+									<span>{{ $detail->name }}</span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Email: </label>
+									<span>{{ $detail->email }}</span>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Email</label>
-								<span>{{ $client->sec_email }}</span>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Address Line One: </label>
+									<span>{{ $detail->address_line_one }}</span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Address Line Two: </label>
+									<span>{{ $detail->address_line_two }}</span>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>Address</label>
-								<span>{{ $client->sec_address }}</span>
-							</div>
-						</div>
-					</div>					
-					<div class="row">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Telephone</label>
-								<span>{{ $client->sec_telephone }}</span>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Facsimile Telephone</label>
-								<span>{{ $client->sec_facsimile_telephone }}</span>
-							</div>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>Signature: </label>
-								<img src="{{ $client->sec_signature }}" class="img-thumbnail" style="width: 23%; display: block;">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Designation: </label>
+									<span>{{ $detail->designation }}</span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>City: </label>
+									<span>{{ $detail->city }}</span>
+								</div>
 							</div>
 						</div>
-					</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>State: </label>
+									<span>{{ $detail->state }}</span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Zip Code: </label>
+									<span>{{ $detail->zipcode }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Telephone: </label>
+									<span>{{ $detail->telephone }}</span>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Facsimile Telephone: </label>
+									<span>{{ $detail->facsimile_telephone }}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Signature: </label>
+									<img src="{{ $detail->signature }}" class="img-thumbnail" style="width: 23%; display: block;">
+								</div>
+							</div>
+						</div>
+					@endforeach
 
 					@if ($client->attachments->count() > 0)
 						<h4 class="mt-3">Attachments</h4>
@@ -164,24 +199,24 @@
 									<div class="col-md-12">
 										<div class="form-group">
 											<li>
-												<p style="display: inline;">{{ $attachment->phrase }} </p>
+												<p style="display: inline;">{{ $attachment->phrase_string }} </p>
 												<a href="{{ route('admin.attachment.download', ["clients/attachments", basename($attachment->file)]) }}">{{ __("View") }}</a>
 											</li>
 										</div>
 									</div>
 								</div>
 							@endforeach
-						</ul>						
+						</ul>
 
 						@foreach($client->categoryAttachments() as $categoryId => $attachments)
-							<h5 class="mt-3 mb-2" style="font-weight: bold;">{{ ucwords(\App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}</h5>
+							<h5 class="mt-3 mb-2" style="font-weight: bold;">{{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}</h5>
 							<ul>
 								@foreach($attachments as $attachment)
 									<div class="row">
 										<div class="col-md-12">
 											<div class="form-group">
 												<li>
-													<p style="display: inline;">{{ $attachment->phrase }} </p>
+													<p style="display: inline;">{{ $attachment->phrase_string }} </p>
 													<a href="{{ route('admin.attachment.download', ["clients/attachments", basename($attachment->file)]) }}">{{ __("View") }}</a>
 												</li>
 											</div>

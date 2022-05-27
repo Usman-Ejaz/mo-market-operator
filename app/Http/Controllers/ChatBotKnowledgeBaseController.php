@@ -47,12 +47,16 @@ class ChatBotKnowledgeBaseController extends Controller
         $knowledgeBase = new ChatBotKnowledgeBase();
         $knowledgeBase = ChatBotKnowledgeBase::create($this->validateRequest($knowledgeBase));
 
+        $message = __('messages.record_created', ['module' => 'Knowledge Base']);
+
         if ($request->action === "Published") {
             $knowledgeBase->published_at = now();
             $knowledgeBase->save();
+
+            $message = __('messages.record_published', ['module' => 'Knowledge Base']);
         }
         
-        $request->session()->flash('success', "Knowledge Base {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.knowledge-base.index');
     }
 
@@ -93,17 +97,21 @@ class ChatBotKnowledgeBaseController extends Controller
     {   
         abort_if(!hasPermission('knowledge_base', 'edit'), 401, __('messages.unauthorized_action'));
 
+        $message = __('messages.record_updated', ['module' => 'Knowledge Base']);
+
         if ($request->action === "Unpublished") {
             $knowledge_base->published_at = null;
             $knowledge_base->save();
+            $message = __('messages.record_unpublished', ['module' => 'Knowledge Base']);
         } else if ($request->action === "Published") {
             $knowledge_base->published_at = now();
             $knowledge_base->save();
+            $message = __('messages.record_published', ['module' => 'Knowledge Base']);
         }
 
         $knowledge_base->update($this->validateRequest($knowledge_base));
 
-        $request->session()->flash('success', "Knowledge Base {$request->action} Successfully!");
+        $request->session()->flash('success', $message);
         return redirect()->route('admin.knowledge-base.index');
     }
 
@@ -118,7 +126,7 @@ class ChatBotKnowledgeBaseController extends Controller
         abort_if(!hasPermission('knowledge_base', 'delete'), 401, __('messages.unauthorized_action'));
 
         $knowledge_base->delete();
-        return redirect()->route('admin.knowledge-base.index')->with('success', 'Knowledge Base Deleted Successfully!');
+        return redirect()->route('admin.knowledge-base.index')->with('success', __('messages.record_deleted', ['module' => 'Knowledge Base']));
     }
 
     /**

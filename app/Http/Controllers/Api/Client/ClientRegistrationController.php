@@ -9,11 +9,13 @@ use App\Models\ClientAttachment;
 use App\Models\ClientDetail;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use PDF;
 
 class ClientRegistrationController extends BaseApiController
-{
-    
+{    
     /**
      * 
      * @OA\Tag(
@@ -36,7 +38,7 @@ class ClientRegistrationController extends BaseApiController
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
-     *             mediaType="multipart/form-data",
+     *             mediaType="application/json",
      *             @OA\Schema(
      *                  @OA\Property(
      *                      property="name",
@@ -44,8 +46,38 @@ class ClientRegistrationController extends BaseApiController
      *                      type="string"
      *                  ),
      *                  @OA\Property(
-     *                      property="address",
-     *                      title="Address",
+     *                      property="business",
+     *                      title="business",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address_line_one",
+     *                      title="address_line_one",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address_line_two",
+     *                      title="address_line_two",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="city",
+     *                      title="city",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="state",
+     *                      title="state",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="zipcode",
+     *                      title="zipcode",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="country",
+     *                      title="country",
      *                      type="string"
      *                  ),
      *                  @OA\Property(
@@ -58,72 +90,36 @@ class ClientRegistrationController extends BaseApiController
      *                      title="Categories",
      *                      type="string"
      *                  ),
-     *                  @OA\Property(
-     *                      property="pri_name",
-     *                      title="Primary Name",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_email",
-     *                      title="Primary Email",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_address",
-     *                      title="Primary Address",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_telephone",
-     *                      title="Primary Telephone",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_facsimile_telephone",
-     *                      title="Primary Facsimile Telephone",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_name",
-     *                      title="Secondary Name",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_email",
-     *                      title="Secondary Email",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_address",
-     *                      title="Secondary Address",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_telephone",
-     *                      title="Secondary Telephone",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_facsimile_telephone",
-     *                      title="Secondary Facsimile Telephone",
-     *                      type="string"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="pri_signature",
-     *                      title="Primary Signature",
-     *                      type="file"
-     *                  ),
-     *                  @OA\Property(
-     *                      property="sec_signature",
-     *                      title="Secondary Signature",
-     *                      type="file"
-     *                  ),
-     *                  required={"name", "address", "type", "categories", "pri_name", "pri_email", "pri_address", "pri_telephone", "pri_facsimile_telephone", "sec_name", "sec_email", "sec_address", "sec_telephone", "sec_facsimile_telephone", "pri_signature", "sec_signature"},
+     *                  required={
+     *                      "name", "business", "address_line_one", "address_line_two", "type", "categories",
+     *                      "city", "state", "zipcode", "country", "primary_details"
+     *                  },
      *                  example={
      *                      "name": "John Doe", 
-     *                      "address": "USA",
+     *                      "business": "USA",
+     *                      "address_line_one": "USA",
+     *                      "address_line_two": "USA",
      *                      "type": "service_provider",
      *                      "categories": "2,3,4",
+     *                      "city": "",
+     *                      "state": "",
+     *                      "zipcode": "",
+     *                      "country": "",
+     *                      "primary_details": {
+     *                          "name": "",
+     *                          "email": "",
+     *                          "designation": "",
+     *                          "address_line_one": "",
+     *                          "address_line_two": "",
+     *                          "city": "",
+     *                          "state": "",
+     *                          "zipcode": "",
+     *                          "country": "",
+     *                          "telephone": "",
+     *                          "facsimile_telephone": "",
+     *                          "signature": "",
+     *                          "type": "",
+     *                      }
      *                  }
      *             )
      *         )
@@ -145,15 +141,37 @@ class ClientRegistrationController extends BaseApiController
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), $this->getRules($request), $this->getMessages(), $this->getAttributes());
+        $client = new Client;
+        $validator = Validator::make($request->all(), $this->getRules($request, $client), $this->getMessages(), $this->getAttributes());
 
         if ($validator->fails()) {
             return $this->sendError("Error", ['errors' => $validator->errors()], 400);
         }
 
         try {
-            $clientToken = $this->createClient($request);
-            return $this->sendResponse($clientToken, __("messages.success"));
+            $existingClient = $this->clientExists($request);
+
+            if ($existingClient) {
+                $data = $this->getClientInformations($existingClient);
+
+                return $this->sendResponse($data, __('messages.success'));
+            }
+
+            if (!$existingClient) {
+                $validator = Validator::make($request->all(), [
+                    'primary_details.email' => 'required|string|email|unique:client_details,email,' . $client->id . ',client_id'
+                ], [], $this->getAttributes());
+
+                if ($validator->fails()) {
+                    return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+                }
+
+                $clientToken = $this->createClient($request);
+                
+                return $this->sendResponse($clientToken, __("messages.success"));
+            }
+
+
         } catch (\Illuminate\Database\QueryException $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         } catch (\Exception $ex) {
@@ -166,20 +184,42 @@ class ClientRegistrationController extends BaseApiController
      *
      * @return array
      */
-    private function getRules($request): array {
+    private function getRules($request, $client): array {
         return [
             'name' => 'required|string|min:3',
             'type' => 'required|string|in:' . implode(",", Client::TYPE),
-            'categories' => 'required|string',
-            'business' => 'required|string|min:5',
-            'address_line_one' => 'required|string|min:5',
-            'address_line_two' => 'required|string|min:5',
-            'city' => 'required|string|min:5',
-            'state' => 'required|string|min:5',
-            'zipcode' => 'required|string|min:5',
-            'country' => 'required|string|min:5',
-            'primary_details' => 'required',
-            'secondary_details' => Rule::requiredIf($request->has('secondary_details')),
+            'categories' => 'nullable|string',
+            'business' => 'required|string|min:3',
+            'address_line_one' => 'required|string|min:3',
+            'address_line_two' => 'required|string|min:3',
+            'city' => 'required|string|min:3',
+            'state' => 'required|string|min:3',
+            'zipcode' => 'required|string|min:3',
+            'country' => 'required|string|min:3',
+            'primary_details.name' => 'required|string|min:3',
+            // 'primary_details.email' => 'required|string|email|unique:client_details,email,' . $client->id . ',client_id',
+            'primary_details.address_line_one' => 'required|string|min:3',
+            'primary_details.address_line_two' => 'required|string|min:3',
+            'primary_details.city' => 'required|string|min:3',
+            'primary_details.state' => 'required|string|min:3',
+            'primary_details.zipcode' => 'required|string|min:3',
+            'primary_details.telephone' => 'required|string|min:3',
+            'primary_details.facsimile_telephone' => 'required|string|min:3',
+            'primary_details.signature' => 'required|string',
+            'primary_details.type' => 'required|string|min:3',
+
+
+            'secondary_details.name' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.email' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'email', 'unique:client_details,email,' . $client->id . ',client_id'],
+            'secondary_details.address_line_one' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.address_line_two' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.city' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.state' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.zipcode' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.telephone' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.facsimile_telephone' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
+            'secondary_details.signature' => [Rule::requiredIf($request->has('secondary_details')), 'string'],
+            'secondary_details.type' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
         ];
     }
     
@@ -190,7 +230,7 @@ class ClientRegistrationController extends BaseApiController
      */
     private function getMessages(): array {
         return [
-            
+            // 
         ];
     }
     
@@ -201,7 +241,17 @@ class ClientRegistrationController extends BaseApiController
      */
     private function getAttributes(): array {
         return [
-            
+            'primary_details.name' => 'name',
+            'primary_details.email' => 'email',
+            'primary_details.address_line_one' => 'address line one',
+            'primary_details.address_line_two' => 'address line two',
+            'primary_details.facsimile_telephone' => 'facsimile telephone',
+
+            'secondary_details.name' => 'name',
+            'secondary_details.email' => 'email',
+            'secondary_details.address_line_one' => 'address line one',
+            'secondary_details.address_line_two' => 'address line two',
+            'secondary_details.facsimile_telephone' => 'facsimile telephone',
         ];
     }
     
@@ -252,23 +302,49 @@ class ClientRegistrationController extends BaseApiController
      * @param  string $type
      * @return void
      */
-    private function storeClientDetails($data, $type, $clientId)
+    private function storeClientDetails($data, $type, $clientId, $isUpdating = false)
     {
-        ClientDetail::create([
-            'client_id'             => $clientId,
-            'name'                  => $data['name'],
-            'email'                 => $data['email'],
-            'designation'           => $data['designation'],
-            'type'                  => $type,
-            'address_line_one'      => $data['address_line_one'],
-            'address_line_two'      => $data['address_line_two'],
-            'city'                  => $data['city'],
-            'state'	                => $data['state'],
-            'zipcode'               => $data['zipcode'],
-            'telephone'             => $data['telephone'],
-            'facsimile_telephone'   => $data['facsimile_telephone'],
-            'signature'             => $this->saveSignatures(request()->file($type . '_signature'))
-        ]);
+        if (! $isUpdating) {
+            ClientDetail::create([
+                'client_id'             => $clientId,
+                'name'                  => $data['name'],
+                'email'                 => $data['email'],
+                'designation'           => $data['designation'],
+                'type'                  => $type,
+                'address_line_one'      => $data['address_line_one'],
+                'address_line_two'      => $data['address_line_two'],
+                'city'                  => $data['city'],
+                'state'	                => $data['state'],
+                'zipcode'               => $data['zipcode'],
+                'telephone'             => $data['telephone'],
+                'facsimile_telephone'   => $data['facsimile_telephone'],
+                'signature'             => $this->saveSignatures($data['signature'])
+            ]);
+
+            return;
+        } else {
+            $clientDetails = ClientDetail::where(['client_id' => $clientId, 'type' => $type])->first();
+
+            if ($clientDetails) {
+                removeFile(ClientDetail::SIGNATURE_DIR ,$clientDetails->signature);
+            }
+
+            $clientDetails->update([
+                'client_id'             => $clientId,
+                'name'                  => $data['name'],
+                'email'                 => $data['email'],
+                'designation'           => $data['designation'],
+                'type'                  => $type,
+                'address_line_one'      => $data['address_line_one'],
+                'address_line_two'      => $data['address_line_two'],
+                'city'                  => $data['city'],
+                'state'	                => $data['state'],
+                'zipcode'               => $data['zipcode'],
+                'telephone'             => $data['telephone'],
+                'facsimile_telephone'   => $data['facsimile_telephone'],
+                'signature'             => $this->saveSignatures($data['signature'])
+            ]);
+        }
     }
     
     /**
@@ -277,9 +353,60 @@ class ClientRegistrationController extends BaseApiController
      * @param  mixed $file
      * @return string | null
      */
-    private function saveSignatures($file) 
+    private function saveSignatures($dataURL) 
     {
-        return storeFile(Client::SIGNATURE_DIR, $file);
+        list($type, $data) = explode(';', $dataURL);
+        list(, $data) = explode(',', $data);
+        $data = base64_decode($data);
+        list(, $extension) = explode('/', $type);
+        $filename = Str::random(20) . '.' . $extension;
+        Storage::disk('app')->put(ClientDetail::SIGNATURE_DIR . $filename, $data);
+
+        return $filename;
+    }
+
+    private function clientExists($request)
+    {
+        $clientInfo = ClientDetail::where(['email' => $request->get('primary_details')['email'], 'type' => ClientDetail::PRIMARY])->first();
+
+        if ($clientInfo !== null) {
+            return Client::where(['id' => $clientInfo->client_id, 'profile_complete' => 0])->first();
+        }
+
+        return null;
+    }
+
+    private function getClientInformations($client)
+    {
+        $data['general_docs'] = $client->generalAttachments()->map(function ($item) {
+            return [
+                'file' => $item->file,
+                'filename' => getFileOriginalName($item->file),
+                'key' => $item->phrase
+            ];
+        });
+        $data['categories_docs'] = $this->getCategoryAttachments($client);
+        $data['token'] = $client->createToken(__('auth.apiTokenKey'))->accessToken;
+
+        return $data;
+    }
+
+    public function getCategoryAttachments($client)
+    {
+        $attachments = $client->categoryAttachments();
+        $arr = [];
+        foreach ($attachments as $key => $items) {
+            $arr[Client::REGISTER_CATEGORIES[$key]] = [];
+
+            foreach ($items as $item) {
+                $arr[Client::REGISTER_CATEGORIES[$key]][] = [
+                    'file' => $item->file,
+                    'filename' => getFileOriginalName($item->file),
+                    'key' => $item->phrase
+                ];
+            }
+        }
+        return $arr;
     }
 
     /**
@@ -320,6 +447,264 @@ class ClientRegistrationController extends BaseApiController
             ], __('messages.success'));
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage(), 'type' => get_class($ex)], 500);
+        }
+    }
+
+    /**
+     * 
+     * @OA\Post(
+     *      path="/confirm-registration",
+     *      operationId="confirmRegistration",
+     *      tags={"Clients"},
+     *      summary="Confirm registration of client",
+     *      description="Confirm registration of client.",
+     *      security={{"BearerToken": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function confirmRegistration(Request $request)
+    {
+        try {
+            $client = Client::find($request->user()->id);
+            $client->update(['profile_complete' => 1]);
+
+            return $this->sendResponse([], __('messages.success'));
+        } catch (\Exception $ex) {
+            return $this->sendError(__('messages.error'), __('messages.something_wrong'), 500);
+        }
+    }
+
+    /**
+     * 
+     * @OA\Put(
+     *      path="/update-client",
+     *      operationId="updateClient",
+     *      tags={"Clients"},
+     *      summary="Update Client in the resource",
+     *      description="Update Client in the resource",
+     *      security={{"BearerToken": {}}},
+     * 
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                  @OA\Property(
+     *                      property="name",
+     *                      title="Name",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="business",
+     *                      title="business",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address_line_one",
+     *                      title="address_line_one",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="address_line_two",
+     *                      title="address_line_two",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="city",
+     *                      title="city",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="state",
+     *                      title="state",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="zipcode",
+     *                      title="zipcode",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="country",
+     *                      title="country",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="type",
+     *                      title="Type",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="categories",
+     *                      title="Categories",
+     *                      type="string"
+     *                  ),
+     *                  required={
+     *                      "name", "business", "address_line_one", "address_line_two", "type", "categories",
+     *                      "city", "state", "zipcode", "country", "primary_details"
+     *                  },
+     *                  example={
+     *                      "name": "John Doe", 
+     *                      "business": "USA",
+     *                      "address_line_one": "USA",
+     *                      "address_line_two": "USA",
+     *                      "type": "service_provider",
+     *                      "categories": "2,3,4",
+     *                      "city": "",
+     *                      "state": "",
+     *                      "zipcode": "",
+     *                      "country": "",
+     *                      "primary_details": {
+     *                          "name": "",
+     *                          "email": "",
+     *                          "designation": "",
+     *                          "address_line_one": "",
+     *                          "address_line_two": "",
+     *                          "city": "",
+     *                          "state": "",
+     *                          "zipcode": "",
+     *                          "country": "",
+     *                          "telephone": "",
+     *                          "facsimile_telephone": "",
+     *                          "signature": "",
+     *                          "type": "",
+     *                      }
+     *                  }
+     *             )
+     *         )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function updateClient(Request $request)
+    {
+        $client = $request->user();
+
+        $validator = Validator::make($request->all(), $this->getRules($request, $client), $this->getMessages(), $this->getAttributes());
+
+        if ($validator->fails()) {
+            return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+        }
+
+        try {
+            $clientToken = $this->update($request);
+            return $this->sendResponse($clientToken, __("messages.success"));
+        } catch (\Illuminate\Database\QueryException $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+        } catch (\Exception $ex) {
+            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage(), 'type' => get_class($ex)], 500);
+        }
+    }
+
+    private function update($request)
+    {
+        $data = $request->all();
+
+        $client = $request->user();
+
+        $client->update([
+            'name'              => $data['name'],
+            'type'              => $data['type'],
+            'business'          => $data['business'],
+            'address_line_one'  => $data['address_line_one'],
+            'address_line_two'  => $data['address_line_two'],
+            'city'              => $data['city'],
+            'state'	            => $data['state'],
+            'zipcode'           => $data['zipcode'],
+            'country'           => $data['country'],
+            'categories'        => $data['categories']
+        ]);
+
+        $this->storeClientDetails($data['primary_details'], ClientDetail::PRIMARY, $client->id, true);
+        if ($client !== null) {
+
+            if ($request->has('secondary_details')) {
+                $this->storeClientDetails($data['secondary_details'], ClientDetail::SECONDARY, $client->id);
+            }
+
+            $token = $client->createToken(__('auth.apiTokenKey'))->accessToken;
+
+            return ['token' => $token];
+        }
+        
+        return ['token' => null];
+    }
+
+    /**
+     * 
+     * @OA\Get(
+     *      path="/download-application",
+     *      operationId="downloadApplication",
+     *      tags={"Clients"},
+     *      summary="Prepare the PDF document for application under process.",
+     *      description="Prepare the PDF document for application under process.",
+     *      security={{"BearerToken": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function downloadApplication(Request $request)
+    {
+        try {
+            $client = $request->user();
+            $primaryDetails = $client->primaryDetails();
+            $secondaryDetails = $client->secondaryDetails();
+
+            set_time_limit(300);
+
+            $pdf = PDF::loadView('clients.registration-form-summary', [
+                'client' => $client,
+                'primaryDetails' => $primaryDetails,
+                'secondaryDetails' => $secondaryDetails,
+                'generalAttachments' => $client->generalAttachments(),
+                'categoryAttachments' => $client->categoryAttachments(),
+                'files_count' => $client->attachments->count()
+            ]);
+
+            $filename = Str::random(16) . '.PDF';
+
+            Storage::disk('app')->put('clients/forms/' . $filename, $pdf->output());
+
+            $link = serveFile('clients/forms/', $filename);
+
+            return $this->sendResponse($link, __('messages.success'));
+        } catch (\Exception $ex) {
+            $this->sendError(__('messages.error'), $ex->getMessage(), 500);
         }
     }
 }

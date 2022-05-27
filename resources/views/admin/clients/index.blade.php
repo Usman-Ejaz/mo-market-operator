@@ -14,7 +14,7 @@
 					<tr>
 						<th>Id</th>
 						<th>Name</th>
-						<th>Primary Email</th>
+						<th>Email</th>
 						<th>Type</th>
 						<th>Status</th>
 						<th>Created at</th>
@@ -69,8 +69,8 @@
 					name: 'name'
 				},
 				{
-					data: 'pri_email',
-					name: 'pri_email'
+					data: 'email',
+					name: 'email'
 				},
 				{
 					data: 'type',

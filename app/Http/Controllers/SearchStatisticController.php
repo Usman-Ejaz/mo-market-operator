@@ -51,7 +51,7 @@ class SearchStatisticController extends Controller
         abort_if(!hasPermission("search_statistics", "delete"), 401, __('messages.unauthorized_action'));
 
         $searchStatistic->delete();
-        return redirect()->route('admin.search-statistics.index')->with('success', 'Search Keyword Deleted Successfully!');
+        return redirect()->route('admin.search-statistics.index')->with('success', __('messages.record_deleted', ['module' => 'Search keyword']));
     }
 
     public function list(Request $request)
