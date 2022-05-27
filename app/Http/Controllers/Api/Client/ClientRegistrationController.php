@@ -591,6 +591,30 @@ class ClientRegistrationController extends BaseApiController
         return ['token' => null];
     }
 
+    /**
+     * 
+     * @OA\Get(
+     *      path="/download-application",
+     *      operationId="downloadApplication",
+     *      tags={"Clients"},
+     *      summary="Prepare the PDF document for application under process.",
+     *      description="Prepare the PDF document for application under process.",
+     *      security={{"BearerToken": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"          
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
     public function downloadApplication(Request $request)
     {
         try {
@@ -617,7 +641,7 @@ class ClientRegistrationController extends BaseApiController
 
             return $this->sendResponse($link, __('messages.success'));
         } catch (\Exception $ex) {
-
+            $this->sendError(__('messages.error'), $ex->getMessage(), 500);
         }
         // Storage::put('somepath here with filename', $pdf->output());
     }
