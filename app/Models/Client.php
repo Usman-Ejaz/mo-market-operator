@@ -97,7 +97,7 @@ class Client extends Authenticatable
             $categories = trim($categories, ', ');
             return $categories;
         }
-        return "";
+        return "None";
     }
     
     /**

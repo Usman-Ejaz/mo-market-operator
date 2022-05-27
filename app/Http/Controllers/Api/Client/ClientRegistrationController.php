@@ -597,13 +597,25 @@ class ClientRegistrationController extends BaseApiController
             $client = $request->user();
             $primaryDetails = $client->primaryDetails();
             $secondaryDetails = $client->secondaryDetails();
-            $clientFiles = $client->attachments;
+
+            set_time_limit(300);
 
             $pdf = PDF::loadView('clients.registration-form-summary', [
-                'client' => $client
+                'client' => $client,
+                'primaryDetails' => $primaryDetails,
+                'secondaryDetails' => $secondaryDetails,
+                'generalAttachments' => $client->generalAttachments(),
+                'categoryAttachments' => $client->categoryAttachments(),
+                'files_count' => $client->attachments->count()
             ]);
 
-            return $pdf->download('pdfview.pdf');
+            $filename = Str::random(16) . '.PDF';
+
+            Storage::disk('app')->put('clients/forms/' . $filename, $pdf->output());
+
+            $link = serveFile('clients/forms/', $filename);
+
+            return $this->sendResponse($link, __('messages.success'));
         } catch (\Exception $ex) {
 
         }
