@@ -15,8 +15,7 @@ use Illuminate\Support\Str;
 use PDF;
 
 class ClientRegistrationController extends BaseApiController
-{
-    
+{    
     /**
      * 
      * @OA\Tag(
@@ -150,8 +149,29 @@ class ClientRegistrationController extends BaseApiController
         }
 
         try {
-            $clientToken = $this->createClient($request);
-            return $this->sendResponse($clientToken, __("messages.success"));
+            $existingClient = $this->clientExists($request);
+
+            if ($existingClient) {
+                $data = $this->getClientInformations($existingClient);
+
+                return $this->sendResponse($data, __('messages.success'));
+            }
+
+            if (!$existingClient) {
+                $validator = Validator::make($request->all(), [
+                    'primary_details.email' => 'required|string|email|unique:client_details,email,' . $client->id . ',client_id'
+                ], [], $this->getAttributes());
+
+                if ($validator->fails()) {
+                    return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+                }
+
+                $clientToken = $this->createClient($request);
+                
+                return $this->sendResponse($clientToken, __("messages.success"));
+            }
+
+
         } catch (\Illuminate\Database\QueryException $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         } catch (\Exception $ex) {
@@ -177,7 +197,7 @@ class ClientRegistrationController extends BaseApiController
             'zipcode' => 'required|string|min:3',
             'country' => 'required|string|min:3',
             'primary_details.name' => 'required|string|min:3',
-            'primary_details.email' => 'required|string|email|unique:client_details,email,' . $client->id . ',client_id',
+            // 'primary_details.email' => 'required|string|email|unique:client_details,email,' . $client->id . ',client_id',
             'primary_details.address_line_one' => 'required|string|min:3',
             'primary_details.address_line_two' => 'required|string|min:3',
             'primary_details.city' => 'required|string|min:3',
@@ -210,8 +230,7 @@ class ClientRegistrationController extends BaseApiController
      */
     private function getMessages(): array {
         return [
-            // 'primary_details' => [
-            // ]
+            // 
         ];
     }
     
@@ -344,6 +363,27 @@ class ClientRegistrationController extends BaseApiController
         Storage::disk('app')->put(ClientDetail::SIGNATURE_DIR . $filename, $data);
 
         return $filename;
+    }
+
+    private function clientExists($request)
+    {
+        $clientInfo = ClientDetail::where(['email' => $request->get('primary_details')['email'], 'type' => ClientDetail::PRIMARY])->first();
+
+        if ($clientInfo !== null) {
+            return Client::where(['id' => $clientInfo->client_id, 'profile_complete' => 0])->first();
+        }
+
+        return null;
+    }
+
+    private function getClientInformations($client)
+    {
+        $data['primary_details'] = $client->primaryDetails();
+        $data['secondary_details'] = $client->secondaryDetails();
+        $data['attachments'] = $client->attachments;
+        $data['token'] = $client->createToken(__('auth.apiTokenKey'))->accessToken;
+
+        return $data;
     }
 
     /**
@@ -643,6 +683,5 @@ class ClientRegistrationController extends BaseApiController
         } catch (\Exception $ex) {
             $this->sendError(__('messages.error'), $ex->getMessage(), 500);
         }
-        // Storage::put('somepath here with filename', $pdf->output());
     }
 }
