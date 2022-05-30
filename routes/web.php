@@ -196,6 +196,8 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get('download-attachment/{module}/{file}', [DashboardController::class, 'downloadAttachment'])->where('module', '(.*)')->name('attachment.download')->withoutMiddleware(['preventBrowserHistory']);
 });
 
+Route::get('unsubscribe/{subscriber}/{type}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe')->middleware(['signed']);
+
 Route::get('pages/{slug}', function ($slug) {
     return '<html><body><h1>'. $slug . '</h1></body></html>';
 })->name('pages.show');

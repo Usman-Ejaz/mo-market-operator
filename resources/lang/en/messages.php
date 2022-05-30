@@ -22,8 +22,8 @@ return [
     "required" => "This field is required.",
     "max_file" => "The file is too large. Allowed max size is :limit.",
     "record_delete" => "Are you sure you want to delete this record?",
-    "same_date" => "start datetime cannot be same as end datetime.",
-    "todays_date" => "please select the date greater than todays datetime.",
+    "same_date" => "Start datetime cannot be same as end datetime.",
+    "todays_date" => "Please select the date greater than todays datetime.",
 
 
     "record_created" => ":module has been created successfully!",

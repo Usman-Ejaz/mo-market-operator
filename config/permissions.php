@@ -272,16 +272,16 @@ return [
             "delete" => "Delete",
         ]
     ],
-    [
-        "name" => "broken_links",
-        "display_name" => "Broken Links",
-        "capabilities" => [
-            "list" => "List",
-            "view" => "View",
-            "edit" => "Edit",
-            "delete" => "Delete",
-        ]
-    ],
+    // [
+    //     "name" => "broken_links",
+    //     "display_name" => "Broken Links",
+    //     "capabilities" => [
+    //         "list" => "List",
+    //         "view" => "View",
+    //         "edit" => "Edit",
+    //         "delete" => "Delete",
+    //     ]
+    // ],
     [
         "name" => "chatbot_feedback",
         "display_name" => "Chatbot Feedback",
