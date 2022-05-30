@@ -3,7 +3,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="title">Title <span class="text-danger">*</span></label>
-				<input type="input" class="form-control" id="title" placeholder="Enter Document Title" name="title" value="{{ old('title') ?? $document->title }}">
+				<input type="input" class="form-control" autocomplete="off" id="title" placeholder="Enter Document Title" name="title" value="{{ old('title') ?? $document->title }}">
 				<span class="form-text text-danger">{{ $errors->first('title') }} </span>
 			</div>
 		</div>
@@ -31,7 +31,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="keywords">Keywords</label>
-				<input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $document->keywords }}" data-role="tagsinput">
+				<input type="input" class="form-control" autocomplete="off" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $document->keywords }}" data-role="tagsinput">
 				<span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
 			</div>
 		</div>
@@ -73,7 +73,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="image" class="form-label">Document Image <span class="text-danger">*</span> <small>(Max allowed size is 2MB. Allowed types are {{ str_replace("|", ",", config('settings.image_file_extensions')) }})</small> </label>
-				<input class="form-control" type="file" id="image" name="image">
+				<input class="form-control" type="file" id="image" name="image" onchange="handleFileChoose(event)">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if(isset($document->image) && !empty($document->image))
 					<small class="imageExists">

@@ -56,7 +56,9 @@ class TrainingController extends Controller
             }
             $data['attachment'] = trim($filenames, ",");
         }
-        
+
+        unset($data['attachments']);
+
         Training::create($data);
 
         $request->session()->flash('success', __('messages.record_created', ['module' => 'Training']));

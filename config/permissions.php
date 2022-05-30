@@ -155,7 +155,8 @@ return [
             "list" => "List",
             // "view" => "View",
             // "delete" => "Delete",
-            "subscribe" => "Subscribe",
+            "subscribe_to_nl" => "Subscribe to Newsletters",
+            "subscribe_to_rss" => "Subscribe to RSS Feed",
         ]
     ],    
     [
@@ -271,16 +272,16 @@ return [
             "delete" => "Delete",
         ]
     ],
-    [
-        "name" => "broken_links",
-        "display_name" => "Broken Links",
-        "capabilities" => [
-            "list" => "List",
-            "view" => "View",
-            "edit" => "Edit",
-            "delete" => "Delete",
-        ]
-    ],
+    // [
+    //     "name" => "broken_links",
+    //     "display_name" => "Broken Links",
+    //     "capabilities" => [
+    //         "list" => "List",
+    //         "view" => "View",
+    //         "edit" => "Edit",
+    //         "delete" => "Delete",
+    //     ]
+    // ],
     [
         "name" => "chatbot_feedback",
         "display_name" => "Chatbot Feedback",

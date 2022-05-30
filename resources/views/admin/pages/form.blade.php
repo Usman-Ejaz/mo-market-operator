@@ -3,7 +3,7 @@
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="title">Title <span class="text-danger">*</span></label>
-				<input type="input" class="form-control" id="title" placeholder="Enter Page Title" name="title" value="{{ old('title') ?? $cms_page->title }}">
+				<input type="input" class="form-control" id="title" autocomplete="off" placeholder="Enter Page Title" name="title" value="{{ old('title') ?? $cms_page->title }}">
 				<span class="form-text text-danger">{{ $errors->first('title') }} </span>
 			</div>
 		</div>
@@ -11,7 +11,7 @@
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="slug">Slug <span class="text-danger">*</span></label>
-				<input type="input" class="form-control" id="slug" placeholder="Page Slug" name="slug" value="{{ old('slug') ?? $cms_page->slug }}" readonly>
+				<input type="input" class="form-control" id="slug" autocomplete="off" placeholder="Page Slug" name="slug" value="{{ old('slug') ?? $cms_page->slug }}" readonly>
 				<span class="form-text text-danger">{{ $errors->first('slug') }} </span>
 			</div>
 		</div>
@@ -27,7 +27,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="keywords">Keywords</label>
-				<input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $cms_page->keywords }}" data-role="tagsinput">
+				<input type="input" class="form-control" id="keywords" autocomplete="off" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $cms_page->keywords }}" data-role="tagsinput">
 				<span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
 			</div>
 		</div>

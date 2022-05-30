@@ -213,6 +213,15 @@
 		document.getElementById('convert').checked = false;
 	}
 
+	function handleFileChoose (e) 
+	{
+		if (e.target.files.length === 0) {
+			e.preventDefault();
+			e.target.files = oldFiles;
+			return false;
+		}
+	}
+
 	function getFileExtension(file) {
 		let uploadedFilename = file.name;
 		return uploadedFilename.split(".").at(-1);

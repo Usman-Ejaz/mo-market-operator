@@ -135,7 +135,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     // Routes for Subscribers
     Route::post('subscribers/bulk-action', [SubscriberController::class, 'bulkToggle'])->name('subscribers.bulkToggle');
     Route::get('subscribers/list', [SubscriberController::class, 'list'])->name('subscribers.list');
-    Route::post('subscribers/toggle-subscription/{subscriber}', [SubscriberController::class, 'toggleSubscription'])->name('subscribers.toggleSubscription');
+    Route::post('subscribers/toggle-subscription/{subscriber}/{type}', [SubscriberController::class, 'toggleSubscription'])->name('subscribers.toggleSubscription');
     Route::resource("subscribers", SubscriberController::class);
     
     // Routes for Document Module
@@ -144,6 +144,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::resource('contact-page-queries', ContactPageQueryController::class);
     
     // Routes for Search Statistics
+    Route::get('search-statistics/analytics-data', [SearchStatisticController::class, 'getAnalyticsData'])->name('search-statistics.analytics-data');
     Route::get('search-statistics/list', [SearchStatisticController::class, 'list'])->name('search-statistics.list');
     Route::get('search-statistics/export-keywords', [SearchStatisticController::class, 'exportkeywords'])->name('search-statistics.export-list')->withoutMiddleware(['preventBrowserHistory']);
     Route::resource('search-statistics', SearchStatisticController::class);
@@ -194,6 +195,8 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 
     Route::get('download-attachment/{module}/{file}', [DashboardController::class, 'downloadAttachment'])->where('module', '(.*)')->name('attachment.download')->withoutMiddleware(['preventBrowserHistory']);
 });
+
+Route::get('unsubscribe/{subscriber}/{type}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe')->middleware(['signed']);
 
 Route::get('pages/{slug}', function ($slug) {
     return '<html><body><h1>'. $slug . '</h1></body></html>';

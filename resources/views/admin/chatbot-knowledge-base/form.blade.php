@@ -4,7 +4,7 @@
             <div class="form-group">
                 <label for="question">Question <span class="text-danger">*</span></label>
                 <input type="input" class="form-control" id="question" placeholder="Enter Question" name="question"
-                    value="{{ old('question') ?? $knowledge_base->question }}">
+                    value="{{ old('question') ?? $knowledge_base->question }}" autocomplete="off">
                 <span class="form-text text-danger">{{ $errors->first('question') }} </span>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <div class="form-group">
                 <label for="keywords">Keywords <span class="text-danger">*</span></label>
                 <input type="input" class="form-control" id="keywords" placeholder="Enter keywords" name="keywords"
-                    value="{{ old('keywords') ?? $knowledge_base->keywords }}" data-role="tagsinput">
+                    value="{{ old('keywords') ?? $knowledge_base->keywords }}" data-role="tagsinput" autocomplete="off">
                 <span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
             </div>
         </div>
