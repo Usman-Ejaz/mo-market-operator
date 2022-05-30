@@ -96,7 +96,7 @@ class SubscriberController extends Controller
 
     public function bulkToggle(Request $request)
     {
-        abort_if(!hasPermission("subscribers", "subscribe_to_nl"), 401, __('messages.unauthorized_action'));
+        abort_if(!(hasPermission("subscribers", "subscribe_to_nl") || hasPermission("subscribers", "subscribe_to_rss")), 401, __('messages.unauthorized_action'));
 
         if (!$request->ajax()) {
             return response(['message' => 'Baq Request'], 400);
@@ -114,5 +114,16 @@ class SubscriberController extends Controller
 
         $request->session()->flash('success', __('messages.subscribers', ['status' => $message]));
         return response(['success' => true], 200);
+    }
+
+    public function unsubscribe(Subscriber $subscriber, $type)
+    {
+        if ($type === "rss") {
+            $subscriber->update(['rss_feed' => 0]);
+        } else {
+            $subscriber->update(['status' => 0]);
+        }
+
+        return back();
     }
 }

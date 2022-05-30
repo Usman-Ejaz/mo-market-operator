@@ -25,6 +25,13 @@
         <!-- Theme style -->
         <link rel="stylesheet" href="{{asset('admin-resources/css/adminlte.min.css')}}">
 
+        <style>
+            input::-ms-reveal,
+            input::-ms-clear {
+                display: none;
+            }
+        </style>
+
     </head>
     <body class="hold-transition login-page">
         @yield('content')
