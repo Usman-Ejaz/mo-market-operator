@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="name">Name <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="name" placeholder="Enter name" name="name" value="{{ old('name') ?? $menu->name }}">
+                <input type="input" class="form-control" autocomplete="off" id="name" placeholder="Enter name" name="name" value="{{ old('name') ?? $menu->name }}">
                 <span class="form-text text-danger">{{ $errors->first('name') }} </span>
             </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Identifier <span class="text-danger">*</span></label>
-                    <input type="input" class="form-control" id="identifier" placeholder="Enter identifier" name="identifier" value="{{ old('identifier') ?? $menu->identifier }}">
+                    <input type="input" class="form-control" autocomplete="off" id="identifier" placeholder="Enter identifier" name="identifier" value="{{ old('identifier') ?? $menu->identifier }}">
                     <span class="form-text text-danger">{{ $errors->first('identifier') }} </span>
                 </div>
             </div>

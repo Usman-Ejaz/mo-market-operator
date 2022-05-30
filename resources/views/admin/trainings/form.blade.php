@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="title">Title <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="title" placeholder="Enter training title" name="title"
+                <input type="input" class="form-control" id="title" autocomplete="off" placeholder="Enter training title" name="title"
                     value="{{ old('title') ?? $training->title }}">
                 <span class="form-text text-danger">{{ $errors->first('title') }} </span>
             </div>
@@ -14,7 +14,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="short_description">Short Description</label>
-                <textarea class="form-control" id="short_description" placeholder="Enter short description" name="short_description" cols="50" rows="3">{{ old('short_description') ?? $training->short_description }}</textarea>
+                <textarea class="form-control" id="short_description" autocomplete="off" placeholder="Enter short description" name="short_description" cols="50" rows="3">{{ old('short_description') ?? $training->short_description }}</textarea>
                 <span class="form-text text-danger">{{ $errors->first('short_description') }} </span>
             </div>
         </div>
@@ -31,7 +31,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="target_audience">Target Audience <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="target_audience" placeholder="Enter target audience"
+                <input type="input" class="form-control" id="target_audience" autocomplete="off" placeholder="Enter target audience"
                     name="target_audience" value="{{ old('target_audience') ?? $training->target_audience }}" data-role="tagsinput">
                 <span class="form-text text-danger">{{ $errors->first('target_audience') }} </span>
             </div>
@@ -40,7 +40,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="topics">Topics <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="topics" placeholder="Enter topics"
+                <input type="input" class="form-control" id="topics" autocomplete="off" placeholder="Enter topics"
                     name="topics" value="{{ old('topics') ?? $training->topics }}" data-role="tagsinput">
                 <span class="form-text text-danger">{{ $errors->first('topics') }} </span>
             </div>
@@ -51,7 +51,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="location">Location <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="location" placeholder="Enter location" name="location"
+                <input type="input" class="form-control" id="location" autocomplete="off" placeholder="Enter location" name="location"
                     value="{{ old('location') ?? $training->location }}" data-role="tagsinput">
                 <span class="form-text text-danger">{{ $errors->first('location') }} </span>
             </div>

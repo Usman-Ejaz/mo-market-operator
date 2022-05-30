@@ -13,7 +13,13 @@ class Subscriber extends Model
 
     protected $guarded = [];
 
-    public function getStatusAttribute($attribute) {
+    public function getStatusAttribute($attribute) 
+    {
+        return isset($attribute) ? $this->activeOptions()[$attribute] : '';
+    }
+
+    public function getRssFeedAttribute($attribute) 
+    {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
     }
 
@@ -21,7 +27,7 @@ class Subscriber extends Model
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
-    public function scopeActive($query) {
+    public function scopeNewletters($query) {
         return $query->where("status", 1);
     }
 

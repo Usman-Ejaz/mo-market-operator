@@ -14,6 +14,34 @@
 @section('content')
 <div class="container-fluid">
 	<div class="row">
+		<div class="col-md-8">
+			<table class="table table-bordered" id="result-pages">
+				<thead>
+					<tr>
+						<th width="40%">Top Active Pages</th>
+						<th>Users</th>
+					</tr>	
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-4">
+			<table class="table table-bordered">
+				<tbody>
+				  	<tr> <th>Right Now</th> </tr>
+				  	<tr>
+					  	<td>
+							<h1> <div class="count" id="active-users"></div></h1>
+							<p>Active Users on Site. <small> In last 5 minutes</small></p>
+				  		</td>
+					</tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
+	<br />
+	<div class="row">
 		<div class="col-md-12">
 			<table class="table table-bordered yajra-datatable">
 				<thead>
@@ -49,14 +77,16 @@
 
 	$(document).ready(() => {
 		
+		
 		var startDate = "";
 		var endDate = "";
-
+		
 		var datePickerStartDate = "";
 		var datePickerEndDate = "";
-		
-
+				
 		renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);	
+		
+		getAnalyticsData();
 		
 		// Handle date filters
 		$('body').on('click', '#seachByDate', (e) => {
@@ -91,6 +121,21 @@
 		});
 			
 	});
+
+	function getAnalyticsData()
+	{		
+		$.ajax({
+			url: '{{ route("admin.search-statistics.analytics-data") }}',
+			method: 'GET',
+			success: function (response) {
+				$("#result-pages tbody").html(response.activePages);
+				$("#active-users").html(response.activeUsers);
+			},
+			error: function (error) {
+				console.log('error => ', error);
+			}
+		})
+	}
 
 	function renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate)
 	{
