@@ -3,7 +3,7 @@
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="name">Name <span class="text-danger">*</span></label>
-				<input type="input" class="form-control" id="name" placeholder="Enter full name" name="name" value="{{ old('name') ?? $user->name }}">
+				<input type="input" class="form-control" id="name" autocomplete="off" placeholder="Enter full name" name="name" value="{{ old('name') ?? $user->name }}">
 				<span class="form-text text-danger">{{ $errors->first('name') }} </span>
 			</div>
 		</div>
@@ -11,7 +11,7 @@
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="email">Email <span class="text-danger">*</span></label>
-				<input type="input" class="form-control" id="email" placeholder="Enter Email" name="email" value="{{ old('email') ?? $user->email }}">
+				<input type="input" class="form-control" id="email" autocomplete="off" placeholder="Enter Email" name="email" value="{{ old('email') ?? $user->email }}">
 				<span class="form-text text-danger">{{ $errors->first('email') }} </span>
 			</div>
 		</div>
@@ -47,7 +47,7 @@
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="designation">Designation <span class="text-danger">*</span></label>
-				<input type="input" class="form-control" id="designation" placeholder="Enter Designation" name="designation" value="{{ old('designation') ?? $user->designation }}">
+				<input type="input" class="form-control" autocomplete="off" id="designation" placeholder="Enter Designation" name="designation" value="{{ old('designation') ?? $user->designation }}">
 				<span class="form-text text-danger">{{ $errors->first('designation') }} </span>
 			</div>
 		</div>

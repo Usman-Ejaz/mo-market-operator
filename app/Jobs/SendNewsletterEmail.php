@@ -36,7 +36,7 @@ class SendNewsletterEmail implements ShouldQueue
      */
     public function handle()
     {
-        $subscribers = Subscriber::active()->select("email")->get();
+        $subscribers = Subscriber::newletters()->select("email")->get();
 
         foreach ($subscribers as $subscriber) {
             Mail::to($subscriber->email)->send(new NewsletterEmail($this->newsletter));

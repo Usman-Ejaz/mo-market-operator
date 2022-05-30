@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SearchStatistic;
+use Google_Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -73,6 +74,25 @@ class SearchStatisticController extends Controller
         }
     }
 
+    public function getAnalyticsData()
+    {
+        // Reference link from where code has copied.
+        // https://reeteshghimire.com.np/2021/09/11/google-analytics-realtime-traffic-viewer-using-analytics-api/
+        $client = new Google_Client();
+        $client->setApplicationName("Realtime Analytics");
+        $client->setAuthConfig(config('settings.google_credentials'));
+        $client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);
+        $analytics = new \Google_Service_Analytics($client);
+
+        $activePages = $this->getActivePages($analytics);
+        $activeUsers = $this->getActiveUsers($analytics);
+
+        return response([
+            'activePages' => $activePages,
+            'activeUsers' => $activeUsers
+        ], 200);
+    }
+
     public function exportkeywords() {
 
         abort_if(!hasPermission("search_statistics", "export_keywords"), 401, __('messages.unauthorized_action'));
@@ -106,5 +126,40 @@ class SearchStatisticController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    private function getActivePages($analytics)
+    {
+        $optParams = [
+            'dimensions' => 'rt:pageTitle,rt:pagePath',
+            'sort' => '-rt:activeVisitors',
+            'max-results' => '16'
+        ];
+        $result = $analytics->data_realtime->get('ga:'.config('settings.ga_view_id'), 'rt:activeVisitors', $optParams);
+        $table = '';
+        if ($result) {
+            $rows = $result->getRows();
+            if ($rows) {
+                foreach ($rows as $row) {
+                    $table .= '<tr class="open-link" data-link="'.$row[1].'">';
+                    $table .= '<td>'.htmlspecialchars($row[0],ENT_NOQUOTES).'</td>';
+                    $table .= '<td>'.htmlspecialchars($row[2],ENT_NOQUOTES).'</td>';
+                    $table .= '</tr>';
+                }
+            } else {
+                $table .= '<tr><td colspan="2"><small>There is no data to view</small></td></tr>';
+            }
+
+            return $table;
+        } else {
+            return '<tr><td colspan="2"><small>There is no data to view</small></td></tr>';
+        }
+    }
+
+    private function getActiveUsers($analytics)
+    {
+        $active_users = $analytics->data_realtime->get('ga:'.config('settings.ga_view_id'), 'rt:activeVisitors');
+        $active_users = (isset($active_users->rows[0][0])) ? $active_users->rows[0][0] : 0;
+        return $active_users;
     }
 }

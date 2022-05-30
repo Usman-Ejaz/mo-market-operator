@@ -20,5 +20,7 @@ return [
 
     "storage_disk_base_path" => config('filesystems.disks.app.root') . '/',
 
-    "google_credentials" => storage_path('app/ismo-346411-3bcba68c89a3.json'),
+    "google_credentials" => storage_path('app/ismo-cppa-app-google-analytics-credentials.json'),
+    "ga_4_property" => "317113865",
+    "ga_view_id" => "267956530"
 ];

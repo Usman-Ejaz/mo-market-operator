@@ -107,7 +107,7 @@
         @if ($files_count > 0)
             <h3 style="margin-top: 30px;"></h3>
             <br />
-            <h5>__('General Attachments')</h5>
+            <h5>{{ __('General Attachments') }}</h5>
 
             <ul>
                 @foreach ($generalAttachments as $item)

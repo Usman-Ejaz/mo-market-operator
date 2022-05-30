@@ -105,7 +105,6 @@
 			step: 30,
 			roundTime: 'ceil',
 			minDate: new Date(),
-			minTime: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date').val(mapDate(dp));
@@ -190,6 +189,11 @@
 			return this.optional(element) || invalidFiles.length === 0;
 		}, '');
 
+		$.validator.addMethod('upload_threshold', function (value, element, param) {
+			let files = Array.from(element.files).length;
+			return this.optional(element) || files <= param;
+		}, '');
+
 		$('#create-job-form').validate({
 			errorElement: 'span',
 			errorClass: "my-error-class",
@@ -243,11 +247,12 @@
 				},
 				image: {
 					required: true,
-					extension: "{{ config('settings.image_file_extensions') }}"
+					extension: "{{ config('settings.image_file_extensions') }}",					
 				},
 				'attachments[]': {
 					required: true,
-					docx_extension: "doc|docx|pdf"
+					docx_extension: "doc|docx|pdf",
+					upload_threshold: 5,
 				},
 				enable: {
 					required: false,
@@ -275,7 +280,8 @@
 				},
 				'attachments[]': {
 					required: '{{ __("messages.required") }}',
-					docx_extension: '{{ __("messages.valid_file_extension") }}'
+					docx_extension: '{{ __("messages.valid_file_extension") }}',
+					upload_threshold: 'Only 5 files are allowed to upload in one go.'
 				},
 				title: {
 					required: "This field is required.",

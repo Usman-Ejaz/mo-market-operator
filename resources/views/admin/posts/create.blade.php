@@ -101,7 +101,6 @@
 			step: 5,
 			roundTime: 'ceil',
 			minDate: new Date(),
-			minTime: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(dp, $input) {
 				$('#start_date').val(mapDate(dp));

@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="title">Title <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="title" placeholder="Enter Job Title" name="title"
+                <input type="input" class="form-control" autocomplete="off" id="title" placeholder="Enter Job Title" name="title"
                     value="{{ old('title') ?? $job->title }}">
                 <span class="form-text text-danger">{{ $errors->first('title') }} </span>
             </div>
@@ -31,7 +31,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="qualification">Qualification <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="qualification" placeholder="Enter Qualification For Job"
+                <input type="input" class="form-control" id="qualification" autocomplete="off" placeholder="Enter Qualification For Job"
                     name="qualification" value="{{ old('qualification') ?? $job->qualification }}">
                 <span class="form-text text-danger">{{ $errors->first('qualification') }} </span>
             </div>
@@ -40,7 +40,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="experience">Experience <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="experience" placeholder="Enter Experience For Job"
+                <input type="input" class="form-control" autocomplete="off" id="experience" placeholder="Enter Experience For Job"
                     name="experience" value="{{ old('experience') ?? $job->experience }}">
                 <span class="form-text text-danger">{{ $errors->first('experience') }} </span>
             </div>
@@ -51,7 +51,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="location">Location <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="location" placeholder="Enter Job Location" name="location"
+                <input type="input" class="form-control" id="location" autocomplete="off" placeholder="Enter Job Location" name="location"
                     value="{{ old('location') ?? $job->location }}" data-role="tagsinput">
                 <span class="form-text text-danger">{{ $errors->first('location') }} </span>
             </div>
@@ -61,7 +61,7 @@
             <div class="form-group">
                 <label for="total_positions">Total Positions <span class="text-danger">*</span></label>
                 <input type="number" class="form-control" id="total_positions"
-                    placeholder="Enter Total Positions For Job" name="total_positions"
+                    placeholder="Enter Total Positions For Job" autocomplete="off" name="total_positions"
                     value="{{ old('total_positions') ?? $job->total_positions }}">
                 <span class="form-text text-danger">{{ $errors->first('total_positions') }} </span>
             </div>
@@ -72,7 +72,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="specialization">Specialization <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="specialization" placeholder="Enter Job Specialization" name="specialization"
+                <input type="input" class="form-control" autocomplete="off" id="specialization" placeholder="Enter Job Specialization" name="specialization"
                     value="{{ old('specialization') ?? $job->specialization }}">
                 <span class="form-text text-danger">{{ $errors->first('specialization') }} </span>
             </div>
@@ -82,7 +82,7 @@
             <div class="form-group">
                 <label for="salary">Salary </label>
                 <input type="number" class="form-control" id="salary" min="0" step="1"
-                    placeholder="Enter Salary For Job" name="salary"
+                    placeholder="Enter Salary For Job" autocomplete="off" name="salary"
                     value="{{ old('salary') ?? $job->salary }}">
                 <span class="form-text text-danger">{{ $errors->first('salary') }} </span>
             </div>

@@ -3,7 +3,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="name">Name <span class="text-danger">*</span></label>
-				<input type="text" class="form-control" id="name" placeholder="Enter full name" name="name" value="{{ old('name') ?? $manager->name }}">
+				<input type="text" class="form-control" autocomplete="off" id="name" placeholder="Enter full name" name="name" value="{{ old('name') ?? $manager->name }}">
 				<span class="form-text text-danger">{{ $errors->first('name') }} </span>
 			</div>
 		</div>
@@ -13,7 +13,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="designation">Designation <span class="text-danger">*</span></label>
-				<input type="text" class="form-control" id="designation" placeholder="Enter Designation" name="designation" value="{{ old('designation') ?? $manager->designation }}">
+				<input type="text" class="form-control" autocomplete="off" id="designation" placeholder="Enter Designation" name="designation" value="{{ old('designation') ?? $manager->designation }}">
 				<span class="form-text text-danger">{{ $errors->first('designation') }} </span>
 			</div>
 		</div>
@@ -33,7 +33,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="order">Order <span class="text-danger">*</span></label>
-				<input type="number" class="form-control" id="order" placeholder="Enter order" name="order" value="{{ old('order') ?? $manager->order }}" step="1" min="0">
+				<input type="number" class="form-control" autocomplete="off" id="order" placeholder="Enter order" name="order" value="{{ old('order') ?? $manager->order }}" step="1" min="0">
 				<span class="form-text text-danger">{{ $errors->first('order') }} </span>
 			</div>
 		</div>

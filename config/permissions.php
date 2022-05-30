@@ -155,7 +155,8 @@ return [
             "list" => "List",
             // "view" => "View",
             // "delete" => "Delete",
-            "subscribe" => "Subscribe",
+            "subscribe_to_nl" => "Subscribe to Newsletters",
+            "subscribe_to_rss" => "Subscribe to RSS Feed",
         ]
     ],    
     [
