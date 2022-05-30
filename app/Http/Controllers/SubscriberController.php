@@ -52,9 +52,9 @@ class SubscriberController extends Controller
                         $options .= '<form action="'. route('admin.subscribers.toggleSubscription', ['subscriber' => $row->id, 'type' => 'newsletters']) .'" method="POST" style="display: inline-block;">
                                 '.csrf_field().'
                                 <input type="hidden" name="status" value="' . ($row->status == 'Subscribed' ? 0 : 1) . '">
-                                <button type="submit" class="btn btn-'.$class.' width-120"
+                                <button type="submit" class="btn btn-'.$class.'"
                                     onclick="return confirm(\'Are You Sure Want to '.  ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to Newsletter">
-                                        '. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to Newsletter
+                                        <i class="fa fa-newspaper"></i>
                                 </button>
                             </form>';
                     }
@@ -64,9 +64,9 @@ class SubscriberController extends Controller
                         $options .= '<form action="'. route('admin.subscribers.toggleSubscription', ['subscriber' => $row->id, 'type' => 'rss_feed']) .'" method="POST" style="display: inline-block;">
                                 '.csrf_field().'
                                 <input type="hidden" name="status" value="' . ($row->rss_feed == 'Subscribed' ? 0 : 1) . '">
-                                <button type="submit" class="ml-2 btn btn-'.$class.' width-120"
+                                <button type="submit" class="ml-2 btn btn-'.$class.' "
                                     onclick="return confirm(\'Are You Sure Want to '.  ($row->rss_feed == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->rss_feed == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to RSS Feed">
-                                        '. ($row->rss_feed == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to RSS
+                                        <i class="fa fa-rss"></i>
                                 </button>
                             </form>';
                     }
