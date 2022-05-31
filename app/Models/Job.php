@@ -150,4 +150,27 @@ class Job extends Model
     {
         return $this->published_at !== null;
     }
+    
+    /**
+     * removeImage
+     *
+     * @return void
+     */
+    public function removeImage()
+    {
+        removeFile(self::STORAGE_DIRECTORY, $this->image);
+    }
+    
+    /**
+     * removeAttachments
+     *
+     * @return void
+     */
+    public function removeAttachments()
+    {
+        foreach ($this->attachments as $file) 
+        {
+            removeFile(self::STORAGE_DIRECTORY, $file);
+        }
+    }
 }
