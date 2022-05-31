@@ -236,7 +236,11 @@
 					extension: "{{ config('settings.image_file_extensions') }}"
 				},
 				start_datetime: {
-					required: false
+					required: {
+						depends: function () {
+							return $('#start_datetime').val().length > 0 ? false : true;
+						}
+					}
 				},
 				end_datetime: {
 					required: false
@@ -245,6 +249,9 @@
 			errorPlacement: function(error, element) {
 				if (element.attr("id") == "description") {
 					element = $("#cke_" + element.attr("id"));
+				}
+				if (element.attr("id") == "start_datetime" || element.attr("id") == "end_datetime") {
+					element = $('#' + element.attr("id")).parent();
 				}
 				if (element.attr("id") == "page_image") {
 					element.next().text('');

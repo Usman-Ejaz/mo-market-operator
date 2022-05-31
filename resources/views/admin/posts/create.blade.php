@@ -230,7 +230,11 @@
 					extension: "{{ config('settings.image_file_extensions') }}"
 				},
 				start_datetime: {
-					required: false
+					required: {
+						depends: function () {
+							return $('#start_datetime').val().length > 0 ? false : true;
+						}
+					}
 				},
 				end_datetime: {
 					required: false
