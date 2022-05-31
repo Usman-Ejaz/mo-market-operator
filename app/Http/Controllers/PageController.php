@@ -112,7 +112,7 @@ class PageController extends Controller
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
 
-        $message = __('messages.record_created', ['module' => 'Page']);
+        $message = __('messages.record_updated', ['module' => 'Page']);
         
         if ($request->action === "Unpublished") {
             $data['published_at'] = null;
@@ -183,7 +183,7 @@ class PageController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
+                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';

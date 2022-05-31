@@ -53,7 +53,7 @@ class SubscriberController extends Controller
                                 '.csrf_field().'
                                 <input type="hidden" name="status" value="' . ($row->status == 'Subscribed' ? 0 : 1) . '">
                                 <button type="submit" class="btn btn-'.$class.'"
-                                    onclick="return confirm(\'Are You Sure Want to '.  ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to Newsletter">
+                                    onclick="return confirm(\'Are you sure you want to '.  ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to Newsletter">
                                         <i class="fa fa-newspaper"></i>
                                 </button>
                             </form>';
@@ -65,7 +65,7 @@ class SubscriberController extends Controller
                                 '.csrf_field().'
                                 <input type="hidden" name="status" value="' . ($row->rss_feed == 'Subscribed' ? 0 : 1) . '">
                                 <button type="submit" class="ml-2 btn btn-'.$class.' "
-                                    onclick="return confirm(\'Are You Sure Want to '.  ($row->rss_feed == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->rss_feed == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to RSS Feed">
+                                    onclick="return confirm(\'Are you sure you want to '.  ($row->rss_feed == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->rss_feed == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to RSS Feed">
                                         <i class="fa fa-rss"></i>
                                 </button>
                             </form>';

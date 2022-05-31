@@ -38,7 +38,7 @@ class TogglePublishStatus extends Command
      */
     public function handle()
     {
-        $posts = $this->getRecords('Post');    
+        $posts = $this->getRecords('Post');
         $pages = $this->getRecords('Page');
         $jobs = $this->getRecords('Job');
         
@@ -51,16 +51,24 @@ class TogglePublishStatus extends Command
         
         foreach ($records as $object) 
         {
-            if ($object->published_at === null) {   // if not published
-                if ($currentDate->gte(parseDate($object->start_datetime))) {
-                    $object->published_at = now();
-                    $object->save();
+            try {
+
+                // For publishing the contents
+                if ($currentDate->gte(parseDate($object->start_datetime)) && $currentDate->lte(parseDate($object->end_datetime))) {
+                    if ($object->published_at === null) {
+                        $object->update(['published_at' => now()]);
+                    }
                 }
-            } else {
-                if ($currentDate->gt(parseDate($object->end_datetime))) {
-                    $object->published_at = null;
-                    $object->save();
+
+                // For unpublishing the contents
+                if ($currentDate->gte(parseDate($object->end_datetime))) {
+                    if ($object->published_at !== null) {
+                        $object->update(['published_at' => null]);
+                    }
                 }
+
+            } catch (\Throwable $th) {
+                
             }
         }
     }
@@ -78,10 +86,5 @@ class TogglePublishStatus extends Command
         $records = $model::scheduledRecords()->select('id', 'published_at', 'start_datetime', 'end_datetime')->get();
 
         return $records;
-    }
-
-    private function writeLogs($message, $type = "info")
-    {
-        Log::$type($message);
     }
 }
