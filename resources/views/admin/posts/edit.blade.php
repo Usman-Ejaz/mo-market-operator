@@ -105,27 +105,32 @@
 
 		$('#start_datetime').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
-			step: 30,
+			step: 5,
 			roundTime: 'ceil',
 			minDate: new Date(),
 			validateOnBlur: false,
-			onChangeDateTime: function(dp, $input) {
-				$('#start_date').val(mapDate(dp));
-				let endDate = new Date($("#end_date").val()).setSeconds(0, 0);
-				dp = dp.setSeconds(0, 0);
-				let curr = (new Date()).setSeconds(0, 0);
+			onChangeDateTime: function(selectedDateTime, $input) {				
+				
+				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
-				if (dp >= curr) {
-					if (dp >= endDate) {
+				if (selectedDateTime >= todaysDate) {
+					$('#start_date').val(mapDate(selectedDateTime));
+
+					let endDate = new Date($("#end_date").val()).setSeconds(0, 0);
+					selectedDateTime = selectedDateTime.setSeconds(0, 0);
+
+					if (selectedDateTime >= endDate) {
 						$input.val("");
-						$input.parent().next().text("{{ __('messages.max_date', ['first' => 'Start', 'second' => 'end']) }}");
+						$('#start_date').val("");
+						$input.parent().next().text("{{ __('messages.min_date', ['first' => 'Start', 'second' => 'end']) }}");
 					} else {
 						$input.parent().next().text("");
 					}
 				} else {
 					$input.val("");
+					$('#start_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
-				}
+				}		
 			},
 			onShow: function () {
 				this.setOptions({
@@ -136,31 +141,36 @@
 
 		$('#end_datetime').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
-			step: 30,
+			step: 5,
 			roundTime: 'ceil',
 			minDate: new Date(),
 			validateOnBlur: false,
-			onChangeDateTime: function(dp, $input) {
-				$('#end_date').val(mapDate(dp));
-				let startDate = new Date($("#start_date").val()).setSeconds(0, 0);
-				dp = dp.setSeconds(0, 0);
-				let curr = (new Date()).setSeconds(0, 0);
+			onChangeDateTime: function(selectedDateTime, $input) {				
 
-				if (dp >= curr) {
-					if (dp <= startDate) {
+				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
+
+				if (selectedDateTime >= todaysDate) {
+					$('#end_date').val(mapDate(selectedDateTime));
+				
+					let startDate = new Date($("#start_date").val()).setSeconds(0, 0);
+					selectedDateTime = selectedDateTime.setSeconds(0, 0);
+					
+					if (selectedDateTime <= startDate) {
 						$input.val("");
+						$('#end_date').val("");
 						$input.parent().next().text("{{ __('messages.max_date', ['first' => 'End', 'second' => 'start']) }}");
 					} else {
 						$input.parent().next().text("");
 					}
 				} else {
 					$input.val("");
+					$('#end_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
 			},
 			onShow: function () {
 				this.setOptions({
-					minDate: $('#start_date').val() ? $('#start_date').val() : false
+					minDate: $('#start_date').val() ? $('#start_date').val() : new Date()
 				})
 			}
 		});

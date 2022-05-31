@@ -178,7 +178,7 @@ class MediaLibraryController extends Controller
                             '.csrf_field().'
                             '.method_field("DELETE").'
                             <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\'Are You Sure Want to delete this record?\')" title="Delete">
+                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
                                     <i class="fas fa-trash"></i>
                             </button>
                         </form>';
