@@ -5,6 +5,7 @@
 				<label>Start Date & Time <span class="text-danger">*</span></label>
 				<div class="input-group">
 					<input type="text" class="form-control bg-white" id="start_date" name="start_date" value="{{ old('start_date') ?? $training->start_date }}" placeholder="{{ config('settings.datetime_placeholder') }}" readonly>
+					<input type="hidden" name="start_datetime" id="start_datetime" value="">
 					<div class="input-group-append">
 						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 					</div>
@@ -20,6 +21,7 @@
 				<label for="endtime">End Date & Time <span class="text-danger">*</span></label>
 				<div class="input-group">
 					<input type="text" class="form-control bg-white" id="end_date" name="end_date" value="{{ old('end_date') ?? $training->end_date }}" placeholder="{{ config('settings.datetime_placeholder') }}" readonly>
+					<input type="hidden" name="end_datetime" id="end_datetime" value="">
 					<div class="input-group-append">
 						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 					</div>
@@ -31,18 +33,18 @@
 
 	<div class="row">
 
-		@if( $training->created_at )
-		<div class="col-md-12">
-			<label for="endtime">Created At:</label>
-			<span>{{$training->created_at}}</span>
-		</div>
+		@if ($training->created_at)
+			<div class="col-md-12">
+				<label for="endtime">Created At:</label>
+				<span>{{ $training->created_at }}</span>
+			</div>
 		@endif
 
-		@if(\Route::current()->getName() == 'admin.trainings.edit' )
-		<div class="col-md-12">
-			<label for="status">Status:</label>
-			<span>{{ $training->status() }}</span>
-		</div>
+		@if (\Route::is('admin.trainings.edit'))
+			<div class="col-md-12">
+				<label for="status">Status:</label>
+				<span>{{ $training->status() }}</span>
+			</div>
 		@endif
 
 	</div>
