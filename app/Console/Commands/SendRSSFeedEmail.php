@@ -55,7 +55,13 @@ class SendRSSFeedEmail extends Command
             Mail::to($subscriber->email)->send(new SendRssFeedSubscriberEmail($todaysPublishedRecords));
         }
     }
-
+    
+    /**
+     * getRecords
+     *
+     * @param  mixed $model
+     * @return mixed
+     */
     private function getRecords($model)
     {
         $model = 'App\\Models\\' . $model;
@@ -64,7 +70,12 @@ class SendRSSFeedEmail extends Command
 
         return $records;
     }
-
+    
+    /**
+     * getSubscribers
+     *
+     * @return mixed
+     */
     private function getSubscribers()
     {
         return Subscriber::rss()->select('id', 'email')->get();

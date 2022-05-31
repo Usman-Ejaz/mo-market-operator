@@ -12,7 +12,7 @@ class TogglePublishStatus extends Command
      *
      * @var string
      */
-    protected $signature = 'toggle:scheduled-records';
+    protected $signature = 'toggle:publish-status';
 
     /**
      * The console command description.
