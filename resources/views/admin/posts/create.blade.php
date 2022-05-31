@@ -101,6 +101,7 @@
 			step: 5,
 			roundTime: 'ceil',
 			minDate: new Date(),
+			minTime: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(selectedDateTime, $input) {				
 				
@@ -230,7 +231,11 @@
 					extension: "{{ config('settings.image_file_extensions') }}"
 				},
 				start_datetime: {
-					required: false
+					required: {
+						depends: function () {
+							return $('#start_datetime').val().length > 0 ? false : true;
+						}
+					}
 				},
 				end_datetime: {
 					required: false

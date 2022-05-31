@@ -92,6 +92,7 @@
 			step: 5,
 			roundTime: 'ceil',
 			minDate: new Date(),
+			minTime: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(selectedDateTime, $input) {				
 				
