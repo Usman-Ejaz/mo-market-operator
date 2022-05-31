@@ -86,10 +86,12 @@ class SearchStatisticController extends Controller
 
         $activePages = $this->getActivePages($analytics);
         $activeUsers = $this->getActiveUsers($analytics);
+        $usersByCountry = $this->getActiveUsersByCountry($analytics);
 
         return response([
             'activePages' => $activePages,
-            'activeUsers' => $activeUsers
+            'activeUsers' => $activeUsers,
+            'usersByCountry' => $usersByCountry
         ], 200);
     }
 
@@ -161,5 +163,38 @@ class SearchStatisticController extends Controller
         $active_users = $analytics->data_realtime->get('ga:'.config('settings.ga_view_id'), 'rt:activeVisitors');
         $active_users = (isset($active_users->rows[0][0])) ? $active_users->rows[0][0] : 0;
         return $active_users;
+    }
+
+    private function getActiveUsersByCountry($analytics)
+    {
+        $optParams = [
+            'dimensions' => 'ga:country',
+            'sort' => '-rt:activeVisitors',
+            'max-results' => 10
+        ];
+        $result = $analytics->data_realtime->get('ga:'.config('settings.ga_view_id'),'rt:activeVisitors',$optParams);
+
+        return $this->getFormattedData($result, 'Country', 'Users');
+    }
+
+    private function getFormattedData($result) {
+        $table = '';
+        if ($result) {
+            $rows = $result->getRows();
+            if ($rows) {
+                foreach($rows as $row){
+                    $table .= '<tr>';
+                    foreach ($row as $cell) {
+                        $table .= '<td>'.htmlspecialchars($cell,ENT_NOQUOTES).'</td>';
+                    }
+                    $table .= '</tr>';
+                }
+            } else {
+                $table .= '<tr><td colspan="2"><small>There is no data to view</small></td></tr>';
+            }
+            return $table;
+        } else {
+            return '<tr><td colspan="2"><small>There is no data to view</small></td></tr>';
+        }
     }
 }

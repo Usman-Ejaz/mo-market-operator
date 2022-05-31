@@ -1,18 +1,19 @@
 @extends('admin.layouts.app')
-@section('header', 'Search Statistics')
+{{-- @section('header', 'Search Statistics') --}}
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item active">Search Statistics</li>
 @endsection
 
-@section('addButton')
+{{-- @section('addButton')
 @if(hasPermission('search_statistics', 'export_keywords'))
 <a role="button" class="btn btn-primary float-right" href="{{ route('admin.search-statistics.export-list') }}">Export Keywords</a>
 @endif
-@endsection
+@endsection --}}
 
 @section('content')
 <div class="container-fluid">
+	<h3>{{ __("Google Analytics Stats") }}</h3>
 	<div class="row">
 		<div class="col-md-8">
 			<table class="table table-bordered" id="result-pages">
@@ -41,6 +42,16 @@
 		</div>
 	</div>
 	<br />
+	<div class="row mb-3">
+		<div class="col-md-10">
+			<h3>{{ __("Search Statistics") }}</h3>
+		</div>
+		<div class="col-md-2 d-flex float-right">
+			@if (hasPermission('search_statistics', 'export_keywords'))
+				<a role="button" class="btn btn-primary" style="margin-left: 28%;" href="{{ route('admin.search-statistics.export-list') }}">Export Keywords</a>
+			@endif
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table table-bordered yajra-datatable">

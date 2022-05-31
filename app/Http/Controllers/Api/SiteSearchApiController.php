@@ -97,8 +97,8 @@ class SiteSearchApiController extends BaseApiController
 
             // Searching with algolia search, upto 10k requests/month in FREE plan.
             $result = SitewideSearch::search($keyword)->get()->where('published_at', '!=', null);
-
-            if ($result->count() > 0) {                
+                        
+            if ($result->count() > 0) {
                 return $this->sendResponse(SiteSearchResource::collection($result), "Success");
             } else {
                 return $this->sendResponse([], "Data not found");

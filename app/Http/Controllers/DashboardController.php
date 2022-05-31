@@ -12,16 +12,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // <!-- Global site tag (gtag.js) - Google Analytics -->
-        // <script async src="https://www.googletagmanager.com/gtag/js?id=G-WS4D14CBGY"></script>
-        // <script>
-        //   window.dataLayer = window.dataLayer || [];
-        //   function gtag(){dataLayer.push(arguments);}
-        //   gtag('js', new Date());
-        
-        //   gtag('config', 'G-WS4D14CBGY');
-        // </script>
-        
         // $client = new Google_Client();
         // $client->setApplicationName("Hello Analytics Reporting");
         // $client->setAuthConfig(config('settings.google_credentials'));
