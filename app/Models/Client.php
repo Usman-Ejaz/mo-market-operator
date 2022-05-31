@@ -184,7 +184,12 @@ class Client extends Authenticatable
     {
         return $this->details()->where('type', '=', ClientDetail::SECONDARY)->first();
     }
-
+    
+    /**
+     * removeDetails
+     *
+     * @return void
+     */
     public function removeDetails()
     {
         foreach ($this->details as $data) {
@@ -194,7 +199,12 @@ class Client extends Authenticatable
             $data->delete();
         }
     }
-
+    
+    /**
+     * removeAttachments
+     *
+     * @return void
+     */
     public function removeAttachments()
     {
         foreach ($this->attachments as $attachment) {
@@ -227,4 +237,15 @@ class Client extends Authenticatable
         return $this->hasMany(ClientAttachment::class);
     }
     
+
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+    **/
+
+    public function scopeIncomplete($query)
+    {
+        return $query->where('profile_complete', '=', 0)->with(['details', 'attachments'])->select('id', 'name', 'created_at');
+    }
 }

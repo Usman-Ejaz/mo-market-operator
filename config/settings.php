@@ -20,6 +20,8 @@ return [
 
     "storage_disk_base_path" => config('filesystems.disks.app.root') . '/',
 
+    "client_removal_threshold" => 20,   // remove clients if their profile is incomplete. threshold is in days.
+
     "google_credentials" => storage_path('app/ismo-cppa-app-google-analytics-credentials.json'),
     "ga_4_property" => "317113865",
     "ga_view_id" => "267956530"
