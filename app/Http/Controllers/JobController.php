@@ -335,7 +335,7 @@ class JobController extends Controller
     private function validateRequest($job){
 
         $rules = [
-            'title' => 'required|min:3',
+            'title' => 'required|min:3|unique:job_posts,title,'.$job->id,
             'short_description' => 'required|min:10|max:300',
             'description' => 'required',
             'location' => 'required',

@@ -77,4 +77,23 @@ class TeamMember extends Model
     {
         return $query->orderBy('order', 'asc');
     }
+
+     /**
+     * ======================================================
+     *               Model Helper Functions
+     * ======================================================
+     */
+    
+    /**
+     * removeImage
+     *
+     * @return void
+     */
+    public function removeImage()
+    {
+        if ($this->image !== null && $this->image !== "")
+        {
+            removeFile(self::STORAGE_DIRECTORY, $this->image);
+        }
+    }
 }
