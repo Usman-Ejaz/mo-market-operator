@@ -170,10 +170,12 @@
         const pond = FilePond.create(inputElement, {
             acceptedFileTypes: ['image/*'],
             maxFileSize: '2MB',
+            maxFiles: 10,
             maxParallelUploads: 5,
             credits: false,
             allowMultiple: true,
             required: true,
+            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action"> Browse </span><br /><small style="font-size: 12px;">Maximum 10 files are allowed to upload</small>',
             labelTapToUndo: '',
             labelTapToCancel: '',
             labelTapToRetry: '',
@@ -197,7 +199,7 @@
                 setTimeout(() => {
                     pond.removeFile(file.id); 
                     loadAllImages();
-                    toastr.success('Media file uploaded successfully!');
+                    toastr.success('Media file has been uploaded successfully!');
                 }, 16);
             },
             // onprocessfiles: (error, file) => {
@@ -206,7 +208,7 @@
             //         loadAllImages();
             //         toastr.success('Media file uploaded successfully!');
             //     }, 16);
-            // }
+            // },            
         });
     }
 
@@ -407,7 +409,7 @@
                     $('.editor-modal-close').click();
                     disableCropper();
                     $('#saveImageInfo').prop('disabled', false);
-                    toastr.success("Media file updated successfully!");
+                    toastr.success("{{ __('messages.record_updated', ['module' => 'Media file']) }}");
                 }
             },
             error: () => {

@@ -7,10 +7,8 @@
 @endsection
 
 @section('addButton')
-@if(hasPermission('subscribers', 'subscribe_to_nl') || hasPermission('subscribers', 'subscribe_to_rss'))
+@if(hasPermission('subscribers', 'subscribe'))
 <a class="btn btn-primary float-right bulk-action" id="unsubscribe" href="javascript:void(0);">Bulk UnSubscribe</a>
-@endif
-@if(hasPermission('subscribers', 'subscribe_to_nl') || hasPermission('subscribers', 'subscribe_to_rss'))
 <a class="btn btn-primary float-right mr-2 bulk-action" id="subscribe" href="javascript:void(0);">Bulk Subscribe</a>
 @endif
 @endsection
@@ -28,8 +26,7 @@
 						</th>
 						<th>Id</th>
 						<th>Email</th>
-						<th>Newsletters</th>
-						<th>RSS Feed</th>
+						<th>Status</th>
 						<th>Created date</th>
 						<th>Action</th>
 					</tr>
@@ -82,21 +79,13 @@
 					data: 'id',
 					name: 'id'
 				},
-				// {
-				// 	data: 'name',
-				// 	name: 'name'
-				// },
 				{
 					data: 'email',
 					name: 'email'
 				},
 				{
-					data: 'newsletters',
-					name: 'newsletters'
-				},
-				{
-					data: 'rss_feed',
-					name: 'rss_feed'
+					data: 'status',
+					name: 'status'
 				},
 				{
 					data: 'created_at',

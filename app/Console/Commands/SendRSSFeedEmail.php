@@ -40,6 +40,10 @@ class SendRSSFeedEmail extends Command
      */
     public function handle()
     {
+        /**
+         * This command is not in use for now.
+         */
+
         $pages = $this->getRecords('Page');
         $posts = $this->getRecords('Post');
         $medias = $this->getRecords('MediaLibrary');
