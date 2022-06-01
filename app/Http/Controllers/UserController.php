@@ -105,24 +105,27 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         abort_if(!hasPermission("users", "edit"), 401, __('messages.unauthorized_action'));
-        
-        $previousImage = $user->image;
+                
         $data = $this->validateRequest($user);
         
         $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
 
-        if ($user->update($data)) {
-            $this->storeImage($user, $previousImage);
-
-            if ($request->get("sendEmail") == "1") {
-                Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
-            }
-
-            $request->session()->flash('success', __('messages.record_updated', ['module' => 'User']));
-            return redirect()->route('admin.users.index');
+        if ($request->get('removeImage') == '1') {
+            removeFile(User::STORAGE_DIRECTORY, $user->image);
+            $user->update(['image' => null]);
         }
 
-        $request->session()->flash('error', 'User was not updated, please try again');
+        if ($request->has('image')) {
+            $data['image'] = storeFile(User::STORAGE_DIRECTORY, $request->file('image'), $user->image);
+        }
+
+        $user->update($data);
+
+        if ($request->get("sendEmail") == "1") {
+            Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
+        }
+
+        $request->session()->flash('success', __('messages.record_updated', ['module' => 'User']));
         return redirect()->route('admin.users.index');
     }
 

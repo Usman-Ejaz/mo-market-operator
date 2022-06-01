@@ -21,6 +21,7 @@
 					@method('PATCH')
 					@include('admin.users.form')
 					<input type="hidden" name="sendEmail" value="0" id="sendEmail">
+					<input type="hidden" name="removeImage" value="0" id="removeImage">
 					<div class="card-footer text-right">
 						<button type="submit" class="btn btn-primary draft_button width-120">Update</button>
 						{{-- <button type="submit" class="btn btn-success mr-2 save-with-email">Update & Send Email</button> --}}
@@ -107,21 +108,23 @@
 		$("#deleteImage").click(function() {
 
 			if (confirm('Are you sure you want to this image?')) {
-				$.ajax({
-					url: "{{ route('admin.users.deleteImage') }}",
-					type: 'POST',
-					data: {
-						_token: "{{ csrf_token() }}",
-						user_id: "{{$user->id}}"
-					},
-					dataType: 'JSON',
-					success: function(data) {
-						if (data.success) {
-							alert('Image Deleted Successfully');
-							$('.imageExists').remove();
-						}
-					}
-				});
+				// $.ajax({
+				// 	url: "{{ route('admin.users.deleteImage') }}",
+				// 	type: 'POST',
+				// 	data: {
+				// 		_token: "{{ csrf_token() }}",
+				// 		user_id: "{{$user->id}}"
+				// 	},
+				// 	dataType: 'JSON',
+				// 	success: function(data) {
+				// 		if (data.success) {
+				// 			alert('Image Deleted Successfully');
+				// 			$('.imageExists').remove();
+				// 		}
+				// 	}
+				// });
+				$('#removeImage').val('1');
+				$('.imageExists').remove();
 			}
 		});
 
