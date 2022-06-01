@@ -575,7 +575,7 @@
                 return !(hasTitleError || hasURLError || hasPageError);
             }
             
-            function truncateString(str, len = 30, replaceWith = '...')
+            function truncateString(str, len = 33, replaceWith = '...')
             {
                 if (str) {
                     return str.length > len ? str.substring(0, len) + replaceWith : str;

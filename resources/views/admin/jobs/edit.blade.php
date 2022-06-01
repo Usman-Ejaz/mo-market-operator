@@ -116,23 +116,30 @@
 				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
 				if (selectedDateTime >= todaysDate) {
-					$('#start_date').val(mapDate(selectedDateTime));
+					let currentDateTime = (new Date()).setSeconds(0, 0);
+					if (selectedDateTime >= currentDateTime) {
+						$('#start_date').val(mapDate(selectedDateTime));
 
-					let endDate = new Date($("#end_date").val()).setSeconds(0, 0);
-					selectedDateTime = selectedDateTime.setSeconds(0, 0);
+						let endDate = new Date($("#end_date").val()).setSeconds(0, 0);
+						selectedDateTime = selectedDateTime.setSeconds(0, 0);
 
-					if (selectedDateTime >= endDate) {
+						if (selectedDateTime >= endDate) {
+							$input.val("");
+							$('#start_date').val("");
+							$input.parent().next().text("{{ __('messages.min_date', ['first' => 'Start', 'second' => 'end']) }}");
+						} else {
+							$input.parent().next().text("");
+						}
+					} else {
 						$input.val("");
 						$('#start_date').val("");
-						$input.parent().next().text("{{ __('messages.min_date', ['first' => 'Start', 'second' => 'end']) }}");
-					} else {
-						$input.parent().next().text("");
+						$input.parent().next().text("{{ __('messages.current_system_datetime') }}");
 					}
 				} else {
 					$input.val("");
 					$('#start_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
-				}		
+				}
 			},
 			onShow: function () {
 				this.setOptions({

@@ -209,6 +209,11 @@
             //         toastr.success('Media file uploaded successfully!');
             //     }, 16);
             // },
+            onwarning: (err) => {
+                if (err.body === "Max files") {
+                    toastr.error('Maximum 10 files are allowed to upload.');
+                }
+            }
         });
     }
 

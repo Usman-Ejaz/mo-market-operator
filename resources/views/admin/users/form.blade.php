@@ -54,18 +54,6 @@
 	</div>
 
 	<div class="row">
-		<!-- <div class="col-md-6">
-            <div class="form-group">
-                <label>Status <span class="text-danger">*</span></label>
-                <select class="custom-select" name="active" id="active">
-                    <option value="">Please select a status</option>
-                    @foreach($user->activeOptions() as $statusId => $statusValue)
-                        <option value="{{$statusId}}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
-                    @endforeach
-                </select>
-                <span class="form-text text-danger">{{ $errors->first('active') }} </span>
-            </div>
-        </div> -->
 		<div class="col-md-6">
 			<div class="form-group">
 				<label for="image" class="form-label">User Profile Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
@@ -83,11 +71,15 @@
 					<option value="">Please select a status</option>
 					@if(Request::route()->getName() == "admin.users.create") 
 						@foreach($user->activeOptions() as $statusId => $statusValue)
-							<option value="{{$statusId}}">{{$statusValue}}</option>
+							@if (old('active') !== null && old('active') == $statusId)
+								<option value="{{ $statusId }}" selected>{{ $statusValue }}</option>
+							@else
+								<option value="{{ $statusId}}">{{ $statusValue }}</option>
+							@endif
 						@endforeach
 					@else
 						@foreach($user->activeOptions() as $statusId => $statusValue)
-							<option value="{{$statusId}}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
+							<option value="{{ $statusId }}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
 						@endforeach
 					@endif
 					
