@@ -201,8 +201,11 @@ class DocumentController extends Controller
                 ->addColumn('status', function ($row) {
                     return $row->isPublished() ? 'Published' : 'Draft';
                 })
-                ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? $row->created_at : '';
+                ->editColumn('created_at', function ($row) {
+                    return [
+                        'display' => $row->created_at,
+                        'sort' => Carbon::parse(parseDate($row->created_at))->timestamp
+                    ];
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';
