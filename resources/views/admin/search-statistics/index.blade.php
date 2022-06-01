@@ -141,6 +141,10 @@
 			success: function (response) {
 				$("#result-pages tbody").html(response.activePages);
 				$("#active-users").html(response.activeUsers);
+
+				setTimeout(() => {
+                    getAnalyticsData();
+                }, 10000);
 			},
 			error: function (error) {
 				console.log('error => ', error);

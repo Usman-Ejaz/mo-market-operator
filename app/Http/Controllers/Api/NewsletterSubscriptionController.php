@@ -83,7 +83,7 @@ class NewsletterSubscriptionController extends BaseApiController
             }
             
             Subscriber::create($request->all());
-            return $this->sendResponse([], "Subscribed to Newsletters Successfully!");
+            return $this->sendResponse([], "Subscribed to newsletters successfully!");
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
         }        
