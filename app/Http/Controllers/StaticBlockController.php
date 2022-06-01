@@ -153,7 +153,7 @@ class StaticBlockController extends Controller
 
     private function validateRequest($staticBlock) {
         return request()->validate([
-            'name' => 'required|string|min:3',
+            'name' => 'required|string|min:3|unique:static_blocks,name,' . $staticBlock->id,
             'identifier' => 'required|string',
             'contents' => 'required'
         ]);

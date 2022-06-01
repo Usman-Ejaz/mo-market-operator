@@ -18,7 +18,7 @@ return [
     "max_date" => ":first datetime must be greater than :second datetime.",
     "max_characters" => ":field should not exceed the max length than :limit.",
     "min_characters" => ":field must be at least :limit characters long.",
-    "unique" => ":attribute already exist.",
+    "unique" => "The :attribute has already been taken.",
     "required" => "This field is required.",
     "max_file" => "The file is too large. Allowed max size is :limit.",
     "record_delete" => "Are you sure you want to delete this record?",

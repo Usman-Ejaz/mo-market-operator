@@ -198,7 +198,7 @@ class PageController extends Controller
     private function validateRequest($page){
 
         return request()->validate([
-            'title' => 'required|min:3',
+            'title' => 'required|min:3|unique:pages,title,'.$page->id,
             'slug' => 'required|unique:pages,slug,'.$page->id,
             'description' => 'required',
             'keywords' => 'nullable',

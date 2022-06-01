@@ -8,6 +8,7 @@ use App\Http\Resources\DocumentResource;
 use App\Http\Resources\SiteSearchResource;
 use App\Models\Document;
 use App\Search\SitewideSearch;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -97,8 +98,21 @@ class SiteSearchApiController extends BaseApiController
 
             // Searching with algolia search, upto 10k requests/month in FREE plan.
             $result = SitewideSearch::search($keyword)->get()->where('published_at', '!=', null);
+            
+            if ($request->has('sort')) {
+                $result = $result->sortBy(function($item) {
+                    return $item->created_at;
+                }, 0, $request->get('sort') === 'desc');
+            }
 
-            if ($result->count() > 0) {                
+            if ($request->has('month')) {
+                $result = $result->filter(function($item) use ($request) {
+                    $month = Carbon::parse(parseDate($item->created_at))->month;
+                    return $month === intval($request->get('month'));
+                });
+            }
+
+            if ($result->count() > 0) {
                 return $this->sendResponse(SiteSearchResource::collection($result), "Success");
             } else {
                 return $this->sendResponse([], "Data not found");
@@ -112,7 +126,7 @@ class SiteSearchApiController extends BaseApiController
     private function searchFromDocuments ($keyword) {
 
         try {
-            $docs = Document::published()->applyFilters();
+            $docs = Document::published()->applyFilters(request());
             $docs = $docs->where('title', 'like', "%{$keyword}%")
                         ->orWhere('keywords', 'like', "%{$keyword}%")
                         ->whereHas('category')

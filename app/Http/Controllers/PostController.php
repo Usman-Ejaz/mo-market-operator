@@ -199,7 +199,7 @@ class PostController extends Controller
     private function validateRequest($post){
 
         return request()->validate([
-            'title' => 'required|min:3',
+            'title' => 'required|min:3|unique:posts,title,'.$post->id,
             'slug' => 'required|unique:posts,slug,'.$post->id,
             'description' => 'required',
             'keywords' => 'nullable',
