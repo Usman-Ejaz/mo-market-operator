@@ -7,6 +7,7 @@ use App\Models\Menu;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Settings;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -223,8 +224,11 @@ class MenuController extends Controller
                 ->addColumn('active', function ($row) {
                     return (isset($row->active)) ? $row->active : '';
                 })
-                ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? $row->created_at : '';
+                ->editColumn('created_at', function ($row) {
+                    return [
+                        'display' => $row->created_at,
+                        'sort' => Carbon::parse(parseDate($row->created_at))->timestamp
+                    ];
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';

@@ -6,6 +6,7 @@ use App\Events\QueryReplyEvent;
 use App\Mail\ContactQueryReplyMail;
 use App\Models\ChatbotInitiator;
 use App\Models\ContactPageQuery;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -136,8 +137,11 @@ class ContactPageQueryController extends Controller
                 ->addColumn('message', function ($row) {
                     return truncateWords($row->message, 25);
                 })
-                ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? $row->created_at : '';
+                ->editColumn('created_at', function ($row) {
+                    return [
+                        'display' => $row->created_at,
+                        'sort' => Carbon::parse(parseDate($row->created_at))->timestamp
+                    ];
                 })
                 ->addColumn('action', function ($row) {
                    $options = '';

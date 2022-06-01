@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Manager;
 use App\Models\TeamMember;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -150,8 +151,11 @@ class TeamMemberController extends Controller
                 ->addColumn('image', function ($row) {
                     return (isset($row->image)) ? '<img src="'. $row->image .'" height="100" width="100" />' : 'No image is selected';
                 })
-                ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? $row->created_at : '';
+                ->editColumn('created_at', function ($row) {
+                    return [
+                        'display' => $row->created_at,
+                        'sort' => Carbon::parse(parseDate($row->created_at))->timestamp
+                    ];
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';

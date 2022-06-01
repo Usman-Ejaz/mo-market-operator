@@ -84,7 +84,7 @@
 					name: 'status'
 				},
 				{
-					data: 'created_at',
+					data: { '_': 'created_at.display', 'sort': 'created_at.sort' },
 					name: 'created_at'
 				},
 				{
