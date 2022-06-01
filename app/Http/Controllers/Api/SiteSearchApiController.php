@@ -101,7 +101,7 @@ class SiteSearchApiController extends BaseApiController
             
             if ($request->has('sort')) {
                 $result = $result->sortBy(function($item) {
-                    return $item->created_at;
+                    return $item->published_at;
                 }, 0, $request->get('sort') === 'desc');
             }
 

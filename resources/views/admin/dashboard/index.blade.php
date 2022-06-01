@@ -124,18 +124,26 @@
 @push('optional-scripts')
 <script type="text/javascript">
 	$(document).ready(() => {
-		$.ajax({
+        getAnalyticsData();
+	});
+
+    function getAnalyticsData() {
+        $.ajax({
 			url: '{{ route("admin.search-statistics.analytics-data") }}',
 			method: 'GET',
 			success: function (response) {
 				$("#result-pages tbody").html(response.activePages);
 				$("#active-users").html(response.activeUsers);
                 $('#countries-sources tbody').html(response.usersByCountry);
+
+                setTimeout(() => {
+                    getAnalyticsData();
+                }, 10000);
 			},
 			error: function (error) {
 				console.log('error => ', error);
 			}
 		});
-	});
+    }
 </script>
 @endpush

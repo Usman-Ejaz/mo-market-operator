@@ -15,18 +15,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->everyMinute();
+        
         $schedule->command('audit:broken-links')
             ->timezone('Asia/Karachi')
-            ->dailyAt('1:00');
+            ->dailyAt('8:00');
 
         $schedule->command('flush:incomplete-clients')
             ->timezone('Asia/Karachi')
-            ->dailyAt('1:00');
-
-        $schedule->command('update-subscribers:rss-feed')
-            ->timezone('Asia/Karachi')
-            ->dailyAt('1:00');
+            ->dailyAt('00:00');     // at night 12AM.
 
         $schedule->command('toggle:publish-status')
             ->timezone('Asia/Karachi')
