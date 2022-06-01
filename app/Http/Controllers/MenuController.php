@@ -153,19 +153,19 @@ class MenuController extends Controller
             $title = ''; $dataAttribute = ''; $type ='';
             if( isset($item['page']) ){
                 $dataAttribute = 'data-page="'.$item['page'].'" data-slug="'. (array_key_exists("slug", $item) ? $item['slug'] : str_slug($item['page'])) .'"';
-                $type="page";
+                $type = "page";
             } else if ( isset($item['anchor']) ){
                 $dataAttribute = 'data-anchor="'.$item['anchor'].'"';
-                $type="anchor";
+                $type = "anchor";
             } else if (isset($item['post'])) {
                 $dataAttribute = 'data-post="'.$item['post'].'" data-slug="'. (array_key_exists("slug", $item) ? $item['slug'] : str_slug($item['post'])) .'"';
-                $type="post category";
+                $type = "post category";
             } else if (isset($item['doc'])) {
                 $dataAttribute = 'data-doc="'.$item['doc'].'" data-slug="'. (array_key_exists("slug", $item) ? $item['slug'] : str_slug($item['doc'])) .'"';
-                $type="document category";
+                $type = "document category";
             }
 
-            if( isset($item['title']) ){
+            if (isset($item['title'])){
                 $title = $counter . ' ('.$type.') '. $item['title'];
 
                 if( isset($item['page']) ) {
@@ -180,7 +180,7 @@ class MenuController extends Controller
             $this->lastSubMenuId++;
 
             $html .= '<li class="dd-item dd3-item" data-id="'.$this->lastSubMenuId.'" '.$dataAttribute.' data-title="'. $item['title'].'">
-                    <div class="dd-handle dd3-handle"></div><div class="dd3-content">'. $title .'</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>';
+                    <div class="dd-handle dd3-handle"></div><div class="dd3-content">'. truncateWords($title, 30) .'</div><div class="dd3-edit"><i class="fa fa-trash"></i></div>';
 
             if ( isset($item['children']) && count($item['children']) > 0) {
                 $html .= '<ol class="dd-list">';
