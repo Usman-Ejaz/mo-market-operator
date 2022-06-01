@@ -277,7 +277,7 @@
 				start_datetime: {
 					required: {
 						depends: function () {
-							return $('#start_datetime').val().length > 0 ? false : true;
+							return $('#end_datetime').val().length > 0;
 						}
 					}
 				},
