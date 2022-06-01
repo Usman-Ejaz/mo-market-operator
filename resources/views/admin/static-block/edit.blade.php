@@ -53,7 +53,7 @@
 			return messageLength !== 0;
 		}, '{{ __("messages.ckeditor_required") }}');
 
-		$('#create-static-block-form').validate({
+		$('#update-static-block-form').validate({
 			ignore: [],
 			errorElement: 'span',
 			errorClass: "my-error-class",
