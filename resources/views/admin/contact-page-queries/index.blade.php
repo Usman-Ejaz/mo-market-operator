@@ -62,7 +62,7 @@
 				{ data: 'email', name: 'email' },
 				{ data: 'subject', name: 'subject' },
 				// { data: 'message', name: 'message' },
-				{ data: 'created_at', name: 'created_at' },
+				{ data: { '_': 'created_at.display', 'sort': 'created_at.sort' } },
 				{
 					data: 'action',
 					name: 'action',

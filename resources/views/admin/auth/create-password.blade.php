@@ -17,15 +17,15 @@
 			</div>
 			@endif
 
-			<form method="POST" action="{{ route('admin.password.create') }}">
+			<form method="POST" action="{{ route('admin.password.create') }}" autocomplete="off">
 				@csrf
 
 				<!-- Password Reset Token -->
 				<input type="hidden" name="token" value="{{ $signature }}">
-				<input type="hidden" name="email" value="{{ $user }}" required>
+				<input type="hidden" name="email" value="{{ $user->email }}" required>
 
 				<div class="input-group mb-3">
-					<input type="password" class="form-control" placeholder="{{ __('New Password') }}" id="password" name="password" required>
+					<input type="password" autocomplete="new-password" class="form-control" placeholder="{{ __('New Password') }}" id="password" name="password" required>
 					<div class="input-group-append">
 						<div class="input-group-text">
 							<span class="fas fa-eye" id="eye-new-password"></span>
@@ -33,7 +33,7 @@
 					</div>
 				</div>
 				<div class="input-group mb-3">
-					<input type="password" class="form-control" placeholder="{{ __('Confirm Password') }}" id="confirm_password" name="password_confirmation" required>
+					<input type="password" autocomplete="new-password" class="form-control" placeholder="{{ __('Confirm Password') }}" id="confirm_password" name="password_confirmation" required>
 					<div class="input-group-append">
 						<div class="input-group-text">
 							<span class="fas fa-eye" id="eye-confirm-password"></span>

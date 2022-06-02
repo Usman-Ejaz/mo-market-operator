@@ -1,15 +1,9 @@
 @extends('admin.layouts.app')
-{{-- @section('header', 'Search Statistics') --}}
+
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item active">Search Statistics</li>
 @endsection
-
-{{-- @section('addButton')
-@if(hasPermission('search_statistics', 'export_keywords'))
-<a role="button" class="btn btn-primary float-right" href="{{ route('admin.search-statistics.export-list') }}">Export Keywords</a>
-@endif
-@endsection --}}
 
 @section('content')
 <div class="container-fluid">
@@ -88,7 +82,7 @@
 
 	$(document).ready(() => {
 		
-		
+		$(document).prop('title', "Search Statistics - ISMO");
 		var startDate = "";
 		var endDate = "";
 		

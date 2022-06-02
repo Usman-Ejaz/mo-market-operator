@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChatbotFeedback;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -111,8 +112,11 @@ class ChatbotFeedbackController extends Controller
                 ->addColumn('feedback', function ($row) {
                     return (isset($row->feedback)) ? truncateWords($row->feedback, 20) : '';
                 })
-                ->addColumn('created_at', function ($row) {
-                    return ($row->created_at) ? $row->created_at : '';
+                ->editColumn('created_at', function ($row) {
+                    return [
+                        'display' => $row->created_at,
+                        'sort' => Carbon::parse(parseDate($row->created_at))->timestamp
+                    ];
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';

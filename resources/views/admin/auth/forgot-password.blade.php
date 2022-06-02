@@ -23,7 +23,7 @@
         </div>
       @endif
       
-      <form method="POST" action="{{ route('admin.password.email') }}">
+      <form method="POST" action="{{ route('admin.password.email') }}" autocomplete="off">
       @csrf
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="{{__('Email Address')}}" name="email" value="{{ old('email') }}" required autofocus>

@@ -264,11 +264,11 @@
             // activate Nestable for list
             $('#nestable').nestable({
                 group: 1,
-                maxDepth: 10
+                maxDepth: 5
             }).on('change', updateOutput);
 
             // output initial serialised data
-            updateOutput($('#nestable').data('output', $('#nestable-output')));            
+            updateOutput($('#nestable').data('output', $('#nestable-output')));
 
             // Stop form to submit by clicking the enter button
             $(window).keydown(function(event){
@@ -287,7 +287,7 @@
                     lastSubMenuId = lastSubMenuId + 1;
                     $('ol#submenu').append(`<li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-page="${$(this).data('page')}" data-title="${$(this).data('title')}" data-slug="${$(this).data('slug')}">
                         <div class="dd-handle dd3-handle"></div><div class="dd3-content">
-                        ${lastSubMenuId} ( page ) ${$(this).data('title')}
+                        ${lastSubMenuId} ( page ) ${truncateString($(this).data('title'))}
                         </div><div class="dd3-edit"><i class="fa fa-trash"></i></div>
                         </li>`
                     );
@@ -465,7 +465,7 @@
                         let title = $('#NewMenuTitle').val();
 
                         $(`li[data-id="${menuIdToUpdate}"]`).removeAttr('data-page').attr('data-anchor', anchor);
-                        $(`li[data-id="${menuIdToUpdate}"] > .dd3-content`).html(menuIdToUpdate + ' (anchor) ' + title);
+                        $(`li[data-id="${menuIdToUpdate}"] > .dd3-content`).html(truncateString(menuIdToUpdate + ' (anchor) ' + title));
 
                     } else if (menuType === 'page') {
                         let page = $("#newMenuPage").val();
@@ -473,7 +473,7 @@
                         let title = $('#NewMenuTitle').val();
                         page = (page !== "") ? page : '';
                         $(`li[data-id="${menuIdToUpdate}"]`).removeAttr('data-anchor').attr('data-page', page).attr('data-slug', pageSlug);
-                        $(`li[data-id="${menuIdToUpdate}"] > .dd3-content`).html(menuIdToUpdate + ' (page) ' + title);
+                        $(`li[data-id="${menuIdToUpdate}"] > .dd3-content`).html(truncateString(menuIdToUpdate + ' (page) ' + title));
                     }
 
                     $(`li[data-id="${menuIdToUpdate}"]`).clone().insertBefore(`li[data-id="${menuIdToUpdate}"]`);
@@ -512,7 +512,7 @@
                 $('ol#submenu').append(`
                     <li class="dd-item dd3-item" data-id="${lastSubMenuId}" ${attributes}>
                         <div class="dd-handle dd3-handle"></div>
-                        <div class="dd3-content">${html}</div>
+                        <div class="dd3-content">${truncateString(html)}</div>
                         <div class="dd3-edit"><i class="fa fa-trash"></i></div>
                     </li>`
                 );
@@ -573,6 +573,15 @@
                 }
 
                 return !(hasTitleError || hasURLError || hasPageError);
+            }
+            
+            function truncateString(str, len = 33, replaceWith = '...')
+            {
+                if (str) {
+                    return str.length > len ? str.substring(0, len) + replaceWith : str;
+                }
+
+                return '';
             }
         });
     </script>
