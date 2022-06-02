@@ -177,6 +177,12 @@ class PostController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
+                    // if (hasPermission('posts', 'view')) {
+                    //     $link = $row->link . (! $row->isPublished() ? '?unpublished=true' : '');
+                    //     $options .= '<a href="' . $link . '" class="btn btn-primary mr-1" title="Preview" target="_blank">
+                    //         <i class="fas fa-eye"></i>
+                    //     </a>';
+                    // }
                     if( hasPermission('posts', 'edit') ) {
                         $options .= '<a href="' . route('admin.posts.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>

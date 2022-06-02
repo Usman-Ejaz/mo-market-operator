@@ -176,12 +176,18 @@ class PageController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( hasPermission('pages', 'edit') ) {
+                    // if (hasPermission('pages', 'view')) {
+                    //     $link = $row->link . (! $row->isPublished() ? '?unpublished=true' : '');
+                    //     $options .= '<a href="' . $link . '" class="btn btn-primary mr-1" title="Preview" target="_blank">
+                    //         <i class="fas fa-eye"></i>
+                    //     </a>';
+                    // }
+                    if (hasPermission('pages', 'edit')) {
                         $options .= '<a href="' . route('admin.pages.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( hasPermission('pages', 'delete') ) {
+                    if (hasPermission('pages', 'delete')) {
                         $options .= ' <form action="'. route('admin.pages.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'
                             '.method_field("DELETE").'
