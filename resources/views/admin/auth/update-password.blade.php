@@ -24,7 +24,7 @@
 
                 <!-- Password Reset Token -->
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" autocomplete="off" placeholder="{{ __('Old Password') }}" id="old_password" name="old_password" required>
+                    <input type="password" autocomplete="current-password" class="form-control" placeholder="{{ __('Old Password') }}" id="old_password" name="old_password" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-eye" id="eye-old-password"></span>
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" autocomplete="off" placeholder="{{ __('New Password') }}" id="new_password" name="password" required>
+                    <input type="password" autocomplete="new-password" class="form-control" placeholder="{{ __('New Password') }}" id="new_password" name="password" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-eye" id="eye-new-password"></span>
@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" autocomplete="off" placeholder="{{ __('Confirm Password') }}" id="confirm_password" name="password_confirmation" required>
+                    <input type="password" autocomplete="new-password" class="form-control" placeholder="{{ __('Confirm Password') }}" id="confirm_password" name="password_confirmation" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-eye" id="eye-confirm-password"></span>
