@@ -64,6 +64,9 @@
 
 @push("optional-scripts")
 <script>
+    
+    $('form').disableAutoFill();
+
     $("#eye-old-password").click(function() {
 		if ($("#old_password").attr("type") === "password") {
 			$("#old_password").attr("type", "text");
