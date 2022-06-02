@@ -31,10 +31,9 @@ class NewUserCreatePasswordEmail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $signedURL = URL::temporarySignedRoute('create-password', 
-            now()->addMinutes(config("settings.createPassowrdLinkExpiryTime")), ['user' => $this->user->email]);
-
-        return $this->markdown('mail.new-user-create-password', ['url' => $signedURL])
+        return $this->markdown('mail.new-user-create-password', [
+            'url' => $this->user->password_link
+        ])
         ->subject("Welcome, Please create your password");
     }
 }

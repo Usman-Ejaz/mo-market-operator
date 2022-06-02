@@ -68,6 +68,13 @@ class NewPasswordController extends Controller
         if (! $request->hasValidSignature()) {
             abort(401);
         }
+
+        $user = User::where(['email' => $user])->first();
+
+        if ($user && $user->password_link === null) {
+            abort(401);
+        }
+
         $signature = $request->signature;
         return view("admin.auth.create-password", compact('user', 'signature'));
     }
@@ -82,10 +89,17 @@ class NewPasswordController extends Controller
         $user = User::where(['email' => $request->get("email")])->first();
 
         if ($user) {
+
+            if ($user->password_link === null) {
+                abort(401);
+            }
             
             if ($user->active == "Active") {
+
                 $user->password = bcrypt($request->get("password"));
+                $user->password_link = null;
                 $user->save();
+                
                 return redirect()->route("admin.login");
             }
 

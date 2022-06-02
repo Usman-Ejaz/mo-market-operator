@@ -3,6 +3,8 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
+const { toSafeInteger } = require("lodash");
+
 CKEDITOR.editorConfig = function( config ) {
     // Define changes to default configuration here. For example:
     // config.language = 'fr';
@@ -38,6 +40,11 @@ CKEDITOR.editorConfig = function( config ) {
 };
 
 CKEDITOR.on("instanceReady", function(event) {
+
+    event.editor.document.on('drop', function (ev) {
+        ev.data.preventDefault(true);
+    });
+
     event.editor.on("beforeCommandExec", function(event) {
         // Show the paste dialog for the paste buttons and right-click paste
         if (event.data.name == "paste") {
