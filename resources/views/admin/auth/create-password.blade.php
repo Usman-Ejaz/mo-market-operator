@@ -22,7 +22,7 @@
 
 				<!-- Password Reset Token -->
 				<input type="hidden" name="token" value="{{ $signature }}">
-				<input type="hidden" name="email" value="{{ $user }}" required>
+				<input type="hidden" name="email" value="{{ $user->email }}" required>
 
 				<div class="input-group mb-3">
 					<input type="password" class="form-control" placeholder="{{ __('New Password') }}" id="password" name="password" required>

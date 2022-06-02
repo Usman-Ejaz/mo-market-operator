@@ -24,13 +24,13 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="identifier">Identifier <span class="text-danger">*</span></label>
-                <input type="input" autocomplete="off" class="form-control" id="identifier" placeholder="Enter full identifier" name="identifier" value="{{ old('identifier') ?? $staticBlock->identifier }}">
+                <input type="input" autocomplete="off" class="form-control" id="identifier" placeholder="Enter identifier" name="identifier" value="{{ old('identifier') ?? $staticBlock->identifier }}">
                 <span class="form-text text-danger">{{ $errors->first('identifier') }} </span>
             </div>
         </div>
     </div>
     @else
-    <input type="hidden" class="form-control" id="identifier" placeholder="Enter full identifier" name="identifier" value="{{ old('identifier') ?? $staticBlock->identifier }}">
+    <input type="hidden" class="form-control" id="identifier" placeholder="Enter identifier" name="identifier" value="{{ old('identifier') ?? $staticBlock->identifier }}">
     @endif
     
 

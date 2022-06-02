@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -58,6 +59,13 @@ class UserController extends Controller
             $this->storeImage($user);
 
             if ($request->get("sendEmail") == "1") {
+                
+                $signedURL = URL::temporarySignedRoute('create-password', 
+                    now()->addMinutes(config("settings.createPassowrdLinkExpiryTime")), ['user' => $user->email]);
+
+                $user->password_link = $signedURL;
+                $user->save();
+                
                 Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
             }
 
@@ -122,6 +130,11 @@ class UserController extends Controller
         $user->update($data);
 
         if ($request->get("sendEmail") == "1") {
+            $signedURL = URL::temporarySignedRoute('create-password', 
+                now()->addMinutes(config("settings.createPassowrdLinkExpiryTime")), ['user' => $user->email]);
+
+            $user->update(['password_link' => $signedURL]);
+            
             Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
         }
 
