@@ -69,6 +69,9 @@
 				contents: {
 					ckeditor_required: true,
 					minlength: 3
+				},
+				identifier: {
+					required: true,
 				}
 			},
 			errorPlacement: function(error, element) {
