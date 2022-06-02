@@ -6,6 +6,7 @@ use App\Models\Traits\CreatedModifiedBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -16,6 +17,8 @@ class Post extends Model
     public const STORAGE_DIRECTORY = 'posts/';
 
     protected $table = "posts";
+
+    protected $appends = ['link'];
 
     protected $guarded = [];
 
@@ -46,6 +49,11 @@ class Post extends Model
 
     public function getImageAttribute ($value) {
         return serveFile(self::STORAGE_DIRECTORY, $value);
+    }
+
+    public function getLinkAttribute()
+    {
+        return isset($this->slug) ? config('settings.client_app_base_url') . Str::plural(strtolower($this->post_category)) . '/' . $this->slug : null;
     }
 
     public function parseStartDate() {

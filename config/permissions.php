@@ -38,7 +38,7 @@ return [
         "display_name" => "Posts",
         "capabilities" => [
             "list" => "List",
-            //"view" => "View",
+            // "view" => "View",
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",
@@ -66,7 +66,7 @@ return [
         "display_name" => "CMS Pages",
         "capabilities" => [
             "list" => "List",
-            //"view" => "View",
+            // "view" => "View",
             "create" => "Create",
             "edit" => "Edit",
             "delete" => "Delete",

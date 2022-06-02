@@ -40,7 +40,7 @@ class Page extends Model
     }
 
     public function getLinkAttribute ($value) {
-        return !empty($this->slug) ? route('pages.show', $this->slug) : null;
+        return !empty($this->slug) ? config('settings.client_app_base_url') . $this->slug : null;
     }
 
     public function parseStartDate() {
@@ -76,7 +76,7 @@ class Page extends Model
 
     public function setSlugAttribute($attribute){
 
-        $this->attributes['slug'] = ($attribute) ? trim($attribute, '- ') : NULL;
+        $this->attributes['slug'] = ($attribute) ? str_slug($attribute, '- ') : NULL;
     }
     
     public function activeOptions(){

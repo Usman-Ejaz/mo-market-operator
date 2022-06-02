@@ -66,6 +66,19 @@
 						<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
 						@if(hasPermission('posts', 'publish'))
 							<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
+							<div class="form-group mt-3">
+								<div class="row text-center">
+									<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
+										<i class="fab fa-facebook social-share-icon" style="color: var(--facebook-color);"></i>
+									</div>
+									<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
+										<i class="fab fa-twitter social-share-icon" style="color: var(--twitter-color);"></i>
+									</div>
+									<div class="col-md-3 col-sm-4 p-2 text-center">
+										<i class="fab fa-linkedin social-share-icon" style="color: var(--linkedIn-color);"></i>
+									</div>
+								</div>
+							</div>
 						@endif
 					@else
 						<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
@@ -82,6 +95,12 @@
 
 @push('optional-styles')
 <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
+<style>
+	.social-share-icon {
+		font-size: 40px;
+		cursor: pointer;
+	}
+</style>
 @endpush
 
 @push('optional-scripts')
@@ -307,6 +326,31 @@
 			}
 		});
 
+		// handle social share button clicks
+		$('.social-share-icon').click(function() {
+			let clickedElement = $(this).attr('class').replace('fab fa-', '').replace('social-share-icon', '').trim();
+
+			const FACEBOOK_SHARE_URL = 'https://www.facebook.com/sharer.php';
+			const TWITTER_SHARE_URL = 'https://twitter.com/intent/tweet';
+			const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle?mini=true';
+			let url = "";
+
+			switch (clickedElement) {
+				case 'facebook':
+					url = `${FACEBOOK_SHARE_URL}?u={{ $post->link }}`;
+					socialWindow(url);
+					break;
+				case 'twitter':
+					url = `${TWITTER_SHARE_URL}?url={{ $post->link }}`;
+					socialWindow(url);
+					break;
+				case 'linkedin':
+					url = `${LINKEDIN_SHARE_URL}&url={{ $post->link }}`;
+					socialWindow(url);
+					break;
+			}
+		});
+
 		$('.bootstrap-tagsinput > input').on('blur keypress', function (e) {
 			if ((e.which === 13 && $(this).val().trim().length > 0) || document.getElementsByClassName('label-info').length > 0) {
 				$(this).attr('placeholder', '');
@@ -328,6 +372,13 @@
 
 	function mapDate(date) {
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
+	}
+
+	function socialWindow(url) {
+		var left = (screen.width - 570) / 2;
+		var top = (screen.height - 570) / 2;
+		var params = "menubar=no,toolbar=no,status=no,width=570,height=570,top=" + top + ",left=" + left;
+		window.open(url, "NewWindow", params);
 	}
 
 	function handleFileChoose (e) 
