@@ -274,11 +274,11 @@ class PublishedPostApiController extends BaseApiController
         }
 
         try {
-            // if (request()->has('unpublished') && request()->query('unpublished') == 'true') {
-                // $post = Post::$category()->where("slug", "=", $slug)->first();
-            // } else {
+            if (request()->has('unpublished') && request()->query('unpublished') == 'true') {
+                $post = Post::$category()->where("slug", "=", $slug)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords")->first();
+            } else {
                 $post = Post::published()->$category()->where("slug", "=", $slug)->first();
-            // }
+            }
 
             if ($post) {
                 return $this->sendResponse($post, "Success");

@@ -63,11 +63,13 @@
 
 					<input type="hidden" name="active" id="status">
 					<input type="hidden" name="action" id="action">
-
+					@if(hasPermission('pages', 'view'))
+						<a href="{{ $cms_page->link . (!$cms_page->isPublished() ? '?unpublished=true' : '') }}" target="_blank" class="btn btn-primary publish_button">Preview</a>
+					@endif
 					@if($cms_page->isPublished())
-						<button type="submit" class="btn width-120 btn-primary update_button">Update</button>
+						<button type="submit" class="btn btn-primary update_button">Update</button>
 						@if( hasPermission('pages', 'publish') )
-						<button type="submit" class="btn width-120 btn-danger unpublish_button">Unpublish</button>
+						<button type="submit" class="btn btn-danger unpublish_button">Unpublish</button>
 						<div class="form-group mt-3">
 							<div class="row text-center">
 								<div class="col-md-3 col-sm-4 p-2 mr-2 text-center">
@@ -83,9 +85,9 @@
 						</div>
 						@endif
 					@else
-						<button type="submit" class="btn width-120 btn-primary draft_button">Update</button>
+						<button type="submit" class="btn btn-primary draft_button">Update</button>
 						@if( hasPermission('pages', 'publish') )
-							<button type="submit" class="btn width-120 btn-success publish_button">Publish</button>
+							<button type="submit" class="btn btn-success publish_button">Publish</button>
 						@endif
 					@endif
 				</div>
