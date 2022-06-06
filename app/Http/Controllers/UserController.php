@@ -52,11 +52,16 @@ class UserController extends Controller
         $user = new User();
         $data = $this->validateRequest($user);
         $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
+
+        $data['image'] = null;
         
+        if ($request->has('image')) {
+            $data['image'] = storeFile(User::STORAGE_DIRECTORY, $request->file('image'));
+        }
+
         $user = User::create($data);
 
         if ($user->exists) {
-            $this->storeImage($user);
 
             if ($request->get("sendEmail") == "1") {
                 
@@ -231,24 +236,6 @@ class UserController extends Controller
         ], [
             "image.max" => __('messages.max_file', ['limit' => '2 MB'])
         ]);
-    }
-
-    private function storeImage($user, $previousImage = null) {
-        if (request()->has('image')) {
-
-            if ($previousImage !== null) {
-                $file_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($previousImage);
-                unlink($file_path);
-            }
-            
-            $uploadFile = request()->file('image');
-            $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.userProfileImagePath.internal_path'), $file_name);
-
-            $user->update([
-                'image' => $file_name,
-            ]);
-        }
     }
 
     public function deleteImage(Request $request){
