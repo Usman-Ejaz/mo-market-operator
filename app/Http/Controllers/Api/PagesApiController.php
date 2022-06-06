@@ -57,11 +57,11 @@ class PagesApiController extends BaseApiController
 
         try {
 
-            // if (request()->has('unpublished') && request()->query('unpublished') == 'true') {
-                // $post = Page::where("slug", "=", $pageSlug)->first();
-            // } else {
+            if (request()->has('unpublished') && request()->query('unpublished') == 'true') {
+                $post = Page::where("slug", "=", $pageSlug)->select('title', 'slug', 'keywords', 'description', 'image')->first();
+            } else {
                 $post = Page::published()->where("slug", "=", $pageSlug)->first();
-            // }
+            }
 
             if ($post) {
                 return $this->sendResponse($post, "Success");
