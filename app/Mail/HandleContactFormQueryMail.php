@@ -30,8 +30,10 @@ class HandleContactFormQueryMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.contact-form-query', [
+        return $this->from($this->contactPageQuery->email, $this->contactPageQuery->name)
+        ->view('mail.contact-form-query', [
             'contactPageQuery' => $this->contactPageQuery
-        ])->subject(__('New contact form query submitted'));
+        ])
+        ->subject(__('New contact form query submitted'));
     }
 }
