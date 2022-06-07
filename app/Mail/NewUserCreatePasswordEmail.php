@@ -31,7 +31,7 @@ class NewUserCreatePasswordEmail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('mail.new-user-create-password', [
+        return $this->view('mail.new-user-create-password', [
             'url' => $this->user->password_link
         ])
         ->subject("Welcome, Please create your password");
