@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CreatedModifiedBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TeamMember extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedModifiedBy;
 
     const STORAGE_DIRECTORY = 'teams/';
 
@@ -25,7 +26,7 @@ class TeamMember extends Model
      * getCreatedAtAttribute
      *
      * @param  mixed $attribute
-     * @return void
+     * @return mixed
      */
     public function getCreatedAtAttribute($attribute)
     {
@@ -36,7 +37,7 @@ class TeamMember extends Model
      * getImageAttribute
      *
      * @param  mixed $value
-     * @return void
+     * @return mixed
      */
     public function getImageAttribute($value)
     {
@@ -53,7 +54,7 @@ class TeamMember extends Model
     /**
      * manager
      *
-     * @return void
+     * @return mixed
      */
     public function manager()
     {
@@ -71,7 +72,7 @@ class TeamMember extends Model
      * scopeSortByOrder
      *
      * @param  mixed $query
-     * @return void
+     * @return mixed
      */
     public function scopeSortByOrder($query)
     {
@@ -87,7 +88,7 @@ class TeamMember extends Model
     /**
      * removeImage
      *
-     * @return void
+     * @return mixed
      */
     public function removeImage()
     {

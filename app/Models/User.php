@@ -60,44 +60,118 @@ class User extends Authenticatable
 
     public const STORAGE_DIRECTORY = 'users/';
 
-    /********* Getters ***********/
-    public function getActiveAttribute($attribute){
+
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+        
+    /**
+     * getActiveAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getActiveAttribute($attribute)
+    {
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
-
-    public function getCreatedAtAttribute($attribute){
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
-    public function roles(){
-        return Role::latest()->get();
-    }
-
-    public function getImageAttribute($value) {
+     /**
+     * getImageAttribute
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function getImageAttribute($value) 
+    {
         return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
-        // return !empty($value) ? asset(config("filepaths.userProfileImagePath.public_path") . $value) : null;
     }
 
-//    public function departments(){
-//        return Role::latest()->get();
-//    }
 
-    public function role(){
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
+
+
+    /**
+     * role
+     *
+     * @return mixed
+     */
+    public function role()
+    {
         return $this->belongsTo(Role::class);
     }
 
-    public function activeOptions(){
+
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     * */
+    
+    /**
+     * roles
+     *
+     * @return mixed
+     */
+    public function roles()
+    {
+        return Role::latest()->get();
+    }       
+    
+    /**
+     * activeOptions
+     *
+     * @return mixed
+     */
+    public function activeOptions()
+    {
         return [
             0 => 'Inactive',
             1 => 'Active'
         ];
     }
 
+
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopeNotifiable
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
     public function scopeNotifiable($query)
     {
         return $query->where('show_notifications', '=', 1);
     }
-
+    
+    /**
+     * scopeSkipOwnAccount
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
     public function scopeSkipOwnAccount($query)
     {
         return $query->where('id', '!=', auth()->id());

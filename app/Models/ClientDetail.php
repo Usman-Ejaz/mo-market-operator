@@ -15,7 +15,11 @@ class ClientDetail extends Model
 
     protected $guarded = [];
 
-
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
     
     /**
      * getPriSignatureAttribute

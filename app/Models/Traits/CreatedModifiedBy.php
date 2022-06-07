@@ -8,16 +8,23 @@ trait CreatedModifiedBy
     {
         // updating created_by when model is created
         static::creating(function ($model) {
-            if (!$model->isDirty('created_by')) {
+            if (! $model->isDirty('created_by')) {
                 $model->created_by = auth()->user()->id;
             }
         });
 
         // updating modified_by when model is updated
         static::updating(function ($model) {
-            if (!$model->isDirty('modified_by') && auth()->check()) {
+            if (! $model->isDirty('modified_by') && auth()->check()) {
                 $model->modified_by = auth()->user()->id;
             }
         });
+
+        // static::deleting(function ($model) {
+        //     event(new NewActivityHasPerformed());
+        //     if (!$model->isDirty('modified_by') && auth()->check()) {
+        //         $model->modified_by = auth()->user()->id;
+        //     }
+        // });
     }
 }

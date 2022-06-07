@@ -12,8 +12,20 @@ class Permission extends Model
     protected $guarded = [];
 
     public $timestamps = true;
+    
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
 
-    public function role(){
-        return $this->belongsTo(Role::name);
+    /**
+     * role
+     *
+     * @return void
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

@@ -15,34 +15,94 @@ class Faq extends Model
     protected $guarded = [];
 
     protected $attributes = [];
+    
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
 
-    public function category() {
+    /**
+     * category
+     *
+     * @return mixed
+     */
+    public function category() 
+    {
         return $this->belongsTo(FaqCategory::class, "category_id", "id");
     }
 
-    /********* Getters ***********/
-    public function getActiveAttribute($attribute){
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+        
+    /**
+     * getActiveAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getActiveAttribute($attribute)
+    {
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
-
-    public function getCreatedAtAttribute($attribute){
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
-    public function activeOptions(){
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopePublished
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopePublished ($query) 
+    {
+        return $query->where("published_at", "!=", null)->select("question", "answer");
+    }
+
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */
+    
+    /**
+     * isPublished
+     *
+     * @return mixed
+     */
+    public function isPublished()
+    {
+        return $this->published_at !== null;
+    }
+
+    /**
+     * activeOptions
+     *
+     * @return mixed
+     */
+    public function activeOptions()
+    {
         return [
             0 => 'Draft',
             1 => 'Active'
         ];
-    }
-
-    // Scope Queries
-    public function scopePublished ($query) {
-        return $query->where("published_at", "!=", null)->select("question", "answer");
-    }
-
-    public function isPublished()
-    {
-        return $this->published_at !== null;
     }
 }

@@ -13,12 +13,18 @@ class ContactPageQuery extends Model
     protected $guarded = [];
 
     const STATUS_ENUMS = ["pending", "inprocess", "resolved"];
+
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
     
     /**
      * getCreatedAtAttribute
      *
      * @param  mixed $attribute
-     * @return void
+     * @return mixed
      */
     public function getCreatedAtAttribute($attribute)
     {
@@ -29,7 +35,7 @@ class ContactPageQuery extends Model
      * getStatusAttribute
      *
      * @param  mixed $value
-     * @return void
+     * @return mixed
      */
     public function getStatusAttribute($value)
     {

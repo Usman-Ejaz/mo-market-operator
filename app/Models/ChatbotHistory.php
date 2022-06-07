@@ -12,6 +12,19 @@ class ChatbotHistory extends Model
 
     protected $guarded = [];
 
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+        
+    /**
+     * scopeTodaysChat
+     *
+     * @param  mixed $query
+     * @param  mixed $initiatorId
+     * @return mixed
+     */
     public function scopeTodaysChat($query, $initiatorId)
     {
         return $query->where('chatbot_initiator_id', '=', $initiatorId)->where('created_at', '>=', Carbon::today())->where('created_at', '<', Carbon::tomorrow());

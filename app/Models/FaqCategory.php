@@ -2,23 +2,47 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CreatedModifiedBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class FaqCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
+    
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
 
-    public function getCreatedAtAttribute($attribute){
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    // Model Relations goes here
     
-    public function faqs() {
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
+
+    /**
+     * faqs
+     *
+     * @return mixed
+     */
+    public function faqs() 
+    {
         return $this->hasMany(Faq::class, "category_id", "id");
     }
 }

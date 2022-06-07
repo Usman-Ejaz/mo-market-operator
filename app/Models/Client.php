@@ -116,7 +116,7 @@ class Client extends Authenticatable
      * ======================================================
      *                 Model Helper Functions
      * ======================================================
-     * */
+     */
     
     /**
      * Checks if client is approved by admin or not.
@@ -219,9 +219,14 @@ class Client extends Authenticatable
      * ======================================================
      *                  Model Relations
      * ======================================================
-    **/
+     */
 
-    
+        
+    /**
+     * details
+     *
+     * @return mixed
+     */
     public function details()
     {
         return $this->hasMany(ClientDetail::class, 'client_id', 'id');
@@ -231,6 +236,7 @@ class Client extends Authenticatable
     /**
      * attachments
      * 
+     * @return mixed
      */
     public function attachments() 
     {
@@ -242,7 +248,7 @@ class Client extends Authenticatable
      * ======================================================
      *                  Model Scope Queries
      * ======================================================
-    **/
+     */
 
     public function scopeIncomplete($query)
     {
