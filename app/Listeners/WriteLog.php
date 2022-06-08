@@ -27,18 +27,6 @@ class WriteLog implements ShouldQueue
      */
     public function handle(ActivityLogEvent $event)
     {
-        $module = str_replace("App\\Models\\", "", get_class($event->model));
-        
-        $message = $module . ' ' . $event->message;
-
-        ActivityLog::create([
-            'message' => $message,
-            'type' => $event->type,
-            'model' => get_class($event->model),
-            'module' => $module,
-            'done_by' => $event->userId,
-            'new' => $event->model->toJson(),
-            'old' => json_encode($event->model->getChanges())
-        ]);
+        ActivityLog::create($event->data);
     }
 }

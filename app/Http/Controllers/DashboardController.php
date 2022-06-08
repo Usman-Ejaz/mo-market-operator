@@ -46,7 +46,7 @@ class DashboardController extends Controller
                     $table .= '</tr>';
                 }
             } else {
-                $table .= '<tr><td colspan="1"><small>There is no data to view</small></td></tr>';
+                $table .= '<tr><td colspan="5"><small>There is no data to view</small></td></tr>';
             }
             return response(['activityLogs' => $table], 200);
         } catch (Exception $ex) {
