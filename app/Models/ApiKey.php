@@ -9,7 +9,22 @@ class ApiKey extends Model
 {
     use HasFactory;
 
-    public function scopeValid($query, $name, $value) {
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+        
+    /**
+     * scopeValid
+     *
+     * @param  mixed $query
+     * @param  mixed $name
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function scopeValid($query, $name, $value) 
+    {
         return $query->where("name", "=", $name)->where("value", "=", $value);
     }
 }

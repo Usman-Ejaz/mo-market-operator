@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CreatedModifiedBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Training extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
 
@@ -23,13 +24,13 @@ class Training extends Model
      * ======================================================
      *                 Model Mutator Functions
      * ======================================================
-     * */
+     */
     
     /**
      * setStartDateAttribute
      *
      * @param  mixed $value
-     * @return void
+     * @return mixed
      */
     public function setStartDateAttribute($value)
     {
@@ -40,7 +41,7 @@ class Training extends Model
      * setEndDateAttribute
      *
      * @param  string $value
-     * @return void
+     * @return mixed
      */
     public function setEndDateAttribute($value)
     {
@@ -51,7 +52,7 @@ class Training extends Model
      * ======================================================
      *                 Model Accessor Functions
      * ======================================================
-     * */
+     */
 
     /**
      * getCreatedAtAttribute
@@ -118,13 +119,13 @@ class Training extends Model
      * ======================================================
      *               Model Scope Query Functions
      * ======================================================
-     * */
+     */
     
     /**
      * scopeApplyFilters
      *
      * @param  mixed $query
-     * @return void
+     * @return mixed
      */
     public function scopeApplyFilters($query)
     {
@@ -150,7 +151,7 @@ class Training extends Model
      * ======================================================
      *                 Model Helper Functions
      * ======================================================
-     * */
+     */
 
     /**
      * status
@@ -165,7 +166,7 @@ class Training extends Model
     /**
      * removeAttachments
      *
-     * @return void
+     * @return mixed
      */
     public function removeAttachments()
     {

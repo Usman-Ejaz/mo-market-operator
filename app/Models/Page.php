@@ -18,76 +18,121 @@ class Page extends Model
     protected $appends = ['link'];
 
     public const STORAGE_DIRECTORY = 'pages/';
-    
-    public function getActiveAttribute ($attribute) {
+
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+        
+    /**
+     * getActiveAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getActiveAttribute ($attribute) 
+    {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
     }
-
-    public function getStartDatetimeAttribute($attribute) {
+    
+    /**
+     * getStartDatetimeAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getStartDatetimeAttribute($attribute) 
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getEndDatetimeAttribute($attribute){
+    
+    /**
+     * getEndDatetimeAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getEndDatetimeAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getCreatedAtAttribute($attribute){
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getImageAttribute ($value) {
-        return !empty($value) ? asset(config("filepaths.pageImagePath.public_path") . $value) : null;
+    
+    /**
+     * getImageAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getImageAttribute ($value) 
+    {
+        return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
     }
-
-    public function getLinkAttribute ($value) {
+    
+    /**
+     * getLinkAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getLinkAttribute ($value) 
+    {
         return !empty($this->slug) ? config('settings.client_app_base_url') . $this->slug : null;
     }
 
-    public function parseStartDate() {
-        if ($this->start_datetime) {
-            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
-        }
-        return "";
-    }
-
-    public function parseEndDate() {
-        if ($this->end_datetime) {
-            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
-        }
-        return "";
-    }
-
-
-    /********** Setters *********/
-    // public function setStartDatetimeAttribute($attribute){
-
-    //     $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    // }
-
-    // public function setEndDatetimeAttribute($attribute){
-
-    //     $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    // }
-
-    public function setKeywordsAttribute($attribute){
-
+    /**
+     * ======================================================
+     *                 Model Mutator Functions
+     * ======================================================
+     */
+    
+    /**
+     * setKeywordsAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function setKeywordsAttribute($attribute)
+    {
         $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;
     }
-
-    public function setSlugAttribute($attribute){
-
+    
+    /**
+     * setSlugAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function setSlugAttribute($attribute)
+    {
         $this->attributes['slug'] = ($attribute) ? str_slug($attribute, '- ') : NULL;
     }
-    
-    public function activeOptions(){
-        return [
-            0 => 'Draft',
-            1 => 'Active'
-        ];
-    }
 
-    // Scope Queries
-    public function scopePublished($query) {
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopePublished
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopePublished($query) 
+    {
         return $query->where('published_at', '!=', null)->select('title', 'slug', 'keywords', 'description', 'image');
     }
 
@@ -113,7 +158,58 @@ class Page extends Model
         return $query->whereDay('published_at', date('d'));
     }
 
-    public function isPublished() {
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */
+    
+    /**
+     * isPublished
+     *
+     * @return void
+     */
+    public function isPublished() 
+    {
         return $this->published_at !== null;
     }
+
+    /**
+     * activeOptions
+     *
+     * @return void
+     */
+    public function activeOptions()
+    {
+        return [
+            0 => 'Draft',
+            1 => 'Active'
+        ];
+    }
+
+    /**
+     * parseStartDate
+     *
+     * @return void
+     */
+    public function parseStartDate() 
+    {
+        if ($this->start_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
+        }
+        return "";
+    }
+    
+    /**
+     * parseEndDate
+     *
+     * @return void
+     */
+    public function parseEndDate() 
+    {
+        if ($this->end_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
+        }
+        return "";
+    }    
 }

@@ -6,13 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ContactPageQuery extends Model
+class ActivityLog extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
-
-    const STATUS_ENUMS = ["pending", "inprocess", "resolved"];
 
     /**
      * ======================================================
@@ -21,24 +19,24 @@ class ContactPageQuery extends Model
      */
     
     /**
-     * getCreatedAtAttribute
+     * getDoneByAttribute
      *
-     * @param  mixed $attribute
-     * @return mixed
+     * @param  mixed $value
+     * @return void
      */
-    public function getCreatedAtAttribute($attribute)
+    public function getDoneByAttribute($value)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return !empty($value) ? User::find($value)->name : $value;
     }
     
     /**
-     * getStatusAttribute
+     * getCreatedAtAttribute
      *
      * @param  mixed $value
-     * @return mixed
+     * @return void
      */
-    public function getStatusAttribute($value)
+    public function getCreatedAtAttribute($value)
     {
-        return ucfirst($value);
+        return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
     }
 }

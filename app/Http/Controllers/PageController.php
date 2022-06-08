@@ -223,25 +223,6 @@ class PageController extends Controller
         ]);
     }
 
-    private function storeImage($page, $previousImage = null){
-
-        if (request()->has('image')) {
-
-            if ($previousImage !== null) {
-                $file_path = public_path(config('filepaths.pageImagePath.public_path')) . basename($previousImage);
-                unlink($file_path);
-            }
-
-            $uploadFile = request()->file('image');
-            $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.pageImagePath.internal_path'), $file_name);
-
-            $page->update([
-                'image' => $file_name,
-            ]);
-        }
-    }
-
     public function deleteImage(Request $request){
         if ($request->ajax()) {
             if( isset($request->page_id) ){

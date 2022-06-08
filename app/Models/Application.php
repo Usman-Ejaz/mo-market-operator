@@ -17,19 +17,49 @@ class Application extends Model
 
     public const STORAGE_DIRECTORY = 'applications/';
 
-    /********* Getters ***********/
-    public function getCreatedAtAttribute($attribute){
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    /********** Setters *********/
-    public function applicationsJob(){
-        
-        return $this->belongsTo(Job::class);
-    }
-
+    
+    /**
+     * getResumeAttribute
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
     public function getResumeAttribute($value)
     {
         return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
     }
+
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
+        
+    /**
+     * applicationsJob
+     *
+     * @return mixed
+     */
+    public function applicationsJob()
+    {        
+        return $this->belongsTo(Job::class);
+    }
+
+    
 }

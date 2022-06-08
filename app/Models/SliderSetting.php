@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CreatedModifiedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SliderSetting extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
 
@@ -19,6 +20,17 @@ class SliderSetting extends Model
         5 => ['label' => 'Ease In Out', 'name' => 'ease-in-out']
     ];
 
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */    
+
+    /**
+     * get
+     *
+     * @return mixed
+     */
     public static function get()
     {
         $settings = self::select('transition', 'speed')->first();

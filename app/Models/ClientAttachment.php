@@ -15,16 +15,28 @@ class ClientAttachment extends Model
 
     const DIR = 'clients/attachments/';
 
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+    
+    /**
+     * getFileAttribute
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
     public function getFileAttribute($value) 
     {
         return serveFile(self::DIR, $value);
-    }    
-
-    public function category() 
-    {
-        return ucwords(Client::REGISTER_CATEGORIES[$this->category_id]);
     }
-
+    
+    /**
+     * getPhraseStringAttribute
+     *
+     * @return mixed
+     */
     public function getPhraseStringAttribute()
     {
         if ($this->category_id === null)
@@ -35,4 +47,19 @@ class ClientAttachment extends Model
         return $this->phrase ? __('client.keys.' . strtolower($this->category()) . '.' . $this->phrase) : "";
     }
 
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */
+    
+    /**
+     * category
+     *
+     * @return mixed
+     */
+    public function category() 
+    {
+        return ucwords(Client::REGISTER_CATEGORIES[$this->category_id]);
+    }
 }

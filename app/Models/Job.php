@@ -23,38 +23,96 @@ class Job extends Model
     const STORAGE_DIRECTORY = 'jobs/';
 
     protected $appends = ['attachment_links'];
-
-    /********* Getters ***********/
-    public function getActiveAttribute($attribute){
+    
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+        
+    /**
+     * getActiveAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getActiveAttribute($attribute)
+    {
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
-
-    public function getStartDatetimeAttribute($attribute){
+    
+    /**
+     * getStartDatetimeAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getStartDatetimeAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getEndDatetimeAttribute($attribute){
+    
+    /**
+     * getEndDatetimeAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getEndDatetimeAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getCreatedAtAttribute($attribute){
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
+    
+    /**
+     * getEnableAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
     public function getEnableAttribute($value)
     {
-        return $value === 1 ? true : false;
+        return $value === 1;
     }
-
-    public function getImageAttribute ($value) {
+    
+    /**
+     * getImageAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getImageAttribute ($value) 
+    {
         return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
     }
-
-    public function getAttachmentsAttribute($value) {
-
+    
+    /**
+     * getAttachmentsAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getAttachmentsAttribute($value) 
+    {
         return isset($value) ? explode(',', $value) : [];
     }
-
+    
+    /**
+     * getAttachmentLinksAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
     public function getAttachmentLinksAttribute($value)
     {
         $links = [];
@@ -65,52 +123,57 @@ class Job extends Model
 
         return $links;
     }
-
-    public function getLinkAttribute($value) {
+    
+    /**
+     * getLinkAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getLinkAttribute($value) 
+    {
         return !empty($this->slug) ? route('pages.show', $this->slug) : null;
-    }
+    }    
+    
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
 
-    public function parseStartDate() {
-        if ($this->start_datetime) {
-            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
-        }
-        return "";
-    }
-
-    public function parseEndDate() {
-        if ($this->end_datetime) {
-            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
-        }
-        return "";
-    }
-
-
-    /********** Setters *********/
-    // public function setStartDatetimeAttribute($attribute){
-    //     $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    // }
-
-    // public function setEndDatetimeAttribute($attribute){
-    //     $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    // }
-
-    public function activeOptions(){
-        return [
-            0 => 'Draft',
-            1 => 'Active'
-        ];
-    }
-
-    // Relations
-    public function applications() {
+    /**
+     * applications
+     *
+     * @return void
+     */
+    public function applications() 
+    {
         return $this->hasMany(Application::class)->orderBy('created_at', 'desc');
     }
 
-    // Scope Queries
-    public function scopePublished ($query) {
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopePublished
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopePublished ($query) 
+    {
         return $query->where("published_at", "!=", null)->select("title", "slug", "description", "location", "salary", "enable", "qualification", "experience", "published_at", "total_positions", "image", "attachments");
     }
-
+    
+    /**
+     * scopeApplyFilters
+     *
+     * @param  mixed $query
+     * @return void
+     */
     public function scopeApplyFilters($query)
     {
         $request = request();
@@ -140,6 +203,12 @@ class Job extends Model
     {
         return $query->where('start_datetime', '!=', NULL)->where('end_datetime', '!=', NULL);
     }
+
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */
     
     /**
      * isPublished
@@ -172,5 +241,43 @@ class Job extends Model
         {
             removeFile(self::STORAGE_DIRECTORY, $file);
         }
+    }
+
+    /**
+     * parseStartDate
+     *
+     * @return void
+     */
+    public function parseStartDate() 
+    {
+        if ($this->start_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
+        }
+        return "";
+    }
+    
+    /**
+     * parseEndDate
+     *
+     * @return void
+     */
+    public function parseEndDate() 
+    {
+        if ($this->end_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
+        }
+        return "";
+    }
+    
+    /**
+     * activeOptions
+     *
+     * @return void
+     */
+    public function activeOptions(){
+        return [
+            0 => 'Draft',
+            1 => 'Active'
+        ];
     }
 }

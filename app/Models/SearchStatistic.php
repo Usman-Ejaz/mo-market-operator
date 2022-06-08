@@ -12,16 +12,48 @@ class SearchStatistic extends Model
 
     protected $guarded = [];
 
-    // Getters
-    public function getCreatedAtAttribute ($value) {
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function getCreatedAtAttribute ($value) 
+    {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
     }
 
-    // Scope Queries
-    public function scopeOrderByCount($query) {
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopeOrderByCount
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopeOrderByCount($query) 
+    {
         return $query->orderBy('count', 'desc');
     }
-
+    
+    /**
+     * scopeGroupByKeyword
+     *
+     * @param  mixed $query
+     * @param  mixed $startFrom
+     * @param  mixed $endsAt
+     * @return mixed
+     */
     public function scopeGroupByKeyword($query, $startFrom = null, $endsAt = null)
     {
         if ($startFrom !== null) {

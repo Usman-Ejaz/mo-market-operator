@@ -101,30 +101,27 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         abort_if(!hasPermission("posts", "edit"), 401, __('messages.unauthorized_action'));
-
-        $previousImage = $post->image;
+        
         $data = $this->validateRequest($post);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
-
-        $post->update($data);
         
-        $this->storeImage($post, $previousImage);
-
+        if ($request->has('image')) {
+            $data['image'] = storeFile(Post::STORAGE_DIRECTORY, $request->file('image'), $post->image);
+        }
+        
         $message = __('messages.record_updated', ['module' => 'Post']);
-
+        
         if ($request->action === "Unpublished") {
-            $post->published_at = null;
-            $post->save();
-
+            $data['published_at'] = null;            
             $message = __('messages.record_unpublished', ['module' => 'Post']);
         } else if ($request->action === "Published") {
-            $post->published_at = now();
-            $post->save();
-
+            $data['published_at'] = now();            
             $message = __('messages.record_published', ['module' => 'Post']);
         }
-
+        
+        $post->update($data);
+        
         $request->session()->flash('success', $message);
         return redirect()->route('admin.posts.index');
     }

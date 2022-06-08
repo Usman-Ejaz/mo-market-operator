@@ -2,39 +2,96 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CreatedModifiedBy;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
 
-
-    public function users(){
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
+    
+    /**
+     * users
+     *
+     * @return void
+     */
+    public function users()
+    {
         return $this->hasMany(User::class);
     }
-
-    public function permissions(){
-        return $this->hasMany(Permission::class);
-    }
-
-    public function hasPermission($moduleName, $capability)
+    
+    /**
+     * permissions
+     *
+     * @return void
+     */
+    public function permissions()
     {
-        $permissionExists = $this->permissions->where('name', $moduleName)->where('capability', $capability)->first();
-        if($permissionExists){
-            return true;
-        }
-        return false;
-    }
+        return $this->hasMany(Permission::class);
+    }        
 
-    public function getCreatedAtAttribute($attribute){
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
-    public function scopeOrderByName($query) {
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopeOrderByName
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeOrderByName($query) 
+    {
         return $query->orderBy('name', 'asc');
+    }
+
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */
+
+    /**
+     * hasPermission
+     *
+     * @param  mixed $moduleName
+     * @param  mixed $capability
+     * @return void
+     */
+    public function hasPermission($moduleName, $capability)
+    {
+        $permissionExists = $this->permissions->where('name', $moduleName)->where('capability', $capability)->first();
+        if ($permissionExists) {
+            return true;
+        }
+        return false;
     }
 }

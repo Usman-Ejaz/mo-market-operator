@@ -49,7 +49,7 @@ class JobController extends Controller
         $job = new Job();
         $data = $this->validateRequest($job);
         $data['slug'] = Str::slug($data['title']);
-        $data['enable'] = ($request->get('enable') == null) ? '0' : request('enable');
+        $data['enable'] = ($request->get('enable') == null) ? '0' : $request->get('enable');
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
 
@@ -86,7 +86,7 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        // abort_if(!hasPermission("jobs", "view"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("jobs", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.jobs.show', compact('job'));
     }
@@ -235,7 +235,7 @@ class JobController extends Controller
 
         abort_if(!hasPermission("jobs", "view_applications"), 401, __('messages.unauthorized_action'));
 
-        return view('admin.applications.index',compact('job'));
+        return view('admin.applications.index', compact('job'));
     }
 
     public function getApplicationsList(Request $request, Job $job) {
@@ -408,18 +408,6 @@ class JobController extends Controller
         }
 
         return $filenames;
-    }
-
-    public function deleteImage(Request $request) {
-        if ($request->ajax()) {
-            if (isset($request->job_id)) {
-                $job = Job::find($request->job_id);
-                if ($job && removeFile(Job::STORAGE_DIRECTORY, $job->image)) {
-                    $job->update(['image' => null]);
-                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
-                }
-            }
-        }
     }
 
     private function parseDate($date) {

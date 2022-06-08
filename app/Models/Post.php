@@ -22,93 +22,132 @@ class Post extends Model
 
     protected $guarded = [];
 
-    protected $attributes = [
-        // 'active' => 1
-    ];
+    protected $attributes = [];
 
-    /********* Getters ***********/
-    public function getActiveAttribute($attribute){
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+        
+    /**
+     * getActiveAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getActiveAttribute($attribute)
+    {
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
-
-    public function getPostCategoryAttribute($attribute){
+    
+    /**
+     * getPostCategoryAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getPostCategoryAttribute($attribute)
+    {
         return ( isset($attribute) && isset( $this->postCategoryOptions()[$attribute] ) ) ? $this->postCategoryOptions()[$attribute] : '';
     }
-
-    public function getStartDatetimeAttribute($attribute){
+    
+    /**
+     * getStartDatetimeAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getStartDatetimeAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getEndDatetimeAttribute($attribute){
+    
+    /**
+     * getEndDatetimeAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getEndDatetimeAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getCreatedAtAttribute($attribute){
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
-    public function getImageAttribute ($value) {
+    
+    /**
+     * getImageAttribute
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function getImageAttribute ($value) 
+    {
         return serveFile(self::STORAGE_DIRECTORY, $value);
     }
-
+    
+    /**
+     * getLinkAttribute
+     *
+     * @return mixed
+     */
     public function getLinkAttribute()
     {
         return isset($this->slug) ? config('settings.client_app_base_url') . Str::plural(strtolower($this->post_category)) . '/' . $this->slug : null;
-    }
+    }    
 
-    public function parseStartDate() {
-        if ($this->start_datetime) {
-            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
-        }
-        return "";
-    }
-
-    public function parseEndDate() {
-        if ($this->end_datetime) {
-            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
-        }
-        return "";
-    }
-
-
-    /********** Setters *********/
-    // public function setStartDatetimeAttribute($attribute){
-    //     $attribute = str_replace(' PM', '', str_replace(' AM', '', $attribute)) . ":00";
-    //     $this->attributes['start_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    // }
-
-    // public function setEndDatetimeAttribute($attribute){
-
-    //     $this->attributes['end_datetime'] = ($attribute) ? Carbon::createFromFormat(config('settings.datetime_format'), $attribute) : NULL;
-    // }
-
-    public function setKeywordsAttribute($attribute){
-
+    /**
+     * ======================================================
+     *                 Model Mutator Functions
+     * ======================================================
+     */
+    
+    /**
+     * setKeywordsAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function setKeywordsAttribute($attribute)
+    {
         $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;
     }
-
-    public function setSlugAttribute($attribute){
-
+    
+    /**
+     * setSlugAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function setSlugAttribute($attribute)
+    {
         $this->attributes['slug'] = ($attribute) ? strtolower(trim($attribute, '- ')) : NULL;
-    }
+    }        
 
-    public function postCategoryOptions(){
-        return [
-            1 => 'News',
-            2 => 'Blog',
-            3 => 'Announcements'
-        ];
-    }
-
-    public function activeOptions(){
-        return [
-            0 => 'Draft',
-            1 => 'Active'
-        ];
-    }
-
-    // Scope Queries
-    public function scopePublished($query) {
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+        
+    /**
+     * scopePublished
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopePublished($query) 
+    {
         return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords");
     }
     
@@ -116,7 +155,7 @@ class Post extends Model
      * scopeNews
      *
      * @param  mixed $query
-     * @return void
+     * @return mixed
      */
     public function scopeNews($query)
     {
@@ -127,7 +166,7 @@ class Post extends Model
      * scopeBlogs
      *
      * @param  mixed $query
-     * @return void
+     * @return mixed
      */
     public function scopeBlogs($query)
     {
@@ -138,7 +177,7 @@ class Post extends Model
      * scopeNewsAndBlogs
      *
      * @param  mixed $query
-     * @return void
+     * @return mixed
      */
     public function scopeNewsAndBlogs($query)
     {
@@ -149,21 +188,12 @@ class Post extends Model
      * scopeAnnouncements
      *
      * @param  mixed $query
-     * @return void
+     * @return mixed
      */
     public function scopeAnnouncements($query)
     {
         return $query->where('post_category', '=', 3);
-    }
-    
-    /**
-     * isPublished
-     *
-     * @return boolean
-     */
-    public function isPublished() {
-        return $this->published_at !== null;
-    }
+    }    
     
     /**
      * scopeApplyFilters
@@ -194,7 +224,7 @@ class Post extends Model
      * scopeScheduledRecords
      *
      * @param  mixed $query
-     * @return void
+     * @return mixed
      */
     public function scopeScheduledRecords($query)
     {
@@ -210,5 +240,74 @@ class Post extends Model
     public function scopeTodaysPublishedRecords($query)
     {
         return $query->whereDay('published_at', date('d'));
+    }
+
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */
+
+    /**
+     * isPublished
+     *
+     * @return boolean
+     */
+    public function isPublished() 
+    {
+        return $this->published_at !== null;
+    }
+
+    /**
+     * postCategoryOptions
+     *
+     * @return mixed
+     */
+    public function postCategoryOptions()
+    {
+        return [
+            1 => 'News',
+            2 => 'Blog',
+            3 => 'Announcements'
+        ];
+    }
+    
+    /**
+     * activeOptions
+     *
+     * @return mixed
+     */
+    public function activeOptions()
+    {
+        return [
+            0 => 'Draft',
+            1 => 'Active'
+        ];
+    }
+    
+    /**
+     * parseStartDate
+     *
+     * @return mixed
+     */
+    public function parseStartDate() 
+    {
+        if ($this->start_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
+        }
+        return "";
+    }
+    
+    /**
+     * parseEndDate
+     *
+     * @return mixed
+     */
+    public function parseEndDate() 
+    {
+        if ($this->end_datetime) {
+            return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
+        }
+        return "";
     }
 }

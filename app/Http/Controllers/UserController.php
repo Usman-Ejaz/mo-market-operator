@@ -118,7 +118,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         abort_if(!hasPermission("users", "edit"), 401, __('messages.unauthorized_action'));
-                
+
         $data = $this->validateRequest($user);
         
         $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
@@ -138,8 +138,9 @@ class UserController extends Controller
             $signedURL = URL::temporarySignedRoute('create-password', 
                 now()->addMinutes(config("settings.createPassowrdLinkExpiryTime")), ['user' => $user->email]);
 
-            $user->update(['password_link' => $signedURL]);
-            
+            $user->password_link = $signedURL;
+            $user->save();
+        
             Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
         }
 
@@ -157,12 +158,9 @@ class UserController extends Controller
     {
         abort_if(!hasPermission("users", "delete"), 401, __('messages.unauthorized_action'));
 
-        if ($user->image !== null) {
-            $file_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($user->image);
-            unlink($file_path);
-        }
+        $user->removeImage();
 
-        if( $user->delete() ) {
+        if ($user->delete()) {
             return redirect()->route('admin.users.index')->with('success', __('messages.record_deleted', ['module' => 'User']));
         }
 
@@ -236,24 +234,5 @@ class UserController extends Controller
         ], [
             "image.max" => __('messages.max_file', ['limit' => '2 MB'])
         ]);
-    }
-
-    public function deleteImage(Request $request){
-
-        if ($request->ajax()) {
-
-            if (isset($request->user_id)) {
-                $user = User::find($request->user_id);
-
-                $image_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($user->image);
-
-                if( unlink($image_path) ){
-                    $user->image = null;
-                    $user->update();
-
-                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
-                }
-            }
-        }
     }
 }

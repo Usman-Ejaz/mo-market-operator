@@ -18,7 +18,7 @@ class ChatbotFeedback extends Model
      * ======================================================
      *                 Model Accessor Functions
      * ======================================================
-     * */
+     */
 
     /**
      * getCreatedAtAttribute
@@ -36,11 +36,12 @@ class ChatbotFeedback extends Model
      * ======================================================
      *                 Model Relation Functions
      * ======================================================
-     * */
+     */
 
     /**
-     * getCreatedAtAttribute
+     * owner
      *
+     * @return mixed
      */
     public function owner()
     {
