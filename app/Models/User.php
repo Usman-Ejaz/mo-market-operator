@@ -147,6 +147,16 @@ class User extends Authenticatable
             1 => 'Active'
         ];
     }
+    
+    /**
+     * removeImage
+     *
+     * @return void
+     */
+    public function removeImage()
+    {
+        removeFile(self::STORAGE_DIRECTORY, $this->image);
+    }
 
 
     /**

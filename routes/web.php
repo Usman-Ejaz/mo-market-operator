@@ -59,7 +59,6 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     
     // Routes for User Module
     Route::get('users/list', [UserController::class, 'list'])->name('users.list');
-    Route::post('users/deleteImage', [UserController::class, 'deleteImage'])->name('users.deleteImage');
     Route::resource('users', UserController::class);
     
     Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -193,6 +192,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
     Route::get("update-password", [ProfileController::class, "updatePasswordView"])->name("update-password");
     Route::post("update-password", [ProfileController::class, "updatePassword"])->name("password-update");
 
+    Route::get('activity-logs', [DashboardController::class, 'getLatestAcitivityLogs'])->name('dashboard.activity-logs');
     Route::get('download-attachment/{module}/{file}', [DashboardController::class, 'downloadAttachment'])->where('module', '(.*)')->name('attachment.download')->withoutMiddleware(['preventBrowserHistory']);
 });
 
