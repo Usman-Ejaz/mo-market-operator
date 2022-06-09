@@ -106,6 +106,12 @@
 			datePickerStartDate = $('#start_date').val();
 			datePickerEndDate = $('#end_date').val();
 
+			if (datePickerStartDate === "" && datePickerEndDate !== "") {
+				alert("Please select the start date first");
+				e.preventDefault();
+				return;
+			}
+
 			if (table !== null) {
 				table.destroy();
 				renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);
@@ -195,11 +201,11 @@
 		`);	
 
 		$('#DataTables_Table_0_filter').parent().css({display: 'flex', flexDirection: 'row-reverse'});
-		$('#DataTables_Table_0_filter').parent().append(`			
+		$('#DataTables_Table_0_filter').parent().append(`
 			<input name="end_date" id="end_date" class="form-control form-control-sm" readonly placeholder="End Date" style="position:absolute; width: 35%; left: -92px;" value="${datePickerEndDate}"/>
 			<input type="hidden" id="end_date_hidden" value="${endDate}" />
 			<button class="btn btn-primary btn-sm" type="button" id="seachByDate" style="position:absolute; left: 140px;" >Search</button>
-			${(datePickerStartDate !== "" && datePickerEndDate !== "") ? `
+			${(datePickerStartDate !== "") ? `
 				<button class="btn btn-primary btn-sm" type="button" id="clearSearch" style="position:absolute; left: 205px;" >Clear</button>
 			` : ""}
 		`);	
