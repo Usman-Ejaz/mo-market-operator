@@ -176,7 +176,9 @@ class DocumentController extends Controller
             }
         }
 
+        $document->removeImage();
         $document->delete();
+        
         return redirect()->route('admin.documents.index')->with('success', __('messages.record_deleted', ['module' => 'Document']));
     }
 

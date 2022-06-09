@@ -163,17 +163,6 @@ class SliderImageController extends Controller
         }
     }
 
-    public function deleteImage(Request $request) {
-        if ($request->ajax()) {
-            if (isset($request->slider_id)) {
-                $sliderImage = SliderImage::find($request->slider_id);
-                removeFile(SliderImage::STORAGE_DIRECTORY, $sliderImage->image);
-                $sliderImage->update(['image' => '']);
-                return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
-            }
-        }
-    }
-
     private function validateRequest($sliderImage)
     {
         $rules = [
