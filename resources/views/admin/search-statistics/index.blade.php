@@ -121,6 +121,8 @@
 		$('body').on('click', '#clearSearch', (e) => {
 			startDate = ""
 			endDate = "";
+			('#start_date_hidden').val(startDate);
+			('#end_date_hidden').val(endDate);
 
 			datePickerStartDate = "";
 			datePickerEndDate = "";
