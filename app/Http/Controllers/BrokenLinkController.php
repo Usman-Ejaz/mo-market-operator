@@ -132,12 +132,6 @@ class BrokenLinkController extends Controller
                         </a>';
                     }
 
-                    // if (hasPermission('broken_links', 'view')) {
-                    //     $options .= '<a href="' . route('admin.broken-links.show', $row->id) .'" class="btn btn-primary" title="View">
-                    //         <i class="fas fa-eye"></i>
-                    //     </a>';
-                    // }
-
                     if (hasPermission('broken_links', 'delete')) {
                         $options .= ' <form action="'. route('admin.broken-links.destroy', $row->id) .'" method="POST" style="display: inline-block;">
                             '.csrf_field().'

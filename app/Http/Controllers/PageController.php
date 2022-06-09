@@ -225,15 +225,13 @@ class PageController extends Controller
 
     public function deleteImage(Request $request){
         if ($request->ajax()) {
-            if( isset($request->page_id) ){
-
+            if (isset($request->page_id)) {
+                
                 $page = Page::find($request->page_id);
-                $image_path = config('filepaths.pageImagePath.public_path').basename($page->image);
 
-                if( unlink($image_path) ){
+                if (removeFile(Page::STORAGE_DIRECTORY, $page->image)) {
                     $page->image = null;
                     $page->update();
-
                     return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
                 }
             }

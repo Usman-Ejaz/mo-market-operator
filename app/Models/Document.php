@@ -176,4 +176,14 @@ class Document extends Model
     {
         return $this->published_at !== null;
     }
+    
+    /**
+     * removeImage
+     *
+     * @return void
+     */
+    public function removeImage()
+    {
+        removeFile(self::STORAGE_DIRECTORY, $this->image);
+    }
 }
