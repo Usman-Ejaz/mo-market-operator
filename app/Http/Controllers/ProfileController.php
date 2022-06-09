@@ -34,10 +34,8 @@ class ProfileController extends Controller
         //     return abort(403);
         // }
 
-        $previousImage = $user->image;
-
         if ($user->update($this->validateRequest($user))) {
-            $this->storeImage($user, $previousImage);
+            $this->storeImage($user);
 
             $request->session()->flash('success', __('messages.record_updated', ['module' => 'Profile']));
             return redirect()->route('admin.dashboard');
@@ -51,24 +49,13 @@ class ProfileController extends Controller
      * storeImage
      *
      * @param  mixed $user
-     * @param  mixed $previousImage
      * @return void
      */
-    private function storeImage($user, $previousImage = null) {
+    private function storeImage($user) {
 
         if (request()->has('image')) {
-
-            if ($previousImage !== null) {
-                $image_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($previousImage);
-                unlink($image_path);
-            }
-
-            $uploadFile = request()->file('image');
-            $file_name = $uploadFile->hashName();
-            $uploadFile->storeAs(config('filepaths.userProfileImagePath.internal_path'), $file_name);
-
             $user->update([
-                'image' => $file_name,
+                'image' => storeFile(User::STORAGE_DIRECTORY, request()->file('image'), $user->image),
             ]);
         }
     }
@@ -107,10 +94,7 @@ class ProfileController extends Controller
 
             if( isset($request->user_id) ){
                 $user = User::find($request->user_id);
-
-                $image_path = public_path(config('filepaths.userProfileImagePath.public_path')) . basename($user->image);
-
-                if (unlink($image_path)) {
+                if (removeFile(User::STORAGE_DIRECTORY, $user->image)) {
                     $user->update(['image' => null]);
                     return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
                 }

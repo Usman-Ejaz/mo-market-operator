@@ -46,7 +46,7 @@ class NewsletterController extends Controller
         abort_if(!hasPermission("newsletters", "create"), 401, __('messages.unauthorized_action'));
 
         $newsletter = new Newsletter();
-        $newsletter = Newsletter::create( $this->validateRequest($newsletter) );
+        $newsletter = Newsletter::create($this->validateRequest($newsletter));
 
         $request->session()->flash('success', __('messages.record_created', ['module' => 'Newsletter']));
         return redirect()->route('admin.newsletters.index');
@@ -164,20 +164,19 @@ class NewsletterController extends Controller
 
     private function validateRequest($newsletter){
 
-        return tap( request()->validate([
+        return request()->validate([
             'subject' => 'required|min:3',
             'description' => 'required',
             'created_by' => '',
             'modified_by' => ''
-        ]), function(){
-        });
+        ]);
     }
 
     public function sendNewsLetter(Request $request, Newsletter $newsletter) 
     {
         abort_if(!hasPermission("newsletters", "sendNewsLetter"), 401, __('messages.unauthorized_action'));
 
-        dispatch(new SendNewsletterEmail($newsletter));
+        dispatch(new SendNewsletterEmail($newsletter, auth()->id()));
 
         $request->session()->flash('success', 'Newsletter has been sent successfully!');
         return redirect()->route('admin.newsletters.index');

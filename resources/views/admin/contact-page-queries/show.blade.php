@@ -20,7 +20,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card card-primary">
-				<form action="{{ route('admin.contact-page-queries.add-reply', $contactPageQuery->id) }}" method="POST" enctype="multipart/form-data">
+				<form action="{{ route('admin.contact-page-queries.add-reply', $contactPageQuery->id) }}" method="POST" enctype="multipart/form-data" id="update-form">
 					@csrf
 					<div class="card-header">
 						<h3 class="card-title">View Query - {{ $contactPageQuery->subject }}</h3>
@@ -96,3 +96,38 @@
 	</div>
 </div>
 @endsection
+
+@push('optional-scripts')
+<script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+
+<script>
+	$(document).ready(function() {
+		$.validator.addMethod("notNumericValues", function(value, element) {
+			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
+		}, '{{ __("messages.not_numeric") }}');
+
+		$('#update-form').validate({
+			errorElement: 'span',
+			errorClass: "my-error-class",
+			validClass: "my-valid-class",
+			rules: {
+				reply: {
+					required: true,
+					minlength: 3,
+					maxlength: 255,
+					notNumericValues: true
+				}
+			},
+			messages: {
+				reply: {
+					required: '{{ __("messages.required") }}',
+					minlength: '{{ __("messages.min_characters", ["field" => "Name", "limit" => 3]) }}',
+					maxlength: '{{ __("messages.max_characters", ["field" => "Name", "limit" => 255]) }}'
+				}
+			}
+		});
+	});
+</script>
+
+@endpush

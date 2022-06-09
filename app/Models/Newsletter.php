@@ -17,8 +17,20 @@ class Newsletter extends Model
 
     protected $attributes = [];
     
-    /********* Getters ***********/
-    public function getCreatedAtAttribute($attribute){
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */    
+
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 }

@@ -108,21 +108,6 @@
 		$("#deleteImage").click(function() {
 
 			if (confirm('Are you sure you want to this image?')) {
-				// $.ajax({
-				// 	url: "{{ route('admin.users.deleteImage') }}",
-				// 	type: 'POST',
-				// 	data: {
-				// 		_token: "{{ csrf_token() }}",
-				// 		user_id: "{{$user->id}}"
-				// 	},
-				// 	dataType: 'JSON',
-				// 	success: function(data) {
-				// 		if (data.success) {
-				// 			alert('Image Deleted Successfully');
-				// 			$('.imageExists').remove();
-				// 		}
-				// 	}
-				// });
 				$('#removeImage').val('1');
 				$('.imageExists').remove();
 			}

@@ -20,22 +20,62 @@ class Document extends Model
 
     public const STORAGE_DIRECTORY = 'documents/';
 
-    // Model Relation goes here
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
 
-    public function category() {
+    /**
+     * category
+     *
+     * @return mixed
+     */
+    public function category() 
+    {
         return $this->belongsTo(DocumentCategory::class, "category_id", "id");
     }
 
-    /********** Setters *********/
-    public function setKeywordsAttribute($attribute){
-
+    /**
+     * ======================================================
+     *                  Model Mutators Queries
+     * ======================================================
+     */
+        
+    /**
+     * setKeywordsAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function setKeywordsAttribute($attribute)
+    {
         $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;
     }
 
-    public function getCreatedAtAttribute($attribute){
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return mixed
+     */
+    public function getCreatedAtAttribute($attribute)
+    {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-
+    
+    /**
+     * getImageAttribute
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
     public function getImageAttribute($value)
     {
         return $value ? serveFile(Document::STORAGE_DIRECTORY, $value) : null;
@@ -45,7 +85,7 @@ class Document extends Model
      * getFileAttribute
      *
      * @param  mixed $value
-     * @return void
+     * @return mixed
      */
     public function getFileAttribute($value)
     {
@@ -55,7 +95,7 @@ class Document extends Model
     /**
      * getDocumentLinksAttribute
      *
-     * @return void
+     * @return mixed
      */
     public function getDocumentLinksAttribute()
     {
@@ -66,18 +106,44 @@ class Document extends Model
         return $filePaths;
     }
 
-    // Scope Queries
-    public function scopePublished ($query) {
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopePublished
+     *
+     * @param  mixed $query
+     * @return mixed
+     */
+    public function scopePublished ($query) 
+    {
         return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "created_at", "image", "slug");
     }
-
+    
+    /**
+     * scopeFilterByCategory
+     *
+     * @param  mixed $query
+     * @param  mixed $category
+     * @return mixed
+     */
     public function scopeFilterByCategory($query, $category)
     {
         return $query->whereHas('category', function ($q) use ($category) {
             $q->where('slug', '=', $category);
         });
     }
-
+    
+    /**
+     * scopeApplyFilters
+     *
+     * @param  mixed $query
+     * @param  mixed $request
+     * @return mixed
+     */
     public function scopeApplyFilters($query, $request)
     {
         if ($request->has('month')) {
@@ -95,7 +161,29 @@ class Document extends Model
         return $query;
     }
 
-    public function isPublished() {
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */
+    
+    /**
+     * isPublished
+     *
+     * @return mixed
+     */
+    public function isPublished() 
+    {
         return $this->published_at !== null;
+    }
+    
+    /**
+     * removeImage
+     *
+     * @return void
+     */
+    public function removeImage()
+    {
+        removeFile(self::STORAGE_DIRECTORY, $this->image);
     }
 }

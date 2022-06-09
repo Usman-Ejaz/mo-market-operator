@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\NewsletterEmail;
+use App\Models\ActivityLog;
 use App\Models\Newsletter;
 use App\Models\Subscriber;
 use Illuminate\Bus\Queueable;
@@ -18,15 +19,17 @@ class SendNewsletterEmail implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private $newsletter = null;
+    public $userId;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Newsletter $newsletter)
+    public function __construct(Newsletter $newsletter, $userId)
     {
         $this->newsletter = $newsletter;
+        $this->userId = $userId;
     }
 
     /**
@@ -41,5 +44,15 @@ class SendNewsletterEmail implements ShouldQueue
         foreach ($subscribers as $subscriber) {
             Mail::to($subscriber->email)->send(new NewsletterEmail($this->newsletter));
         }
+
+        ActivityLog::create([
+            'message' => 'Newsletter was just sent.',
+            'type' => 'sent',
+            'model' => get_class($this->newsletter),
+            'module' => 'Newsletter',
+            'done_by' => $this->userId,
+            'new' => $this->newsletter ? $this->newsletter->toJson() : null,
+            'old' => $this->newsletter ? json_encode($this->newsletter->getChanges()) : null
+        ]);
     }
 }

@@ -121,7 +121,7 @@
 					dataType: 'JSON',
 					success: function(data) {
 						if (data.success) {
-							toastr.success("Image deleted successfully.");
+							toastr.success(data.message);
 							$('.imageExists').remove();
 						}
 					}

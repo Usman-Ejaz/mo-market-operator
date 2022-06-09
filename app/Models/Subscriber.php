@@ -13,25 +13,64 @@ class Subscriber extends Model
 
     protected $guarded = [];
 
+    /**
+     * ======================================================
+     *                 Model Accessor Functions
+     * ======================================================
+     */
+    
+    /**
+     * getStatusAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
     public function getStatusAttribute($attribute) 
     {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
     }
-
-    public function getRssFeedAttribute($attribute) 
+    
+    /**
+     * getCreatedAtAttribute
+     *
+     * @param  mixed $attribute
+     * @return void
+     */
+    public function getCreatedAtAttribute($attribute)
     {
-        return isset($attribute) ? $this->activeOptions()[$attribute] : '';
-    }
-
-    public function getCreatedAtAttribute($attribute){
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
 
-    public function scopeNewletters($query) {
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopeNewletters
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeNewletters($query) 
+    {
         return $query->where("status", 1);
     }
 
-    private function activeOptions() {
+    /**
+     * ======================================================
+     *                 Model Helper Functions
+     * ======================================================
+     */
+    
+    /**
+     * activeOptions
+     *
+     * @return void
+     */
+    private function activeOptions() 
+    {
         return [
             0 => 'Unsubscribed',
             1 => 'Subscribed'
