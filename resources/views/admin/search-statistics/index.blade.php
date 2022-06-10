@@ -82,7 +82,7 @@
 
 	$(document).ready(() => {
 		
-		$(document).prop('title', "Search Statistics - ISMO");
+		$(document).prop('title', "Search Statistics - {{ config('app.name') }}");
 		var startDate = "";
 		var endDate = "";
 		
