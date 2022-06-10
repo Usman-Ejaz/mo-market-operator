@@ -62,7 +62,7 @@ class MediaLibrary extends Model
      */
     public function scopeTodaysPublishedRecords($query)
     {
-        return $query->whereDay('created_at', date('d'));
+        return $query->whereDate('created_at', Carbon::today());
     }
 
     /**

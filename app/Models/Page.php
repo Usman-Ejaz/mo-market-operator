@@ -155,7 +155,7 @@ class Page extends Model
      */
     public function scopeTodaysPublishedRecords($query)
     {
-        return $query->whereDay('published_at', date('d'));
+        return $query->whereDate('published_at', Carbon::today());
     }
 
     /**
