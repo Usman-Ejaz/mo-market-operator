@@ -33,6 +33,17 @@ class Faq extends Model
     }
 
     /**
+     * author
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    /**
      * ======================================================
      *                 Model Accessor Functions
      * ======================================================
