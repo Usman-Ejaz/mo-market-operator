@@ -13,7 +13,10 @@
             <item>
                 <title><![CDATA[ {{ $record->title ?? $record->name }} ]]></title>
                 <link>{{ config('settings.client_app_base_url') }}{{ $record->post_category ? strtolower($record->post_category) . '/' : '' }}{{ $record->slug }}</link>
-                <description><![CDATA[ {!! $record->description !!} ]]></description>
+                @if ($record->image && isset($record->image) && !empty($record->image))
+                    <media:content url="{{ $record->image }}" medium="image"/>
+                @endif
+                <content:encoded><![CDATA[ {!! $record->description !!} ]]></content:encoded>
                 <pubDate>{{ parseDate($record->published_at) ?: parseDate($record->created_at)  }}</pubDate>
             </item>
         @endforeach
