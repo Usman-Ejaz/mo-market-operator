@@ -20,9 +20,12 @@ trait CreatedModifiedBy
         // updating modified_by when model is updated
         static::updating(function ($model) {
             if (! $model->isDirty('modified_by') && auth()->check()) {
-                $model->modified_by = auth()->user()->id;
-                event(new ActivityLogEvent($model->getLoggableArray("was just updated.", $model, "update", auth()->id())));
+                $model->modified_by = auth()->user()->id;                
             }
+        });
+
+        static::updated(function ($model) {
+            event(new ActivityLogEvent($model->getLoggableArray("was just updated.", $model, "update", auth()->id())));
         });
         
         static::deleting(function ($model) {
