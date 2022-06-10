@@ -29,7 +29,7 @@ class LogSearchKeyword
     {
         $keyword = $event->searchKeyword;
 
-        $stats = SearchStatistic::firstOrCreate(['keyword' => $keyword]);
+        $stats = SearchStatistic::create(['keyword' => $keyword]);
         $stats->increment('count');
     }
 }
