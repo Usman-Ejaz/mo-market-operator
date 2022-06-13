@@ -62,4 +62,28 @@ class ClientAttachment extends Model
     {
         return ucwords(Client::REGISTER_CATEGORIES[$this->category_id]);
     }
+
+    /**
+     * ======================================================
+     *                  Model Scope Queries
+     * ======================================================
+     */
+    
+    /**
+     * scopeFindRecord
+     *
+     * @param  mixed $query
+     * @param  mixed $clientId
+     * @param  mixed $categoryId
+     * @param  mixed $phrase
+     * @return mixed
+     */
+    public function scopeFindRecord($query, $clientId, $categoryId, $phrase) 
+    {
+        return $query->where([
+            'client_id' => $clientId, 
+            'category_id' => $categoryId, 
+            'phrase' => strtolower($phrase)
+        ]);
+    }
 }

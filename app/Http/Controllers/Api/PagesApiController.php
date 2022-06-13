@@ -58,9 +58,9 @@ class PagesApiController extends BaseApiController
         try {
 
             if (request()->has('unpublished') && request()->query('unpublished') == 'true') {
-                $post = Page::where("slug", "=", $pageSlug)->select('title', 'slug', 'keywords', 'description', 'image')->first();
+                $post = Page::with('author:id,name')->where("slug", "=", $pageSlug)->select('title', 'slug', 'keywords', 'description', 'image', 'created_by')->first();
             } else {
-                $post = Page::published()->where("slug", "=", $pageSlug)->first();
+                $post = Page::with('author:id,name')->published()->where("slug", "=", $pageSlug)->first();
             }
 
             if ($post) {

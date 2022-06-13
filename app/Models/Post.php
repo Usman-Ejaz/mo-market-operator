@@ -148,7 +148,7 @@ class Post extends Model
      */
     public function scopePublished($query) 
     {
-        return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords");
+        return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords", "created_by");
     }
     
     /**
@@ -309,5 +309,22 @@ class Post extends Model
             return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
         }
         return "";
+    }
+
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
+
+    /**
+     * author
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

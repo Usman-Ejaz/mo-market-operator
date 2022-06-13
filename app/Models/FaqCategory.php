@@ -45,4 +45,15 @@ class FaqCategory extends Model
     {
         return $this->hasMany(Faq::class, "category_id", "id");
     }
+
+    /**
+     * author
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

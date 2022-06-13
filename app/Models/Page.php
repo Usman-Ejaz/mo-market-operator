@@ -212,4 +212,21 @@ class Page extends Model
         }
         return "";
     }    
+
+    /**
+     * ======================================================
+     *                  Model Relations
+     * ======================================================
+     */
+
+    /**
+     * author
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }
