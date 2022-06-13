@@ -47,4 +47,15 @@ class DocumentCategory extends Model
     {
         return $this->hasMany(Document::class, "category_id", "id");
     }
+
+    /**
+     * author
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

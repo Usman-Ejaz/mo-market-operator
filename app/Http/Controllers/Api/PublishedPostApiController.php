@@ -275,9 +275,9 @@ class PublishedPostApiController extends BaseApiController
 
         try {
             if (request()->has('unpublished') && request()->query('unpublished') == 'true') {
-                $post = Post::$category()->where("slug", "=", $slug)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords")->first();
+                $post = Post::with('author:id,name')->$category()->where("slug", "=", $slug)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords", "created_by")->first();
             } else {
-                $post = Post::published()->$category()->where("slug", "=", $slug)->first();
+                $post = Post::with('author:id,name')->published()->$category()->where("slug", "=", $slug)->first();
             }
 
             if ($post) {

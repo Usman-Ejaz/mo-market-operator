@@ -133,7 +133,7 @@ class Job extends Model
     public function getLinkAttribute($value) 
     {
         return !empty($this->slug) ? route('pages.show', $this->slug) : null;
-    }    
+    }        
     
     /**
      * ======================================================
@@ -149,6 +149,17 @@ class Job extends Model
     public function applications() 
     {
         return $this->hasMany(Application::class)->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * author
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
     /**
