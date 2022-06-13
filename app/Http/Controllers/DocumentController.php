@@ -282,13 +282,11 @@ class DocumentController extends Controller
             if( isset($request->document_id) ){
 
                 $document = Document::find($request->document_id);
-                $file_path = public_path(config('filepaths.documentsFilePath.internal_path')) . basename($document->file);
-
-                if( unlink($file_path) ){
+                if (removeFile(Document::STORAGE_DIRECTORY, $document->file)) {
                     $document->file = null;
                     $document->update();
 
-                    return response()->json(['success' => 'true', 'message' => 'File Deleted Successfully'], 200);
+                    return response()->json(['success' => 'true', 'message' => __('messages.record_deleted', ['module' => 'File'])], 200);
                 }
             }
         }

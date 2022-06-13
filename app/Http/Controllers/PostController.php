@@ -235,7 +235,7 @@ class PostController extends Controller
                 if (removeFile(Post::STORAGE_DIRECTORY, $post->image)) {
                     $post->image = null;
                     $post->update();
-                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
+                    return response()->json(['success' => 'true', 'message' => __('messages.record_deleted', ['module' => 'Image'])], 200);
                 }
             }
         }

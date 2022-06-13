@@ -218,7 +218,7 @@ class TeamMemberController extends Controller
                     $teamMember->update(['image' => '']);
                 }
 
-                return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
+                return response()->json(['success' => 'true', 'message' => __('messages.record_deleted', ['module' => 'Image'])], 200);
             }
         }
     }

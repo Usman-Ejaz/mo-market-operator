@@ -22,7 +22,7 @@ class FlushIncompleteClients extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Remove all the clients from resource after 15 days who have started the registration process but didn\'t complete.';
 
     /**
      * Create a new command instance.

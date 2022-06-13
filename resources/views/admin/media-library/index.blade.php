@@ -21,7 +21,7 @@
 					<tr>
 						<th>Id</th>
 						<th>Name</th>
-						<th>Created at</th>
+						<th>Created date</th>
 						<th>Action</th>
 					</tr>
 				</thead>
