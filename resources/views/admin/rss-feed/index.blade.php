@@ -1,7 +1,7 @@
 <?=
 '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL
 ?>
-<rss version="2.0">
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
     <channel>
         <title><![CDATA[ {{ config('app.name') }} ]]></title>
         <link><![CDATA[ {{ config('settings.client_app_base_url') }}feed ]]></link>
