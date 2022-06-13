@@ -187,9 +187,6 @@ class JobController extends Controller
                 ->addColumn('applications', function ($row) {
                     return $row->applications->count();
                 })
-                // ->addColumn('experience', function ($row) {
-                //     return truncateWords($row->experience, 10);
-                // })
                 ->addColumn('total_positions', function ($row) {
                     return ($row->total_positions) ? $row->total_positions : '';
                 })

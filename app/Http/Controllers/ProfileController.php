@@ -96,7 +96,7 @@ class ProfileController extends Controller
                 $user = User::find($request->user_id);
                 if (removeFile(User::STORAGE_DIRECTORY, $user->image)) {
                     $user->update(['image' => null]);
-                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
+                    return response()->json(['success' => 'true', 'message' => __('messages.record_deleted', ['module' => 'Image'])], 200);
                 }
             }
 

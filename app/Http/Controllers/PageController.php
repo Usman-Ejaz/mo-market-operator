@@ -165,6 +165,9 @@ class PageController extends Controller
                 ->addColumn('slug', function ($row) {
                     return truncateWords($row->slug, 35);
                 })
+                ->addColumn('keywords', function ($row) {
+                    return truncateWords($row->keywords, 25);
+                })
                 ->addColumn('status', function ($row) {
                     return $row->isPublished() ? __("Published") : __("Draft");
                 })
@@ -232,7 +235,7 @@ class PageController extends Controller
                 if (removeFile(Page::STORAGE_DIRECTORY, $page->image)) {
                     $page->image = null;
                     $page->update();
-                    return response()->json(['success' => 'true', 'message' => __('messages.image_deleted')], 200);
+                    return response()->json(['success' => 'true', 'message' => __('messages.record_deleted', ['module' => 'Image'])], 200);
                 }
             }
         }
