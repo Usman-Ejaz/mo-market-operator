@@ -50,7 +50,7 @@ class RSSFeedXMLController extends Controller
 
         $todaysPublishedRecords = $todaysPublishedRecords->merge($pages)->merge($posts)->merge($medias);
 
-        return response()->view('admin.rss-feed.index', compact('todaysPublishedRecords'))->header('Content-Type', 'application/xml');
+        return response()->view('admin.rss-feed.index', compact('todaysPublishedRecords'))->header('Content-Type', 'text/xml');
     }
     
     /**
