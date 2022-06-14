@@ -19,7 +19,7 @@ class TogglePublishStatus extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Publish and Unpulished the posts, pages and jobs according to their scheduled time.';
 
     /**
      * Create a new command instance.
@@ -53,18 +53,18 @@ class TogglePublishStatus extends Command
         {
             try {
 
+                $startDateInCurrentDateRange = $currentDate->gte(parseDate($object->start_datetime));
+                $currentDateInEndDateRange = $object->end_datetime ? $currentDate->lte(parseDate($object->end_datetime)) : true;
+                $isPublished = $object->isPublished();
+                
                 // For publishing the contents
-                if ($currentDate->gte(parseDate($object->start_datetime)) && $currentDate->lte(parseDate($object->end_datetime))) {
-                    if ($object->published_at === null) {
-                        $object->update(['published_at' => now()]);
-                    }
+                if ($startDateInCurrentDateRange && $currentDateInEndDateRange && !$isPublished) {
+                    $object->update(['published_at' => now()]);
                 }
 
                 // For unpublishing the contents
-                if ($currentDate->gte(parseDate($object->end_datetime))) {
-                    if ($object->published_at !== null) {
-                        $object->update(['published_at' => null]);
-                    }
+                if ($object->end_datetime && $currentDate->gte(parseDate($object->end_datetime)) && $isPublished) {
+                    $object->update(['published_at' => null]);
                 }
 
             } catch (\Throwable $th) {

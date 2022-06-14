@@ -26,7 +26,7 @@
 						<th>Designation</th>
 						<th>Order</th>
 						<th>Image</th>
-						<th>Created at</th>
+						<th>Created date</th>
 						<th>Action</th>
 					</tr>
 				</thead>

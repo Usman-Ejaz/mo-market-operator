@@ -54,7 +54,7 @@
 				<li class="nav-item">
 					<a href="{{ route('admin.jobs.index') }}" class="nav-link {{ (Request::is('admin/jobs*') || Request::is('admin/applications*')) ? 'active' : '' }}">
 						<i class="nav-icon fa fa-tasks"></i>
-						<p>Career Opportunities</p>
+						<p>{{ __("Jobs") }}</p>
 					</a>
 				</li>
 				@endif

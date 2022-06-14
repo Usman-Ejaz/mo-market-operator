@@ -170,11 +170,11 @@ class SliderImageController extends Controller
             'slot_two' => 'required',
             'url' => 'required',
             'order' => 'required',
-            'image' => 'sometimes|required|file|max:' . config('settings.maxImageSize'),
+            'image' => 'sometimes|required|file|max:' . (config('settings.maxImageSize') + 500),
         ];
         
         return request()->validate($rules, [
-            'image.max' => __('messages.max_file', ['limit' => '2 MB'])
+            'image.max' => __('messages.max_file', ['limit' => '2.5 MB'])
         ]);
     }
 }

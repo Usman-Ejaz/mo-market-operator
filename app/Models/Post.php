@@ -228,7 +228,7 @@ class Post extends Model
      */
     public function scopeScheduledRecords($query)
     {
-        return $query->where('start_datetime', '!=', NULL)->where('end_datetime', '!=', NULL);
+        return $query->where('start_datetime', '!=', NULL);
     }
 
     /**
