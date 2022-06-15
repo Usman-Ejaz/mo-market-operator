@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\RSSFeedXMLController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\BrokenLinkController;
 use App\Http\Controllers\ChatBotKnowledgeBaseController;
@@ -196,9 +197,6 @@ Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("adm
 });
 
 Route::get('unsubscribe/{subscriber}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe')->middleware(['signed']);
-
-Route::get('pages/{slug}', function ($slug) {
-    return '<html><body><h1>'. $slug . '</h1></body></html>';
-})->name('pages.show');
+// Route::get('feed/rss', [RSSFeedXMLController::class, 'generateXML'])->name('rss.feed');
 
 require __DIR__.'/auth.php';
