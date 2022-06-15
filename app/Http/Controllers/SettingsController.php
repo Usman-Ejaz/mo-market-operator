@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Settings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 class SettingsController extends Controller
@@ -34,9 +35,11 @@ class SettingsController extends Controller
     public function update(Request $request)
     {
         $request = $request->except('_token', '_method');
-        foreach($request as $name => $value) {
+        foreach ($request as $name => $value) {
             $updated = Settings::update_option($name, $value);
         }
+
+        Artisan::call('queue:restart');
 
         request()->session()->flash('success', __('messages.record_updated', ['module' => 'Site configuration']));
         return redirect()->route('admin.site-configuration.index');
