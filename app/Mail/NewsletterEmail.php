@@ -13,15 +13,17 @@ class NewsletterEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $newsletter;
+    public $signedURL;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Newsletter $newsletter)
+    public function __construct(Newsletter $newsletter, $signedURL)
     {
         $this->newsletter = $newsletter;
+        $this->signedURL = $signedURL;
     }
 
     /**
@@ -31,7 +33,10 @@ class NewsletterEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('mail.newsletter', ['description' => $this->newsletter->description])
-            ->subject($this->newsletter->subject);
+        return $this->markdown('mail.newsletter', [
+            'description' => $this->newsletter->description,
+            'url' => $this->signedURL
+        ])
+        ->subject($this->newsletter->subject);
     }
 }
