@@ -206,15 +206,15 @@ class Post extends Model
         $request = request();
         
         if ($request->has('month')) {
-            $query = $query->whereMonth('created_at', '=', $request->get('month'));
+            $query = $query->whereMonth('published_at', '=', $request->get('month'));
         }
 
         if ($request->has('year')) {
-            $query = $query->whereYear('created_at', '=', $request->get('year'));
+            $query = $query->whereYear('published_at', '=', $request->get('year'));
         }
 
         if ($request->has('sort')) {
-            $query = $query->orderBy('created_at', $request->get('sort'));
+            $query = $query->orderBy('published_at', $request->get('sort'));
         }
 
         return $query;
