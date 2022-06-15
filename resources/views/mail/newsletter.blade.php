@@ -8,16 +8,6 @@
         </h1>
 
         {!! $description !!}
-
-        {{-- @component('mail.button')
-            @slot('title')
-                Try It Now
-            @endslot
-
-            @slot('link')
-                {{ config('settings.client_app_base_url') }}
-            @endslot
-        @endcomponent --}}
     </td>
 </tr>
 @endsection
@@ -25,6 +15,6 @@
 @section('unsubscribe')
     <li style="display: inline-block; margin-right: 20px">
         <span style="width: 0.75px; height: 18px; display: inline-block; margin-right: 12px; vertical-align: middle; background-color: #f6f6f6"></span>
-        <a style="color: #f6f6f6; text-decoration: none; font-size: 14px; font-weight: 300" href="#">Unsubscribe</a>
+        <a style="color: #f6f6f6; text-decoration: none; font-size: 14px; font-weight: 300" href="{{ $url }}">Unsubscribe</a>
     </li>
 @endsection
