@@ -26,7 +26,7 @@ class Settings extends Model
     public static function get_option($name)
     {
         $setting = Settings::where(['name' => $name])->first();
-        return $setting->value;
+        return $setting ? $setting->value : null;
     }
     
     /**
