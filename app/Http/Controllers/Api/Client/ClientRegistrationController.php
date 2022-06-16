@@ -626,6 +626,8 @@ class ClientRegistrationController extends BaseApiController
 
         $client = $request->user();
 
+        $this->removeOldCategoryAttachments($client->categories, $data['categories'], $client->id);
+
         $client->update([
             'name'              => $data['name'],
             'type'              => $data['type'],
@@ -643,7 +645,7 @@ class ClientRegistrationController extends BaseApiController
         if ($client !== null) {
 
             if ($request->has('secondary_details')) {
-                $this->storeClientDetails($data['secondary_details'], ClientDetail::SECONDARY, $client->id);
+                $this->storeClientDetails($data['secondary_details'], ClientDetail::SECONDARY, $client->id, true);
             }
 
             $token = $client->createToken(__('auth.apiTokenKey'))->accessToken;
@@ -705,6 +707,51 @@ class ClientRegistrationController extends BaseApiController
             return $this->sendResponse($link, __('messages.success'));
         } catch (\Exception $ex) {
             $this->sendError(__('messages.error'), $ex->getMessage(), 500);
+        }
+    }
+
+    
+    /**
+     * removeOldCategoryAttachments
+     *
+     * @param  mixed $clientCategories
+     * @param  mixed $newCategories
+     * @param  mixed $clientId
+     * @return string
+     */
+    private function removeOldCategoryAttachments($clientCategories, $newCategories, $clientId)
+    {
+        if ($newCategories === null || $newCategories === "") {
+            return null;
+        }
+        
+        $newCategories = explode(",", $newCategories);
+        $cats = [];
+
+        foreach (Client::REGISTER_CATEGORIES as $key => $category) {
+            if (in_array($category, $newCategories)) {
+                array_push($cats, $key);
+            }
+        }
+
+        sort($cats);
+
+        $clientCategories = explode(',', $clientCategories);
+
+        $removedCategories = array_diff($clientCategories, $newCategories);
+
+        if (count($removedCategories) > 0) {
+            foreach ($removedCategories as $index => $value)  {
+
+                $files = ClientAttachment::where(['client_id' => $clientId, 'category_id' => $value])->get();
+                
+                if ($files->count() > 0) {
+                    foreach ($files as $attachment) {
+                        removeFile(ClientAttachment::DIR, $attachment->file);
+                        $attachment->delete();
+                    }
+                }
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class SendNewsletterEmail implements ShouldQueue
 {
@@ -39,10 +40,11 @@ class SendNewsletterEmail implements ShouldQueue
      */
     public function handle()
     {
-        $subscribers = Subscriber::newletters()->select("email")->get();
+        $subscribers = Subscriber::newletters()->select("id", "email")->get();
 
         foreach ($subscribers as $subscriber) {
-            Mail::to($subscriber->email)->send(new NewsletterEmail($this->newsletter));
+            $signedURL = URL::signedRoute('unsubscribe', ['subscriber' => $subscriber->id]);
+            Mail::to($subscriber->email)->send(new NewsletterEmail($this->newsletter, $signedURL));
         }
 
         ActivityLog::create([

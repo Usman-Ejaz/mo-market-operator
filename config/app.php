@@ -178,6 +178,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
 
         App\Providers\FakerLocaleServiceProvider::class,
+        App\Providers\EmailConfigServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
