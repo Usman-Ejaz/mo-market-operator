@@ -105,6 +105,7 @@ class TrainingController extends Controller
         $data = $this->validateRequest($training);
 
         $data['attachment'] = $this->handleFileUpload($training, $request);
+        unset($data['attachments']);
 
         $training->update($data);
         
