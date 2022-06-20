@@ -91,7 +91,7 @@
 										</div>
 										<div class="btn-group">
 											<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-												Opacity
+												{{ __("Visibility") }}
 											</button>
 											<div class="dropdown-menu" id="opcaityDropdown">
 												<span class="dropdown-item" data-value="10">10%</span>
