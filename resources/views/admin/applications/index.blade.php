@@ -62,7 +62,7 @@ Applications Of - {{ $job->title }}
             serverSide: true,
             pageLength: 25,
             order: [
-                [7, 'desc']
+                [0, 'desc']
             ],
             ajax: "{{ route('admin.job.applications.list',$job->id) }}",
             fnDrawCallback: function () {
