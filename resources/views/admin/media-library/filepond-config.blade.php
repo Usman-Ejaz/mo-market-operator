@@ -175,7 +175,7 @@
             credits: false,
             allowMultiple: true,
             required: true,
-            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action"> Browse </span><br /><small style="font-size: 12px;">Maximum 10 files are allowed to upload.</small>',
+            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action"> Browse </span><br /><small style="font-size: 12px;">Maximum 10 files are allowed to upload at a time.</small>',
             labelTapToUndo: '',
             labelTapToCancel: '',
             labelTapToRetry: '',
@@ -211,7 +211,7 @@
             // },
             onwarning: (err) => {
                 if (err.body === "Max files") {
-                    toastr.error('Maximum 10 files are allowed to upload.');
+                    toastr.error('Maximum 10 files are allowed to upload at a time.');
                 }
             }
         });
