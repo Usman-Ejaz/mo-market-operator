@@ -20,8 +20,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="name">URL <span class="text-danger">*</span></label>
-                <input type="url" class="form-control" id="url" autocomplete="off" placeholder="Enter URL" name="url" value="{{ old('url') ?? $sliderImage->url }}">
+                <label for="name">URL <span class="text-danger">*</span> <small>Please enter the URL after '{{ config('settings.client_app_base_url') }}'</small></label>
+                <input type="text" class="form-control" id="url" autocomplete="off" placeholder="Enter URL" name="url" value="{{ old('url') ?? $sliderImage->url }}">
                 <span class="form-text text-danger">{{ $errors->first('url') }} </span>
             </div>
         </div>
