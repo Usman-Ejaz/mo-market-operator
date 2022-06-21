@@ -111,7 +111,7 @@ class MediaFileController extends Controller
             $data = base64_decode($data);
             list(, $extension) = explode('/', $type);
             $filename = md5(time()) . md5(time()) . '.' . $extension;
-            Storage::disk('app')->put($directoryPrefix . $filename, $data);
+            Storage::disk(config('settings.storage_disk'))->put($directoryPrefix . $filename, $data);
 
             if ($request->has('imageWidth') && $request->has('imageHeight')) {
                 $path = config('settings.storage_disk_base_path') . $directoryPrefix . $filename;

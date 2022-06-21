@@ -30,9 +30,6 @@ class ProfileController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // if (!hasPermission('profile', 'edit')) {
-        //     return abort(403);
-        // }
 
         if ($user->update($this->validateRequest($user))) {
             $this->storeImage($user);
