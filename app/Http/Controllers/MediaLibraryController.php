@@ -25,7 +25,7 @@ class MediaLibraryController extends Controller
      */
     public function __construct()
     {
-        $this->disk = Storage::disk('app');
+        $this->disk = Storage::disk(config('settings.storage_disk'));
     }
     
     /**

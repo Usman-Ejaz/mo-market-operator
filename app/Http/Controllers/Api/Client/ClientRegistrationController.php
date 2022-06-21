@@ -360,7 +360,7 @@ class ClientRegistrationController extends BaseApiController
         $data = base64_decode($data);
         list(, $extension) = explode('/', $type);
         $filename = Str::random(20) . '.' . $extension;
-        Storage::disk('app')->put(ClientDetail::SIGNATURE_DIR . $filename, $data);
+        Storage::disk(config('settings.storage_disk'))->put(ClientDetail::SIGNATURE_DIR . $filename, $data);
 
         return $filename;
     }
@@ -700,7 +700,7 @@ class ClientRegistrationController extends BaseApiController
 
             $filename = Str::random(16) . '.PDF';
 
-            Storage::disk('app')->put('clients/forms/' . $filename, $pdf->output());
+            Storage::disk(config('settings.storage_disk'))->put('clients/forms/' . $filename, $pdf->output());
 
             $link = serveFile('clients/forms/', $filename);
 
