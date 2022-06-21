@@ -136,7 +136,8 @@ class ProfileController extends Controller
                 if (Hash::check($request->password, $user->password)) {
                     return redirect()->back()->withErrors("New Password should be different from Old Password.");
                 }
-                $user->update(['password' => bcrypt($request->get("password"))]);
+                $user->password = bcrypt($request->get("password"));
+                $user->save();
                 
                 $request->session()->flash("success", __('messages.record_updated', ['module' => 'Password']));
                 return redirect()->route("admin.dashboard");
