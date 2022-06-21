@@ -18,6 +18,8 @@ return [
 
     "client_app_base_url" => env('CLIENT_BASE_URL'),
 
+    "storage_disk" => "app",
+
     "storage_disk_base_path" => config('filesystems.disks.app.root') . '/',
 
     "client_removal_threshold" => 20,   // remove clients if their profile is incomplete. threshold is in days.

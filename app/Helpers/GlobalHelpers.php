@@ -35,7 +35,7 @@ if (!function_exists("storeFile")) {
             $fileOriginalName = explode(".", $file->getClientOriginalName())[0];
             $filename = $fileOriginalName . '_ismo_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
             $contents = $file->get();
-            Storage::disk('app')->put($dir . $filename, $contents);
+            Storage::disk(config('settings.storage_disk'))->put($dir . $filename, $contents);
         } catch (\Exception $ex) {
             $filename = null;
         }
@@ -48,7 +48,7 @@ if (!function_exists("serveFile")) {
 
     function serveFile($dir, $file)
     {
-        return $file ? Storage::disk("app")->url($dir . $file) : null;
+        return $file ? Storage::disk(config('settings.storage_disk'))->url($dir . $file) : null;
     }
 }
 
@@ -56,9 +56,9 @@ if (!function_exists("removeFile")) {
 
     function removeFile($dir, $oldFile)
     {
-        if (Storage::disk('app')->exists($dir . basename($oldFile)))
+        if (Storage::disk(config('settings.storage_disk'))->exists($dir . basename($oldFile)))
         {
-            Storage::disk('app')->delete($dir . basename($oldFile));
+            Storage::disk(config('settings.storage_disk'))->delete($dir . basename($oldFile));
             return true;
         }
 
@@ -71,7 +71,7 @@ if (!function_exists('downloadFile')) {
     function downloadFile($dir, $file)
     {
         $filename = getFileOriginalName($file);
-        return Storage::disk('app')->download($dir . '/' . $file, $filename);
+        return Storage::disk(config('settings.storage_disk'))->download($dir . '/' . $file, $filename);
     }
 }
 
