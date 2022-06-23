@@ -56,7 +56,7 @@ class ChatBotKnowledgeBaseController extends Controller
 
             $message = __('messages.record_published', ['module' => 'Knowledge Base']);
         }
-        
+
         $request->session()->flash('success', $message);
         return redirect()->route('admin.knowledge-base.index');
     }
@@ -95,7 +95,7 @@ class ChatBotKnowledgeBaseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ChatBotKnowledgeBase $knowledge_base)
-    {   
+    {
         abort_if(!hasPermission('knowledge_base', 'edit'), 401, __('messages.unauthorized_action'));
 
         $message = __('messages.record_updated', ['module' => 'Knowledge Base']);
@@ -165,14 +165,9 @@ class ChatBotKnowledgeBaseController extends Controller
                         </a>';
                     }
                     if (hasPermission('knowledge_base', 'delete')) {
-                        $options .= ' <form action="'. route('admin.knowledge-base.destroy', $row->id) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.knowledge-base.destroy', $row->id ) .'" title="Delete">
+                            <i class="fas fa-trash" data-action="'. route('admin.knowledge-base.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })

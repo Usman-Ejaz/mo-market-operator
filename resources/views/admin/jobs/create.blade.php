@@ -87,18 +87,11 @@
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
-
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 <script>
 	//Date and time picker
 	let oldFiles = [];
 	$(document).ready(function() {
-
-		CKEDITOR.instances.description.on('blur', function(e) {
-			var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
-			if (messageLength !== 0) {
-				$('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
-			}
-		});
 
 		$('#start_datetime').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
@@ -106,8 +99,8 @@
 			roundTime: 'ceil',
 			minDate: new Date(),
 			validateOnBlur: false,
-			onChangeDateTime: function(selectedDateTime, $input) {				
-				
+			onChangeDateTime: function(selectedDateTime, $input) {
+
 				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
 				if (selectedDateTime >= todaysDate) {
@@ -135,6 +128,8 @@
 					$('#start_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
+
+                $('#start_datetime').datetimepicker('hide');
 			},
 			onShow: function () {
 				this.setOptions({
@@ -149,16 +144,16 @@
 			roundTime: 'ceil',
 			minDate: new Date(),
 			validateOnBlur: false,
-			onChangeDateTime: function(selectedDateTime, $input) {				
+			onChangeDateTime: function(selectedDateTime, $input) {
 
 				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
 				if (selectedDateTime >= todaysDate) {
 					$('#end_date').val(mapDate(selectedDateTime));
-				
+
 					let startDate = new Date($("#start_date").val()).setSeconds(0, 0);
 					selectedDateTime = selectedDateTime.setSeconds(0, 0);
-					
+
 					if (selectedDateTime <= startDate) {
 						$input.val("");
 						$('#end_date').val("");
@@ -171,6 +166,8 @@
 					$('#end_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
+
+                $('#end_datetime').datetimepicker('hide');
 			},
 			onShow: function () {
 				this.setOptions({
@@ -189,28 +186,6 @@
 			$('#action').val("Published");
 		});
 
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
-
-		$.validator.addMethod("ckeditor_required", function(value, element) {
-			var editorId = $(element).attr('id');
-			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-			return messageLength !== 0;
-		}, '{{ __("messages.ckeditor_required") }}');
-
-		$.validator.addMethod('docx_extension', function (value, element, param) {
-			let files = Array.from(element.files);
-			param = param.split('|');
-			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
-			return this.optional(element) || invalidFiles.length === 0;
-		}, '');
-
-		$.validator.addMethod('upload_threshold', function (value, element, param) {
-			let files = Array.from(element.files).length;
-			return this.optional(element) || files <= param;
-		}, '');
-
 		$('#create-job-form').validate({
 			errorElement: 'span',
 			errorClass: "my-error-class",
@@ -222,12 +197,14 @@
 					minlength: 3,
 					maxlength: 255,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				short_description: {
 					required: true,
 					minlength: 10,
 					maxlength: 300,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				description: {
 					ckeditor_required: true,
@@ -237,16 +214,17 @@
 					required: true,
 					minlength: 5,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				experience: {
 					required: true,
-					minlength: 2,
-					notNumericValues: true,
+					number: true,
 				},
 				location: {
 					required: true,
 					minlength: 5,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				total_positions: {
 					required: true,
@@ -258,13 +236,14 @@
 					required: true,
 					minlength: 5,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				salary: {
 					number: true,
 				},
 				image: {
 					required: true,
-					extension: "{{ config('settings.image_file_extensions') }}",					
+					extension: "{{ config('settings.image_file_extensions') }}",
 				},
 				'attachments[]': {
 					required: true,
@@ -304,11 +283,9 @@
 				},
 				'attachments[]': {
 					required: '{{ __("messages.required") }}',
-					docx_extension: '{{ __("messages.valid_file_extension") }}',
-					upload_threshold: 'Only 5 files are allowed to upload in one go.'
 				},
 				title: {
-					required: "This field is required.",
+					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
 				}
@@ -337,7 +314,7 @@
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
 	}
 
-	function handleFileChoose (e) 
+	function handleFileChoose (e)
 	{
 		if (e.target.files.length === 0) {
 			e.preventDefault();

@@ -49,9 +49,9 @@ class ManagerController extends Controller
         $data['image'] = '';
 
         if ($request->hasFile('image')) {
-            $data['image'] = storeFile(Manager::STORAGE_DIRECTORY, $request->file('image'));            
+            $data['image'] = storeFile(Manager::STORAGE_DIRECTORY, $request->file('image'));
         }
-        
+
         Manager::create($data);
 
         $request->session()->flash('success', __('messages.record_created', ['module' => 'Manager']));
@@ -101,7 +101,7 @@ class ManagerController extends Controller
         }
 
         $manager->update($data);
-        
+
         $request->session()->flash('success', __('messages.record_updated', ['module' => 'Manager']));
 
         return redirect()->route('admin.managers.index');
@@ -125,8 +125,8 @@ class ManagerController extends Controller
     public function list(Request $request)
     {
         abort_if(! hasPermission('our_teams', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
-        if ($request->ajax()) 
+
+        if ($request->ajax())
         {
             $managers = Manager::latest()->get();
 
@@ -159,14 +159,9 @@ class ManagerController extends Controller
                     }
 
                     if (hasPermission('our_teams', 'delete')) {
-                        $options .= ' <form action="'. route('admin.managers.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.managers.destroy', $row->id ) .'" title="Delete">
+                            <i class="fas fa-trash" data-action="'. route('admin.managers.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
 
                     return $options;

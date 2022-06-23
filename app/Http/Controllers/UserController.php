@@ -54,7 +54,7 @@ class UserController extends Controller
         $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
 
         $data['image'] = null;
-        
+
         if ($request->has('image')) {
             $data['image'] = storeFile(User::STORAGE_DIRECTORY, $request->file('image'));
         }
@@ -64,13 +64,13 @@ class UserController extends Controller
         if ($user->exists) {
 
             if ($request->get("sendEmail") == "1") {
-                
-                $signedURL = URL::temporarySignedRoute('create-password', 
+
+                $signedURL = URL::temporarySignedRoute('create-password',
                     now()->addMinutes(config("settings.createPassowrdLinkExpiryTime")), ['user' => $user->email]);
 
                 $user->password_link = $signedURL;
                 $user->save();
-                
+
                 Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
             }
 
@@ -120,7 +120,7 @@ class UserController extends Controller
         abort_if(!hasPermission("users", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($user);
-        
+
         $data['show_notifications'] = $request->get('notifications') == null ? '0' : '1';
 
         if ($request->get('removeImage') == '1') {
@@ -135,12 +135,12 @@ class UserController extends Controller
         $user->update($data);
 
         if ($request->get("sendEmail") == "1") {
-            $signedURL = URL::temporarySignedRoute('create-password', 
+            $signedURL = URL::temporarySignedRoute('create-password',
                 now()->addMinutes(config("settings.createPassowrdLinkExpiryTime")), ['user' => $user->email]);
 
             $user->password_link = $signedURL;
             $user->save();
-        
+
             Mail::to($user->email)->send(new NewUserCreatePasswordEmail($user));
         }
 
@@ -202,14 +202,9 @@ class UserController extends Controller
                         </a>';
                     }
                     if (hasPermission('users', 'delete')) {
-                        $options .= ' <form action="' . route('admin.users.destroy', $row->id) . '" method="POST" style="display: inline-block;">
-                            ' . csrf_field() . '
-                            ' . method_field("DELETE") . '
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.users.destroy', $row->id ) .'" title="Delete">
+                            <i class="fas fa-trash" data-action="'. route('admin.users.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })

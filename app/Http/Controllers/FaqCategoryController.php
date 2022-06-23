@@ -121,7 +121,7 @@ class FaqCategoryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
                     return truncateWords($row->name, 50);
-                })               
+                })
                 ->editColumn('created_at', function ($row) {
                     return [
                         'display' => $row->created_at,
@@ -136,14 +136,9 @@ class FaqCategoryController extends Controller
                         </a>';
                     }
                     if (hasPermission('faq_categories', 'delete')) {
-                        $options .= ' <form action="'. route('admin.faq-categories.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.faq-categories.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.faq-categories.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })

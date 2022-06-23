@@ -66,12 +66,12 @@ class JobController extends Controller
         }
 
         $message = __('messages.record_created', ['module' => 'Job']);
-        
+
         if ($request->action === "Published") {
             $data['published_at'] = now();
             $message = __('messages.record_published', ['module' => 'Job']);
         }
-        
+
         Job::create($data);
 
         $request->session()->flash('success', $message);
@@ -112,16 +112,16 @@ class JobController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Job $job)
-    {      
+    {
         abort_if(!hasPermission("jobs", "edit"), 401, __('messages.unauthorized_action'));
-        
+
         $data = $this->validateRequest($job);
-        
+
         $data['enable'] = ($request->get('enable') == null) ? '0' : $request->get('enable');
         $data['slug'] = Str::slug($data['title']);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
-    
+
         if ($request->hasFile('image')) {
             $data['image'] = storeFile(Job::STORAGE_DIRECTORY, $request->file('image'), $job->image);
         }
@@ -129,10 +129,10 @@ class JobController extends Controller
         $data['attachments'] = $this->handleFileUpload($job, $request);
 
         $message = __('messages.record_updated', ['module' => 'Job']);
-        
+
         if ($request->action === "Unpublished") {
             $data['published_at'] = null;
-            
+
             $message = __('messages.record_unpublished', ['module' => 'Job']);
         } else if ($request->action === "Published") {
             $data['published_at'] = now();
@@ -155,7 +155,7 @@ class JobController extends Controller
     public function destroy(Job $job)
     {
         abort_if(!hasPermission("jobs", "delete"), 401, __('messages.unauthorized_action'));
-        
+
         $job->removeImage();
         $job->removeAttachments();
 
@@ -212,18 +212,13 @@ class JobController extends Controller
                         </a>';
                     }
                     if( hasPermission('jobs', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.jobs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.jobs.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.jobs.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })
-                ->rawColumns(['action'])                
+                ->rawColumns(['action'])
                 ->make(true);
         }
     }
@@ -256,13 +251,13 @@ class JobController extends Controller
                 })
                 ->addColumn('phone', function ($row) {
                     return truncateWords($row->phone, 20);
-                })                
+                })
                 ->addColumn('city', function ($row) {
                     return truncateWords($row->city, 25);
                 })
                 ->addColumn('experience', function ($row) {
                     return truncateWords($row->experience, 10);
-                })               
+                })
                 ->editColumn('created_at', function ($row) {
                     return [
                         'display' => $row->created_at,
@@ -296,9 +291,9 @@ class JobController extends Controller
     public function exportApplicationsList(Request $request, Job $job) {
 
         abort_if(!hasPermission("jobs", "export_applications"), 401, __('messages.unauthorized_action'));
-        
+
         $data = $job->applications;
-        
+
         $fileName = $job->title . '.csv';
         $headers = array(
             "Content-type"        => "text/csv",
@@ -366,7 +361,7 @@ class JobController extends Controller
         if (! $request->has('attachments')) {
             unset($rules['attachments']);
         }
-        
+
         return request()->validate($rules, [
             "image.max" => __('messages.max_file', ['limit' => '2 MB']),
             "attachments.*.max" => __('messages.max_file', ['limit' => '5 MB']),
@@ -376,7 +371,7 @@ class JobController extends Controller
     private function handleFileUpload($job, $request)
     {
         $filenames = implode(",", $job->attachments);
-        
+
         if ($request->hasFile('attachments'))
         {
             $uploadedFiles = $request->file('attachments');

@@ -8,11 +8,7 @@
 
 @section('addButton')
 @if(hasPermission('clients', 'delete'))
-<form method="POST" action="{{ route('admin.clients.destroy', $client->id) }}" class="float-right">
-	@method('DELETE')
-	@csrf
-	<button class="btn btn-danger" onclick="return confirm('Are You Sure Want to delete this record?');">Delete</button>
-</form>
+    <button class="btn btn-danger deleteButton float-right">Delete</button>
 @endif
 @endsection
 
@@ -223,7 +219,7 @@
 										</div>
 									</div>
 								@endforeach
-							</ul>							
+							</ul>
 						@endforeach
 					@endif
 				</div>
@@ -234,4 +230,22 @@
 	<!-- /.container-fluid -->
 
 </div>
+@include('admin.includes.delete-popup')
 @endsection
+
+@push('optional-scripts')
+    <script>
+        let action = "";
+        $(function () {
+            $('body').on('click', '.deleteButton', (e) => {
+                action = '{{ route("admin.clients.destroy", $client->id) }}';
+                $('#deleteModal').modal('toggle');
+            });
+
+            $('#deleteForm').submit(function (event) {
+                $(this).attr('action', action);
+            });
+        });
+
+    </script>
+@endpush

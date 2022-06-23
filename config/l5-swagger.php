@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'ISMO Documentation Interface',
+                'title' => config('app.name') . ' Documentation Interface',
             ],
 
             'routes' => [

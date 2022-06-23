@@ -64,7 +64,7 @@
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
-
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 <script>
 	let oldFiles = [];
 	$(document).ready(function() {
@@ -78,17 +78,6 @@
 			$('#action').val("Published");
 		});
 
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
-
-		$.validator.addMethod('docx_extension', function (value, element, param) {
-			let files = Array.from(element.files);
-			param = param.split('|');
-			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
-			return this.optional(element) || invalidFiles.length === 0;
-		}, '{{ __("messages.valid_file_extension") }}');
-
 		$('#create-document-form').validate({
 			errorElement: 'span',
 			errorClass: "my-error-class",
@@ -99,6 +88,7 @@
 					minlength: 3,
 					maxlength: 255,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				category_id: {
 					required: true,
@@ -138,7 +128,7 @@
 				return;
 			}
 
-			$(this).attr('placeholder', '{{ __("Enter Keywords") }}');
+			$(this).attr('placeholder', '{{ __("Enter keywords") }}');
 		});
 
 		if (document.getElementsByClassName('label-info').length > 0) {
@@ -199,12 +189,12 @@
 
 		let uploadedFiles = e.target.files;
 
-		for (let file of uploadedFiles) {			
+		for (let file of uploadedFiles) {
 			if (!allowedUploedFiles.includes(getFileExtension(file))) {
 				invalidFiles.push(file.name);
 			}
 		}
-		
+
 		if (invalidFiles.length > 0) {
 			message = `${invalidFiles.toString()} file(s) are not allowed for upload.`
 			$(`#${e.target.id}`).append(`<span class="my-error-class">${message}</span>`);
@@ -213,7 +203,7 @@
 		document.getElementById('convert').checked = false;
 	}
 
-	function handleFileChoose (e) 
+	function handleFileChoose (e)
 	{
 		if (e.target.files.length === 0) {
 			e.preventDefault();

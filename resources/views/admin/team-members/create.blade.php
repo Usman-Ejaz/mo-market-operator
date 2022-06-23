@@ -20,7 +20,7 @@
 					<!-- /.card-header -->
 					<!-- form start -->
 					@include('admin.team-members.form')
-					
+
 					<div class="card-footer text-right">
 						<button type="submit" class="btn btn-primary width-120">Save</button>
 					</div>
@@ -36,28 +36,12 @@
 <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
 <script>
 	//Date and time picker
 	let oldFiles = [];
 	$(document).ready(function() {
-
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
-
-		CKEDITOR.instances.description.on('blur', function(e) {
-			var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
-			if (messageLength !== 0) {
-				$('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
-			}
-		});	
-
-		$.validator.addMethod("ckeditor_required", function(value, element) {
-			var editorId = $(element).attr('id');
-			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-			return messageLength !== 0;
-		}, '{{ __("messages.ckeditor_required") }}');
 
 		$('#create-team-members-form').validate({
 			ignore: [],
@@ -69,13 +53,16 @@
 					required: true,
 					maxlength: 64,
 					minlength: 3,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				description: {
 					ckeditor_required: true
 				},
 				designation: {
-					required: true
+					required: true,
+                    notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				manager_id: {
 					required: true
@@ -114,7 +101,7 @@
 
 	});
 
-	function handleFileChoose (e) 
+	function handleFileChoose (e)
 	{
 		if (e.target.files.length === 0) {
 			e.preventDefault();

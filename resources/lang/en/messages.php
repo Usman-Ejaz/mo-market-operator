@@ -10,6 +10,7 @@ return [
     */
 
     "not_numeric" => "This field cannot contain only numbers.",
+    "prevent_special_characters" => "This field cannot contain special characters.",
     "valid_file_extension" => "Please attach a file with valid extension.",
     "valid_image_extension" => "Please attach an image with valid extension.",
     "valid_date" => ":first datetime must be greater than :second datetime.",
@@ -36,7 +37,7 @@ return [
     "image_deleted" => "Image has been deleted successfully!",
     "subscriber" => "Subscriber has been :status successfully!",
     "subscribers" => "Subscribers has been :status successfully!",
-    
+
     /*
     |--------------------------------------------------------------------------
     | Api Response Messages

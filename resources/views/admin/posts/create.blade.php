@@ -83,18 +83,11 @@
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
-
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 <script>
 	//Date and time picker
 	let oldFiles = [];
 	$(document).ready(function() {
-
-		CKEDITOR.instances.description.on('blur', function(e) {
-			var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').trim().length;
-			if (messageLength !== 0) {
-				$('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
-			}
-		});
 
 		$('#start_datetime').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
@@ -102,8 +95,8 @@
 			roundTime: 'ceil',
 			minDate: new Date(),
 			validateOnBlur: false,
-			onChangeDateTime: function(selectedDateTime, $input) {				
-				
+			onChangeDateTime: function(selectedDateTime, $input) {
+
 				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
 				if (selectedDateTime >= todaysDate) {
@@ -131,6 +124,7 @@
 					$('#start_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
+                $('#start_datetime').datetimepicker('hide');
 			},
 			onShow: function () {
 				this.setOptions({
@@ -145,16 +139,16 @@
 			roundTime: 'ceil',
 			minDate: new Date(),
 			validateOnBlur: false,
-			onChangeDateTime: function(selectedDateTime, $input) {				
+			onChangeDateTime: function(selectedDateTime, $input) {
 
 				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
 				if (selectedDateTime >= todaysDate) {
 					$('#end_date').val(mapDate(selectedDateTime));
-				
+
 					let startDate = new Date($("#start_date").val()).setSeconds(0, 0);
 					selectedDateTime = selectedDateTime.setSeconds(0, 0);
-					
+
 					if (selectedDateTime <= startDate) {
 						$input.val("");
 						$('#end_date').val("");
@@ -167,6 +161,8 @@
 					$('#end_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
+
+                $('#end_datetime').datetimepicker('hide');
 			},
 			onShow: function () {
 				this.setOptions({
@@ -199,16 +195,6 @@
 			}
 		});
 
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
-
-		$.validator.addMethod("ckeditor_required", function(value, element) {
-			var editorId = $(element).attr('id');
-			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').trim().length;
-			return messageLength !== 0;
-		}, '{{ __("messages.ckeditor_required") }}');
-
 		$('#create-post-form').validate({
 			ignore: [],
 			errorElement: 'span',
@@ -220,15 +206,16 @@
 					minlength: 3,
 					maxlength: 255,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				description: {
 					ckeditor_required: true,
-					minlength: 3,
 					maxlength: 50000
 				},
 				slug: {
 					required: true,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				post_category: {
 					required: true,
@@ -287,12 +274,12 @@
 		});
 	});
 
-	function mapDate(date) 
+	function mapDate(date)
 	{
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
 	}
 
-	function handleFileChoose (e) 
+	function handleFileChoose (e)
 	{
 		if (e.target.files.length === 0) {
 			e.preventDefault();

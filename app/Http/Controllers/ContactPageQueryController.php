@@ -45,7 +45,7 @@ class ContactPageQueryController extends Controller
      */
     public function store(Request $request)
     {
-        // 
+        //
     }
 
     /**
@@ -64,7 +64,7 @@ class ContactPageQueryController extends Controller
                 $notification->markAsRead();
             }
         }
-        
+
         $chatbotQuery = ChatbotInitiator::where('email', '=', $contactPageQuery->email)->first();
         $isChatbotQuery = false;
 
@@ -127,7 +127,7 @@ class ContactPageQueryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
                     return truncateWords($row->name, 20);
-                })  
+                })
                 ->addColumn('email', function ($row) {
                     return ($row->email) ? $row->email : '';
                 })
@@ -156,14 +156,9 @@ class ContactPageQueryController extends Controller
                         </a>';
                     }
                     if (hasPermission('contact_page_queries', 'delete')) {
-                        $options .= ' <form action="'. route('admin.contact-page-queries.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.contact-page-queries.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.contact-page-queries.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })
@@ -184,7 +179,7 @@ class ContactPageQueryController extends Controller
             'resolved_by' => auth()->id()
         ]);
 
-        event(new QueryReplyEvent($contactPageQuery));        
+        event(new QueryReplyEvent($contactPageQuery));
 
         $request->session()->flash('success', __('messages.reply_email'));
 
