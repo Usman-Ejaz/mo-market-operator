@@ -19,15 +19,15 @@
 					<!-- /.card-header -->
 					<!-- form start -->
 					@include('admin.users.form')
-					
+
 					<input type="hidden" name="sendEmail" value="0" id="sendEmail">
 					<!-- /.card-body -->
 					<div class="card-footer text-right">
 						<button type="submit" class="btn btn-primary width-120">Save</button>
 						<button type="submit" class="btn btn-success mr-2 save-with-email">Save & Send Email</button>
 					</div>
-				</div>				
-			</div>			
+				</div>
+			</div>
 		</div>
 	</form>
 </div>
@@ -37,15 +37,12 @@
 @push('optional-scripts')
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
 <script>
 	//Date and time picker
 	let oldFiles = [];
 	$(document).ready(function() {
-
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
 
 		$(".save-with-email").click(function() {
 			$("#sendEmail").val("1");
@@ -60,12 +57,13 @@
 					required: true,
 					maxlength: 64,
 					minlength: 3,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				email: {
 					required: true,
 					email: true,
-					notNumericValues: true
+					notNumericValues: true,
 				},
 				role_id: {
 					required: true,
@@ -79,7 +77,8 @@
 					required: true,
 					maxlength: 64,
 					minlength: 3,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				image: {
 					extension: "{{ config('settings.image_file_extensions') }}"
@@ -109,7 +108,7 @@
 		});
 	});
 
-	function handleFileChoose (e) 
+	function handleFileChoose (e)
 	{
 		if (e.target.files.length === 0) {
 			e.preventDefault();

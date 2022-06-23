@@ -39,19 +39,10 @@
 <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
 <script>
 	$(document).ready(function() {
-
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
-
-		$.validator.addMethod("ckeditor_required", function(value, element) {
-			var editorId = $(element).attr('id');
-			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-			return messageLength !== 0;
-		}, '{{ __("messages.ckeditor_required") }}');
 
 		$('#update-static-block-form').validate({
 			ignore: [],
@@ -63,7 +54,8 @@
 					required: true,
 					maxlength: 255,
 					minlength: 3,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				contents: {
 					ckeditor_required: true,

@@ -40,12 +40,10 @@
 @push('optional-scripts')
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
 <script>
 	$(document).ready(function() {
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
 
 		$('#update-menus-form').validate({
 			errorElement: 'span',
@@ -56,7 +54,8 @@
 					required: true,
 					maxlength: 64,
 					minlength: 2,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				theme: {
 					required: true,
@@ -70,7 +69,8 @@
 					required: true,
 					maxlength: 64,
 					minlength: 3,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				}
 			},
 			messages: {

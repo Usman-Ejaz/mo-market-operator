@@ -17,7 +17,7 @@ class MediaLibraryController extends Controller
 {
 
     private $disk = null;
-    
+
     /**
      * __construct
      *
@@ -27,7 +27,7 @@ class MediaLibraryController extends Controller
     {
         $this->disk = Storage::disk(config('settings.storage_disk'));
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +36,7 @@ class MediaLibraryController extends Controller
     public function index()
     {
         abort_if(! hasPermission('media_library', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
+
         return view('admin.media-library.index');
     }
 
@@ -62,13 +62,13 @@ class MediaLibraryController extends Controller
     public function store(Request $request)
     {
         abort_if(! hasPermission('media_library', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
+
         $mediaLibrary = new MediaLibrary;
         $data = $this->validateRequest($mediaLibrary);
         $data['directory'] = strtolower(Str::slug($data['name'], '_'));
         $data['slug'] = $data['directory'];
         $this->makeDirectory($data);
-        
+
         MediaLibrary::create($data);
 
         $request->session()->flash('success', __('messages.record_created', ['module' => 'Media Library']));
@@ -132,16 +132,16 @@ class MediaLibraryController extends Controller
         abort_if(! hasPermission('media_library', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $dir = MediaLibrary::MEDIA_STORAGE . $mediaLibrary->directory;
-        
+
         if ($this->disk->exists($dir)) {
             $this->disk->deleteDirectory($dir);
         }
-        
+
         $mediaLibrary->delete();
         $request->session()->flash('success', __('messages.record_deleted', ['module' => 'Media Library']));
         return redirect()->route('admin.media-library.index');
     }
-    
+
     /**
      * list
      *
@@ -178,14 +178,9 @@ class MediaLibraryController extends Controller
                     }
 
                     if (hasPermission('media_library', 'delete')) {
-                        $options .= ' <form action="'. route('admin.media-library.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.media-library.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.media-library.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
 
                     if (hasPermission('media_library', 'manage_files')) {
@@ -211,14 +206,14 @@ class MediaLibraryController extends Controller
 
     private function makeDirectory($data, $oldDir = null)
     {
-        $dir = MediaLibrary::MEDIA_STORAGE . $data['directory'];                
+        $dir = MediaLibrary::MEDIA_STORAGE . $data['directory'];
 
         if ($oldDir !== null && $oldDir !== $data['directory']) {
             $this->disk->move(MediaLibrary::MEDIA_STORAGE . $oldDir, $dir);
             return;
         }
 
-        if (!$this->disk->exists($dir)) 
+        if (!$this->disk->exists($dir))
         {
             $this->disk->makeDirectory($dir);
         }

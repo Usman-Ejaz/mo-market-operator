@@ -106,14 +106,14 @@ class PageController extends Controller
     public function update(Request $request, Page $cms_page)
     {
         abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
-        
+
         $previousImage = $cms_page->image;
         $data = $this->validateRequest($cms_page);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
 
         $message = __('messages.record_updated', ['module' => 'Page']);
-        
+
         if ($request->action === "Unpublished") {
             $data['published_at'] = null;
             $message = __('messages.record_unpublished', ['module' => 'Page']);
@@ -121,11 +121,11 @@ class PageController extends Controller
             $data['published_at'] = now();
             $message = __('messages.record_published', ['module' => 'Page']);
         }
-                
+
         if ($request->hasFile('image')) {
             $data['image'] = storeFile(Page::STORAGE_DIRECTORY, $request->file('image'), $previousImage);
         }
-        
+
         $cms_page->update($data);
 
         $request->session()->flash('success', $message);
@@ -191,14 +191,9 @@ class PageController extends Controller
                         </a>';
                     }
                     if (hasPermission('pages', 'delete')) {
-                        $options .= ' <form action="'. route('admin.pages.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.pages.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.pages.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })
@@ -229,7 +224,7 @@ class PageController extends Controller
     public function deleteImage(Request $request){
         if ($request->ajax()) {
             if (isset($request->page_id)) {
-                
+
                 $page = Page::find($request->page_id);
 
                 if (removeFile(Page::STORAGE_DIRECTORY, $page->image)) {

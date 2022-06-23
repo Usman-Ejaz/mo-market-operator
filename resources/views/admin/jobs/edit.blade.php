@@ -92,17 +92,10 @@
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
-
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 <script>
 	let oldFiles = [];
 	$(document).ready(function() {
-
-		CKEDITOR.instances.description.on('blur', function(e) {
-			var messageLength = CKEDITOR.instances.description.getData().replace(/<[^>]*>/gi, '').length;
-			if (messageLength !== 0) {
-				$('#cke_description').next().hasClass("my-error-class") && $('#cke_description').next().remove();
-			}
-		});
 
 		//Date and time picker
 		$('#start_datetime').datetimepicker({
@@ -111,8 +104,8 @@
 			roundTime: 'ceil',
 			minDate: new Date(),
 			validateOnBlur: false,
-			onChangeDateTime: function(selectedDateTime, $input) {				
-				
+			onChangeDateTime: function(selectedDateTime, $input) {
+
 				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
 				if (selectedDateTime >= todaysDate) {
@@ -140,6 +133,8 @@
 					$('#start_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
+
+                $('#start_datetime').datetimepicker('hide');
 			},
 			onShow: function () {
 				this.setOptions({
@@ -154,16 +149,16 @@
 			roundTime: 'ceil',
 			minDate: new Date(),
 			validateOnBlur: false,
-			onChangeDateTime: function(selectedDateTime, $input) {				
+			onChangeDateTime: function(selectedDateTime, $input) {
 
 				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
 				if (selectedDateTime >= todaysDate) {
 					$('#end_date').val(mapDate(selectedDateTime));
-				
+
 					let startDate = new Date($("#start_date").val()).setSeconds(0, 0);
 					selectedDateTime = selectedDateTime.setSeconds(0, 0);
-					
+
 					if (selectedDateTime <= startDate) {
 						$input.val("");
 						$('#end_date').val("");
@@ -176,6 +171,8 @@
 					$('#end_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
+
+                $('#end_datetime').datetimepicker('hide');
 			},
 			onShow: function () {
 				this.setOptions({
@@ -211,7 +208,7 @@
 			}
 		});
 
-		let attachments = [];		
+		let attachments = [];
 		$(".remove-file").on('click', function() {
 			let { file } = $(this).data();
 
@@ -221,23 +218,6 @@
 				$("#removeFile").val(`${attachments.toString()}`);
 			}
 		});
-
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
-
-		$.validator.addMethod("ckeditor_required", function(value, element) {
-			var editorId = $(element).attr('id');
-			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-			return messageLength !== 0;
-		}, '{{ __("messages.ckeditor_required") }}');
-
-		$.validator.addMethod('docx_extension', function (value, element, param) {
-			let files = Array.from(element.files);
-			param = param.split('|');
-			let invalidFiles = files.filter(file => !param.includes(file.name.split('.').at(-1)));
-			return this.optional(element) || invalidFiles.length === 0;
-		}, '');
 
 		$('#update-job-form').validate({
 			ignore: [],
@@ -250,12 +230,14 @@
 					minlength: 3,
 					maxlength: 255,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				short_description: {
 					required: true,
 					minlength: 10,
 					maxlength: 300,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				description: {
 					ckeditor_required: true,
@@ -265,16 +247,17 @@
 					required: true,
 					minlength: 5,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				experience: {
 					required: true,
-					minlength: 2,
-					notNumericValues: true,
+                    number: true,
 				},
 				location: {
 					required: true,
 					minlength: 5,
-					notNumericValues: true,
+					// notNumericValues: true,
+                    // prevent_special_characters: true
 				},
 				total_positions: {
 					required: true,
@@ -286,6 +269,7 @@
 					required: true,
 					minlength: 5,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				salary: {
 					number: true,
@@ -304,7 +288,8 @@
 							return $('.fileExists').length > 0 ? false : true;
 						}
 					},
-					docx_extension: "doc|docx|pdf"
+					docx_extension: "doc|docx|pdf",
+                    upload_threshold: 5,
 				},
 				enable: {
 					required: false,
@@ -339,7 +324,6 @@
 				},
 				'attachments[]': {
 					required: '{{ __("messages.required") }}',
-					docx_extension: '{{ __("messages.valid_file_extension") }}'
 				},
 				title: {
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
@@ -371,7 +355,7 @@
 		return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:00`;
 	}
 
-	function handleFileChoose (e) 
+	function handleFileChoose (e)
 	{
 		if (e.target.files.length === 0) {
 			e.preventDefault();

@@ -209,7 +209,7 @@ class MenuController extends Controller
     public function list(Request $request)
     {
         abort_if(!hasPermission("menus", "list"), 401, __('messages.unauthorized_action'));
-        
+
         if ($request->ajax()) {
             $data = Menu::byTheme($request->query('theme'))->latest()->get();
 
@@ -245,14 +245,9 @@ class MenuController extends Controller
                     }
 
                     if( hasPermission('menus', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.menus.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.menus.destroy', $row->id ) .'" title="Delete">
+                            <i class="fas fa-trash" data-action="'. route('admin.menus.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
 
                     return $options;
@@ -262,7 +257,7 @@ class MenuController extends Controller
         }
     }
 
-    public function search(Request $request) 
+    public function search(Request $request)
     {
         if (!$request->ajax()) {
             return response('Bad Request', 400);
@@ -283,13 +278,13 @@ class MenuController extends Controller
         }
     }
 
-    private function searchPages($searchKey) 
+    private function searchPages($searchKey)
     {
         $pages = Page::where('title', 'like', "%{$searchKey}%")->where('slug', 'like', "%{$searchKey}%");
         $pages = $pages->where('published_at', '!=', null)->get();
-        
+
         $html = "";
-        
+
         if ($pages->count() > 0) {
             foreach ($pages as $page) {
                 $html .= '
@@ -308,12 +303,12 @@ class MenuController extends Controller
         return $html;
     }
 
-    private function searchDocumentCategories($searchKey) 
+    private function searchDocumentCategories($searchKey)
     {
         $documentCategories = DocumentCategory::where('name', 'like', "%{$searchKey}%")->get();
-        
+
         $html = "";
-        
+
         if ($documentCategories->count() > 0) {
             foreach ($documentCategories as $documentCategory) {
                 $html .= '
@@ -332,13 +327,13 @@ class MenuController extends Controller
         return $html;
     }
 
-    private function searchPostCategories($searchKey) 
+    private function searchPostCategories($searchKey)
     {
         $post = new Post;
         $postCategories = collect($post->postCategoryOptions());
 
         if (!empty($searchKey)) {
-            $postCategories = $postCategories->filter( function ($item) use ($searchKey) { 
+            $postCategories = $postCategories->filter( function ($item) use ($searchKey) {
                 return strpos(strtolower($item), strtolower($searchKey)) !== false;
             });
         }

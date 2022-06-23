@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\Validator;
 class CareersApiController extends BaseApiController
 {
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Jobs & Job Applications",
      *     description="API Endpoints of Jobs & Job Applications"
      * )
-     * 
-     */ 
+     *
+     */
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/jobs",
      *      operationId="getPublishedJobs",
@@ -29,7 +29,7 @@ class CareersApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -53,11 +53,11 @@ class CareersApiController extends BaseApiController
             }
         } catch (\Exception $ex) {
             return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
-        }         
+        }
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/job/{slug}",
      *      operationId="showSingleJob",
@@ -76,7 +76,7 @@ class CareersApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -104,7 +104,7 @@ class CareersApiController extends BaseApiController
     }
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/submit-job-application",
      *      operationId="submitApplication",
@@ -112,7 +112,7 @@ class CareersApiController extends BaseApiController
      *      summary="Submit Job Application",
      *      description="Submit Job Application in the resource",
      *      security={{"BearerAppKey": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -175,11 +175,11 @@ class CareersApiController extends BaseApiController
      *                  ),
      *                  required={"name", "email", "gender", "city", "experience", "phone", "degree_level", "degree_title", "address", "job_slug", "resume"},
      *                  example={
-     *                      "name": "John Doe", 
-     *                      "email": "johndoe@email.com", 
-     *                      "gender": "male", 
-     *                      "experience": "2 Years", 
-     *                      "phone": "03001234567", 
+     *                      "name": "John Doe",
+     *                      "email": "johndoe@email.com",
+     *                      "gender": "male",
+     *                      "experience": "2 Years",
+     *                      "phone": "03001234567",
      *                      "degree_level": "Masters",
      *                      "degree_title": "MSC",
      *                      "address": "USA",
@@ -188,10 +188,10 @@ class CareersApiController extends BaseApiController
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -217,11 +217,11 @@ class CareersApiController extends BaseApiController
                 $data = $validator->validate();
                 unset($data['job_slug']);
                 $data['job_id'] = $job->id;
-                
+
                 if ($request->hasFile("resume")) {
                     $data['resume'] = storeFile(Application::STORAGE_DIRECTORY, $request->file('resume'));
                 }
-                
+
                 Application::create($data);
 
                 return $this->sendResponse([], __('messages.success'));
@@ -235,22 +235,23 @@ class CareersApiController extends BaseApiController
 
     private function getRules() {
         return [
-            'name' => 'required|string|min:3|max:255',
-            'email' => 'required|string|email|max:255|unique:applications,email',
-            'gender' => 'required|string|min:3|max:15',
-            'phone' => 'required|string|min:3|max:50',
-            'experience' => 'required|string|min:3|max:255',
-            'city' => 'required|string|min:3|max:255',
-            'degree_level' => 'required|string|min:3|max:255',
-            'degree_title' => 'required|string|min:3|max:255',
-            'address' => 'required|string|min:3|max:500',
-            'resume' => 'required|file|mimes:doc,docx,pdf|max:' . config('settings.maxDocumentSize'),
-            'job_slug' => 'required|string|min:3'
+            'name'          => 'required|string|min:3|max:255',
+            'email'         => 'required|string|email|max:255|unique:applications,email',
+            'gender'        => 'required|string|min:3|max:15',
+            'phone'         => 'required|string|min:3|max:50',
+            'experience'    => 'required|string|min:3|max:255',
+            'city'          => 'required|string|min:3|max:255',
+            'degree_level'  => 'required|string|min:3|max:255',
+            'degree_title'  => 'required|string|min:3|max:255',
+            'address'       => 'required|string|min:3|max:500',
+            'resume'        => 'required|file|mimes:doc,docx,pdf|max:' . config('settings.maxDocumentSize'),
+            'job_slug'      => 'required|string|min:3'
         ];
     }
 
     private function getMessages() {
         return [
+            'email.unique' => 'This email has already applied for the job.',
             'resume.max' => __('messages.max_file', ['limit' => '5 MB'])
         ];
     }

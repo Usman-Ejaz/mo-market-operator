@@ -73,16 +73,10 @@
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/bootstrap-tagsinput.js') }}"></script>
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
 <script>
 	$(document).ready(function() {
-
-		CKEDITOR.instances.answer.on('blur', function(e) {
-			var messageLength = CKEDITOR.instances.answer.getData().replace(/<[^>]*>/gi, '').length;
-			if (messageLength !== 0) {
-				$('#cke_answer').next().hasClass("my-error-class") && $('#cke_answer').next().remove();
-			}
-		});
 
 		// Set hidden fields based on button click
 		$('.draft_button').click(function(e) {
@@ -105,16 +99,6 @@
 			$('#action').val("Unpublished");
 		});
 
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
-
-		$.validator.addMethod("ckeditor_required", function(value, element) {
-			var editorId = $(element).attr('id');
-			var messageLength = CKEDITOR.instances[editorId].getData().replace(/<[^>]*>/gi, '').length;
-			return messageLength !== 0;
-		}, '{{ __("messages.ckeditor_required") }}');
-
 		$('#update-knowledge-base-form').validate({
 			ignore: [],
 			errorElement: 'span',
@@ -126,6 +110,7 @@
 					minlength: 5,
 					maxlength: 255,
 					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				answer: {
 					ckeditor_required: true,
@@ -133,7 +118,8 @@
 				},
 				keywords: {
 					required: true,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 			},
 			errorPlacement: function(error, element) {

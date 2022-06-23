@@ -28,7 +28,7 @@ class SliderImageController extends Controller
     public function create()
     {
         abort_if(! hasPermission('slider_images', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
+
         $sliderImage = new SliderImage;
         return view('admin.slider-images.create', compact('sliderImage'));
     }
@@ -146,14 +146,9 @@ class SliderImageController extends Controller
                     }
 
                     if (hasPermission('slider_images', 'delete')) {
-                        $options .= ' <form action="'. route('admin.slider-images.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.slider-images.destroy', $row->id ) .'" title="Delete">
+                            <i class="fas fa-trash" data-action="'. route('admin.slider-images.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
 
                     return $options;
@@ -170,9 +165,9 @@ class SliderImageController extends Controller
             'slot_two' => 'required',
             'url' => 'required',
             'order' => 'required',
-            'image' => 'sometimes|required|file|max:' . (config('settings.maxImageSize') + 500),
+            'image' => 'sometimes|required|file|max:' . (config('settings.maxImageSize') + 6000),
         ];
-        
+
         return request()->validate($rules, [
             'image.max' => __('messages.max_file', ['limit' => '2.5 MB'])
         ]);

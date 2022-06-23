@@ -101,27 +101,27 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         abort_if(!hasPermission("posts", "edit"), 401, __('messages.unauthorized_action'));
-        
+
         $data = $this->validateRequest($post);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
-        
+
         if ($request->has('image')) {
             $data['image'] = storeFile(Post::STORAGE_DIRECTORY, $request->file('image'), $post->image);
         }
-        
+
         $message = __('messages.record_updated', ['module' => 'Post']);
-        
+
         if ($request->action === "Unpublished") {
-            $data['published_at'] = null;            
+            $data['published_at'] = null;
             $message = __('messages.record_unpublished', ['module' => 'Post']);
         } else if ($request->action === "Published") {
-            $data['published_at'] = now();            
+            $data['published_at'] = now();
             $message = __('messages.record_published', ['module' => 'Post']);
         }
-        
+
         $post->update($data);
-        
+
         $request->session()->flash('success', $message);
         return redirect()->route('admin.posts.index');
     }
@@ -176,9 +176,9 @@ class PostController extends Controller
                     $options = '';
                     if (hasPermission('posts', 'view')) {
                         $link = $row->link . (! $row->isPublished() ? '?unpublished=true' : '');
-                        $options .= '<a href="' . $link . '" class="btn btn-primary mr-1" title="Preview" target="_blank">
+                        $options .= '<a href="' . $link . '" class="btn btn-primary" title="Preview" target="_blank">
                             <i class="fas fa-eye"></i>
-                        </a>';
+                        </a> ';
                     }
                     if( hasPermission('posts', 'edit') ) {
                         $options .= '<a href="' . route('admin.posts.edit', $row->id) . '" class="btn btn-primary" title="Edit">
@@ -186,14 +186,9 @@ class PostController extends Controller
                         </a>';
                     }
                     if( hasPermission('posts', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.posts.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.posts.destroy', $row->id ) .'" title="Delete">
+                                    <i class="fas fa-trash" data-action="'. route('admin.posts.destroy', $row->id ) .'"></i>
+                            </button>';
                     }
                     return $options;
                 })

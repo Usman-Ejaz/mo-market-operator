@@ -25,7 +25,7 @@
 				</div>
 				<div class="card-body">
 					<div class="row" id="mediafiles">
-											
+
 					</div>
 					<div class="row mt-3">
 						<div class="col-md-12">
@@ -33,12 +33,14 @@
 								<input type="file" multiple id="filepond"/>
 							</div>
 						</div>
-					</div>						
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>
+
+@include('admin.includes.delete-popup')
 
 <div class="modal fade" id="imageViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl" role="document">
@@ -87,7 +89,7 @@
 												<span class="docs-tooltip" data-toggle="tooltip" title="" data-original-title="cropper.rotate(45)">
 													<span class="fa fa-redo-alt"></span>
 												</span>
-											</button>											
+											</button>
 										</div>
 										<div class="btn-group">
 											<button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -146,7 +148,7 @@
 										</div>
 									</div>
 								</div>
-							</div>							
+							</div>
 						</div>
 					</div>
 					<input type="hidden" id="imageId" />
@@ -181,7 +183,7 @@
 		-moz-user-select: none;
 		-ms-user-select: none;
 		user-select: none;
-		
+
 	}
 	.folder-container {
 		padding: 10px;
@@ -236,7 +238,7 @@
 		width: 100%;
 	}
 
-	.image-aspact-ratio {		
+	.image-aspact-ratio {
 		/* object-fit: contain; */
 		height: 150px;
 	}

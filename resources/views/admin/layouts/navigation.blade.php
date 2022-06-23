@@ -63,7 +63,7 @@
 				<li class="nav-item">
 					<a href="{{ route('admin.documents.index') }}" class="nav-link {{ (Request()->is('admin/documents*') || Request()->is('admin/document-categories*')) ? 'active' : '' }}">
 						<i class="nav-icon fa fa-file"></i>
-						<p>ISMO Library</p>
+						<p>{{ config('app.name') }} Library</p>
 					</a>
 				</li>
 				@endif
@@ -150,7 +150,7 @@
 						</p>
 					</a>
 				</li>
-				@endif				
+				@endif
 
 				@if (hasPermission('contact_page_queries', 'list'))
 				<li class="nav-item">

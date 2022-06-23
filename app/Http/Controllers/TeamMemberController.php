@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class TeamMemberController extends Controller
-{       
+{
     /**
      * Display a listing of the resource.
      *
@@ -33,7 +33,7 @@ class TeamMemberController extends Controller
 
         $teamMember = new TeamMember;
         $managers = Manager::select('id', 'name')->latest()->get();
-        
+
         return view('admin.team-members.create', compact('teamMember', 'managers'));
     }
 
@@ -53,7 +53,7 @@ class TeamMemberController extends Controller
         if ($request->hasFile('image')) {
             $data['image'] = storeFile(TeamMember::STORAGE_DIRECTORY, $request->file('image'));
         }
-        
+
         TeamMember::create($data);
 
         $request->session()->flash('success', __('messages.record_created', ['module' => 'Team member']));
@@ -81,7 +81,7 @@ class TeamMemberController extends Controller
     public function edit(TeamMember $teamMember)
     {
         abort_if(! hasPermission('team_members', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
+
         $managers = Manager::select('id', 'name')->latest()->get();
 
         return view('admin.team-members.edit', compact('teamMember', 'managers'));
@@ -98,14 +98,14 @@ class TeamMemberController extends Controller
     {
         abort_if(! hasPermission('team_members', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        $data = $this->validateRequest($teamMember);        
+        $data = $this->validateRequest($teamMember);
 
         if ($request->hasFile('image')) {
             $data['image'] = storeFile(TeamMember::STORAGE_DIRECTORY, $request->file('image'), $teamMember->image);
         }
 
         $teamMember->update($data);
-        
+
         $request->session()->flash('success', __('messages.record_updated', ['module' => 'Team member']));
 
         return redirect()->route('admin.team-members.index');
@@ -129,8 +129,8 @@ class TeamMemberController extends Controller
     public function list(Request $request)
     {
         abort_if(! hasPermission('team_members', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
-        if ($request->ajax()) 
+
+        if ($request->ajax())
         {
             $teamMembers = TeamMember::with('manager')->latest()->get();
 
@@ -166,14 +166,9 @@ class TeamMemberController extends Controller
                     }
 
                     if (hasPermission('team_members', 'delete')) {
-                        $options .= ' <form action="'. route('admin.team-members.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.team-members.destroy', $row->id ) .'" title="Delete">
+                            <i class="fas fa-trash" data-action="'. route('admin.team-members.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
 
                     return $options;

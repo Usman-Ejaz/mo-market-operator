@@ -22,3 +22,5 @@ document.querySelector('input[type="number"]') && document.querySelector('input[
         evt.preventDefault();
     }
 });
+
+const specialCharacters = ['#', '$', '%', '&', '(', ')', '*', '+', '/', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}' ];

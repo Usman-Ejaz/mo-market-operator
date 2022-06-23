@@ -5,11 +5,12 @@
 <script src="{{ asset('admin-resources/plugins/cropperjs/js/cropper.min.js') }}"></script>
 
 <script type="module">
-	
-	let cropper = null;    
+
+	let cropper = null;
     let cropperEnabled = false;
     let imageOpacity = 1;
     let imageScale = null; // in percent
+    let actionId = "";
 
 	$(document).ready(function () {
 
@@ -19,7 +20,7 @@
 
 		$('body').on('click', '.folder-container', function () {
 			let { id, src, featured } = $(this).data();
-			
+
 			$("#featured").prop("checked", featured === 1);
 			$('#imageSrc').attr('src', src);
 			$('#imageId').val(id);
@@ -29,31 +30,40 @@
 		});
 
         $('body').on('click', '.btn-remove', (e) => {
-            if(confirm('Are you sure you want to delete this record?')) {                
-                let { id } = e.target.dataset;
-
-                if (!id) { console.log(id); toastr.error("Could not find media file."); return; }
-
-                $.ajax({
-                    url: '{{ route("admin.media-library.files.remove") }}',
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    data: { id },
-                    success: (response) => {
-                        let { status, message } = response;
-                        if (status === 'success') {
-                            toastr.success(message);
-                            loadAllImages();
-                        }
-                    },
-                    error: (error) => {
-                        console.log(error);
-                        toastr.error("Something went wrong");
-                    }
-                })
+            actionId = e.target.dataset.id;
+            if (!actionId) {
+                console.log(actionId);
+                toastr.error("Could not find media file.");
+                return;
+            } else {
+                $('#deleteModal').modal('toggle');
             }
+        });
+
+        $('#deleteForm').submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: '{{ route("admin.media-library.files.remove") }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: { id: actionId },
+                success: (response) => {
+                    let { status, message } = response;
+                    if (status === 'success') {
+                        toastr.success(message);
+                        loadAllImages();
+                        $('#deleteModal').modal('toggle');
+                    }
+                },
+                error: (error) => {
+                    console.log(error);
+                    toastr.error("Something went wrong");
+                    $('#deleteModal').modal('toggle');
+                }
+            })
+            // $(this).attr('action', action);
         });
 
 		$('.editor-modal-close').on('click', function () {
@@ -81,7 +91,7 @@
 
             imageScale = -1;
         });
-        
+
         $('#customizeImage').on('click', () => {
             cropperEnabled = !cropperEnabled;
             cropperEnabled ? enableCropper() : disableCropper();
@@ -113,11 +123,11 @@
 
             imageScale = ratio;
         });
-	});	
+	});
 
     /**
      * Load all images against the selected event from the resource.
-     * 
+     *
      * @retrun void
      */
     function loadAllImages() {
@@ -155,7 +165,7 @@
 
     /**
      * Register a new Fileponf object in the DOM with the options object.
-     * 
+     *
      * @return void
     */
     function registerFilePondObject() {
@@ -166,7 +176,7 @@
             FilePondPluginFileValidateType,
             FilePondPluginFileValidateSize
         );
-        
+
         const pond = FilePond.create(inputElement, {
             acceptedFileTypes: ['image/*'],
             maxFileSize: '2MB',
@@ -184,7 +194,7 @@
                     url: '{{ route("admin.media-library.files.upload", $mediaLibrary->id) }}',
                     method: 'POST',
                     onload: (response) => {
-                        
+
                     },
                     onerror: (response) => {
                         toastr.error('Something went wrong.');
@@ -197,14 +207,14 @@
             },
             onprocessfile: (error, file) => {
                 setTimeout(() => {
-                    pond.removeFile(file.id); 
+                    pond.removeFile(file.id);
                     loadAllImages();
                     toastr.success('{{ __("messages.record_updated", ["module" => "Media file"]) }}');
                 }, 16);
             },
             // onprocessfiles: (error, file) => {
-            //     setTimeout(() => { 
-            //         pond.removeFiles(); 
+            //     setTimeout(() => {
+            //         pond.removeFiles();
             //         loadAllImages();
             //         toastr.success('Media file uploaded successfully!');
             //     }, 16);
@@ -219,7 +229,7 @@
 
     /**
      * Enables CropperJs library to the given image tag with some cropper default actions
-     * 
+     *
      * @return void
     */
     function enableCropper() {
@@ -338,7 +348,7 @@
 
     /**
      * Disables CropperJs library from the DOM.
-     * 
+     *
      * @return void
      */
     function disableCropper () {
@@ -357,7 +367,7 @@
 
     /**
      * Saves customized image in the resource.
-     * 
+     *
      * @return void
      */
     async function saveImageInfo() {
@@ -366,7 +376,7 @@
         if (cropper !== null) {
             let canvas = cropper.getCroppedCanvas({maxWidth: 4096, maxHeight: 4096});
             let dataURL = canvas.toDataURL();
-            
+
             if (imageOpacity < 1) {
                 const image = await getImage(canvas, imageOpacity);
                 dataURL = await convertBlobToBase64(image);
@@ -387,11 +397,11 @@
 
                 payload.imageWidth = img.width;
                 payload.imageHeight = img.height;
-            
+
                 // const image = await getImage(img, 1);
                 // dataURL = await convertBlobToBase64(image);
             }
-            
+
             payload.dataURL = dataURL;
         }
 
@@ -407,7 +417,7 @@
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            success: (response) => {                
+            success: (response) => {
                 let { status } = response;
                 if (status === "success") {
                     loadAllImages();
@@ -425,7 +435,7 @@
 
     /**
      * Get the latest image after applying opacity.
-     * 
+     *
      * @return promise
     */
     async function getImage(canvas, opacity) {
@@ -443,7 +453,7 @@
 
     /**
      * Converts Blob to Base64 string
-     * 
+     *
      * @return promise
     */
     async function convertBlobToBase64(image) {

@@ -8,11 +8,7 @@
 
 @section('addButton')
 @if(hasPermission('broken_links', 'delete'))
-<form method="POST" action="{{ route('admin.broken-links.destroy', $brokenLink->id) }}" class="float-right">
-    @method('DELETE')
-    @csrf
-    <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
-</form>
+<button class="btn btn-danger deleteButton float-right">Delete</button>
 @endif
 
 @endsection
@@ -34,7 +30,7 @@
                                 <label>Title: </label>
                                 <span>{{ $brokenLink->title }}</span>
                             </div>
-                        </div>						
+                        </div>
                     </div>
 
 					<div class="row">
@@ -62,6 +58,7 @@
     <!-- /.container-fluid -->
 
 </div>
+@include('admin.includes.delete-popup')
 @endsection
 
 @push('optional-styles')
@@ -69,4 +66,18 @@
 @endpush
 
 @push('optional-scripts')
+    <script>
+        let action = "";
+        $(function () {
+            $('body').on('click', '.deleteButton', (e) => {
+                action = '{{ route("admin.broken-links.destroy", $brokenLink->id) }}';
+                $('#deleteModal').modal('toggle');
+            });
+
+            $('#deleteForm').submit(function (event) {
+                $(this).attr('action', action);
+            });
+        });
+
+    </script>
 @endpush

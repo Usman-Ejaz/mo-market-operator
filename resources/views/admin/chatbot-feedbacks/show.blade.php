@@ -8,11 +8,7 @@
 
 @section('addButton')
 @if(hasPermission('chatbot_feedback', 'delete'))
-<form method="POST" action="{{ route('admin.chatbot-feedbacks.destroy', $chatbotFeedback->id) }}" class="float-right">
-    @method('DELETE')
-    @csrf
-    <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this record?')">Delete</button>
-</form>
+<button class="btn btn-danger deleteButton float-right">Delete</button>
 @endif
 
 @endsection
@@ -34,7 +30,7 @@
                                 <label>Email: </label>
                                 <span>{{ $chatbotFeedback->owner->email }}</span>
                             </div>
-                        </div>						
+                        </div>
                     </div>
 
 					<div class="row">
@@ -62,4 +58,22 @@
     <!-- /.container-fluid -->
 
 </div>
+@include('admin.includes.delete-popup')
 @endsection
+
+@push('optional-scripts')
+    <script>
+        let action = "";
+        $(function () {
+            $('body').on('click', '.deleteButton', (e) => {
+                action = '{{ route("admin.chatbot-feedbacks.destroy", $chatbotFeedback->id) }}';
+                $('#deleteModal').modal('toggle');
+            });
+
+            $('#deleteForm').submit(function (event) {
+                $(this).attr('action', action);
+            });
+        });
+
+    </script>
+@endpush

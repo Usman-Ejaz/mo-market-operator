@@ -39,15 +39,12 @@
 <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
 <script>
 	// Date and time picker
 	let oldFiles = [];
 	$(document).ready(function() {
-
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
 
 		$('#create-slider-images-form').validate({
 			ignore: [],
@@ -59,17 +56,20 @@
 					required: true,
 					maxlength: 64,
 					minlength: 3,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				slot_two: {
 					required: true,
 					maxlength: 100,
 					minlength: 3,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				url: {
 					required: true,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				},
 				order: {
 					required: true,
@@ -102,7 +102,7 @@
 		});
 	});
 
-	function handleFileChoose (e) 
+	function handleFileChoose (e)
 	{
 		if (e.target.files.length === 0) {
 			e.preventDefault();
