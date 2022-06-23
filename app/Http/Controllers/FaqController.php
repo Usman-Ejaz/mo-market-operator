@@ -59,7 +59,7 @@ class FaqController extends Controller
         }
 
         $faq = Faq::create($data);
-        
+
         $request->session()->flash('success', $message);
         return redirect()->route('admin.faqs.index');
     }
@@ -100,7 +100,7 @@ class FaqController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Faq $faq)
-    {   
+    {
         abort_if(!hasPermission("faqs", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($faq);
@@ -175,18 +175,13 @@ class FaqController extends Controller
                         </a>';
                     }
                     if( hasPermission('faqs', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.faqs.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.faqs.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.faqs.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })
-                ->rawColumns(['action'])                
+                ->rawColumns(['action'])
                 ->make(true);
         }
     }

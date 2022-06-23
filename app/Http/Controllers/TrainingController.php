@@ -41,13 +41,13 @@ class TrainingController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {        
+    {
         abort_if(! hasPermission('trainings', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
         $training = new Training;
-        
+
         $data = $this->validateRequest($training);
         $data['slug'] = str_slug($data['title']);
-        
+
         if ($request->hasFile('attachments')) {
             $attachments = $request->file('attachments');
             $filenames = "";
@@ -101,14 +101,14 @@ class TrainingController extends Controller
     public function update(Request $request, Training $training)
     {
         abort_if(! hasPermission('trainings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
+
         $data = $this->validateRequest($training);
 
         $data['attachment'] = $this->handleFileUpload($training, $request);
         unset($data['attachments']);
 
         $training->update($data);
-        
+
         $request->session()->flash('success', __('messages.record_updated', ['module' => 'Training']));
 
         return redirect()->route('admin.trainings.index');
@@ -133,8 +133,8 @@ class TrainingController extends Controller
     public function list(Request $request)
     {
         abort_if(! hasPermission('trainings', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
-        
-        if ($request->ajax()) 
+
+        if ($request->ajax())
         {
             $training = Training::latest()->get();
 
@@ -170,14 +170,9 @@ class TrainingController extends Controller
                     }
 
                     if (hasPermission('trainings', 'delete')) {
-                        $options .= ' <form action="'. route('admin.trainings.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.trainings.destroy', $row->id ) .'" title="Delete">
+                            <i class="fas fa-trash" data-action="'. route('admin.trainings.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
 
                     return $options;
@@ -210,7 +205,7 @@ class TrainingController extends Controller
     private function handleFileUpload($training, $request)
     {
         $filenames = implode(",", $training->attachment);
-        
+
         if ($request->hasFile('attachments'))
         {
             $uploadedFiles = $request->file('attachments');

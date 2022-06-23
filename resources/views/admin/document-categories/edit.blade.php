@@ -33,6 +33,7 @@
 @push('optional-scripts')
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
 <script>
 	$(document).ready(function() {
@@ -49,7 +50,8 @@
 					required: true,
 					minlength: 3,
 					maxlength: 255,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				}
 			},
 			messages: {

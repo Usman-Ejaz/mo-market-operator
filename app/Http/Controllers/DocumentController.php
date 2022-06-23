@@ -48,12 +48,12 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         abort_if(!hasPermission("documents", "create"), 401, __('messages.unauthorized_action'));
-        
+
         $document = new Document();
         $data = $this->validateRequest($document);
 
         $data['slug'] = str_slug($data['title']);
-        
+
         $convertFiles = $request->convert !== null && $request->convert == '1';
 
         $filenames = "";
@@ -72,7 +72,7 @@ class DocumentController extends Controller
                 $filenames .= $filename . ",";
             }
         }
-        
+
         $data['file'] = trim($filenames, ",");
 
         if ($request->hasFile('image')) {
@@ -86,7 +86,7 @@ class DocumentController extends Controller
 
             $message = __('messages.record_published', ['module' => 'Document']);
         }
-        
+
         $document = Document::create($data);
 
         $request->session()->flash('success', $message);
@@ -117,7 +117,7 @@ class DocumentController extends Controller
         abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
 
         $categories = DocumentCategory::all();
-        
+
         return view('admin.documents.edit', compact('document', 'categories'));
     }
 
@@ -133,7 +133,7 @@ class DocumentController extends Controller
         abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($document);
-        
+
         $data['slug'] = str_slug($data['title']);
 
         $data['file'] = $this->handleFileUpload($document, $request);
@@ -143,7 +143,7 @@ class DocumentController extends Controller
         }
 
         $message = __('messages.record_updated', ['module' => 'Document']);
-        
+
         if ($request->action === "Published") {
             $data['published_at'] = now();
 
@@ -153,7 +153,7 @@ class DocumentController extends Controller
 
             $message = __('messages.record_unpublished', ['module' => 'Document']);
         }
-        
+
         $document->update($data);
 
         $request->session()->flash('success', $message);
@@ -169,7 +169,7 @@ class DocumentController extends Controller
     public function destroy(Document $document)
     {
         abort_if(!hasPermission("documents", "delete"), 401, __('messages.unauthorized_action'));
-        
+
         if ($document->file !== null) {
             foreach ($document->file as $file) {
                 removeFile(Document::STORAGE_DIRECTORY, $file);
@@ -178,7 +178,7 @@ class DocumentController extends Controller
 
         $document->removeImage();
         $document->delete();
-        
+
         return redirect()->route('admin.documents.index')->with('success', __('messages.record_deleted', ['module' => 'Document']));
     }
 
@@ -217,14 +217,9 @@ class DocumentController extends Controller
                         </a>';
                     }
                     if( hasPermission('documents', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.documents.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.documents.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.documents.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })
@@ -234,7 +229,7 @@ class DocumentController extends Controller
     }
 
     private function validateRequest($document) {
-        
+
         $rule = [
             'title' => 'required|min:3|unique:documents,title,'.$document->id,
             'keywords' => 'nullable',
@@ -266,9 +261,9 @@ class DocumentController extends Controller
         $storagePath = config('settings.storage_disk_base_path') . Document::STORAGE_DIRECTORY;
 
         $storageFile = $storagePath . $filename;
-        
+
         exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir '.$storagePath.' '.$storageFile);
-        
+
         $convertedFileName = pathinfo($storageFile, PATHINFO_FILENAME);
 
         if (file_exists($storagePath . $convertedFileName . '.pdf')) {
@@ -295,9 +290,9 @@ class DocumentController extends Controller
     private function handleFileUpload($document, $request)
     {
         $convertFiles = $request->convert !== null && $request->convert == '1';
-        $filenames = implode(",", $document->file);        
+        $filenames = implode(",", $document->file);
 
-        if ($request->hasFile('file')) 
+        if ($request->hasFile('file'))
         {
             $uploadedFiles = $request->file('file');
 

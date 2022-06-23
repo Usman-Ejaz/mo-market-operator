@@ -7,11 +7,7 @@
 @endsection
 @section('addButton')
 @if(hasPermission('contact_page_queries', 'delete'))
-<form method="POST" action="{{ route('admin.contact-page-queries.destroy', $contactPageQuery->id) }}" class="float-right">
-	@method('DELETE')
-	@csrf
-	<button class="btn btn-danger" onclick="return confirm('{{ __('messages.record_delete') }}')">Delete</button>
-</form>
+<button class="btn btn-danger deleteButton float-right">Delete</button>
 @endif
 @endsection
 
@@ -54,16 +50,16 @@
 										<span> {{ $contactPageQuery->company }} </span>
 									</div>
 								</div>
-							</div>	
+							</div>
 						@endif
-						
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Subject</label>
 									<span> {{ $contactPageQuery->subject }} </span>
 								</div>
-							</div>						
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12">
@@ -90,22 +86,22 @@
 						</div>
 					</div>
 				</form>
-				
+
 			</div>
 		</div>
 	</div>
 </div>
+@include('admin.includes.delete-popup')
 @endsection
 
 @push('optional-scripts')
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
 <script>
+    let action = "";
 	$(document).ready(function() {
-		$.validator.addMethod("notNumericValues", function(value, element) {
-			return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-		}, '{{ __("messages.not_numeric") }}');
 
 		$('#update-form').validate({
 			errorElement: 'span',
@@ -116,7 +112,8 @@
 					required: true,
 					minlength: 3,
 					maxlength: 255,
-					notNumericValues: true
+					notNumericValues: true,
+                    prevent_special_characters: true
 				}
 			},
 			messages: {
@@ -127,6 +124,15 @@
 				}
 			}
 		});
+
+        $('body').on('click', '.deleteButton', (e) => {
+            action = '{{ route("admin.contact-page-queries.destroy", $contactPageQuery->id) }}';
+            $('#deleteModal').modal('toggle');
+        });
+
+        $('#deleteForm').submit(function (event) {
+            $(this).attr('action', action);
+        });
 	});
 </script>
 

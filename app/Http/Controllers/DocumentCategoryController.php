@@ -46,7 +46,7 @@ class DocumentCategoryController extends Controller
         abort_if(!hasPermission("document_categories", "create"), 401, __('messages.unauthorized_action'));
 
         $category = new DocumentCategory();
-        
+
         $data = $this->validateRequest($category);
         $data['slug'] = str_slug($data['name']);
 
@@ -141,14 +141,9 @@ class DocumentCategoryController extends Controller
                         </a>';
                     }
                     if (hasPermission('document_categories', 'delete')) {
-                        $options .= ' <form action="'. route('admin.document-categories.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.document-categories.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.document-categories.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })

@@ -142,14 +142,9 @@ class RoleController extends Controller
                     }
 
                     if( hasPermission('roles_and_permissions', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.roles.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.roles.destroy', $row->id ) .'" title="Delete">
+                            <i class="fas fa-trash" data-action="'. route('admin.roles.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
 
                     return $options;

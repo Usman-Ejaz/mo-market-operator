@@ -10,8 +10,8 @@ class BaseApiController extends Controller
     /**
      * @OA\Info(
      *      version="1.0.0",
-     *      title="ISMO API Documentation",
-     *      description="Ismo Api documentation description",
+     *      title="MO API Documentation",
+     *      description="MO Api documentation description",
      *      @OA\Contact(
      *          email="contact@nxb.com.pk"
      *      ),
@@ -25,14 +25,14 @@ class BaseApiController extends Controller
      *      url=L5_SWAGGER_CONST_HOST,
      *      description="API Base URL"
      * )
-     * 
+     *
      * @OA\SecurityScheme(
      *    securityScheme="BearerAppKey",
      *    in="header",
      *    name="Authorization",
      *    type="apiKey"
      * ),
-     * 
+     *
      * @OA\SecurityScheme(
      *    securityScheme="BearerToken",
      *    in="header",
@@ -41,7 +41,7 @@ class BaseApiController extends Controller
      * ),
      */
 
-     
+
     public function sendResponse($result, $message, $code = 200)
     {
         $response = [

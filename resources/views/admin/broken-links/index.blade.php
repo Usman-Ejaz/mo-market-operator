@@ -29,6 +29,7 @@
 	</div>
 	<!-- /.row -->
 </div>
+@include('admin.includes.delete-popup')
 @endsection
 
 @push('optional-styles')
@@ -41,9 +42,9 @@
 
 <script type="text/javascript">
 	var table = null;
-
+    let action = "";
 	$(document).ready(() => {
-		
+
 		$('.yajra-datatable').DataTable({
 			order: [[0, 'desc']],
 			processing: true,
@@ -87,7 +88,16 @@
 				},
 			]
 		});
-			
+
+        $('body').on('click', '.deleteButton', (e) => {
+            action = e.target.dataset.action;
+            $('#deleteModal').modal('toggle');
+        });
+
+        $('#deleteForm').submit(function (event) {
+            $(this).attr('action', action);
+        });
+
 	});
 </script>
 @endpush

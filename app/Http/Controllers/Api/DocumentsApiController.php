@@ -11,15 +11,15 @@ class DocumentsApiController extends BaseApiController
 {
 
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Publications",
      *     description="API Endpoints of Documents"
      * )
-     * 
-     */ 
+     *
+     */
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/documents",
      *      operationId="getPublishedDocs",
@@ -29,7 +29,7 @@ class DocumentsApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -48,7 +48,7 @@ class DocumentsApiController extends BaseApiController
     public function getPublishedDocs()
     {
         try {
-            $docs = Document::published()->with('category:id,slug')->latest()->get();
+            $docs = Document::published()->with('category:id,slug')->applyFilters(request())->get();
 
             if ($docs->count() > 0) {
                 return $this->sendResponse(DocumentResource::collection($docs), "Success");
@@ -62,7 +62,7 @@ class DocumentsApiController extends BaseApiController
 
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/search-document?key=",
      *      operationId="search",
@@ -81,7 +81,7 @@ class DocumentsApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -115,7 +115,7 @@ class DocumentsApiController extends BaseApiController
 
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/publications/{category}",
      *      operationId="getDocumentsByCategory",
@@ -134,7 +134,7 @@ class DocumentsApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -162,7 +162,7 @@ class DocumentsApiController extends BaseApiController
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/publications/{category}/{slug}",
      *      operationId="getSingleDocument",
@@ -170,7 +170,7 @@ class DocumentsApiController extends BaseApiController
      *      summary="Search Document from the resource against the specified category",
      *      description="Search Document from the resource against the specified category",
      *      security={{"BearerAppKey": {}}},
-     *      
+     *
      *      @OA\Parameter(
      *          name="category",
      *          description="Get publications by category",
@@ -180,7 +180,7 @@ class DocumentsApiController extends BaseApiController
      *              type="string"
      *          )
      *      ),
-     * 
+     *
      *      @OA\Parameter(
      *          name="slug",
      *          description="Get publications by slug",
@@ -192,7 +192,7 @@ class DocumentsApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,

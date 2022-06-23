@@ -37,6 +37,7 @@
 	</div>
 	<!-- /.container-fluid -->
 </div>
+@include('admin.includes.delete-popup')
 @endsection
 
 @push('optional-styles')
@@ -49,7 +50,7 @@
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
 	var table = null;
-	
+    let action = "";
 	function renderTable(theme = "") {
 		table = $('.yajra-datatable').DataTable({
 			processing: true,
@@ -94,7 +95,7 @@
 				},
 			]
 		});
-		
+
 		let defaultThemes = @json(config('settings.themes'));
 		let html = ``;
 		Object.keys(defaultThemes).forEach(key => {
@@ -107,11 +108,20 @@
 				${html}
 			</select>
 			<span class="label" style="margin: 4px 20px 0px 0px;">Current Theme:</span>
-		`);	
+		`);
 	}
 
 	$(function() {
 		renderTable('{{ $currentTheme }}');
+
+        $('body').on('click', '.deleteButton', (e) => {
+            action = e.target.dataset.action;
+            $('#deleteModal').modal('toggle');
+        });
+
+        $('#deleteForm').submit(function (event) {
+            $(this).attr('action', action);
+        });
 	});
 
 	function setCurrentTheme(e) {

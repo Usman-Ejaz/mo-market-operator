@@ -146,14 +146,9 @@ class NewsletterController extends Controller
                     }
 
                     if( hasPermission('newsletters', 'delete') ) {
-                        $options .= ' <form action="'. route('admin.newsletters.destroy', $row->id ) .'" method="POST" style="display: inline-block;">
-                            '.csrf_field().'
-                            '.method_field("DELETE").'
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm(\''. __('messages.record_delete') .'\')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.newsletters.destroy', $row->id ) .'" title="Delete">
+                                <i class="fas fa-trash" data-action="'. route('admin.newsletters.destroy', $row->id ) .'"></i>
+                        </button>';
                     }
                     return $options;
                 })
@@ -172,7 +167,7 @@ class NewsletterController extends Controller
         ]);
     }
 
-    public function sendNewsLetter(Request $request, Newsletter $newsletter) 
+    public function sendNewsLetter(Request $request, Newsletter $newsletter)
     {
         abort_if(!hasPermission("newsletters", "sendNewsLetter"), 401, __('messages.unauthorized_action'));
 

@@ -11,7 +11,7 @@ return [
         'theme3' => 'Theme 3'
     ],
     "createPassowrdLinkExpiryTime" => 30, // in mins
-    
+
     "maxImageSize" => 2000,     // 2 MB
     "maxDocumentSize" => 5000,   // 5 MB
     "image_file_extensions" => "jpg|jpeg|png|ico|bmp",
@@ -24,7 +24,7 @@ return [
 
     "client_removal_threshold" => 20,   // remove clients if their profile is incomplete. threshold is in days.
 
-    "google_credentials" => storage_path('app/ismo-cppa-app-google-analytics-credentials.json'),
+    "google_credentials" => storage_path('app/mo-cppa-app-google-analytics-credentials.json'),
     "ga_4_property" => "317113865",
     "ga_view_id" => "267956530"
 ];

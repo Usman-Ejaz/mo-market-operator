@@ -176,7 +176,7 @@
                             <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
                             <button type="submit" class="btn btn-primary" id="newSaveButton">Save changes</button>
                         </div>
-                    </form>                    
+                    </form>
                 </div>
             </div>
         </div>
@@ -192,20 +192,12 @@
     <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
     <script src="{{ asset('admin-resources/js/jquery.nestable.js') }}"></script>
+    <script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
 
     <script>
         $(document).ready(function(){
 
             let isEditing = false;
-
-            $.validator.addMethod("notNumericValues", function(value, element) {
-                return this.optional(element) || isNaN(Number(value)) || value.indexOf('e') !== -1;
-            }, '{{ __("messages.not_numeric") }}');
-
-            $.validator.addMethod("validURL", function(value, element) {
-                var pattern = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
-                return (this.optional(element) || value === "#" || pattern.test(value));
-            }, 'Please enter a valid URL.');
 
             $('#update-menus-form').validate({
                 errorElement: 'span',
@@ -216,6 +208,7 @@
                         required: true,
                         maxlength: 255,
                         notNumericValues: true,
+                        prevent_special_characters: true
                     }
                 }
             });
@@ -323,7 +316,7 @@
                 $("input[name^='documentCategories']:checkbox:checked").each(function () {
                     lastSubMenuId = lastSubMenuId + 1;
                     $('ol#submenu').append(`
-                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}" data-slug="${$(this).data('slug')}">
+                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}" data-slug="publications/${$(this).data('slug')}">
                             <div class="dd-handle dd3-handle"></div>
                             <div class="dd3-content">
                                 ${lastSubMenuId} ${'('} document category ${')'} ${$(this).data('title')}
@@ -384,7 +377,7 @@
                 let anchor = $(`li[data-id="${currentMenuId}"`).attr('data-anchor');
 
                 $("#addNewSubmenuModal").find("#NewMenuTitle").val(title);
-                
+
                 if (page != undefined) {
                     $("#addNewSubmenuModal input[name=newMenuType][value='page']").prop("checked",true).trigger('change');
                     $("#addNewSubmenuModal #newMenuPage").val(page);
@@ -452,7 +445,7 @@
                 if (!validateFields()) return;
                 let menuIdToUpdate = $('#newCurrentMenuId').val();
                 if (isEditing) {
-                    
+
                     // Set title
                     let title = $('#NewMenuTitle').val();
                     $(`li[data-id="${menuIdToUpdate}"]`).attr('data-title', title);
@@ -531,7 +524,7 @@
                     hasTitleError = true;
                 }
                 let val = $('input[name="newMenuType"]:checked').val();
-                
+
                 if (val === "anchor") {
                     let value = $('#newMenuAnchor').val();
                     if (value === "") {
@@ -574,7 +567,7 @@
 
                 return !(hasTitleError || hasURLError || hasPageError);
             }
-            
+
             function truncateString(str, len = 33, replaceWith = '...')
             {
                 if (str) {
