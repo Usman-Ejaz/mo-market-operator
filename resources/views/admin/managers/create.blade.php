@@ -62,7 +62,7 @@
 				designation: {
 					required: true,
                     notNumericValues: true,
-                    prevent_special_characters: true,
+                    // prevent_special_characters: true,
 				},
 				order: {
 					required: true,
