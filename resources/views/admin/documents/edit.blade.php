@@ -208,12 +208,20 @@
 			}
 
 			if (pdfFiles.length > 0) {
-				alert(`${pdfFiles.toString()} file(s) are already in PDF.`);
+				let msg = pdfFiles.length === 1
+                    ? `${pdfFiles.toString()} file is already in PDF.`
+                    : `${pdfFiles.toString()} files are already in PDF.`;
+
+				alert(msg);
 				e.target.checked = false;
 			}
 
 			if (invalidFiles.length > 0) {
-				alert(`${invalidFiles.toString()} document(s) extension is not allowed for conversion.`);
+                let msg = invalidFiles.length === 1
+                    ? `${invalidFiles.toString()} document extension is not allowed for conversion.`
+                    : `${invalidFiles.toString()} document extensions are not allowed for conversion.`;
+
+				alert(msg);
 				e.target.checked = false;
 			}
 		} else {
@@ -247,7 +255,10 @@
 		}
 
 		if (invalidFiles.length > 0) {
-			message = `${invalidFiles.toString()} file(s) are not allowed for upload.`
+			message = invalidFiles.length === 1
+                ? `${invalidFiles.toString()} file is not allowed for upload.`
+                : `${invalidFiles.toString()} files are not allowed for upload.`
+
 			$(`#${e.target.id}`).append(`<span class="my-error-class">${message}</span>`);
 		}
 
