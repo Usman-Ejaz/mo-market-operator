@@ -223,8 +223,8 @@
 				location: {
 					required: true,
 					minlength: 5,
-					notNumericValues: true,
-                    prevent_special_characters: true
+					// notNumericValues: true,
+                    // prevent_special_characters: true
 				},
 				total_positions: {
 					required: true,
