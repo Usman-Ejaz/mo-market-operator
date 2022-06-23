@@ -204,7 +204,7 @@
 					minlength: 10,
 					maxlength: 300,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				description: {
 					ckeditor_required: true,
@@ -214,7 +214,7 @@
 					required: true,
 					minlength: 5,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				experience: {
 					required: true,
@@ -222,9 +222,7 @@
 				},
 				location: {
 					required: true,
-					minlength: 5,
-					// notNumericValues: true,
-                    // prevent_special_characters: true
+					minlength: 5
 				},
 				total_positions: {
 					required: true,
@@ -236,7 +234,7 @@
 					required: true,
 					minlength: 5,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				salary: {
 					number: true,

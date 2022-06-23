@@ -260,12 +260,11 @@
 					required: true,
 					minlength: 2,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				keywords: {
 					minlength: 5,
-					notNumericValues: true,
-                    prevent_special_characters: true
+					notNumericValues: true
 				},
 				image: {
 					extension: "{{ config('settings.image_file_extensions') }}"

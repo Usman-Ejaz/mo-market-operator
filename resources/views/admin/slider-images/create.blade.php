@@ -57,19 +57,17 @@
 					maxlength: 64,
 					minlength: 3,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				slot_two: {
 					required: true,
 					maxlength: 100,
 					minlength: 3,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				url: {
 					required: true,
-					notNumericValues: true,
-                    prevent_special_characters: true
 				},
 				order: {
 					required: true,
