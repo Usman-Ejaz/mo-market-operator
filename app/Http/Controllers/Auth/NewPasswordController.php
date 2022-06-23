@@ -93,14 +93,14 @@ class NewPasswordController extends Controller
             if ($user->password_link === null) {
                 abort(401);
             }
-            
+
             if ($user->active == "Active") {
 
                 $user->password = bcrypt($request->get("password"));
                 $user->password_link = null;
                 $user->save();
-                
-                return redirect()->route("admin.login");
+
+                return redirect()->route("admin.login")->with('success', __('messages.record_created', ['module' => 'Password']));
             }
 
             return redirect()->back()->withErrors("Your email has been blocked or temporarily disable.");

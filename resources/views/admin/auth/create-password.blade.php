@@ -48,9 +48,9 @@
 				</div>
 			</form>
 
-			<p class="mt-3 mb-1 text-center">
+			{{-- <p class="mt-3 mb-1 text-center">
 				<a href="{{ route('admin.login') }}">Login</a>
-			</p>
+			</p> --}}
 		</div>
 		<!-- /.login-card-body -->
 	</div>
