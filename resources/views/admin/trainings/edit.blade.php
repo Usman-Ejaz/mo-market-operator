@@ -200,21 +200,19 @@
 					minlength: 3,
 					maxlength: 255,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				target_audience: {
 					required: true,
 					minlength: 3,
 					maxlength: 255,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				location: {
 					required: true,
 					minlength: 3,
-					maxlength: 255,
-					// notNumericValues: true,
-                    // prevent_special_characters: true
+					maxlength: 255
 				},
 				status: {
 					required: true,

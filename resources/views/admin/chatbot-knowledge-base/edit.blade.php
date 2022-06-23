@@ -119,7 +119,6 @@
 				keywords: {
 					required: true,
 					notNumericValues: true,
-                    prevent_special_characters: true
 				},
 			},
 			errorPlacement: function(error, element) {

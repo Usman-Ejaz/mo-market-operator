@@ -215,7 +215,7 @@
 				slug: {
 					required: true,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				post_category: {
 					required: true,

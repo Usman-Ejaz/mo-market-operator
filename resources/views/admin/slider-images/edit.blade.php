@@ -56,21 +56,17 @@
 					maxlength: 255,
 					minlength: 3,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				slot_two: {
 					required: true,
 					maxlength: 255,
 					minlength: 3,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				url: {
 					required: true,
-					maxlength: 255,
-					minlength: 3,
-					notNumericValues: true,
-                    prevent_special_characters: true
 				},
 				order: {
 					required: true,

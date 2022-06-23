@@ -112,8 +112,7 @@
 					required: true,
 					minlength: 3,
 					maxlength: 255,
-					notNumericValues: true,
-                    prevent_special_characters: true
+					notNumericValues: true
 				}
 			},
 			messages: {
