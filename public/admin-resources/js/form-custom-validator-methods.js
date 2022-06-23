@@ -19,7 +19,7 @@ if ('undefined' !== typeof CKEDITOR) {
         }
     });
 
-    CKEDITOR.instances.contents.on('blur', function(e) {
+    CKEDITOR?.instances?.contents?.on('blur', function(e) {
         var messageLength = CKEDITOR.instances.contents.getData().replace(/<[^>]*>/gi, '').replace(/&nbsp;/gi, '').trim().length;
         if (messageLength !== 0) {
             $('#cke_contents').next().hasClass("my-error-class") && $('#cke_contents').next().remove();
