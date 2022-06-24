@@ -5,6 +5,12 @@
  *
  */
 if ('undefined' !== typeof CKEDITOR) {
+
+    /**
+     *
+     *
+     *
+     */
     CKEDITOR?.instances?.description?.on('blur', function(e) {
         var messageLength = CKEDITOR?.instances?.description?.getData().replace(/<[^>]*>/gi, '').replace(/&nbsp;/gi, '').trim().length;
         if (messageLength !== 0) {
@@ -12,6 +18,11 @@ if ('undefined' !== typeof CKEDITOR) {
         }
     });
 
+    /**
+     *
+     *
+     *
+     */
     CKEDITOR?.instances?.answer?.on('blur', function(e) {
         var messageLength = CKEDITOR?.instances?.answer?.getData().replace(/<[^>]*>/gi, '').replace(/&nbsp;/gi, '').trim().length;
         if (messageLength !== 0) {
@@ -19,6 +30,11 @@ if ('undefined' !== typeof CKEDITOR) {
         }
     });
 
+    /**
+     *
+     *
+     *
+     */
     CKEDITOR?.instances?.contents?.on('blur', function(e) {
         var messageLength = CKEDITOR.instances.contents.getData().replace(/<[^>]*>/gi, '').replace(/&nbsp;/gi, '').trim().length;
         if (messageLength !== 0) {

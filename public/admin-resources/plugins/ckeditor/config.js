@@ -3,7 +3,7 @@
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-const { toSafeInteger } = require("lodash");
+// const { toSafeInteger } = require("lodash");
 
 CKEDITOR.editorConfig = function( config ) {
     // Define changes to default configuration here. For example:
@@ -28,11 +28,11 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'others', groups: [ 'others' ] },
         { name: 'about', groups: [ 'about' ] },
         '/',
-        { name: 'styles', groups: [ 'styles' ] },        
+        { name: 'styles', groups: [ 'styles' ] },
         '/',
         { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align',/* 'bidi', 'paragraph'*/ ] },
         { name: 'links', groups: [ 'links' ] },
-        { name: 'insert', groups: [ 'insert' ] }        
+        { name: 'insert', groups: [ 'insert' ] }
     ];
 
     // config.removeButtons = 'Save,NewPage,ExportPdf,Preview,Print,Source,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField';
@@ -55,4 +55,4 @@ CKEDITOR.on("instanceReady", function(event) {
             event.cancel();
         }
     })
-}); 
+});
