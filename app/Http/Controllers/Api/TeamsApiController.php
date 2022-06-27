@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
 class TeamsApiController extends BaseApiController
 {
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Teams",
      *     description="API Endpoints of Teams"
      * )
-     * 
+     *
      *
      * @OA\Get(
      *      path="/managers",
@@ -27,7 +27,7 @@ class TeamsApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -51,21 +51,21 @@ class TeamsApiController extends BaseApiController
             if ($managers->count() > 0) {
                 return $this->sendResponse(ManagerResource::collection($managers), __('messages.success'));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
 
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Teams",
      *     description="API Endpoints of Teams"
      * )
-     * 
+     *
      *
      * @OA\Get(
      *      path="/team/{manager_id}",
@@ -84,7 +84,7 @@ class TeamsApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -106,18 +106,18 @@ class TeamsApiController extends BaseApiController
             $manager_id = decodeBase64($manager_id);
 
             $teamMembers = TeamMember::select('name', 'description', 'designation', 'image')->where('manager_id', '=', $manager_id)->sortByOrder()->get();
-            
+
             $manager = Manager::select('name', 'description', 'designation', 'image')->where('id', '=', $manager_id)->first();
 
             if ($teamMembers->count() > 0) {
                 $teamMembers->prepend($manager);
                 return $this->sendResponse($teamMembers, __('messages.success'));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
 
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
 class MediaLibraryApiController extends BaseApiController
 {
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Media Library",
      *     description="API Endpoints of Media Library"
      * )
-     * 
+     *
      * @OA\Get(
      *      path="/media-libraries",
      *      operationId="mediaLibraryList",
@@ -26,7 +26,7 @@ class MediaLibraryApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -46,18 +46,18 @@ class MediaLibraryApiController extends BaseApiController
     {
         try {
             $mediaFiles = MediaLibraryFile::featuredImage()->with('mediaLibrary')->filterRecords()->select("id", "file", "media_library_id")->get();
-            
+
             if ($mediaFiles->count() > 0) {
                 return $this->sendResponse(MediaLibraryResource::collection($mediaFiles), __("messages.success"));
             } else {
-                return $this->sendResponse([], __('messages.data_not_found'));
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/media-libraries/{slug}",
      *      operationId="mediaFiles",
@@ -65,7 +65,7 @@ class MediaLibraryApiController extends BaseApiController
      *      summary="Get list of Media Library files",
      *      description="Returns Media Library files",
      *      security={{"BearerAppKey": {}}},
-     * 
+     *
      *      @OA\Parameter(
      *          name="slug",
      *          description="Media Library slug",
@@ -75,10 +75,10 @@ class MediaLibraryApiController extends BaseApiController
      *              type="string"
      *          )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -97,7 +97,7 @@ class MediaLibraryApiController extends BaseApiController
     public function mediaFiles($slug)
     {
         if ($slug === null || $slug === "" || $slug === true || $slug === "true" || $slug === false || $slug === "false") {
-            return $this->sendError('error', ['errors' => 'slug is missing']);
+            return $this->sendResponse(null, __('slug is missing'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -105,12 +105,12 @@ class MediaLibraryApiController extends BaseApiController
 
             if ($mediaLibrary) {
                 $mediaLibrary->mediaFiles = $mediaLibrary->files();
-                return $this->sendResponse($mediaLibrary, 'succcess');
+                return $this->sendResponse($mediaLibrary, __('messages.success'));
             } else {
-                return $this->sendResponse([], __('messages.data_not_found'));
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__('messages.something_wrong'), ['errors' => $ex->getMessage()], 500);
+            return $this->sendResponse(['errors' => $ex->getMessage()], __('messages.something_wrong'), HTTP_SERVER_ERROR);
         }
     }
 }

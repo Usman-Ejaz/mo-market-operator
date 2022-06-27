@@ -30,7 +30,7 @@ if (!function_exists("storeFile")) {
         if ($oldFile !== null) {
             removeFile($dir, $oldFile);
         }
-        
+
         try {
             $fileOriginalName = explode(".", $file->getClientOriginalName())[0];
             $filename = $fileOriginalName . '_ismo_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
@@ -39,7 +39,7 @@ if (!function_exists("storeFile")) {
         } catch (\Exception $ex) {
             $filename = null;
         }
-        
+
         return $filename;
     }
 }
@@ -76,7 +76,7 @@ if (!function_exists('downloadFile')) {
 }
 
 if (! function_exists('getFileOriginalName')) {
-    
+
     function getFileOriginalName($file)
     {
         $filename = basename($file);
@@ -95,7 +95,7 @@ if (! function_exists('getFileOriginalName')) {
 
 if (!function_exists("hasPermission")) {
 
-    function hasPermission($module, $permission) 
+    function hasPermission($module, $permission)
     {
         if ($module === "" || $permission === "") return false;
 
@@ -103,7 +103,7 @@ if (!function_exists("hasPermission")) {
             return true;
         }
 
-        return false;        
+        return false;
     }
 }
 
@@ -115,7 +115,7 @@ if (!function_exists('getNotifiableUsers')) {
 }
 
 if (!function_exists('settings')) {
-    
+
     function settings($option) {
 
         if ($option === null || $option === "") return null;
@@ -145,7 +145,7 @@ if (!function_exists('str_slug')) {
 }
 
 if (! function_exists('encodeBase64')) {
-    
+
     function encodeBase64($key)
     {
         return base64_encode(base64_encode(base64_encode($key)));

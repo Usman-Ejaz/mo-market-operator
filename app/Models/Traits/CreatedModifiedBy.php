@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models\Traits;
 
@@ -20,14 +20,14 @@ trait CreatedModifiedBy
         // updating modified_by when model is updated
         static::updating(function ($model) {
             if (! $model->isDirty('modified_by') && auth()->check()) {
-                $model->modified_by = auth()->user()->id;                
+                $model->modified_by = auth()->user()->id;
             }
         });
 
         static::updated(function ($model) {
             event(new ActivityLogEvent($model->getLoggableArray("was just updated.", $model, "update", auth()->id())));
         });
-        
+
         static::deleting(function ($model) {
             event(new ActivityLogEvent($model->getLoggableArray("was just deleted.", $model, "delete", auth()->id())));
         });
@@ -36,7 +36,7 @@ trait CreatedModifiedBy
     public function getLoggableArray($message, $model, $type, $userId)
     {
         $module = str_replace("App\\Models\\", "", get_class($model));
-        
+
         if ($type === "create") {
             $message = "New " . strtolower($module) . ' ' . $message;
         } else {

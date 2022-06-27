@@ -10,15 +10,15 @@ use Illuminate\Http\Request;
 class SliderImageApiController extends BaseApiController
 {
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Slider Images",
      *     description="API Endpoints of Slider Images"
      * )
-     * 
-     */ 
+     *
+     */
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/slider-images",
      *      operationId="getSliderImages",
@@ -28,7 +28,7 @@ class SliderImageApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -47,17 +47,16 @@ class SliderImageApiController extends BaseApiController
     public function getSliderImages()
     {
         try {
-            $sliderImages = SliderImage::orderByImageOrder()->select("slot_one", "slot_two", "url", "image")->get();
+            $data['slider_images'] = SliderImage::orderByImageOrder()->select("slot_one", "slot_two", "url", "image")->get();
 
-            
-            if ($sliderImages->count() > 0) {
-                $sliderSettings = SliderSetting::get();
-                return $this->sendResponse(['settings' => $sliderSettings, 'slider_images' => $sliderImages], __("messages.success"));
+            if ($data['slider_images']->count() > 0) {
+                $data['settings'] = SliderSetting::get();
+                return $this->sendResponse($data, __("messages.success"));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

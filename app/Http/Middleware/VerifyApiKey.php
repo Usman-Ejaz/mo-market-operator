@@ -15,13 +15,13 @@ class VerifyApiKey
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    {        
+    {
         $authorizationKey = str_replace("Bearer ", "", $request->header("authorization"));
 
         if (isValidKey("app_key", $authorizationKey)) {
             return $next($request);
         }
 
-        return response("Unauthorized", 401);
+        return response("Unauthorized", HTTP_UNAUTHORIZED);
     }
 }
