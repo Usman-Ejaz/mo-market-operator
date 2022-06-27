@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class EmailConfigServiceProvider extends ServiceProvider
@@ -23,11 +24,13 @@ class EmailConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $fromEmails = settings('from_emails');
+        if (Schema::hasTable('settings')) {
+            $fromEmails = settings('from_emails');
 
-        if ($fromEmails) {
-            config(['mail.from.address' => $fromEmails]);
-            config(['mail.from.name' => config('app.name')]);
+            if ($fromEmails) {
+                config(['mail.from.address' => $fromEmails]);
+                config(['mail.from.name' => config('app.name')]);
+            }
         }
     }
 }
