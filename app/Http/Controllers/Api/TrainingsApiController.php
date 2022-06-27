@@ -14,7 +14,7 @@ class TrainingsApiController extends BaseApiController
      *     name="Trainings",
      *     description="API Endpoints of Trainings"
      * )
-     * 
+     *
      * @OA\Get(
      *      path="/trainings",
      *      operationId="getTrainings",
@@ -24,7 +24,7 @@ class TrainingsApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -39,25 +39,25 @@ class TrainingsApiController extends BaseApiController
      *          description="Could not found",
      *      ),
      *  )
-     * 
+     *
      */
     public function getTrainings()
     {
         try {
             $trainings = Training::select('title', 'slug', 'short_description', 'topics', 'location', 'status', 'target_audience')->applyFilters()->get();
-            
+
             if ($trainings->count() > 0) {
                 return $this->sendResponse($trainings, __('messages.success'));
             } else {
-                return $this->sendError(__('messages.data_not_found'), [], 404);
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
-    
+
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/trainings/{slug}",
      *      operationId="getTrainingDetails",
@@ -76,7 +76,7 @@ class TrainingsApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -87,7 +87,7 @@ class TrainingsApiController extends BaseApiController
      *          description="Forbidden"
      *      )
      *  )
-     * 
+     *
      */
     public function getTrainingDetails($slug)
     {
@@ -97,11 +97,11 @@ class TrainingsApiController extends BaseApiController
             if ($training) {
                 return $this->sendResponse($training, __('messages.success'));
             } else {
-                return $this->sendError(__('messages.data_not_found'), null, 404);
+                return $this->sendResponse(null, __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
 
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

@@ -42,15 +42,15 @@ class BaseApiController extends Controller
      */
 
 
-    public function sendResponse($result, $message, $code = 200)
+    public function sendResponse($data = null, $message, $code = HTTP_SUCCESS)
     {
         $response = [
-            'success' => true,
-            'data'    => $result,
-            'message' => $message,
+            'statusCode'    => $code,
+            'data'          => $data,
+            'message'       => $message,
         ];
 
-        return response()->json($response, $code);
+        return response()->json($response, HTTP_SUCCESS);
     }
 
     /**

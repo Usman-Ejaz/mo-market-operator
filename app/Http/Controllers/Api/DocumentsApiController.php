@@ -29,7 +29,7 @@ class DocumentsApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"
+     *          description=__('messages.success')
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -40,7 +40,7 @@ class DocumentsApiController extends BaseApiController
      *          description="Forbidden"
      *      ),
      *      @OA\Response(
-     *          response=404,
+     *          response=HTTP_NOT_FOUND,
      *          description="Could not found",
      *      ),
      *  )
@@ -51,12 +51,12 @@ class DocumentsApiController extends BaseApiController
             $docs = Document::published()->with('category:id,slug')->applyFilters(request())->get();
 
             if ($docs->count() > 0) {
-                return $this->sendResponse(DocumentResource::collection($docs), "Success");
+                return $this->sendResponse(DocumentResource::collection($docs), __('messages.success'));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendError(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
@@ -104,12 +104,12 @@ class DocumentsApiController extends BaseApiController
                         ->get();
 
             if ($docs->count() > 0) {
-                return $this->sendResponse(DocumentResource::collection($docs), "Success");
+                return $this->sendResponse(DocumentResource::collection($docs), __('messages.success'));
             } else {
-                return $this->sendError("Could not found documents", ["errors" => "Could not found documents"], 404);
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
@@ -152,12 +152,12 @@ class DocumentsApiController extends BaseApiController
             $docs = Document::published()->filterByCategory($category)->latest()->applyFilters(request())->get();
 
             if ($docs->count() > 0) {
-                return $this->sendResponse(DocumentResource::collection($docs), "Success");
+                return $this->sendResponse(DocumentResource::collection($docs), __('messages.success'));
             } else {
-                return $this->sendError(__("messages.error"), ["errors" => __("messages.data_not_found")], 404);
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
@@ -207,11 +207,11 @@ class DocumentsApiController extends BaseApiController
     public function getSingleDocument($category, $slug)
     {
         if ($category === null || $category === "") {
-            return $this->sendError('error', ["errors" => 'category field is missing.'], 500);
+            return $this->sendResponse(null, __('category field is missing.'), HTTP_BAD_REQUEST);
         }
 
         if ($slug === null || $slug === "") {
-            return $this->sendError('error', ["errors" => 'slug field is missing.'], 500);
+            return $this->sendResponse(null, __('slug field is missing.'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -220,10 +220,10 @@ class DocumentsApiController extends BaseApiController
             if ($document) {
                 return $this->sendResponse(new DocumentResource($document), __('messages.success'));
             } else {
-                return $this->sendError(__("messages.error"), ["errors" => __("messages.data_not_found")], 404);
+                return $this->sendResponse(null, __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

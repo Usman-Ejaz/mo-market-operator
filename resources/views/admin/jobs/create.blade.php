@@ -201,8 +201,6 @@
 				},
 				short_description: {
 					required: true,
-					minlength: 10,
-					maxlength: 300,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},

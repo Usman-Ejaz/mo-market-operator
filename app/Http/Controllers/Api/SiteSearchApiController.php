@@ -19,16 +19,16 @@ class SiteSearchApiController extends BaseApiController
     const SEARCH_TYPE_WEB = "web_content";
 
      /**
-     * 
+     *
      * @OA\Tag(
      *     name="Site Search",
      *     description="API Endpoints of Global Site Search"
      * )
-     * 
-     */ 
+     *
+     */
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/search",
      *      operationId="siteSearch",
@@ -36,7 +36,7 @@ class SiteSearchApiController extends BaseApiController
      *      summary="Search records from the whole site. (FAQs, Jobs, Documents, Posts, Pages)",
      *      description="This search API will work for FAQs, Posts, Jobs, Trainings and Pages when 'type' property is not set or 'type' property is set to 'web_content'. If the 'type' property is set to 'document' then the API will only search from the Documents Module",
      *      security={{"BearerAppKey": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -62,7 +62,7 @@ class SiteSearchApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -81,13 +81,13 @@ class SiteSearchApiController extends BaseApiController
                 'key' => 'required',
                 'type' => 'sometimes|bail|string|in:' . self::SEARCH_TYPE_DOC . ',' . self::SEARCH_TYPE_WEB,
             ]);
-    
+
             if ($validator->fails()) {
-                return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+                return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
             }
-    
+
             $keyword = $request->key;
-            
+
             // Log search keywords
             event(new SiteSearchEvent($keyword));
 
@@ -98,7 +98,7 @@ class SiteSearchApiController extends BaseApiController
 
             // Searching with algolia search, upto 10k requests/month in FREE plan.
             $result = SitewideSearch::search($keyword)->get()->where('published_at', '!=', null);
-            
+
             if ($request->has('sort')) {
                 $result = $result->sortBy(function($item) {
                     return $item->published_at;
@@ -113,14 +113,14 @@ class SiteSearchApiController extends BaseApiController
             }
 
             if ($result->count() > 0) {
-                return $this->sendResponse(SiteSearchResource::collection($result), "Success");
+                return $this->sendResponse(SiteSearchResource::collection($result), __('messages.success'));
             } else {
-                return $this->sendResponse([], "Data not found");
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
 
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
-        }        
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
+        }
     }
 
     private function searchFromDocuments ($keyword) {
@@ -134,12 +134,12 @@ class SiteSearchApiController extends BaseApiController
                         ->get();
 
             if ($docs->count() > 0) {
-                return $this->sendResponse(DocumentResource::collection($docs), "Success");
+                return $this->sendResponse(DocumentResource::collection($docs), __('messages.success'));
             } else {
-                return $this->sendResponse([], "Data not found");
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ClientAttachmentController extends BaseApiController
-{    
+{
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/upload-attachments",
      *      operationId="store",
@@ -20,7 +20,7 @@ class ClientAttachmentController extends BaseApiController
      *      summary="Upload Client's Document",
      *      description="Upload document in the resource",
      *      security={{"BearerToken": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -45,10 +45,10 @@ class ClientAttachmentController extends BaseApiController
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -71,7 +71,7 @@ class ClientAttachmentController extends BaseApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+            return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -93,14 +93,14 @@ class ClientAttachmentController extends BaseApiController
                 'client_id' => $request->user()->id
             ]);
 
-            return $this->sendResponse([], "Attachment uploaded successfully");
+            return $this->sendResponse(null, __("Attachment uploaded successfully"));
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/remove-attachments",
      *      operationId="destroy",
@@ -108,7 +108,7 @@ class ClientAttachmentController extends BaseApiController
      *      summary="Remove Client's Document",
      *      description="Remove document in the resource",
      *      security={{"BearerToken": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -132,10 +132,10 @@ class ClientAttachmentController extends BaseApiController
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -155,7 +155,7 @@ class ClientAttachmentController extends BaseApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+            return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
         }
 
         if (! $request->has('category') || $request->category === null || $request->category === "") {
@@ -173,13 +173,13 @@ class ClientAttachmentController extends BaseApiController
             if ($attachment) {
                 removeFile(ClientAttachment::DIR, $attachment->file);
                 $attachment->delete();
-                return $this->sendResponse([], "Attachment removed successfully");
+                return $this->sendResponse(null, __("Attachment removed successfully"));
             } else {
-                return $this->sendError('Error', ["errors" => 'Could not find the record'], 404);
+                return $this->sendResponse(null, __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
-            
+
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

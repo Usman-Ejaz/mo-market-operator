@@ -10,15 +10,15 @@ class PagesApiController extends BaseApiController
 {
 
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Pages",
      *     description="API Endpoints of CMS Pages"
      * )
-     */ 
+     */
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/pages/{slug}",
      *      operationId="showPage",
@@ -37,7 +37,7 @@ class PagesApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -64,12 +64,12 @@ class PagesApiController extends BaseApiController
             }
 
             if ($post) {
-                return $this->sendResponse($post, "Success");
+                return $this->sendResponse($post, __('messages.success'));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse(null, __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $e) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
+            return $this->sendResponse(["errors" => $e->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

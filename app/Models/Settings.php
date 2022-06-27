@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CreatedModifiedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Settings extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
 
@@ -16,7 +17,7 @@ class Settings extends Model
      *                 Model Helper Functions
      * ======================================================
      */
-    
+
     /**
      * get_option
      *
@@ -28,7 +29,7 @@ class Settings extends Model
         $setting = Settings::where(['name' => $name])->first();
         return $setting ? $setting->value : null;
     }
-    
+
     /**
      * update_option
      *

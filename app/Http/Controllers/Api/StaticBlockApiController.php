@@ -10,15 +10,15 @@ use Illuminate\Http\Request;
 class StaticBlockApiController extends BaseApiController
 {
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Static Blocks",
      *     description="API Endpoints of Static Blocks"
      * )
-     * 
-     */ 
+     *
+     */
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/static-blocks",
      *      operationId="show",
@@ -28,7 +28,7 @@ class StaticBlockApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -60,10 +60,10 @@ class StaticBlockApiController extends BaseApiController
             if ($staticBlocks->count() > 0) {
                 return $this->sendResponse($arr, __("messages.success"));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

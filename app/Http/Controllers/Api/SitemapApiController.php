@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 
 class SitemapApiController extends BaseApiController
 {
-    
-    /** 
-     * 
+
+    /**
+     *
      * @OA\Tag(
      *     name="Sitemap",
      *     description="API Endpoints of Sitemap"
      * )
-     * 
+     *
      * @OA\Get(
      *      path="/sitemap",
      *      operationId="index",
@@ -25,7 +25,7 @@ class SitemapApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -76,10 +76,10 @@ class SitemapApiController extends BaseApiController
             if ($menuArr) {
                 return $this->sendResponse($menuArr, __("messages.success"));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }
