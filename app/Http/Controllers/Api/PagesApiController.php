@@ -52,7 +52,7 @@ class PagesApiController extends BaseApiController
     public function showPage($pageSlug)
     {
         if ($pageSlug === null || $pageSlug === "") {
-            return $this->sendError('error', ["errors" => 'slug field is missing.'], 500);
+            return $this->sendResponse(null, __('slug field is missing.'), HTTP_BAD_REQUEST);
         }
 
         try {

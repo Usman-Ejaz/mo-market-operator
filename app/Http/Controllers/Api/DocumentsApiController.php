@@ -56,7 +56,7 @@ class DocumentsApiController extends BaseApiController
                 return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
