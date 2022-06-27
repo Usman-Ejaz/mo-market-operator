@@ -190,14 +190,14 @@ class ChatbotQueriesController extends BaseApiController
         $initiatorKey = $request->header('x-initiator-key');
 
         if ($initiatorKey === null || $initiatorKey === "") {
-            return $this->sendResponse(__('Initiator key is missing.'), HTTP_NOT_FOUND);
+            return $this->sendResponse(null, __('Initiator key is missing.'), HTTP_NOT_FOUND);
         }
 
         try {
             $initiator = ChatbotInitiator::findByKey($initiatorKey)->select('id')->first();
 
             if (!$initiator) {
-                return $this->sendResponse(__('Chatbot initiator could not find.'), HTTP_NOT_FOUND);
+                return $this->sendResponse(null, __('Chatbot initiator could not find.'), HTTP_NOT_FOUND);
             }
 
             $questions = ChatBotKnowledgeBase::select('question', 'answer', 'keywords')->get();
@@ -239,7 +239,7 @@ class ChatbotQueriesController extends BaseApiController
                 return $this->sendResponse(['answer' => $chatbotAnswer->answer], __('messages.success'));
             }
 
-            return $this->sendResponse(__('messages.data_not_found'), HTTP_NOT_FOUND);
+            return $this->sendResponse(null, __('messages.data_not_found'), HTTP_NOT_FOUND);
         } catch (\Exception $ex) {
             return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
