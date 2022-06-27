@@ -15,20 +15,20 @@ class PublishedPostApiController extends BaseApiController
 {
 
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Posts",
      *     description="API Endpoints of Posts"
      * )
-     * 
+     *
      * @OA\Tag(
      *     name="Announcements",
      *     description="API Endpoints of Announcements"
      * )
-     * 
-     */ 
+     *
+     */
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/news-and-blogs",
      *      operationId="getPublishedPosts",
@@ -38,7 +38,7 @@ class PublishedPostApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -59,16 +59,16 @@ class PublishedPostApiController extends BaseApiController
             $posts = Post::published()->newsAndBlogs()->latest()->get();
 
             if ($posts->count() > 0) {
-                return $this->sendResponse($posts, "Success");
+                return $this->sendResponse($posts, __('messages.success'));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $e) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
+            return $this->sendResponse(["errors" => $e->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
-    }    
+    }
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/announcements",
      *      operationId="getPublishedAnnouncements",
@@ -78,7 +78,7 @@ class PublishedPostApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -99,17 +99,17 @@ class PublishedPostApiController extends BaseApiController
             $posts = Post::published()->announcements()->latest()->get();
 
             if ($posts->count() > 0) {
-                return $this->sendResponse($posts, "Success");
+                return $this->sendResponse($posts, __('messages.success'));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $e) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
+            return $this->sendResponse(["errors" => $e->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
-    } 
+    }
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/post-menu",
      *      operationId="postMenus",
@@ -119,7 +119,7 @@ class PublishedPostApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -134,14 +134,13 @@ class PublishedPostApiController extends BaseApiController
     public function postMenus()
     {
         try {
-            // These are the post categories, 
+            // These are the post categories,
             // These will be dynamic when we create little module for it.
             // Currently, these categories are being handled from App/Models/Post Model
-            $categories = [1 => 'News', 2 => 'Blogs', 3 => 'Announcements'];
-
+            $categories = (new Post)->postCategoryOptions();
             $menus = [];
             foreach ($categories as $menuItem) {
-                $slug = Str::slug($menuItem);
+                $slug = Str::slug(Str::plural($menuItem));
                 $menus[] = [
                     'title' => $menuItem,
                     'slug' => $slug,
@@ -173,14 +172,14 @@ class PublishedPostApiController extends BaseApiController
                 'link_prefix' => '/media-library',
             ];
 
-            return $this->sendResponse($menus, 'success');
+            return $this->sendResponse($menus, __('messages.success'));
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/posts/{category}",
      *      operationId="getPostsByCategory",
@@ -199,7 +198,7 @@ class PublishedPostApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -216,14 +215,19 @@ class PublishedPostApiController extends BaseApiController
         try {
             $posts = Post::published()->$category()->applyFilters()->get();
 
-            return $this->sendResponse($posts, 'success');
+            if ($posts->count() > 0) {
+                return $this->sendResponse($posts, __('messages.success'));
+            } else {
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
+            }
+
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/posts/{category}/{slug}",
      *      operationId="getSinglePost",
@@ -251,7 +255,7 @@ class PublishedPostApiController extends BaseApiController
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -263,14 +267,14 @@ class PublishedPostApiController extends BaseApiController
      *      )
      *  )
      */
-    public function getSinglePost ($category, $slug) 
+    public function getSinglePost ($category, $slug)
     {
         if ($category === null || $category === "") {
-            return $this->sendError('error', ["errors" => 'category field is missing.'], 500);
+            return $this->sendResponse(null, __('category field is missing.'), HTTP_BAD_REQUEST);
         }
 
         if ($slug === null || $slug === "") {
-            return $this->sendError('error', ["errors" => 'slug field is missing.'], 500);
+            return $this->sendResponse(null, __('slug field is missing.'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -281,12 +285,12 @@ class PublishedPostApiController extends BaseApiController
             }
 
             if ($post) {
-                return $this->sendResponse($post, "Success");
+                return $this->sendResponse($post, __('messages.success'));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse(null, __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (\Exception $e) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $e->getMessage()], 500);
+            return $this->sendResponse(["errors" => $e->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

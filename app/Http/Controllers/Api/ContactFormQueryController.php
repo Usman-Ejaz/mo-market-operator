@@ -12,16 +12,16 @@ use Illuminate\Support\Facades\Validator;
 class ContactFormQueryController extends BaseApiController
 {
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Contact Us",
      *     description="API Endpoints of Contact Us Form"
      * )
-     * 
-     */ 
+     *
+     */
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/submit-query",
      *      operationId="submit",
@@ -29,7 +29,7 @@ class ContactFormQueryController extends BaseApiController
      *      summary="Submit Constact Form Query",
      *      description="Submit Constact Form Query in the resource",
      *      security={{"BearerAppKey": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -72,7 +72,7 @@ class ContactFormQueryController extends BaseApiController
      *                  ),
      *                  required={"name", "email", "subject", "message"},
      *                  example={
-     *                      "name": "John Doe", 
+     *                      "name": "John Doe",
      *                      "email": "johndoe@email.com",
      *                      "subject": "Query Subject",
      *                      "message": "Query Message",
@@ -80,10 +80,10 @@ class ContactFormQueryController extends BaseApiController
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -95,7 +95,7 @@ class ContactFormQueryController extends BaseApiController
      *      )
      *  )
      */
-    public function submit(Request $request) 
+    public function submit(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -107,18 +107,18 @@ class ContactFormQueryController extends BaseApiController
                 'company' => 'nullable|bail|string|min:3|max:100',
                 'role' => 'nullable|bail|string|min:3|max:50'
             ]);
-     
+
             if ($validator->fails()) {
-                return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+                return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
             }
 
             $contactPageQuery = ContactPageQuery::create($request->all());
 
             event(new NewContactQueryHasArrived($contactPageQuery));
-            
-            return $this->sendResponse([], __("Query Submitted Successfully"));
+
+            return $this->sendResponse(null, __("Query Submitted Successfully"));
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

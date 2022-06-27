@@ -15,26 +15,26 @@ use Illuminate\Support\Str;
 use PDF;
 
 class ClientRegistrationController extends BaseApiController
-{    
+{
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Clients",
      *     description="API Endpoints of Clients"
      * )
-     * 
-     */ 
+     *
+     */
 
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/auth/register",
      *      operationId="register",
      *      tags={"Clients"},
      *      summary="Register Client",
      *      description="This API will register the client in the resource and will return a token, This token will be used to proceed next API calls for succesfull client registration.",
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -95,7 +95,7 @@ class ClientRegistrationController extends BaseApiController
      *                      "city", "state", "zipcode", "country", "primary_details"
      *                  },
      *                  example={
-     *                      "name": "John Doe", 
+     *                      "name": "John Doe",
      *                      "business": "USA",
      *                      "address_line_one": "USA",
      *                      "address_line_two": "USA",
@@ -124,10 +124,10 @@ class ClientRegistrationController extends BaseApiController
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -145,7 +145,7 @@ class ClientRegistrationController extends BaseApiController
         $validator = Validator::make($request->all(), $this->getRules($request, $client), $this->getMessages(), $this->getAttributes());
 
         if ($validator->fails()) {
-            return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+            return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -163,22 +163,22 @@ class ClientRegistrationController extends BaseApiController
                 ], [], $this->getAttributes());
 
                 if ($validator->fails()) {
-                    return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+                    return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
                 }
 
                 $clientToken = $this->createClient($request);
-                
+
                 return $this->sendResponse($clientToken, __("messages.success"));
             }
 
 
         } catch (\Illuminate\Database\QueryException $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage(), 'type' => get_class($ex)], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage(), 'type' => get_class($ex)], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
-    
+
     /**
      * getRules
      *
@@ -222,7 +222,7 @@ class ClientRegistrationController extends BaseApiController
             'secondary_details.type' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
         ];
     }
-    
+
     /**
      * getMessages
      *
@@ -230,10 +230,10 @@ class ClientRegistrationController extends BaseApiController
      */
     private function getMessages(): array {
         return [
-            // 
+            //
         ];
     }
-    
+
     /**
      * getAttributes
      *
@@ -254,7 +254,7 @@ class ClientRegistrationController extends BaseApiController
             'secondary_details.facsimile_telephone' => 'facsimile telephone',
         ];
     }
-    
+
     /**
      * createClient
      *
@@ -290,11 +290,11 @@ class ClientRegistrationController extends BaseApiController
 
             return ['token' => $token];
         }
-        
+
         return ['token' => null];
     }
 
-    
+
     /**
      * storeClientDetails
      *
@@ -346,14 +346,14 @@ class ClientRegistrationController extends BaseApiController
             ]);
         }
     }
-    
+
     /**
      * saveSignatures
      *
      * @param  mixed $file
      * @return string | null
      */
-    private function saveSignatures($dataURL) 
+    private function saveSignatures($dataURL)
     {
         list($type, $data) = explode(';', $dataURL);
         list(, $data) = explode(',', $data);
@@ -419,7 +419,7 @@ class ClientRegistrationController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -434,7 +434,7 @@ class ClientRegistrationController extends BaseApiController
      *          description="Could not found",
      *      ),
      *  )
-     * 
+     *
      */
     public function getRegistrationFormData()
     {
@@ -446,12 +446,12 @@ class ClientRegistrationController extends BaseApiController
                 'registration_types' => __('client.registration_types')
             ], __('messages.success'));
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage(), 'type' => get_class($ex)], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage(), 'type' => get_class($ex)], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/confirm-registration",
      *      operationId="confirmRegistration",
@@ -459,10 +459,10 @@ class ClientRegistrationController extends BaseApiController
      *      summary="Confirm registration of client",
      *      description="Confirm registration of client.",
      *      security={{"BearerToken": {}}},
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -480,14 +480,14 @@ class ClientRegistrationController extends BaseApiController
             $client = Client::find($request->user()->id);
             $client->update(['profile_complete' => 1]);
 
-            return $this->sendResponse([], __('messages.success'));
+            return $this->sendResponse(null, __('messages.success'));
         } catch (\Exception $ex) {
-            return $this->sendError(__('messages.error'), __('messages.something_wrong'), 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __('messages.something_wrong'), HTTP_SERVER_ERROR);
         }
     }
 
     /**
-     * 
+     *
      * @OA\Put(
      *      path="/update-client",
      *      operationId="updateClient",
@@ -495,7 +495,7 @@ class ClientRegistrationController extends BaseApiController
      *      summary="Update Client in the resource",
      *      description="Update Client in the resource",
      *      security={{"BearerToken": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -556,7 +556,7 @@ class ClientRegistrationController extends BaseApiController
      *                      "city", "state", "zipcode", "country", "primary_details"
      *                  },
      *                  example={
-     *                      "name": "John Doe", 
+     *                      "name": "John Doe",
      *                      "business": "USA",
      *                      "address_line_one": "USA",
      *                      "address_line_two": "USA",
@@ -585,10 +585,10 @@ class ClientRegistrationController extends BaseApiController
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -607,16 +607,16 @@ class ClientRegistrationController extends BaseApiController
         $validator = Validator::make($request->all(), $this->getRules($request, $client), $this->getMessages(), $this->getAttributes());
 
         if ($validator->fails()) {
-            return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+            return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
         }
 
         try {
             $clientToken = $this->update($request);
             return $this->sendResponse($clientToken, __("messages.success"));
         } catch (\Illuminate\Database\QueryException $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage(), 'type' => get_class($ex)], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage(), 'type' => get_class($ex)], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
@@ -652,12 +652,12 @@ class ClientRegistrationController extends BaseApiController
 
             return ['token' => $token];
         }
-        
+
         return ['token' => null];
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/download-application",
      *      operationId="downloadApplication",
@@ -665,10 +665,10 @@ class ClientRegistrationController extends BaseApiController
      *      summary="Prepare the PDF document for application under process.",
      *      description="Prepare the PDF document for application under process.",
      *      security={{"BearerToken": {}}},
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -706,11 +706,11 @@ class ClientRegistrationController extends BaseApiController
 
             return $this->sendResponse($link, __('messages.success'));
         } catch (\Exception $ex) {
-            $this->sendError(__('messages.error'), $ex->getMessage(), 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
-    
+
     /**
      * removeOldCategoryAttachments
      *
@@ -724,7 +724,7 @@ class ClientRegistrationController extends BaseApiController
         if ($newCategories === null || $newCategories === "") {
             return null;
         }
-        
+
         $newCategories = explode(",", $newCategories);
         $cats = [];
 
@@ -744,7 +744,7 @@ class ClientRegistrationController extends BaseApiController
             foreach ($removedCategories as $index => $value)  {
 
                 $files = ClientAttachment::where(['client_id' => $clientId, 'category_id' => $value])->get();
-                
+
                 if ($files->count() > 0) {
                     foreach ($files as $attachment) {
                         removeFile(ClientAttachment::DIR, $attachment->file);

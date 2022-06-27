@@ -10,15 +10,15 @@ class FaqApiController extends BaseApiController
 {
 
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Faqs",
      *     description="API Endpoints of faqs"
      * )
-     * 
-     */ 
+     *
+     */
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/faqs",
      *      operationId="showFaqs",
@@ -28,7 +28,7 @@ class FaqApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -48,14 +48,14 @@ class FaqApiController extends BaseApiController
     {
         try {
             $faqs = Faq::published()->oldest()->get();
-        
+
             if ($faqs->count() > 0) {
-                return $this->sendResponse($faqs, "Found");
+                return $this->sendResponse($faqs, __('messages.success'));
             } else {
-                return $this->sendError("Could not found faqs.", ["errors" => "Could not found faqs."], 404);
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), 500);
         }
     }
 }

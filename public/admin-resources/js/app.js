@@ -12,7 +12,7 @@ $('form').on("change paste", function (e) {
 
 // To remove spaces from start and end of a string
 function trimSpaces(elementId, elementType) {
-    if (['text', 'email', 'number', 'select-one', 'url'].includes(elementType)) {
+    if (['text', 'email', 'number', 'select-one', 'url', 'textarea'].includes(elementType)) {
         $('#' + elementId) && $('#' + elementId).val($('#' + elementId).val().trim());
     }
 }

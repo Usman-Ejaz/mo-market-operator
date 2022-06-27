@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class NewsletterSubscriptionController extends BaseApiController
 {
 
-    
+
     // *                  @OA\Property(
     //     *                      property="name",
     //     *                      title="name",
@@ -18,16 +18,16 @@ class NewsletterSubscriptionController extends BaseApiController
     //     *                  ),
 
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Newsletters",
      *     description="API Endpoints of Newsletters"
      * )
-     * 
-     */ 
+     *
+     */
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/subscribe-to-newsletter",
      *      operationId="subscribe",
@@ -35,7 +35,7 @@ class NewsletterSubscriptionController extends BaseApiController
      *      summary="Subscribe Newsletter",
      *      description="Subscribe to Newsletters",
      *      security={{"BearerAppKey": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -53,10 +53,10 @@ class NewsletterSubscriptionController extends BaseApiController
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -77,15 +77,15 @@ class NewsletterSubscriptionController extends BaseApiController
             ], [
                 'email.unique' => 'This email is already subscribed to newsletters.'
             ]);
-    
+
             if ($validator->fails()) {
-                return $this->sendError("Error", ['errors' => $validator->errors()], 401);
+                return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
             }
-            
+
             Subscriber::create($request->all());
-            return $this->sendResponse([], "Subscribed to newsletters successfully!");
+            return $this->sendResponse(null, __("Subscribed to newsletters successfully!"));
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
-        }        
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
+        }
     }
 }

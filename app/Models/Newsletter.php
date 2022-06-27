@@ -9,19 +9,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Newsletter extends Model
 {
-    use HasFactory;
-
-    use CreatedModifiedBy;
+    use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
 
     protected $attributes = [];
-    
+
     /**
      * ======================================================
      *                 Model Accessor Functions
      * ======================================================
-     */    
+     */
 
     /**
      * getCreatedAtAttribute

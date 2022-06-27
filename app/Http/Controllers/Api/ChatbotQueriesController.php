@@ -12,15 +12,15 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class ChatbotQueriesController extends BaseApiController
-{    
+{
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Chatbot Queries",
      *     description="API Endpoints of Chatbot Queries"
      * )
      *
-     * 
+     *
      * @OA\Post(
      *      path="/save-chat-initiator-details",
      *      operationId="storeInitiatorDetails",
@@ -28,7 +28,7 @@ class ChatbotQueriesController extends BaseApiController
      *      summary="save chat initiator details",
      *      description="save chat initiator details in the resource",
      *      security={{"BearerAppKey": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -56,17 +56,17 @@ class ChatbotQueriesController extends BaseApiController
      *                  ),
      *                  required={"name", "email", "phone"},
      *                  example={
-     *                      "name": "John Doe", 
+     *                      "name": "John Doe",
      *                      "email": "johndoe@email.com",
-     *                      "phone": "03001234567", 
+     *                      "phone": "03001234567",
      *                  }
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -83,7 +83,7 @@ class ChatbotQueriesController extends BaseApiController
         $validator = Validator::make($request->all(), $this->getRules(), $this->getMessages());
 
         if ($validator->fails()) {
-            return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+            return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -91,18 +91,18 @@ class ChatbotQueriesController extends BaseApiController
             $initiator = ChatbotInitiator::findByEmail($data['email'])->first();
 
             if ($initiator) {
-                return $this->sendResponse(['key' => $initiator->token], 'success');
+                return $this->sendResponse(['key' => $initiator->token], __('messages.success'));
             }
 
             $data['token'] = Str::random(30);
             $initiator = ChatbotInitiator::create($data);
 
-            return $this->sendResponse(['key' => $initiator->token], 'success');
+            return $this->sendResponse(['key' => $initiator->token], __('messages.success'));
         } catch (\Exception $ex) {
-            return $this->sendError("error", ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
-    
+
     /**
      * getRules
      *
@@ -118,7 +118,7 @@ class ChatbotQueriesController extends BaseApiController
             'send_chat_history' => 'sometimes|boolean'
         ];
     }
-    
+
     /**
      * getMessages
      *
@@ -130,12 +130,12 @@ class ChatbotQueriesController extends BaseApiController
 
         ];
     }
-    
 
-    
+
+
 
     /**
-     * 
+     *
      * @OA\Post(
      *      path="/chatbot-query",
      *      operationId="askQuestion",
@@ -143,7 +143,7 @@ class ChatbotQueriesController extends BaseApiController
      *      summary="Submit asked query and matches it",
      *      description="Submit asked query and matches it in the resource",
      *      security={{"BearerAppKey": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -153,7 +153,7 @@ class ChatbotQueriesController extends BaseApiController
      *                      property="question",
      *                      title="question",
      *                      type="string"
-     *                  ),  
+     *                  ),
      *                  required={"question"},
      *                  example={
      *                      "question": "Is this a question?",
@@ -170,10 +170,10 @@ class ChatbotQueriesController extends BaseApiController
      *              type="string"
      *          )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -190,22 +190,22 @@ class ChatbotQueriesController extends BaseApiController
         $initiatorKey = $request->header('x-initiator-key');
 
         if ($initiatorKey === null || $initiatorKey === "") {
-            return $this->sendError('error', ['errors' => 'Initiator key is missing.'], 400);
+            return $this->sendResponse(__('Initiator key is missing.'), HTTP_NOT_FOUND);
         }
 
         try {
             $initiator = ChatbotInitiator::findByKey($initiatorKey)->select('id')->first();
 
             if (!$initiator) {
-                return $this->sendError('error', ['errors' => 'Chatbot initiator could not find.'], 404);
+                return $this->sendResponse(__('Chatbot initiator could not find.'), HTTP_NOT_FOUND);
             }
 
             $questions = ChatBotKnowledgeBase::select('question', 'answer', 'keywords')->get();
-            $chatbotAnswer = null;            
+            $chatbotAnswer = null;
 
             foreach ($questions as $knowledgebase) {
                 similar_text(strtolower($request->question), strtolower($knowledgebase->question), $question_similarity);
-                
+
                 if ((number_format($question_similarity, 0) >= 70)) {
                     $chatbotAnswer = $knowledgebase;
                     break;
@@ -225,7 +225,7 @@ class ChatbotQueriesController extends BaseApiController
                     }
                 }
             }
-            
+
             if ($chatbotAnswer) {
                 // 1. log question with answer against initiatorID in the DB.
                 // 2. send response to client with answer.
@@ -236,18 +236,17 @@ class ChatbotQueriesController extends BaseApiController
                     'chatbot_initiator_id' => $initiator->id
                 ]);
 
-                return $this->sendResponse(['answer' => $chatbotAnswer->answer], 'success');
+                return $this->sendResponse(['answer' => $chatbotAnswer->answer], __('messages.success'));
             }
 
-            return $this->sendError(__('messages.error'), ['errors' => __('messages.data_not_found')], 404);
-            // send initiator details with status code 203.
+            return $this->sendResponse(__('messages.data_not_found'), HTTP_NOT_FOUND);
         } catch (\Exception $ex) {
-            return $this->sendError(__('messages.something_wrong'), ['errors' => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
     /**
-     * 
+     *
      * @OA\Get(
      *      path="/close-chat",
      *      operationId="sendChatHistoryEmail",
@@ -255,7 +254,7 @@ class ChatbotQueriesController extends BaseApiController
      *      summary="Initimate Client and admin about the chat history",
      *      description="Initimate Client and admin about the chat history by sending emails to them.",
      *      security={{"BearerAppKey": {}}},
-     *      
+     *
      *      @OA\Parameter(
      *          name="x-initiator-key",
      *          description="Chat initiator unique token",
@@ -265,10 +264,10 @@ class ChatbotQueriesController extends BaseApiController
      *              type="string"
      *          )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -285,7 +284,7 @@ class ChatbotQueriesController extends BaseApiController
         $initiatorKey = $request->header('x-initiator-key');
 
         if ($initiatorKey === null || $initiatorKey === "") {
-            return $this->sendError('error', ['errors' => 'Initiator key is missing.'], 400);
+            return $this->sendResponse(['errors' => ['key' => __('Initiator key is missing.')]], __('messages.error'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -296,10 +295,10 @@ class ChatbotQueriesController extends BaseApiController
                 event(new ChatbotChatHistoryEvent($chatHistory, $initiator));
             }
 
-            return $this->sendResponse([], 'success');
+            return $this->sendResponse(null, __('messages.success'));
 
         } catch (\Exception $ex) {
-            return $this->sendError('error', ['errors' => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 }

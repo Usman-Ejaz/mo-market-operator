@@ -49,10 +49,10 @@ class CareersApiController extends BaseApiController
             if ($jobs->count() > 0) {
                 return $this->sendResponse($jobs, __('messages.success'));
             } else {
-                return $this->sendError(__('messages.data_not_found'), [], 404);
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NO_CONTENT);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
@@ -96,10 +96,10 @@ class CareersApiController extends BaseApiController
             if ($job) {
                 return $this->sendResponse($job, __('messages.success'));
             } else {
-                return $this->sendError(__('messages.data_not_found'), null, 404);
+                return $this->sendResponse(null, __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
@@ -207,7 +207,7 @@ class CareersApiController extends BaseApiController
         $validator = Validator::make($request->all(), $this->getRules(), $this->getMessages());
 
         if ($validator->fails()) {
-            return $this->sendError("Error", ['errors' => $validator->errors()], 400);
+            return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -224,12 +224,12 @@ class CareersApiController extends BaseApiController
 
                 Application::create($data);
 
-                return $this->sendResponse([], __('messages.success'));
+                return $this->sendResponse(null, __('messages.success'));
             } else {
-                return $this->sendError(__('messages.data_not_found'), null, 404);
+                return $this->sendResponse(null, __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 

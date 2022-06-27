@@ -11,15 +11,15 @@ use Illuminate\Http\Request;
 class MenuApiController extends BaseApiController
 {
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Menus",
      *     description="API Endpoints of Menus"
      * )
-     * 
-     */ 
+     *
+     */
 
-    /** 
+    /**
      * @OA\Get(
      *      path="/menus",
      *      operationId="getMenus",
@@ -29,7 +29,7 @@ class MenuApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description="Success"          
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -60,16 +60,16 @@ class MenuApiController extends BaseApiController
                     'submenu_json' => json_decode($menu->submenu_json)
                 ];
             }
-            
+
             if ($menus->count() > 0) {
                 return $this->sendResponse($menuObject, __("messages.success"));
             } else {
-                return $this->sendResponse([], __("messages.data_not_found"));
+                return $this->sendResponse([], __("messages.data_not_found"), HTTP_NOT_FOUND);
             }
         } catch (Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
 
-    
+
 }

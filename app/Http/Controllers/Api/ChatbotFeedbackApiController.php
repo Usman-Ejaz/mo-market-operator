@@ -12,12 +12,12 @@ class ChatbotFeedbackApiController extends BaseApiController
 {
 
     /**
-     * 
+     *
      * @OA\Tag(
      *     name="Chatbot Rating",
      *     description="API Endpoints of Chatbot Rating"
      * )
-     * 
+     *
      * @OA\Post(
      *      path="/feedback-rating",
      *      operationId="submitFeedback",
@@ -25,7 +25,7 @@ class ChatbotFeedbackApiController extends BaseApiController
      *      summary="Submit Feedback with rating",
      *      description="Submit Feedback with rating in the resource",
      *      security={{"BearerAppKey": {}}},
-     * 
+     *
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\MediaType(
@@ -55,10 +55,10 @@ class ChatbotFeedbackApiController extends BaseApiController
      *             )
      *         )
      *      ),
-     * 
+     *
      *      @OA\Response(
      *          response=200,
-     *          description="Successful operation"          
+     *          description="Successful operation"
      *       ),
      *      @OA\Response(
      *          response=402,
@@ -74,10 +74,10 @@ class ChatbotFeedbackApiController extends BaseApiController
     {
         $data = $request->all();
 
-        $valdiator = Validator::make($data, $this->getRules(), $this->getMessages());
+        $validator = Validator::make($data, $this->getRules(), $this->getMessages());
 
-        if ($valdiator->fails()) {
-            return $this->sendError($valdiator->errors(), __('messages.error'), 400);
+        if ($validator->fails()) {
+            return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
         }
 
         try {
@@ -90,15 +90,15 @@ class ChatbotFeedbackApiController extends BaseApiController
                     'feedback' => $data['feedback']
                 ]);
 
-                return $this->sendResponse(__('messages.success'), __('Feedback submitted successfully!'));
+                return $this->sendResponse(null, __('Feedback submitted successfully!'));
             } else {
-                return $this->sendError(__('messages.data_not_found'), [], 404);
+                return $this->sendResponse(null, __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
-            return $this->sendError(__("messages.something_wrong"), ["errors" => $ex->getMessage()], 500);
+            return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
     }
-    
+
     /**
      * getRules
      *
@@ -112,7 +112,7 @@ class ChatbotFeedbackApiController extends BaseApiController
             'feedback' => 'nullable|string'
         ];
     }
-    
+
     /**
      * getMessages
      *
@@ -121,7 +121,7 @@ class ChatbotFeedbackApiController extends BaseApiController
     private function getMessages()
     {
         return [
-            // 
+            //
         ];
     }
 }
