@@ -97,7 +97,7 @@ class MediaLibraryApiController extends BaseApiController
     public function mediaFiles($slug)
     {
         if ($slug === null || $slug === "" || $slug === true || $slug === "true" || $slug === false || $slug === "false") {
-            return $this->sendError('error', ['errors' => 'slug is missing']);
+            return $this->sendResponse(null, __('slug is missing'), HTTP_BAD_REQUEST);
         }
 
         try {

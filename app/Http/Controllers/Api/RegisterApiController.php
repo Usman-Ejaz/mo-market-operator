@@ -20,9 +20,9 @@ class RegisterApiController extends BaseApiController
             $success['token'] = $user->createToken('MyApp')->accessToken;
             $success['name'] = $user->name;
 
-            return $this->sendResponse($success, 'User login successfully.');
+            return $this->sendResponse($success, __('User login successfully.'));
         } else {
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return $this->sendResponse(null, __('Unauthorised'), HTTP_UNAUTHORIZED);
         }
     }
 }
