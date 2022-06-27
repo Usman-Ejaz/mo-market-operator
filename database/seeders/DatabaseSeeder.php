@@ -116,7 +116,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'current_theme',
         //     'value' => 'theme1'
         // ]);
-        
+
         // Create News Letters
         Newsletter::factory(20)->create();
 
@@ -134,15 +134,15 @@ class DatabaseSeeder extends Seeder
 
         // Create Knowledge Base
         ChatBotKnowledgeBase::factory(20)->create();
-        
+
         $this->createStaticBlocks();
         // StaticBlock::factory(2)->create();
-        
+
         // For Slider Images
         $this->createSliderImages();
         // SliderImage::factory(5)->create();
 
-        for ($i = 1; $i <= 6; $i++) { 
+        for ($i = 1; $i <= 6; $i++) {
             $this->createMediaLibraries($i);
         }
 
@@ -206,15 +206,11 @@ class DatabaseSeeder extends Seeder
             mkdir($basePath . SliderImage::STORAGE_DIRECTORY, 0777, true);
         }
 
-        if (!is_dir($basePath . Client::SIGNATURE_DIR)) {
-            mkdir($basePath . Client::SIGNATURE_DIR, 0777, true);
-        }
-
         if (!is_dir($basePath . ClientAttachment::DIR)) {
             mkdir($basePath . ClientAttachment::DIR, 0777, true);
         }
     }
-    
+
     /**
      * createMenus
      *
@@ -377,10 +373,10 @@ class DatabaseSeeder extends Seeder
 
     private function createMediaLibraries($counter)
     {
-        
+
         $name = 'Farewell Party for Retiring Employees ' . $counter;
         $slug = Str::slug($name);
-        
+
         $mediaLibrary = MediaLibrary::factory()->create([
             'name' => $name,
             'description' => 'This is test description for ' . $name,
@@ -420,7 +416,5 @@ class DatabaseSeeder extends Seeder
 
             $post->update(['image' => $randomString]);
         }
-
-        
     }
 }

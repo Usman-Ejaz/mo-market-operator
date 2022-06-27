@@ -49,7 +49,7 @@ class CareersApiController extends BaseApiController
             if ($jobs->count() > 0) {
                 return $this->sendResponse($jobs, __('messages.success'));
             } else {
-                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NO_CONTENT);
+                return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
         } catch (\Exception $ex) {
             return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);

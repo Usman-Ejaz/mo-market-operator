@@ -29,7 +29,7 @@ class DocumentsApiController extends BaseApiController
      *      security={{"BearerAppKey": {}}},
      *      @OA\Response(
      *          response=200,
-     *          description=__('messages.success')
+     *          description="Success"
      *       ),
      *      @OA\Response(
      *          response=401,
@@ -38,11 +38,7 @@ class DocumentsApiController extends BaseApiController
      *      @OA\Response(
      *          response=403,
      *          description="Forbidden"
-     *      ),
-     *      @OA\Response(
-     *          response=HTTP_NOT_FOUND,
-     *          description="Could not found",
-     *      ),
+     *      )
      *  )
      */
     public function getPublishedDocs()
