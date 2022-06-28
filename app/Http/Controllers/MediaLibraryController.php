@@ -158,7 +158,7 @@ class MediaLibraryController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return ( isset($row->name)) ? $row->name : '';
+                    return ( isset($row->name)) ? truncateWords($row->name, 30) : '';
                 })
                 ->addColumn('description', function ($row) {
                     return ( isset($row->description)) ? $row->description : '';
