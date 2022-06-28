@@ -62,7 +62,7 @@
                 <label for="total_positions">Total Positions <span class="text-danger">*</span></label>
                 <input type="number" class="form-control" id="total_positions"
                     placeholder="Enter total positions" autocomplete="off" name="total_positions"
-                    value="{{ old('total_positions') ?? $job->total_positions }}">
+                    value="{{ old('total_positions') ?? $job->total_positions }}" min="1" step="1">
                 <span class="form-text text-danger">{{ $errors->first('total_positions') }} </span>
             </div>
         </div>
