@@ -225,8 +225,6 @@
 				total_positions: {
 					required: true,
 					number: true,
-					min: 1,
-					maxlength: 4
 				},
 				specialization: {
 					required: true,
@@ -294,7 +292,7 @@
 				return;
 			}
 
-			$(this).attr('placeholder', '{{ __("Enter Job Location") }}');
+			$(this).attr('placeholder', '{{ __("Enter location") }}');
 		});
 
 		if (document.getElementsByClassName('label-info').length > 0) {

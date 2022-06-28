@@ -259,9 +259,7 @@
 				},
 				total_positions: {
 					required: true,
-					number: true,
-					min: 1,
-					maxlength: 4
+					number: true
 				},
 				specialization: {
 					required: true,
