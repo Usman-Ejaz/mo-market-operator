@@ -216,7 +216,7 @@ class MenuController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return (isset($row->name)) ? $row->name : '';
+                    return (isset($row->name)) ? truncateWords($row->name, 20) : '';
                 })
                 ->addColumn('theme', function ($row) {
                     return (isset($row->theme)) ? config('settings.themes')[$row->theme] : '';

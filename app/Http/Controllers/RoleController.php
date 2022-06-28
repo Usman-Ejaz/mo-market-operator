@@ -125,7 +125,7 @@ class RoleController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return ( isset($row->name)) ? $row->name : '';
+                    return ( isset($row->name)) ? truncateWords($row->name, 20) : '';
                 })
                 ->editColumn('created_at', function ($row) {
                     return [
