@@ -17,6 +17,11 @@ class ChangeColumnDataTypeOfPagesTable extends Migration
             $table->string('title', 255)->change();
             $table->string('slug', 255)->change();
         });
+
+        Schema::table('job_posts', function (Blueprint $table) {
+            $table->string('title', 255)->change();
+            $table->string('slug', 255)->change();
+        });
     }
 
     /**
@@ -29,6 +34,11 @@ class ChangeColumnDataTypeOfPagesTable extends Migration
         Schema::table('pages', function (Blueprint $table) {
             $table->string('title', 100)->change();
             $table->string('slug', 100)->change();
+        });
+
+        Schema::table('job_posts', function (Blueprint $table) {
+            $table->string('title', 100)->change();
+            $table->string('slug', 150)->change();
         });
     }
 }

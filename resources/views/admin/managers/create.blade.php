@@ -60,8 +60,9 @@
 					ckeditor_required: true
 				},
 				designation: {
-					required: true,
+                    required: true,
                     notNumericValues: true,
+                    maxlength: 64,
                     // prevent_special_characters: true,
 				},
 				order: {
@@ -88,7 +89,11 @@
 					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
-				}
+				},
+                designation: {
+                    required: "{{ __('messages.required') }}",
+                    maxlength: "{{ __('messages.max_characters', ['field' => 'Designation', 'limit' => 64]) }}"
+                }
 			}
 		});
 

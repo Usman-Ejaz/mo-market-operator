@@ -94,8 +94,13 @@
 					required: true,
 				},
 				keywords: {
-					notNumericValues: true
-				},
+                    maxlength: {
+                        depends: () => {
+                            let tags = $('#keywords').val().split(',');
+                            return tags.filter(tag => tag.length > 64).length > 0 ? 64 : 0;
+                        }
+                    }
+                },
 				image: {
 					required: true,
 					extension: '{{ config("settings.image_file_extensions") }}'
@@ -118,6 +123,9 @@
 					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Title',  'limit' => 255]) }}"
+				},
+                keywords: {
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Keywords', 'limit' => 64]) }}"
 				}
 			}
 		});

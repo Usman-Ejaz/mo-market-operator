@@ -53,7 +53,7 @@
 				name: {
 					required: true,
 					maxlength: 64,
-					minlength: 2,
+					minlength: 3,
 					notNumericValues: true,
                     prevent_special_characters: true
 				},
