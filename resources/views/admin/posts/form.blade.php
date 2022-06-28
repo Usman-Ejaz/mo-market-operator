@@ -27,7 +27,7 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="keywords">Keywords</label>
-				<input type="input" class="form-control" id="keywords" autocomplete="off" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $post->keywords }}" data-role="tagsinput">
+				<input type="text" class="form-control" id="keywords" autocomplete="off" placeholder="Enter keywords" name="keywords" value="{{ old('keywords') ?? $post->keywords }}" data-role="tagsinput">
 				<span class="form-text text-danger">{{ $errors->first('keywords') }} </span>
 			</div>
 		</div>
@@ -63,11 +63,11 @@
 					<a href="{{ $post->image }}" target="_blank">
 						<img src="{{ $post->image }}" target="_blank" class="img-thumbnail" style="height: 200px;">
 					</a>
-					<span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> 
+					<span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span>
 				</small>
 				@endif
 			</div>
-		</div>		
+		</div>
 	</div>
 
 </div>

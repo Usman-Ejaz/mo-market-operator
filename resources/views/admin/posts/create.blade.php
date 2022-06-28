@@ -204,7 +204,7 @@
 				title: {
 					required: true,
 					minlength: 3,
-					maxlength: 255,
+					maxlength: 100,
 					notNumericValues: true,
                     prevent_special_characters: true
 				},
@@ -217,6 +217,14 @@
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
+                keywords: {
+                    maxlength: {
+                        depends: () => {
+                            let tags = $('#keywords').val().split(',');
+                            return tags.filter(tag => tag.length > 64).length > 0 ? 64 : 0;
+                        }
+                    }
+                },
 				post_category: {
 					required: true,
 				},
@@ -251,7 +259,10 @@
 				title: {
 					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 100]) }}"
+				},
+                keywords: {
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Keywords', 'limit' => 64]) }}"
 				}
 			}
 		});
