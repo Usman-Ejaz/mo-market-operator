@@ -61,7 +61,7 @@
 				},
 				slot_two: {
 					required: true,
-					maxlength: 100,
+					maxlength: 64,
 					minlength: 3,
 					notNumericValues: true,
                     // prevent_special_characters: true
@@ -79,14 +79,14 @@
 			},
 			messages: {
 				slot_one: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'slot one', 'limit' => 3]) }}",
+					minlength: "{{ __('messages.min_characters', ['field' => 'Slot one', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'slot one', 'limit' => 64]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Slot one', 'limit' => 64]) }}"
 				},
 				slot_two: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'slot two', 'limit' => 3]) }}",
+					minlength: "{{ __('messages.min_characters', ['field' => 'Slot two', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'slot two', 'limit' => 100]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Slot two', 'limit' => 64]) }}"
 				},
 				image: {
 					required: "{{ __('messages.required') }}",

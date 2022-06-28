@@ -46,7 +46,7 @@
 			rules: {
 				name: {
 					required: true,
-					maxlength: 255,
+					maxlength: 64,
 					minlength: 2,
 					notNumericValues: true,
                     prevent_special_characters: true
