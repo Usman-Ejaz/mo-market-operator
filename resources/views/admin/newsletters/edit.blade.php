@@ -53,7 +53,7 @@
 			rules: {
 				subject: {
 					required: true,
-					minlength: 2,
+					minlength: 3,
                     maxlength: 255,
 					notNumericValues: true,
                     prevent_special_characters: true

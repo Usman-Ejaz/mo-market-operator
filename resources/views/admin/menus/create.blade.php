@@ -61,7 +61,7 @@
 				},
 				theme: {
 					required: true,
-					maxlength: 255,
+					maxlength: 64,
 					minlength: 1,
 				},
 				active: {
