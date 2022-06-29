@@ -79,6 +79,7 @@
 		});
 
 		$('#create-document-form').validate({
+            ignore: [],
 			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",

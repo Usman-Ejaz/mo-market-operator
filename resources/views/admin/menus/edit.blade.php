@@ -22,7 +22,7 @@
 					@include('admin.menus.form')
 
 					<div class="card-footer text-right">
-						<button type="submit" class="btn btn-primary draft_button">Update</button>
+						<button type="submit" class="btn btn-primary width-120 draft_button">Update</button>
 					</div>
 				</div>
 			</div>
@@ -78,6 +78,11 @@
 					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
 					required: "This field is required.",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
+				},
+                identifier: {
+					required: "{{ __('messages.required') }}",
+					minlength: "{{ __('messages.min_characters', ['field' => 'Identifier', 'limit' => 3]) }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Identifier', 'limit' => 64]) }}"
 				}
 			}
 		});

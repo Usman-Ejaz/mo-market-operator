@@ -95,8 +95,8 @@
 		});
 
 		$('#update-document-form').validate({
-			errorElement: 'span',
 			ignore: [],
+			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
 			rules: {
