@@ -180,10 +180,10 @@ class UserController extends Controller
                     return truncateWords($row->name, 25);
                 })
                 ->addColumn('role', function ($row) {
-                    return ( isset($row->role->name)) ? $row->role->name : '';
+                    return ( isset($row->role->name)) ? truncateWords($row->role->name, 20) : '';
                 })
                 ->addColumn('designation', function ($row) {
-                    return ($row->designation) ? $row->designation : '';
+                    return ($row->designation) ? truncateWords($row->designation, 20) : '';
                 })
                 ->addColumn('status', function ($row) {
                     return ($row->active) ? $row->active : '';

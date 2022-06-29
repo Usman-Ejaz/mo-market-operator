@@ -95,8 +95,8 @@
 		});
 
 		$('#update-document-form').validate({
-			errorElement: 'span',
 			ignore: [],
+			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
 			rules: {
@@ -111,8 +111,13 @@
 					required: true,
 				},
 				keywords: {
-					notNumericValues: true
-				},
+                    maxlength: {
+                        depends: () => {
+                            let tags = $('#keywords').val().split(',');
+                            return tags.filter(tag => tag.length > 64).length > 0 ? 64 : 0;
+                        }
+                    }
+                },
 				image: {
 					required: {
 						depends: function () {
@@ -143,6 +148,9 @@
 					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Title',  'limit' => 255]) }}"
+				},
+                keywords: {
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Keywords', 'limit' => 64]) }}"
 				}
 			}
 		});

@@ -99,6 +99,11 @@
 					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
+				},
+                designation: {
+					minlength: "{{ __('messages.min_characters', ['field' => 'Designation', 'limit' => 3]) }}",
+					required: "{{ __('messages.required') }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Designation', 'limit' => 64]) }}"
 				}
 			}
 		});

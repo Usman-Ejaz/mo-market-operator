@@ -243,7 +243,7 @@
 			rules: {
 				title: {
 					required: true,
-					maxlength: 100,
+					maxlength: 255,
 					minlength: 3,
 					notNumericValues: true,
                     prevent_special_characters: true
@@ -299,7 +299,7 @@
 				title: {
 					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 100]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
 				},
                 keywords: {
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Keywords', 'limit' => 64]) }}"

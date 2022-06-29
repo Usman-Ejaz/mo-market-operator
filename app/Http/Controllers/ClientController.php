@@ -88,7 +88,7 @@ class ClientController extends Controller
 
             return DataTables::of($data)
             ->addColumn('name', function ($row) {
-                return ( isset($row->name)) ? $row->name : '';
+                return ( isset($row->name)) ? truncateWords($row->name, 20) : '';
             })
             ->addColumn('email', function ($row) {
                 $primaryDetails = $row->primaryDetails();

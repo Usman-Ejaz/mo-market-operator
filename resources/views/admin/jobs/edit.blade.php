@@ -246,6 +246,7 @@
 				qualification: {
 					required: true,
 					minlength: 5,
+                    maxlength: 64,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
@@ -255,7 +256,8 @@
 				},
 				location: {
 					required: true,
-					minlength: 5
+					minlength: 5,
+                    maxlength: 64,
 				},
 				total_positions: {
 					required: true,
@@ -264,6 +266,7 @@
 				specialization: {
 					required: true,
 					minlength: 5,
+                    maxlength: 64,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
@@ -325,6 +328,18 @@
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
 					required: '{{ __("messages.required") }}',
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
+				},
+                location: {
+					minlength: "{{ __('messages.min_characters', ['field' => 'Location', 'limit' => 5]) }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Location', 'limit' => 64]) }}"
+				},
+                specialization: {
+					minlength: "{{ __('messages.min_characters', ['field' => 'Specialization', 'limit' => 5]) }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Specialization', 'limit' => 64]) }}"
+				},
+                qualification: {
+					minlength: "{{ __('messages.min_characters', ['field' => 'Qualification', 'limit' => 5]) }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Qualification', 'limit' => 64]) }}"
 				}
 			}
 		});

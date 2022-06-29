@@ -125,7 +125,7 @@ class DocumentCategoryController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
-                    return ($row->name) ? ( (strlen($row->name) > 50) ? substr($row->name, 0, 50).'...' : $row->name ) : '';
+                    return ($row->name) ? truncateWords($row->name, 20): '';
                 })
                 ->editColumn('created_at', function ($row) {
                     return [

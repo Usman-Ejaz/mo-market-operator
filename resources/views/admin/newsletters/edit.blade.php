@@ -14,7 +14,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Newsletter - {{ $newsletter->subject }}</h3>
+						<h3 class="card-title">Edit Newsletter - {{ truncateWords($newsletter->subject, 50) }}</h3>
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->
@@ -22,7 +22,7 @@
 					@include('admin.newsletters.form')
 					<div class="card-footer">
 						<div class="float-right">
-							<button type="submit" class="btn btn-primary draft_button">Update</button>
+							<button type="submit" class="btn btn-primary width-120 draft_button">Update</button>
 						</div>
 					</div>
 
@@ -53,13 +53,21 @@
 			rules: {
 				subject: {
 					required: true,
-					minlength: 2,
+					minlength: 3,
+                    maxlength: 255,
 					notNumericValues: true,
                     prevent_special_characters: true
 				},
 				description: {
 					ckeditor_required: true,
 					maxlength: 50000
+				}
+			},
+            messages: {
+				subject: {
+					required: '{{ __("messages.required") }}',
+					minlength: '{{ __("messages.min_characters", ["field" => "Subject", "limit" => 3]) }}',
+					maxlength: '{{ __("messages.max_characters", ["field" => "Subject", "limit" => 255]) }}'
 				}
 			},
 			errorPlacement: function(error, element) {
