@@ -121,6 +121,7 @@
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Question', 'limit' => 64]) }}"
 				},
                 keywords: {
+                    required: "{{ __('messages.required') }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Keywords', 'limit' => 64]) }}"
 				}
 			}
