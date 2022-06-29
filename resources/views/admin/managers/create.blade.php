@@ -86,8 +86,8 @@
 			messages: {
 				image: '{{ __("messages.valid_image_extension") }}',
 				name: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
+					minlength: "{{ __('messages.min_characters', ['field' => 'Name', 'limit' => 3]) }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Name', 'limit' => 64]) }}"
 				},
                 designation: {
