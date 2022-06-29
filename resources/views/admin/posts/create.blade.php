@@ -27,6 +27,9 @@
             border-radius: .25rem;
             transition: color .15s ease-in-out,background-color .15s ease-in-out,
             border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            white-space: break-spaces !important;
+            max-width: 63em;
+            margin: 0px 0px 5px 0px;
         }
     </style>
 @endpush
@@ -266,7 +269,7 @@
 				}
 			}
 		});
-
+        $('.bootstrap-tagsinput > input').css('width', '');
 		$('.bootstrap-tagsinput > input').on('blur keypress', function (e) {
 			if ((e.which === 13 && $(this).val().trim().length > 0) || document.getElementsByClassName('label-info').length > 0) {
 				$(this).attr('placeholder', '');

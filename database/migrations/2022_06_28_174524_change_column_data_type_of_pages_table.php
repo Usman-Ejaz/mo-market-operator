@@ -14,13 +14,18 @@ class ChangeColumnDataTypeOfPagesTable extends Migration
     public function up()
     {
         Schema::table('pages', function (Blueprint $table) {
-            $table->string('title', 255)->change();
-            $table->string('slug', 255)->change();
+            $table->string('title', 256)->change();
+            $table->string('slug', 256)->change();
         });
 
         Schema::table('job_posts', function (Blueprint $table) {
-            $table->string('title', 255)->change();
-            $table->string('slug', 255)->change();
+            $table->string('title', 256)->change();
+            $table->string('slug', 256)->change();
+        });
+
+        Schema::table('posts', function (Blueprint $table) {
+            $table->string('title', 256)->change();
+            $table->string('slug', 256)->change();
         });
 
         Schema::table('menus', function (Blueprint $table) {
@@ -36,17 +41,22 @@ class ChangeColumnDataTypeOfPagesTable extends Migration
     public function down()
     {
         Schema::table('pages', function (Blueprint $table) {
-            $table->string('title', 100)->change();
-            $table->string('slug', 100)->change();
+            $table->string('title', 256)->change();
+            $table->string('slug', 256)->change();
         });
 
         Schema::table('job_posts', function (Blueprint $table) {
-            $table->string('title', 100)->change();
-            $table->string('slug', 150)->change();
+            $table->string('title', 256)->change();
+            $table->string('slug', 256)->change();
+        });
+
+        Schema::table('posts', function (Blueprint $table) {
+            $table->string('title', 256)->change();
+            $table->string('slug', 256)->change();
         });
 
         Schema::table('menus', function (Blueprint $table) {
-            $table->string('identifier', 64)->change();
+            $table->string('identifier', 65)->change();
         });
     }
 }
