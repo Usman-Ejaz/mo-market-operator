@@ -89,7 +89,7 @@
 				question: {
 					required: true,
 					minlength: 5,
-					maxlength: 255,
+					maxlength: 64,
 					notNumericValues: true,
                     prevent_special_characters: true
 				},
@@ -100,6 +100,12 @@
 				keywords: {
 					required: true,
 					notNumericValues: true,
+                    maxlength: {
+                        depends: () => {
+                            let tags = $('#keywords').val().split(',');
+                            return tags.filter(tag => tag.length > 64).length > 0 ? 64 : 0;
+                        }
+                    }
 				},
 			},
 			errorPlacement: function(error, element) {
@@ -112,7 +118,10 @@
 				question: {
 					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Question', 'limit' => 5]) }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Question', 'limit' => 255]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Question', 'limit' => 64]) }}"
+				},
+                keywords: {
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Keywords', 'limit' => 64]) }}"
 				}
 			}
 		});

@@ -23,7 +23,7 @@
 
 					<div class="card-footer">
 						<div class="float-right">
-							<button type="submit" class="btn btn-primary draft_button">Save</button>
+							<button type="submit" class="btn btn-primary width-120 draft_button">Save</button>
 						</div>
 					</div>
 				</div>
@@ -50,7 +50,8 @@
 			rules: {
 				subject: {
 					required: true,
-					minlength: 2,
+					minlength: 3,
+                    maxlength: 255,
 					notNumericValues: true,
                     prevent_special_characters: true
 				},
@@ -58,6 +59,13 @@
 					ckeditor_required: true,
 					maxlength: 50000
 				},
+			},
+            messages: {
+				subject: {
+					required: '{{ __("messages.required") }}',
+					minlength: '{{ __("messages.min_characters", ["field" => "Subject", "limit" => 3]) }}',
+					maxlength: '{{ __("messages.max_characters", ["field" => "Subject", "limit" => 255]) }}'
+				}
 			},
 			errorPlacement: function(error, element) {
 				if (element.attr("id") == "description") {

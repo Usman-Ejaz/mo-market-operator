@@ -33,7 +33,7 @@ class FaqController extends Controller
         abort_if(!hasPermission("faqs", "create"), 401, __('messages.unauthorized_action'));
 
         $faq = new Faq();
-        $categories = FaqCategory::all();
+        $categories = FaqCategory::latest()->get();
         return view('admin.faqs.create', compact('faq', 'categories'));
     }
 
@@ -87,7 +87,7 @@ class FaqController extends Controller
     {
         abort_if(!hasPermission("faqs", "edit"), 401, __('messages.unauthorized_action'));
 
-        $categories = FaqCategory::all();
+        $categories = FaqCategory::latest()->get();
 
         return view('admin.faqs.edit', compact('faq', 'categories'));
     }

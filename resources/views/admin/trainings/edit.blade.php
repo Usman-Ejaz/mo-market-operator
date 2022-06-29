@@ -198,21 +198,21 @@
 				topics: {
 					required: true,
 					minlength: 3,
-					maxlength: 255,
+					maxlength: 64,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
 				target_audience: {
 					required: true,
 					minlength: 3,
-					maxlength: 255,
+					maxlength: 64,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
 				location: {
 					required: true,
 					minlength: 3,
-					maxlength: 255
+					maxlength: 64
 				},
 				status: {
 					required: true,
@@ -244,6 +244,21 @@
 					minlength: "{{ __('messages.min_characters', ['field' => 'Title', 'limit' => 3]) }}",
 					required: '{{ __("messages.required") }}',
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Title', 'limit' => 255]) }}"
+				},
+                topics: {
+					required: '{{ __("messages.required") }}',
+					minlength: "{{ __('messages.min_characters', ['field' => 'Topics', 'limit' => 3]) }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Topics', 'limit' => 64]) }}"
+				},
+                target_audience: {
+					required: '{{ __("messages.required") }}',
+					minlength: "{{ __('messages.min_characters', ['field' => 'Target audience', 'limit' => 3]) }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Target audience', 'limit' => 64]) }}"
+				},
+                location: {
+					required: '{{ __("messages.required") }}',
+					minlength: "{{ __('messages.min_characters', ['field' => 'Location', 'limit' => 3]) }}",
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Location', 'limit' => 64]) }}"
 				}
 			}
 		});
