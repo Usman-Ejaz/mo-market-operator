@@ -160,9 +160,6 @@ class MediaLibraryController extends Controller
                 ->addColumn('name', function ($row) {
                     return ( isset($row->name)) ? truncateWords($row->name, 30) : '';
                 })
-                ->addColumn('description', function ($row) {
-                    return ( isset($row->description)) ? $row->description : '';
-                })
                 ->editColumn('created_at', function ($row) {
                     return [
                         'display' => $row->created_at,

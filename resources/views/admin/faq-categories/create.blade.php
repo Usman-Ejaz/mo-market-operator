@@ -21,7 +21,7 @@
 					@include('admin.faq-categories.form')
 					<div class="card-footer">
 						<div class="float-right">
-							<button type="submit" class="btn btn-primary draft_button">Save</button>
+							<button type="submit" class="btn btn-primary width-120 draft_button">Save</button>
 						</div>
 					</div>
 				</div>

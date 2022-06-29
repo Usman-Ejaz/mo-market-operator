@@ -143,7 +143,7 @@ class TeamMemberController extends Controller
                     return (isset($row->designation)) ? truncateWords($row->designation, 15) : '';
                 })
                 ->addColumn('manager', function ($row) {
-                    return (isset($row->manager)) ? $row->manager->name : '';
+                    return (isset($row->manager)) ? truncateWords($row->manager->name, 15) : '';
                 })
                 ->addColumn('order', function ($row) {
                     return (isset($row->order)) ? $row->order : '';
