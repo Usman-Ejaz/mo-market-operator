@@ -102,7 +102,7 @@ class MenuApiController extends BaseApiController
     public function libraryMenus()
     {
         try {
-            $docsCategories = DocumentCategory::parents()->with('children')->latest()->select('id', 'slug', 'name')->get();
+            $docsCategories = DocumentCategory::parents()->with('children')->oldest()->select('id', 'slug', 'name')->get();
 
             $docsMenus = [];
             foreach ($docsCategories as $category) {
