@@ -19,11 +19,11 @@
 							<option value="{{ $category->id }}" selected>
                                 {{ truncateWords($category->name, 35) }}
                             </option>
-                            @include('admin.includes.subcategory', ['subcategories' => $category->children, 'separator' => '---'])
+                            @include('admin.includes.subcategory', ['subcategories' => $category->children, 'separator' => '--'])
 						@else
 							<option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ truncateWords($category->name, 50) }}</option>
 
-                            @include('admin.includes.subcategory', ['subcategories' => $category->children, 'separator' => '---'])
+                            @include('admin.includes.subcategory', ['subcategories' => $category->children, 'separator' => '--'])
 						@endif
 					@endforeach
 				</select>

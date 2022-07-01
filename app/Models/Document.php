@@ -31,7 +31,7 @@ class Document extends Model
      *
      * @return mixed
      */
-    public function category() 
+    public function category()
     {
         return $this->belongsTo(DocumentCategory::class, "category_id", "id");
     }
@@ -52,7 +52,7 @@ class Document extends Model
      *                  Model Mutators Queries
      * ======================================================
      */
-        
+
     /**
      * setKeywordsAttribute
      *
@@ -69,7 +69,7 @@ class Document extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -80,7 +80,7 @@ class Document extends Model
     {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-    
+
     /**
      * getImageAttribute
      *
@@ -91,7 +91,7 @@ class Document extends Model
     {
         return $value ? serveFile(Document::STORAGE_DIRECTORY, $value) : null;
     }
-    
+
     /**
      * getFileAttribute
      *
@@ -102,7 +102,7 @@ class Document extends Model
     {
         return !empty($value) ? explode(",", $value) : [];
     }
-    
+
     /**
      * getDocumentLinksAttribute
      *
@@ -113,7 +113,7 @@ class Document extends Model
         $filePaths = [];
         foreach($this->file as $filename) {
             array_push($filePaths, serveFile(self::STORAGE_DIRECTORY, $filename));
-        }    
+        }
         return $filePaths;
     }
 
@@ -122,18 +122,22 @@ class Document extends Model
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopePublished
      *
      * @param  mixed $query
      * @return mixed
      */
-    public function scopePublished ($query) 
+    public function scopePublished ($query, $ids)
     {
-        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "created_at", "image", "slug");
+        return $query->where("published_at", "!=", null)
+            ->where(function ($q) use ($ids) {
+                $q->whereIn('category_id', $ids);
+            })
+            ->select("title", "file", "keywords", "category_id", "created_at", "image", "slug");
     }
-    
+
     /**
      * scopeFilterByCategory
      *
@@ -147,7 +151,7 @@ class Document extends Model
             $q->where('slug', '=', $category);
         });
     }
-    
+
     /**
      * scopeApplyFilters
      *
@@ -177,17 +181,17 @@ class Document extends Model
      *                 Model Helper Functions
      * ======================================================
      */
-    
+
     /**
      * isPublished
      *
      * @return mixed
      */
-    public function isPublished() 
+    public function isPublished()
     {
         return $this->published_at !== null;
     }
-    
+
     /**
      * removeImage
      *

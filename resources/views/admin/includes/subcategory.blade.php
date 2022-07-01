@@ -3,7 +3,7 @@
 
     @if (count($sub->children) > 0)
         @php
-            $separators = $separator . ' --- ';
+            $separators = $separator . ' -- ';
         @endphp
         @include('admin.includes.subcategory', ['subcategories' => $sub->children, 'separator' => $separators])
     @endif
