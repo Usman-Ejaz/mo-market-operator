@@ -47,10 +47,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('admin.login');
+    return view('welcome');
 });
 
-Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(function () {
+Route::get('/admin', function () {
+    return redirect()->route('admin.dashboard');
+});
+
+Route::middleware(['auth', 'preventBrowserHistory'])->prefix("admin")->name("admin.")->group(function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
