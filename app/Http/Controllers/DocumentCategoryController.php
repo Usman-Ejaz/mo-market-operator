@@ -32,7 +32,8 @@ class DocumentCategoryController extends Controller
         abort_if(!hasPermission("document_categories", "create"), 401, __('messages.unauthorized_action'));
 
         $documentCategory = new DocumentCategory();
-        return view("admin.document-categories.create", compact("documentCategory"));
+        $categories = DocumentCategory::latest()->get();
+        return view("admin.document-categories.create", compact("documentCategory", "categories"));
     }
 
     /**
@@ -78,8 +79,8 @@ class DocumentCategoryController extends Controller
     public function edit(DocumentCategory $documentCategory)
     {
         abort_if(!hasPermission("document_categories", "edit"), 401, __('messages.unauthorized_action'));
-
-        return view('admin.document-categories.edit', compact('documentCategory'));
+        $categories = DocumentCategory::latest()->get();
+        return view('admin.document-categories.edit', compact('documentCategory', 'categories'));
     }
 
     /**
@@ -127,6 +128,9 @@ class DocumentCategoryController extends Controller
                 ->addColumn('name', function ($row) {
                     return ($row->name) ? truncateWords($row->name, 20): '';
                 })
+                ->addColumn('parent', function ($row) {
+                    return ($row->parent) ? truncateWords($row->parent->name, 20): '';
+                })
                 ->editColumn('created_at', function ($row) {
                     return [
                         'display' => $row->created_at,
@@ -154,7 +158,8 @@ class DocumentCategoryController extends Controller
 
     private function validateRequest($category) {
         return request()->validate([
-            'name' => 'required|min:3|unique:document_categories,name,'.$category->id
+            'name' => 'required|min:3|unique:document_categories,name,'.$category->id,
+            'parent_id' => 'nullable'
         ], [
             'name.unique' => __('messages.unique', ['attribute' => 'Category'])
         ]);

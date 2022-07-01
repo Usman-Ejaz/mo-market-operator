@@ -9,12 +9,14 @@ class ApiKey extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     /**
      * ======================================================
      *                  Model Scope Queries
      * ======================================================
      */
-        
+
     /**
      * scopeValid
      *
@@ -23,7 +25,7 @@ class ApiKey extends Model
      * @param  mixed $value
      * @return mixed
      */
-    public function scopeValid($query, $name, $value) 
+    public function scopeValid($query, $name, $value)
     {
         return $query->where("name", "=", $name)->where("value", "=", $value);
     }
