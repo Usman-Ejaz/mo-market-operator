@@ -129,13 +129,9 @@ class Document extends Model
      * @param  mixed $query
      * @return mixed
      */
-    public function scopePublished ($query, $ids)
+    public function scopePublished ($query)
     {
-        return $query->where("published_at", "!=", null)
-            ->where(function ($q) use ($ids) {
-                $q->whereIn('category_id', $ids);
-            })
-            ->select("title", "file", "keywords", "category_id", "created_at", "image", "slug");
+        return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "published_at", "image", "slug");
     }
 
     /**

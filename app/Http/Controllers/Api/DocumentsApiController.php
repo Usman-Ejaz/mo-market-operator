@@ -161,7 +161,7 @@ class DocumentsApiController extends BaseApiController
                 $this->categoryIds->prepend($category->id);
             }
 
-            $docs = Document::published($this->categoryIds)->latest()->applyFilters(request())->get();
+            $docs = Document::published()->whereIn('category_id', $this->categoryIds)->applyFilters(request())->get();
 
             if ($docs->count() > 0) {
                 return $this->sendResponse(DocumentResource::collection($docs), __('messages.success'));
