@@ -109,7 +109,7 @@ class MenuApiController extends BaseApiController
                 $menu = [
                     'title' => $category->name,
                     'slug' => $category->slug,
-                    'link_prefix' => '/' . $category->slug
+                    'link_prefix' => '/library/' . $category->slug
                 ];
 
                 if ($category->children->count() > 0) {
