@@ -113,7 +113,7 @@ class MenuApiController extends BaseApiController
                 ];
 
                 if ($category->children->count() > 0) {
-                    $menu['children'] = $this->prepareSubMenu($category->children, $menu['link_prefix']);
+                    $menu['children'] = $this->prepareSubMenu($category->children);
                 }
 
                 $docsMenus[] = $menu;
@@ -131,7 +131,7 @@ class MenuApiController extends BaseApiController
     }
 
 
-    private function prepareSubMenu($subcategories, $parentSlug)
+    private function prepareSubMenu($subcategories)
     {
         $docsMenus = [];
 
@@ -140,11 +140,11 @@ class MenuApiController extends BaseApiController
             $menu = [
                 'title' => $category->name,
                 'slug' => $category->slug,
-                'link_prefix' => $parentSlug . '/' . $category->slug
+                'link_prefix' => '/library/' . $category->slug
             ];
 
             if ($category->children->count() > 0) {
-                $menu['children'] = $this->prepareSubMenu($category->children, $menu['link_prefix']);
+                $menu['children'] = $this->prepareSubMenu($category->children);
             }
 
             $docsMenus[] = $menu;

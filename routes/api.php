@@ -86,7 +86,9 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get('posts/{category}', [PublishedPostApiController::class, "getPostsByCategory"])->name('posts.list');
     Route::get('posts/{category}/{slug}', [PublishedPostApiController::class, "getSinglePost"])->name('posts.show');
 
-    Route::get('publications/{category}', [DocumentsApiController::class, 'getDocumentsByCategory'])->name('documents.by-category');
+    Route::get('library/{category}', [DocumentsApiController::class, 'getDocumentsByCategory'])->name('documents.by-category');
+
+    // Route::get('publications/{category}', [DocumentsApiController::class, 'getDocumentsByCategory'])->name('documents.by-category');
     Route::get('publications/{category}/{slug}', [DocumentsApiController::class, 'getSingleDocument'])->name('documents.show');
 
     Route::get('pages/{slug}', [PagesApiController::class, "showPage"])->name('pages.showPage');
