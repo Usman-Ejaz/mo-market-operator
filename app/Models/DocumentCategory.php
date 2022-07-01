@@ -79,7 +79,7 @@ class DocumentCategory extends Model
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-     /**
+    /**
      * ======================================================
      *                 Model Scope Queries
      * ======================================================
