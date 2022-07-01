@@ -11,6 +11,7 @@
 <style type="text/css">
         .bootstrap-tagsinput{
             width: 100%;
+            padding: 7px 6px !important;
         }
         .label-info{
             background-color: #17a2b8;
@@ -353,7 +354,7 @@
 				return;
 			}
 
-			$(this).attr('placeholder', '{{ __("Enter Job Location") }}');
+			$(this).attr('placeholder', '{{ __("Enter location") }}');
 		});
 
 		if (document.getElementsByClassName('label-info').length > 0) {

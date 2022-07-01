@@ -57,7 +57,7 @@
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" name="pages[{{ $page->id }}]" value="" data-page="{{ $page->id }}" data-title="{{ $page->title }}" data-slug="{{ $page->slug }}">
-                                                {{ \Illuminate\Support\Str::limit($page->title, 35, $end='...') }}
+                                                {{ truncateWords($page->title, 26) }}
                                                 <a href="{{ route('admin.pages.edit', $page->id) }}" target="_blank"> <i class="fa fa-link"></i></a>
                                             </label>
                                         </div>

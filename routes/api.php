@@ -45,14 +45,14 @@ Route::prefix('v1/auth')->group(function() {
 Route::middleware('auth:api')->prefix('v1')->group(function () {
     Route::post('upload-attachments', [ClientAttachmentController::class, 'store'])->name('client.attachment.store');
     Route::post('remove-attachments', [ClientAttachmentController::class, 'destroy'])->name('client.attachment.delete');
-    
+
     Route::post('confirm-registration', [ClientRegistrationController::class, 'confirmRegistration'])->name('client.confirm-registation');
     Route::put('update-client', [ClientRegistrationController::class, 'updateClient'])->name('client.update');
 
     Route::get('download-application', [ClientRegistrationController::class, 'downloadApplication'])->name('client.download-application');
 });
 
-Route::prefix("v1")->middleware('verifyApiKey')->group(function () {    
+Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::post("submit-query", [ContactFormQueryController::class, "submit"])->name("contact-form-query.submit");
     Route::post("subscribe-to-newsletter", [NewsletterSubscriptionController::class, "subscribe"])->name("newsletters.subscribe");
     Route::get("faqs", [FaqApiController::class, "showFaqs"])->name("faqs.showFaqs");
@@ -79,13 +79,16 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
 
     Route::post("search", [SiteSearchApiController::class, "search"])->name("site-search.search");
 
-    // route for blogs and news listing page, client side,
     Route::get('post-menu', [PublishedPostApiController::class, "postMenus"])->name('posts.menu');
+    Route::get('library-menus', [MenuApiController::class, 'libraryMenus'])->name('library.menu');
+
     Route::get('posts', [PublishedPostApiController::class, "listPosts"])->name('posts.list');
     Route::get('posts/{category}', [PublishedPostApiController::class, "getPostsByCategory"])->name('posts.list');
     Route::get('posts/{category}/{slug}', [PublishedPostApiController::class, "getSinglePost"])->name('posts.show');
 
-    Route::get('publications/{category}', [DocumentsApiController::class, 'getDocumentsByCategory'])->name('documents.by-category');
+    Route::get('library/{category}', [DocumentsApiController::class, 'getDocumentsByCategory'])->name('documents.by-category');
+
+    // Route::get('publications/{category}', [DocumentsApiController::class, 'getDocumentsByCategory'])->name('documents.by-category');
     Route::get('publications/{category}/{slug}', [DocumentsApiController::class, 'getSingleDocument'])->name('documents.show');
 
     Route::get('pages/{slug}', [PagesApiController::class, "showPage"])->name('pages.showPage');

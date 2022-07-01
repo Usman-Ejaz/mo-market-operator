@@ -148,23 +148,23 @@ class PublishedPostApiController extends BaseApiController
                 ];
             }
 
-            $docsCategories = DocumentCategory::select('slug', 'name')->get();
+            // $docsCategories = DocumentCategory::parents()->with('children')->latest()->select('slug', 'name')->get();
 
-            $docsMenus = [];
-            foreach ($docsCategories as $category) {
-                $docsMenus[] = [
-                    'title' => $category->name,
-                    'slug' => $category->slug,
-                    'link_prefix' => '/' . $category->slug
-                ];
-            }
+            // $docsMenus = [];
+            // foreach ($docsCategories as $category) {
+            //     $docsMenus[] = [
+            //         'title' => $category->name,
+            //         'slug' => $category->slug,
+            //         'link_prefix' => '/' . $category->slug
+            //     ];
+            // }
 
-            $menus[] = [
-                'title' => 'Publications',
-                'slug' => 'publications',
-                'link_prefix' => '/publications',
-                'children' => $docsMenus
-            ];
+            // $menus[] = [
+            //     'title' => 'Publications',
+            //     'slug' => 'publications',
+            //     'link_prefix' => '/publications',
+            //     'children' => $docsMenus
+            // ];
 
             $menus[] = [
                 'title' => 'Events',

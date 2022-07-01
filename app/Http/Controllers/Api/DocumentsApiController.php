@@ -5,11 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DocumentResource;
 use App\Models\Document;
+use App\Models\DocumentCategory;
 use Illuminate\Http\Request;
 
 class DocumentsApiController extends BaseApiController
 {
 
+    private $categoryIds = null;
+
+    public function __construct() {
+        $this->categoryIds = collect();
+    }
     /**
      *
      * @OA\Tag(
@@ -145,7 +151,17 @@ class DocumentsApiController extends BaseApiController
     public function getDocumentsByCategory($category)
     {
         try {
-            $docs = Document::published()->filterByCategory($category)->latest()->applyFilters(request())->get();
+
+            $category = DocumentCategory::where('slug', '=', $category)->first();
+
+            if ($category) {
+                if ($category->children->count() > 0) {
+                    $this->setIdsOfNestedChildren($category->children);
+                }
+                $this->categoryIds->prepend($category->id);
+            }
+
+            $docs = Document::published()->whereIn('category_id', $this->categoryIds)->applyFilters(request())->get();
 
             if ($docs->count() > 0) {
                 return $this->sendResponse(DocumentResource::collection($docs), __('messages.success'));
@@ -220,6 +236,17 @@ class DocumentsApiController extends BaseApiController
             }
         } catch (\Exception $ex) {
             return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
+        }
+    }
+
+    private function setIdsOfNestedChildren($children)
+    {
+        foreach ($children as $child) {
+
+            if ($child->children->count() > 0) {
+                $this->setIdsOfNestedChildren($child->children);
+            }
+            $this->categoryIds->push($child->id);
         }
     }
 }

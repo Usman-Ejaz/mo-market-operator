@@ -11,7 +11,7 @@ trait CreatedModifiedBy
     {
         // updating created_by when model is created
         static::creating(function ($model) {
-            if (! $model->isDirty('created_by')) {
+            if (! $model->isDirty('created_by') && auth()->check()) {
                 $model->created_by = auth()->user()->id;
                 event(new ActivityLogEvent($model->getLoggableArray("was just created.", $model, "create", auth()->id())));
             }

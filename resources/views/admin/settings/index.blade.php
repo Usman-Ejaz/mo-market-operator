@@ -10,6 +10,7 @@
 <style type="text/css">
         .bootstrap-tagsinput{
             width: 100%;
+            padding: 7px 6px !important;
         }
         .label-info{
             background-color: #17a2b8;
@@ -133,7 +134,7 @@
                     return;
                 }
                 var placeholder = $(this).parent().parent().find('> label').text().replace('*', '');
-                $(this).attr('placeholder', placeholder);
+                $(this).attr('placeholder', `${placeholder}`);
             });
 
             if ($('.bootstrap-tagsinput > .label-info').length > 0) {

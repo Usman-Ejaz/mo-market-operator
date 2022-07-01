@@ -21,6 +21,7 @@
 					<tr>
 						<th>Id</th>
 						<th>Name</th>
+                        <th>Parent Category</th>
 						<th>Created date</th>
 						<th>Action</th>
 					</tr>
@@ -71,6 +72,10 @@
 				{
 					data: 'name',
 					name: 'name'
+				},
+                {
+					data: 'parent',
+					name: 'parent'
 				},
 				{
 					data: { '_': 'created_at.display', 'sort': 'created_at.sort' },
