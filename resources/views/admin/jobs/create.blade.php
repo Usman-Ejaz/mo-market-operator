@@ -11,6 +11,7 @@
 <style type="text/css">
         .bootstrap-tagsinput{
             width: 100%;
+            padding: 7px 6px !important;
         }
         .label-info{
             background-color: #17a2b8;

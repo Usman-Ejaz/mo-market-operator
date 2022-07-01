@@ -19,7 +19,7 @@ class DocumentCategory extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -29,7 +29,7 @@ class DocumentCategory extends Model
     public function getCreatedAtAttribute($attribute)
     {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
-    }    
+    }
 
 
     /**
@@ -37,15 +37,35 @@ class DocumentCategory extends Model
      *                  Model Relations
      * ======================================================
      */
-        
+
     /**
      * documents
      *
      * @return mixed
      */
-    public function documents() 
+    public function documents()
     {
         return $this->hasMany(Document::class, "category_id", "id");
+    }
+
+    /**
+     * parent
+     *
+     * @return mixed
+     */
+    public function parent()
+    {
+        return $this->belongsTo(DocumentCategory::class, "parent_id", "id");
+    }
+
+    /**
+     * children
+     *
+     * @return mixed
+     */
+    public function children()
+    {
+        return $this->hasMany(DocumentCategory::class, "parent_id", "id");
     }
 
     /**
@@ -57,5 +77,21 @@ class DocumentCategory extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+     /**
+     * ======================================================
+     *                 Model Scope Queries
+     * ======================================================
+     */
+
+    /**
+     * parents
+     *
+     * @return mixed
+     */
+    public function scopeParents($query)
+    {
+        return $query->where('parent_id', '=', null);
     }
 }
