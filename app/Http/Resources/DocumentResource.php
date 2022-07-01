@@ -15,14 +15,14 @@ class DocumentResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'title' => $this->title,
-            'files' => $this->document_links,
+            'title'     => $this->title,
+            'files'     => $this->document_links,
             'thumbnail' => $this->image,
             'filenames' => $this->file,
-            'keywords' => $this->keywords,
-            'slug' => $this->slug,
-            'category' => $this->category->slug,
-            'date' => $this->created_at
+            'keywords'  => $this->keywords,
+            'slug'      => $this->slug,
+            'category'  => $this->category->slug,
+            'date'      => $this->published_at
         ];
     }
 }
