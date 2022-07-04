@@ -18,7 +18,7 @@
                     <option value="">Please select a category</option>
                     @foreach($categories as $category)
                     <option value="{{ $category->id }}" {{ ($category->id === $faq->category_id) ? 'selected' : '' }}>
-                        {{ $category->name }}</option>
+                        {{ truncateWords($category->name, 65) }}</option>
                     @endforeach
                 </select>
                 <span class="form-text text-danger">{{ $errors->first('category_id') }} </span>

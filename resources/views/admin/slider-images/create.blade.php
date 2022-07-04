@@ -37,6 +37,7 @@
 
 @push('optional-scripts')
 <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('admin-resources/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
 <script src="{{ asset('admin-resources/js/form-custom-validator-methods.js') }}"></script>
@@ -47,10 +48,12 @@
 	$(document).ready(function() {
 
 		$('#create-slider-images-form').validate({
-			ignore: [],
+            ignore: [],
 			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
+            onfocusout: false,
+            onkeyup: false,
 			rules: {
 				slot_one: {
 					required: true,

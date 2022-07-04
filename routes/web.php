@@ -152,6 +152,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
     Route::get('knowledge-base/list', [ChatBotKnowledgeBaseController::class, 'list'])->name('knowledge-base.list');
     Route::resource('knowledge-base', ChatBotKnowledgeBaseController::class);
 
+    Route::get('download-all/{client}/{category}', [ClientController::class, 'downloadBulkFiles'])->name('clients.downloadBulkFiles')->withoutMiddleware(['preventBrowserHistory']);
     Route::get('clients/list', [ClientController::class, 'list'])->name('clients.list');
     Route::resource('clients', ClientController::class);
 

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\ClientAttachment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use ZipArchive;
 
 class ClientController extends Controller
 {
@@ -125,6 +127,33 @@ class ClientController extends Controller
             })
             ->rawColumns(['action'])
             ->make(true);
+        }
+    }
+
+    public function downloadBulkFiles(Client $client, $category)
+    {
+        $zip = new ZipArchive();
+        if ($category == '0') {
+            $outputFilename = 'General Attachments';
+        } else {
+            $outputFilename = __('client.categories.' . $client->type . '.' . Client::REGISTER_CATEGORIES[$category]) . ' Attachments';
+        }
+
+        $filename = config('settings.storage_disk_base_path') . ucfirst($category) . '.zip';
+
+        if ($zip->open($filename, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
+            $category = $category == '0' ? null : $category;
+
+            $files = ClientAttachment::where(['client_id' => $client->id, 'category_id' => $category])->select('file')->get();
+
+            foreach ($files as $attachment) {
+                $filePath = config('settings.storage_disk_base_path') . ClientAttachment::DIR . basename($attachment->file);
+                $zip->addFile($filePath, pathinfo($filePath, PATHINFO_BASENAME));
+            }
+
+            $zip->close();
+
+            return response()->download($filename, $outputFilename . '.zip');
         }
     }
 }
