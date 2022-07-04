@@ -56,7 +56,7 @@
 					maxlength: 64,
 					minlength: 3,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				contents: {
 					ckeditor_required: true,

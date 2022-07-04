@@ -48,7 +48,7 @@
 					minlength: 3,
 					maxlength: 64,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				}
 			},
 			messages: {

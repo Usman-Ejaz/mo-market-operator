@@ -188,7 +188,10 @@
 					@if ($client->attachments->count() > 0)
 						<h4 class="mt-3">Attachments</h4>
 						<hr />
-						<h5 class="mt-3 mb-2" style="font-weight: bold;">{{ __("General Attachments") }}</h5>
+						<h5 class="mt-3 mb-2" style="font-weight: bold;">
+                            {{ __("General Attachments") }}
+                            <a style="font-size: 1rem;font-weight: 400;" href="{{ route('admin.clients.downloadBulkFiles', ['client' => $client->id, 'category' => 0]) }}">{{ __("Download All") }}</a>
+                        </h5>
 						<ul>
 							@foreach($client->generalAttachments() as $attachment)
 								<div class="row">
@@ -205,7 +208,10 @@
 						</ul>
 
 						@foreach($client->categoryAttachments() as $categoryId => $attachments)
-							<h5 class="mt-3 mb-2" style="font-weight: bold;">{{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}</h5>
+							<h5 class="mt-3 mb-2" style="font-weight: bold;">
+                                {{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}
+                                <a style="font-size: 1rem;font-weight: 400;" href="{{ route('admin.clients.downloadBulkFiles', ['client' => $client->id, 'category' => $categoryId]) }}">{{ __("Download All") }}</a>
+                            </h5>
 							<ul>
 								@foreach($attachments as $attachment)
 									<div class="row">

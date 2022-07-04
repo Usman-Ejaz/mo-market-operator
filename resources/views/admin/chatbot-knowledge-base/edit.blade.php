@@ -42,7 +42,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Chatbot Knowledge Base - {{ truncateWords($knowledge_base->question, 50) }}</h3>
+						<h3 class="card-title">Edit Chatbot Knowledge Base - {{ $knowledge_base->question }}</h3>
 					</div>
 					<!-- form start -->
 					@method('PATCH')
