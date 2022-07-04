@@ -14,7 +14,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Slider Image - {{ truncateWords($sliderImage->slot_one, 30) }}</h3>
+						<h3 class="card-title">Edit Slider Image - {{ $sliderImage->slot_one }}</h3>
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->
@@ -50,6 +50,8 @@
 			errorElement: 'span',
 			errorClass: "my-error-class",
 			validClass: "my-valid-class",
+            onfocusout: false,
+            onkeyup: false,
 			rules: {
 				slot_one: {
 					required: true,
@@ -82,13 +84,13 @@
 			},
 			messages: {
 				slot_one: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'Slot one', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
+					minlength: "{{ __('messages.min_characters', ['field' => 'Slot one', 'limit' => 3]) }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Slot one', 'limit' => 64]) }}"
 				},
 				slot_two: {
-					minlength: "{{ __('messages.min_characters', ['field' => 'Slot two', 'limit' => 3]) }}",
 					required: "{{ __('messages.required') }}",
+					minlength: "{{ __('messages.min_characters', ['field' => 'Slot two', 'limit' => 3]) }}",
 					maxlength: "{{ __('messages.max_characters', ['field' => 'Slot two', 'limit' => 64]) }}"
 				},
 				image: {

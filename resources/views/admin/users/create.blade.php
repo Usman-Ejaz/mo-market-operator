@@ -58,11 +58,11 @@
 					maxlength: 64,
 					minlength: 3,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				email: {
 					required: true,
-					email: true,
+					validEmailAddress: true,
 					notNumericValues: true,
 				},
 				role_id: {

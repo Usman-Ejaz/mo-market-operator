@@ -105,3 +105,13 @@ $.validator.addMethod("validURL", function(value, element) {
     var pattern = /^(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,})/;
     return (this.optional(element) || value === "#" || pattern.test(value));
 }, 'Please enter a valid URL.');
+
+/**
+ *
+ *
+ *
+ */
+$.validator.addMethod('validEmailAddress', function (value, element) {
+    let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    return (this.optional(element) || pattern.test(value));
+}, 'Please enter a valid Email.');

@@ -18,13 +18,13 @@ function trimSpaces(elementId, elementType) {
 }
 
 if (document.querySelector('input[type="number"]')) {
-    let elems = Array.from(document.querySelectorAll('input[type="number"]'));
-    elems.forEach(elem => {
-        elem.addEventListener("keypress", function (evt) {
-            if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57) {
-                evt.preventDefault();
-            }
-        });
+    $('input[type="number"]').on('keypress paste', function (evt) {
+        if (evt.type === "paste") {
+            evt.preventDefault();
+        }
+        if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57) {
+            evt.preventDefault();
+        }
     });
 }
 
