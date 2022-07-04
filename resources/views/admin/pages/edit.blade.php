@@ -11,6 +11,7 @@
 <style type="text/css">
         .bootstrap-tagsinput{
             width: 100%;
+            padding: 7px 6px !important;
         }
         .label-info{
             background-color: #17a2b8;
@@ -27,6 +28,9 @@
             border-radius: .25rem;
             transition: color .15s ease-in-out,background-color .15s ease-in-out,
             border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            white-space: break-spaces !important;
+            max-width: 63em;
+            margin: 0px 0px 5px 0px;
         }
     </style>
 @endpush
@@ -39,7 +43,7 @@
 			<div class="col-md-9">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Page - {{ truncateWords($cms_page->title, 60) }}</h3>
+						<h3 class="card-title">Edit Page - {{ $cms_page->title }}</h3>
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->
@@ -364,7 +368,7 @@
 				return;
 			}
 
-			$(this).attr('placeholder', $(this).attr('placeholder'));
+			$(this).attr('placeholder', '{{ __("Enter keywords") }}');
 		});
 
 		if (document.getElementsByClassName('label-info').length > 0) {

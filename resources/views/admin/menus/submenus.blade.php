@@ -57,7 +57,7 @@
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" name="pages[{{ $page->id }}]" value="" data-page="{{ $page->id }}" data-title="{{ $page->title }}" data-slug="{{ $page->slug }}">
-                                                {{ \Illuminate\Support\Str::limit($page->title, 35, $end='...') }}
+                                                {{ truncateWords($page->title, 26) }}
                                                 <a href="{{ route('admin.pages.edit', $page->id) }}" target="_blank"> <i class="fa fa-link"></i></a>
                                             </label>
                                         </div>
@@ -316,7 +316,7 @@
                 $("input[name^='documentCategories']:checkbox:checked").each(function () {
                     lastSubMenuId = lastSubMenuId + 1;
                     $('ol#submenu').append(`
-                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}" data-slug="publications/${$(this).data('slug')}">
+                        <li class="dd-item dd3-item" data-id="${lastSubMenuId}" data-doc="${$(this).data('doc')}" data-title="${$(this).data('title')}" data-slug="library/${$(this).data('slug')}">
                             <div class="dd-handle dd3-handle"></div>
                             <div class="dd3-content">
                                 ${lastSubMenuId} ${'('} document category ${')'} ${$(this).data('title')}

@@ -11,6 +11,7 @@
 <style type="text/css">
         .bootstrap-tagsinput{
             width: 100%;
+            padding: 7px 6px !important;
         }
         .label-info{
             background-color: #17a2b8;
@@ -27,6 +28,9 @@
             border-radius: .25rem;
             transition: color .15s ease-in-out,background-color .15s ease-in-out,
             border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            white-space: break-spaces !important;
+            max-width: 63em;
+            margin: 0px 0px 5px 0px;
         }
     </style>
 @endpush

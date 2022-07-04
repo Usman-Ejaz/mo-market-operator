@@ -14,7 +14,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Newsletter - {{ truncateWords($newsletter->subject, 50) }}</h3>
+						<h3 class="card-title">Edit Newsletter - {{ $newsletter->subject }}</h3>
 					</div>
 					<!-- /.card-header -->
 					<!-- form start -->

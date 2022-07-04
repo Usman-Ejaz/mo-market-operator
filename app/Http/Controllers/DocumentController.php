@@ -34,7 +34,7 @@ class DocumentController extends Controller
         abort_if(!hasPermission("documents", "create"), 401, __('messages.unauthorized_action'));
 
         $document = new Document();
-        $categories = DocumentCategory::latest()->get();
+        $categories = DocumentCategory::latest()->parents()->get();
         return view('admin.documents.create', compact('document', 'categories'));
     }
 
@@ -116,7 +116,7 @@ class DocumentController extends Controller
     {
         abort_if(!hasPermission("documents", "edit"), 401, __('messages.unauthorized_action'));
 
-        $categories = DocumentCategory::latest()->get();
+        $categories = DocumentCategory::latest()->parents()->get();
 
         return view('admin.documents.edit', compact('document', 'categories'));
     }
