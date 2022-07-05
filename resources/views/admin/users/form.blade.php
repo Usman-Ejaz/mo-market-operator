@@ -56,7 +56,7 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group">
-				<label for="image" class="form-label">User Profile Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }}. Recommended Image dimensions are 250 X 250))</small></label>
+				<label for="image" class="form-label">User Profile Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }}. Recommended Image dimensions are 250 X 250)</small></label>
 				<input class="form-control" type="file" id="image" name="image" onchange="handleFileChoose(event)">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if( isset($user->image) )
