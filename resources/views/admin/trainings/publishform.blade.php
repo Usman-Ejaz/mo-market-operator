@@ -4,13 +4,13 @@
 			<div class="form-group">
 				<label>Start Date & Time <span class="text-danger">*</span></label>
 				<div class="input-group">
-					<input type="text" class="form-control bg-white" id="start_date" name="start_date" value="{{ old('start_date') ?? $training->start_date }}" placeholder="{{ config('settings.datetime_placeholder') }}" readonly>
-					<input type="hidden" name="start_datetime" id="start_datetime" value="">
+					<input type="text" class="form-control bg-white" id="start_datetime" name="start_datetime" value="{{ old('start_datetime') ?? $training->start_datetime }}" placeholder="{{ config('settings.datetime_placeholder') }}" readonly>
+					<input type="hidden" name="start_date" id="start_date" value="{{ old('start_datetime') ?? parseDate($training->start_datetime) }}">
 					<div class="input-group-append">
 						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 					</div>
 				</div>
-				<span class="form-text text-danger">{{ $errors->first('start_date') }} </span>
+				<span class="form-text text-danger">{{ $errors->first('start_datetime') }} </span>
 			</div>
 		</div>
 	</div>
@@ -20,13 +20,13 @@
 			<div class="form-group">
 				<label for="endtime">End Date & Time <span class="text-danger">*</span></label>
 				<div class="input-group">
-					<input type="text" class="form-control bg-white" id="end_date" name="end_date" value="{{ old('end_date') ?? $training->end_date }}" placeholder="{{ config('settings.datetime_placeholder') }}" readonly>
-					<input type="hidden" name="end_datetime" id="end_datetime" value="">
+					<input type="text" class="form-control bg-white" id="end_datetime" name="end_datetime" value="{{ old('end_datetime') ?? $training->end_datetime }}" placeholder="{{ config('settings.datetime_placeholder') }}" readonly>
+					<input type="hidden" name="end_date" id="end_date" value="{{ old('end_datetime') ?? parseDate($training->end_datetime) }}">
 					<div class="input-group-append">
 						<div class="input-group-text"><i class="fa fa-calendar"></i></div>
 					</div>
 				</div>
-				<span class="form-text text-danger">{{ $errors->first('end_date') }} </span>
+				<span class="form-text text-danger">{{ $errors->first('end_datetime') }} </span>
 			</div>
 		</div>
 	</div>

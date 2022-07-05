@@ -109,23 +109,23 @@
             <br />
             <h5>{{ __('General Attachments') }}</h5>
 
-            <ul>
+            <ol type="1">
                 @foreach ($generalAttachments as $item)
                     <li>
                         <p style="display: inline">{{ $item->phrase_string }}</p>: {{ getFileOriginalName($item->file) }}
                     </li>
                 @endforeach
-            </ul>
+            </ol>
 
             @foreach ($categoryAttachments as $key => $items)
             <h5>{{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$key]) }}</h5>
-            <ul>
+            <ol type="1">
                 @foreach ($items as $item)
                     <li>
                         <p style="display: inline">{{ $item->phrase_string }}</p>: {{ getFileOriginalName($item->file) }}
                     </li>
                 @endforeach
-            </ul>
+            </ol>
             @endforeach
         @endif
     </div>

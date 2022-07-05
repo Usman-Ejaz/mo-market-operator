@@ -14,24 +14,24 @@ class Client extends Authenticatable
 
     protected $appends = ['category_labels'];
 
-    protected $guarded = [];    
+    protected $guarded = [];
 
     const TYPE = [
-        'market_participant', 
+        'market_participant',
         'service_provider'
     ];
-    
+
     /* Register categories e.g Market Participant, Service Provider */
     const REGISTER_CATEGORIES = [
         1 => 'generator',
-        2 => 'base_supplier', 
-        3 => 'pakistani_trader', 
-        4 => 'bpc', 
-        5 => 'captive_generator', 
-        6 => 'competitive_supplier', 
+        2 => 'base_supplier',
+        3 => 'pakistani_trader',
+        4 => 'bpc',
+        5 => 'captive_generator',
+        6 => 'competitive_supplier',
         7 => 'international_trader',
-        8 => 'transmission_service_provider', 
-        9 => 'distribution_service_provider', 
+        8 => 'transmission_service_provider',
+        9 => 'distribution_service_provider',
         10 => 'metering_service_provider'
     ];
 
@@ -41,8 +41,8 @@ class Client extends Authenticatable
      *                 Model Mutators Functions
      * ======================================================
      */
-    
-        
+
+
     /**
      * setCategoriesAttribute
      *
@@ -56,7 +56,7 @@ class Client extends Authenticatable
             $this->attributes['categories'] = null;
             return;
         }
-        
+
         $value = explode(",", $value);
         $cats = [];
 
@@ -76,7 +76,7 @@ class Client extends Authenticatable
      *                 Model Accessor Functions
      * ======================================================
      */
-        
+
     /**
      * Mutates the comma separated ids into comma separated category names.
      *
@@ -99,16 +99,27 @@ class Client extends Authenticatable
         }
         return __('None');
     }
-    
+
     /**
      * getCreatedAtAttribute
      *
      * @param  string $value
      * @return string
      */
-    public function getCreatedAtAttribute($value): string 
+    public function getCreatedAtAttribute($value): string
     {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : "";
+    }
+
+    /**
+     * getDecSignatureAttribute
+     *
+     * @param  string $value
+     * @return string
+     */
+    public function getDecSignatureAttribute($value): string
+    {
+        return $value ? serveFile(ClientDetail::SIGNATURE_DIR, $value) : "";
     }
 
 
@@ -117,17 +128,17 @@ class Client extends Authenticatable
      *                 Model Helper Functions
      * ======================================================
      */
-    
+
     /**
      * Checks if client is approved by admin or not.
      *
      * @return boolean true|false
      */
-    public function isApproved() 
+    public function isApproved()
     {
         return $this->approved == 1;
     }
-    
+
     /**
      * returns the client status either it is approved|pending
      *
@@ -146,16 +157,16 @@ class Client extends Authenticatable
      * generalAttachments
      *
      */
-    public function generalAttachments() 
+    public function generalAttachments()
     {
         return $this->attachments()->where('category_id', '=', null)->get();
     }
-    
+
     /**
      * categoryAttachments
      *
      */
-    public function categoryAttachments() 
+    public function categoryAttachments()
     {
         return $this->attachments()
             ->where('category_id', '!=', null)
@@ -164,7 +175,7 @@ class Client extends Authenticatable
             ->get()
             ->groupBy('category_id');
     }
-    
+
     /**
      * primaryDetails
      *
@@ -174,7 +185,7 @@ class Client extends Authenticatable
     {
         return $this->details()->where('type', '=', ClientDetail::PRIMARY)->first();
     }
-    
+
     /**
      * secondaryDetails
      *
@@ -184,7 +195,7 @@ class Client extends Authenticatable
     {
         return $this->details()->where('type', '=', ClientDetail::SECONDARY)->first();
     }
-    
+
     /**
      * removeDetails
      *
@@ -199,7 +210,7 @@ class Client extends Authenticatable
             $data->delete();
         }
     }
-    
+
     /**
      * removeAttachments
      *
@@ -221,7 +232,7 @@ class Client extends Authenticatable
      * ======================================================
      */
 
-        
+
     /**
      * details
      *
@@ -232,17 +243,17 @@ class Client extends Authenticatable
         return $this->hasMany(ClientDetail::class, 'client_id', 'id');
     }
 
-    
+
     /**
      * attachments
-     * 
+     *
      * @return mixed
      */
-    public function attachments() 
+    public function attachments()
     {
         return $this->hasMany(ClientAttachment::class);
     }
-    
+
 
     /**
      * ======================================================

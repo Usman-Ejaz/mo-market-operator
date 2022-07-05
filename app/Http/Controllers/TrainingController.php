@@ -192,8 +192,8 @@ class TrainingController extends Controller
             'topics' => 'required|string',
             'target_audience' => 'required|string',
             'status' => 'required|string',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'start_datetime' => 'required',
+            'end_datetime' => 'required',
             'attachments.*' => 'sometimes|file|mimes:doc,docx,pdf|max:' . config('settings.maxDocumentSize')
         ];
 

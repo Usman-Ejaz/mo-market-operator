@@ -185,6 +185,32 @@
 						</div>
 					@endforeach
 
+
+                    <h4 class="mt-3">Declaration of Conformity</h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Name: </label>
+                                <span>{{ $client->dec_name }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date: </label>
+                                <span>{{ \Carbon\Carbon::parse($client->dec_date)->format('m-d-Y') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Signature: </label>
+                                <img src="{{ $client->dec_signature }}" class="img-thumbnail" style="width: 23%; display: block;">
+                            </div>
+                        </div>
+                    </div>
+
 					@if ($client->attachments->count() > 0)
 						<h4 class="mt-3">Attachments</h4>
 						<hr />

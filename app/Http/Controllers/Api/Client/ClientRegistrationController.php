@@ -477,8 +477,24 @@ class ClientRegistrationController extends BaseApiController
     public function confirmRegistration(Request $request)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'dec_name'      => 'required|string',
+                'dec_date'      => 'required',
+                'dec_signature' => 'required|string'
+            ], [], [
+                'dec_signature' => 'Declaration signature'
+            ]);
+
+            if ($validator->fails()) {
+                return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
+            }
+
             $client = Client::find($request->user()->id);
-            $client->update(['profile_complete' => 1]);
+            $data = $validator->validate();
+            $data['dec_signature'] = $this->saveSignatures($data['dec_signature']);
+            $data['profile_complete'] = 1;
+
+            $client->update($data);
 
             return $this->sendResponse(null, __('messages.success'));
         } catch (\Exception $ex) {
