@@ -92,7 +92,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="image">Job Image <span class="text-danger">*</span> <small>(Max allowed size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small> </label>
+                <label for="image">Job Image <span class="text-danger">*</span> <small>(Max allowed size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }}. Recommended Image dimensions are 250 x 250)</small> </label>
                 <input type="file" class="form-control" id="image" name="image" onchange="handleFileChoose(event)">
                 <span class="form-text text-danger">{{ $errors->first('image') }} </span>
                 @if(isset($job->image))
