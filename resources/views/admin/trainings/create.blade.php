@@ -53,7 +53,7 @@
 			<div class="col-md-3">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">{{ __('Date & Time') }}</h3>
+						<h3 class="card-title">{{ __('Schedule Date & Time') }}</h3>
 					</div>
 					@include('admin.trainings.publishform')
 				</div>
@@ -94,7 +94,7 @@
 	let oldFiles = [];
 	$(document).ready(function() {
 
-		$('#start_date').datetimepicker({
+		$('#start_datetime').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
 			step: 5,
 			roundTime: 'ceil',
@@ -107,39 +107,39 @@
 				if (selectedDateTime >= todaysDate) {
 					let currentDateTime = (new Date()).setSeconds(0, 0);
 					if (selectedDateTime >= currentDateTime) {
-						$('#start_datetime').val(mapDate(selectedDateTime));
+						$('#start_date').val(mapDate(selectedDateTime));
 
-						let endDate = new Date($("#end_datetime").val()).setSeconds(0, 0);
+						let endDate = new Date($("#end_date").val()).setSeconds(0, 0);
 						selectedDateTime = selectedDateTime.setSeconds(0, 0);
 
 						if (selectedDateTime >= endDate) {
 							$input.val("");
-							$('#start_datetime').val("");
+							$('#start_date').val("");
 							$input.parent().next().text("{{ __('messages.min_date', ['first' => 'Start', 'second' => 'end']) }}");
 						} else {
 							$input.parent().next().text("");
 						}
 					} else {
 						$input.val("");
-						$('#start_datetime').val("");
+						$('#start_date').val("");
 						$input.parent().next().text("{{ __('messages.current_system_datetime') }}");
 					}
 				} else {
 					$input.val("");
-					$('#start_datetime').val("");
+					$('#start_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
 
-                $('#start_date').datetimepicker('hide');
+                $('#start_datetime').datetimepicker('hide');
 			},
 			onShow: function () {
 				this.setOptions({
-					maxDate: $('#end_datetime').val() ? $('#end_datetime').val() : false
+					maxDate: $('#end_date').val() ? $('#end_date').val() : false
 				})
 			}
 		});
 
-		$('#end_date').datetimepicker({
+		$('#end_datetime').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
 			step: 5,
 			roundTime: 'ceil',
@@ -150,29 +150,29 @@
 				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
 				if (selectedDateTime >= todaysDate) {
-					$('#end_datetime').val(mapDate(selectedDateTime));
+					$('#end_date').val(mapDate(selectedDateTime));
 
-					let startDate = new Date($("#start_datetime").val()).setSeconds(0, 0);
+					let startDate = new Date($("#start_date").val()).setSeconds(0, 0);
 					selectedDateTime = selectedDateTime.setSeconds(0, 0);
 
 					if (selectedDateTime <= startDate) {
 						$input.val("");
-						$('#end_datetime').val("");
+						$('#end_date').val("");
 						$input.parent().next().text("{{ __('messages.max_date', ['first' => 'End', 'second' => 'start']) }}");
 					} else {
 						$input.parent().next().text("");
 					}
 				} else {
 					$input.val("");
-					$('#end_datetime').val("");
+					$('#end_date').val("");
 					$input.parent().next().text("{{ __('messages.todays_date') }}");
 				}
 
-                $('#end_date').datetimepicker('hide');
+                $('#end_datetime').datetimepicker('hide');
 			},
 			onShow: function () {
 				this.setOptions({
-					minDate: $('#start_datetime').val() ? $('#start_datetime').val() : new Date()
+					minDate: $('#start_date').val() ? $('#start_date').val() : new Date()
 				})
 			}
 		});
@@ -216,10 +216,10 @@
 				'attachments[]': {
 					docx_extension: "doc|docx|pdf"
 				},
-				start_date: {
+				start_datetime: {
 					required: true
 				},
-				end_date: {
+				end_datetime: {
 					required: true
 				}
 			},
@@ -227,7 +227,7 @@
 				if (element.attr("id") == "description") {
 					element = $("#cke_" + element.attr("id"));
 				}
-				if (element.attr('id') === "start_date" || element.attr('id') === "end_date") {
+				if (element.attr('id') === "start_datetime" || element.attr('id') === "end_datetime") {
 					element = (element).parent();
 				}
 				error.insertAfter(element);

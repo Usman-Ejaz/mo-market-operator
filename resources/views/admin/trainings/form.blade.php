@@ -63,24 +63,24 @@
                 <select class="custom-select" name="status" id="status">
                     <option value="">Please select a status</option>
                     @if(Request::route()->getName() == "admin.trainings.create")
-                        <option value="open">Open</option>
-                        <option value="closed">Closed</option>
+                        <option value="1">Open</option>
+                        <option value="0">Closed</option>
 					@else
-                        <option value="open" {{ ($training->status === "open" || old('status') === "open") ? 'selected' : '' }}>Open</option>
-                        <option value="closed" {{ ($training->status === "closed" || old('status') === "closed") ? 'selected' : '' }}>Closed</option>
+                        <option value="1" {{ ($training->status === "1" || old('status') === "1") ? 'selected' : '' }}>Open</option>
+                        <option value="0" {{ ($training->status === "0" || old('status') === "0") ? 'selected' : '' }}>Closed</option>
 					@endif
                 </select>
                 <span class="form-text text-danger">{{ $errors->first('status') }} </span>
             </div>
         </div>
-    </div>	
+    </div>
 
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
                 <label for="attachments[]">Attachments <small>(Max allowed size is 5MB. Allowed types are doc, docx, pdf)</small> </label>
                 <input type="file" class="form-control" id="attachments[]" name="attachments[]" multiple onchange="handleFileChoose(event)">
-                <span class="form-text text-danger">{{ $errors->first('attachments.*') }} </span>                
+                <span class="form-text text-danger">{{ $errors->first('attachments.*') }} </span>
                 @if(isset($training->attachment_links) && count($training->attachment_links) > 0)
                     @foreach ($training->attachment_links as $file)
                     <small class="text-primary fileExists" style="display: block; margin-bottom: 15px;">

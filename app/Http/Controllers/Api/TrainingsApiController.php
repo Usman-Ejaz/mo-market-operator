@@ -41,10 +41,16 @@ class TrainingsApiController extends BaseApiController
      *  )
      *
      */
-    public function getTrainings()
+    public function getTrainings(Request $request)
     {
         try {
-            $trainings = Training::select('title', 'slug', 'short_description', 'topics', 'location', 'status', 'target_audience')->applyFilters()->get();
+
+            $status = 1;
+            if ($request->query('previous') && $request->get('previous') == 'true') {
+                $status = 0;
+            }
+
+            $trainings = Training::where('status', '=', $status)->select('title', 'slug', 'short_description', 'topics', 'location', 'target_audience')->applyFilters()->get();
 
             if ($trainings->count() > 0) {
                 return $this->sendResponse($trainings, __('messages.success'));
@@ -92,7 +98,7 @@ class TrainingsApiController extends BaseApiController
     public function getTrainingDetails($slug)
     {
         try {
-            $training = Training::whereSlug($slug)->select('title', 'slug', 'topics', 'location', 'target_audience', 'description', 'status', 'attachment', 'start_date', 'end_date')->first();
+            $training = Training::whereSlug($slug)->select('title', 'topics', 'location', 'target_audience', 'description', 'attachment', 'start_datetime', 'end_datetime')->first();
 
             if ($training) {
                 return $this->sendResponse($training, __('messages.success'));
