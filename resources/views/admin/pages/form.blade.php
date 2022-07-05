@@ -36,7 +36,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="form-group">
-				<label for="page_image" class="form-label">Page Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
+				<label for="page_image" class="form-label">Page Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }}. Recommended Image dimensions are 1365 X 450)</small></label>
 				<input class="form-control" type="file" id="page_image" name="image" onchange="handleFileChoose(event)">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if (isset($cms_page->image))
@@ -44,7 +44,7 @@
 					<a href="{{ $cms_page->image }}" target="_blank">
 						<img src="{{ $cms_page->image }}" target="_blank" class="img-thumbnail" style="height: 200px;">
 					</a>
-					<span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span> 
+					<span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span>
 				</small>
 				@endif
 			</div>
