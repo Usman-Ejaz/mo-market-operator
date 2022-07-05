@@ -206,7 +206,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Signature: </label>
-                                <span>{{ $client->dec_signature }}</span>
+                                <img src="{{ $client->dec_signature }}" class="img-thumbnail" style="width: 23%; display: block;">
                             </div>
                         </div>
                     </div>
