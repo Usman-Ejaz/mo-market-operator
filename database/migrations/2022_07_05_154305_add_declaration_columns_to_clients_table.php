@@ -14,9 +14,9 @@ class AddDeclarationColumnsToClientsTable extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('dec_name')->after('categories');
-            $table->timestamp('dec_date')->after('dec_name');
-            $table->string('dec_signature')->after('dec_date');
+            $table->string('dec_name')->after('categories')->nullable();
+            $table->timestamp('dec_date')->after('dec_name')->nullable();
+            $table->string('dec_signature')->after('dec_date')->nullable();
         });
     }
 
