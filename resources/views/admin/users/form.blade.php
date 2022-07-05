@@ -56,7 +56,7 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="form-group">
-				<label for="image" class="form-label">User Profile Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }})</small></label>
+				<label for="image" class="form-label">User Profile Image <small>(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }}. Recommended Image dimensions are 250 X 250)</small></label>
 				<input class="form-control" type="file" id="image" name="image" onchange="handleFileChoose(event)">
 				<span class="form-text text-danger">{{ $errors->first('image') }} </span>
 				@if( isset($user->image) )
@@ -69,7 +69,7 @@
 				<label>Status <span class="text-danger">*</span></label>
 				<select class="custom-select" name="active" id="active">
 					<option value="">Please select a status</option>
-					@if(Request::route()->getName() == "admin.users.create") 
+					@if(Request::route()->getName() == "admin.users.create")
 						@foreach($user->activeOptions() as $statusId => $statusValue)
 							@if (old('active') !== null && old('active') == $statusId)
 								<option value="{{ $statusId }}" selected>{{ $statusValue }}</option>
@@ -82,11 +82,11 @@
 							<option value="{{ $statusId }}" {{ ($user->active === $statusValue) ? 'selected' : '' }}>{{$statusValue}}</option>
 						@endforeach
 					@endif
-					
+
 				</select>
 				<span class="form-text text-danger">{{ $errors->first('active') }} </span>
 			</div>
-		</div>		
+		</div>
 	</div>
 
 	<div class="row">

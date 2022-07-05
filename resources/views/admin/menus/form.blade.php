@@ -13,7 +13,11 @@
                 <select class="custom-select" name="theme" id="theme">
                     <option value="">Please select a theme</option>
                     @foreach(config('settings.themes') as $themeName => $themeDisplayName)
-                        <option value="{{$themeName}}" {{ ($menu->theme === $themeName) ? 'selected' : '' }}>{{ $themeDisplayName }}</option>
+                        @if(old('theme') == $themeName)
+							<option value="{{ $themeName }}" selected> {{ $themeDisplayName }} </option>
+						@else
+							<option value="{{ $themeName }}" {{ ( isset($menu->theme) && $menu->theme === $themeName) ? 'selected' : '' }}>{{ $themeDisplayName }}</option>
+						@endif
                     @endforeach
                 </select>
                 <span class="form-text text-danger">{{ $errors->first('theme') }} </span>
@@ -26,8 +30,15 @@
                 <label>Status <span class="text-danger">*</span></label>
                 <select class="custom-select" name="active" id="active">
                     <option value="">Please select status</option>
-                    @foreach($menu->activeOptions() as $StatusId => $statusName)
-                        <option value="{{$StatusId}}" {{ ($menu->active === $statusName) ? 'selected' : '' }}>{{$statusName}}</option>
+                    @foreach($menu->activeOptions() as $statusId => $statusName)
+
+                        @if(old('active') !== null && old('active') == $statusId)
+                            <option value="{{ $statusId }}" selected> {{ $statusName }} </option>
+                        @else
+                            <option value="{{ $statusId }}" {{ ( isset($menu->active) && $menu->active === $statusName) ? 'selected' : '' }}>{{ $statusName }}</option>
+                        @endif
+
+                        {{-- <option value="{{$statusId}}" {{ ($menu->active === $statusName) ? 'selected' : '' }}>{{$statusName}}</option> --}}
                     @endforeach
                 </select>
                 <span class="form-text text-danger">{{ $errors->first('status') }} </span>

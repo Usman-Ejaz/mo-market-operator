@@ -208,7 +208,7 @@
                         required: true,
                         maxlength: 255,
                         notNumericValues: true,
-                        prevent_special_characters: true
+                        // prevent_special_characters: true
                     }
                 }
             });

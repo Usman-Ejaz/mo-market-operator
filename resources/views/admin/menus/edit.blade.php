@@ -55,7 +55,7 @@
 					maxlength: 64,
 					minlength: 3,
 					notNumericValues: true,
-                    prevent_special_characters: true
+                    // prevent_special_characters: true
 				},
 				theme: {
 					required: true,

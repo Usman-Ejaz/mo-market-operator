@@ -26,33 +26,33 @@
 				<!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 				<li class="nav-item">
-					<a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">
+					<a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
-						<p>Dashboard</p>
+						<p>{{ __('Dashboard') }}</p>
 					</a>
 				</li>
 
 				@if( hasPermission('clients', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.clients.index') }}" class="nav-link {{ Request::is('admin/clients*') ? 'active' : '' }}">
+					<a href="{{ route('admin.clients.index') }}" class="nav-link {{ Request::is('clients*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-user"></i>
-						<p>Clients</p>
+						<p>{{ __('Clients') }}</p>
 					</a>
 				</li>
 				@endif
 
 				@if( hasPermission('posts', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.posts.index') }}" class="nav-link {{ (Request::is('admin/posts/*') || Request::is('admin/posts') ) ? 'active' : '' }}">
+					<a href="{{ route('admin.posts.index') }}" class="nav-link {{ (Request::is('posts/*') || Request::is('posts') ) ? 'active' : '' }}">
 						<i class="nav-icon fa fa-newspaper"></i>
-						<p>Posts</p>
+						<p>{{ __('Posts') }}</p>
 					</a>
 				</li>
 				@endif
 
 				@if( hasPermission('jobs', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.jobs.index') }}" class="nav-link {{ (Request::is('admin/jobs*') || Request::is('admin/applications*')) ? 'active' : '' }}">
+					<a href="{{ route('admin.jobs.index') }}" class="nav-link {{ (Request::is('jobs*') || Request::is('applications*')) ? 'active' : '' }}">
 						<i class="nav-icon fa fa-tasks"></i>
 						<p>{{ __("Jobs") }}</p>
 					</a>
@@ -61,7 +61,7 @@
 
 				@if( hasPermission('documents', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.documents.index') }}" class="nav-link {{ (Request()->is('admin/documents*') || Request()->is('admin/document-categories*')) ? 'active' : '' }}">
+					<a href="{{ route('admin.documents.index') }}" class="nav-link {{ (Request()->is('documents*') || Request()->is('document-categories*')) ? 'active' : '' }}">
 						<i class="nav-icon fa fa-file"></i>
 						<p>{{ config('app.name') }} Library</p>
 					</a>
@@ -70,7 +70,7 @@
 
 				@if( hasPermission('pages', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('admin/cms-pages*') ? 'active' : '' }}">
+					<a href="{{ route('admin.pages.index') }}" class="nav-link {{ Request()->is('cms-pages*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-pager"></i>
 						<p> {{ __("CMS Pages") }} </p>
 					</a>
@@ -79,7 +79,7 @@
 
 				@if( hasPermission('newsletters', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ (Request::is('admin/newsletters*') || Request::is('admin/subscribers*')) ? 'active' : '' }}">
+					<a href="{{ route('admin.newsletters.index') }}" class="nav-link {{ (Request::is('newsletters*') || Request::is('subscribers*')) ? 'active' : '' }}">
 						<i class="nav-icon fa fa-envelope-open"></i>
 						<p> {{ __("Newsletters") }} </p>
 					</a>
@@ -88,10 +88,10 @@
 
 				@if( hasPermission('faqs', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.faqs.index') }}" class="nav-link {{ (Request()->is('admin/faqs*') || Request()->is('admin/faq-categories*')) ? 'active' : '' }}">
+					<a href="{{ route('admin.faqs.index') }}" class="nav-link {{ (Request()->is('faqs*') || Request()->is('faq-categories*')) ? 'active' : '' }}">
 						<i class="nav-icon fa fa-question-circle"></i>
 						<p>
-							FAQs
+							{{ __('FAQs') }}
 						</p>
 					</a>
 				</li>
@@ -99,7 +99,7 @@
 
 				@if( hasPermission('media_library', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.media-library.index') }}" class="nav-link {{ Request()->is('admin/media-library*') ? 'active' : '' }}">
+					<a href="{{ route('admin.media-library.index') }}" class="nav-link {{ Request()->is('media-library*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-photo-video"></i>
 						<p>
 							{{ __("Media Library") }}
@@ -110,7 +110,7 @@
 
 				@if( hasPermission('slider_images', 'list') )
 				<li class="nav-item">
-					<a href="{{ route('admin.slider-images.index') }}" class="nav-link {{ (Request()->is('admin/slider-images*') || Request()->is('admin/slider-settings*'))? 'active' : '' }}">
+					<a href="{{ route('admin.slider-images.index') }}" class="nav-link {{ (Request()->is('slider-images*') || Request()->is('slider-settings*'))? 'active' : '' }}">
 						<i class="nav-icon fa fa-images"></i>
 						<p>
 							{{ __("Slider Images") }}
@@ -121,7 +121,7 @@
 
 				@if(hasPermission('our_teams', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.managers.index') }}" class="nav-link {{ (Request()->is('admin/managers*') || Request()->is('admin/team-members*'))? 'active' : '' }}">
+					<a href="{{ route('admin.managers.index') }}" class="nav-link {{ (Request()->is('managers*') || Request()->is('team-members*'))? 'active' : '' }}">
 						<i class="nav-icon fa fa-user-friends"></i>
 						<p>
 							{{ __("Our Teams") }}
@@ -132,7 +132,7 @@
 
 				@if(hasPermission('trainings', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.trainings.index') }}" class="nav-link {{ Request()->is('admin/trainings*') ? 'active' : '' }}">
+					<a href="{{ route('admin.trainings.index') }}" class="nav-link {{ Request()->is('trainings*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-graduation-cap"></i>
 						<p>
 							{{ __("Trainings") }}
@@ -143,7 +143,7 @@
 
 				@if(hasPermission('broken_links', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.broken-links.index') }}" class="nav-link {{ Request()->is('admin/broken-links*') ? 'active' : '' }}">
+					<a href="{{ route('admin.broken-links.index') }}" class="nav-link {{ Request()->is('broken-links*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-unlink"></i>
 						<p>
 							{{ __("Broken Links") }}
@@ -154,7 +154,7 @@
 
 				@if (hasPermission('contact_page_queries', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('admin/contact-page-queries*') ? 'active' : '' }}">
+					<a href="{{ route('admin.contact-page-queries.index') }}" class="nav-link {{ Request()->is('contact-page-queries*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-question-circle"></i>
 						<p>
 							{{ __("Contact Page Queries") }}
@@ -165,10 +165,10 @@
 
 				@if (hasPermission('knowledge_base', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.knowledge-base.index') }}" class="nav-link {{ Request()->is('admin/knowledge-base*') ? 'active' : '' }}">
+					<a href="{{ route('admin.knowledge-base.index') }}" class="nav-link {{ Request()->is('knowledge-base*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-database"></i>
 						<p>
-							Chatbot Knowledge Base
+							{{ __('Chatbot Knowledge Base') }}
 						</p>
 					</a>
 				</li>
@@ -176,7 +176,7 @@
 
 				@if(hasPermission('chatbot_feedback', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.chatbot-feedbacks.index') }}" class="nav-link {{ Request()->is('admin/chatbot-feedbacks*') ? 'active' : '' }}">
+					<a href="{{ route('admin.chatbot-feedbacks.index') }}" class="nav-link {{ Request()->is('chatbot-feedbacks*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-star"></i>
 						<p>
 							{{ __("Chatbot Feedback") }}
@@ -187,10 +187,10 @@
 
 				@if(hasPermission('search_statistics', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.search-statistics.index') }}" class="nav-link {{ Request()->is('admin/search-statistics*') ? 'active' : '' }}">
+					<a href="{{ route('admin.search-statistics.index') }}" class="nav-link {{ Request()->is('search-statistics*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-chart-line"></i>
 						<p>
-							Search Statistics
+							{{ __('Search Statistics') }}
 						</p>
 					</a>
 				</li>
@@ -198,43 +198,43 @@
 
 				@if(hasPermission('static_block', 'list'))
 				<li class="nav-item">
-					<a href="{{ route('admin.static-block.index') }}" class="nav-link {{ Request()->is('admin/static-block*') ? 'active' : '' }}">
+					<a href="{{ route('admin.static-block.index') }}" class="nav-link {{ Request()->is('static-block*') ? 'active' : '' }}">
 						<i class="nav-icon fa fa-info-circle"></i>
 						<p>
-							Static Block
+							{{ __('Static Block') }}
 						</p>
 					</a>
 				</li>
 				@endif
 
 				@if(hasPermission('roles_and_permissions', 'list') || hasPermission('menus', 'list') || hasPermission('settings', 'list') || hasPermission('users', 'list'))
-				<li class="nav-item {{ (request()->is('admin/roles*') || request()->is('admin/permissions*') || request()->is('admin/menus*') || request()->is('admin/site-configuration*') || request()->is('admin/users*')) ? 'menu-is-opening menu-open' : '' }}">
+				<li class="nav-item {{ (request()->is('roles*') || request()->is('permissions*') || request()->is('menus*') || request()->is('site-configuration*') || request()->is('users*')) ? 'menu-is-opening menu-open' : '' }}">
 					<a href="#" class="nav-link">
 						<i class="nav-icon fas fa-cogs"></i>
-						<p>Settings <i class="fas fa-angle-left right"></i></p>
+						<p>{{ __('Settings') }} <i class="fas fa-angle-left right"></i></p>
 					</a>
 
 					<ul class="nav nav-treeview">
 						@if( hasPermission('users', 'list') )
 						<li class="nav-item">
-							<a href="{{ route('admin.users.index') }}" class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}">
+							<a href="{{ route('admin.users.index') }}" class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
 								<i class="nav-icon fa fa-users"></i>
-								<p>Users</p>
+								<p>{{ __('Users') }}</p>
 							</a>
 						</li>
 						@endif
 						@if( hasPermission('roles_and_permissions', 'list'))
 						<li class="nav-item">
-							<a href="{{ route('admin.roles.index') }}" class="nav-link {{ (Request()->is('admin/roles*') || Request()->is('admin/permissions*')) ? 'active' : '' }}">
+							<a href="{{ route('admin.roles.index') }}" class="nav-link {{ (Request()->is('roles*') || Request()->is('permissions*')) ? 'active' : '' }}">
 								<i class="fa fa-user-tag nav-icon"></i>
-								<p>Roles & Permissions</p>
+								<p>{{ __('Roles & Permissions') }}</p>
 							</a>
 						</li>
 						@endif
 
 						<!-- @if( hasPermission('permissions', 'view') )
 							<li class="nav-item">
-								<a href="{{ route('admin.permissions.index') }}" class="nav-link {{ Request()->is('admin/permissions*') ? 'active' : '' }}">
+								<a href="{{ route('admin.permissions.index') }}" class="nav-link {{ Request()->is('permissions*') ? 'active' : '' }}">
 									<i class="fa fa-lock nav-icon"></i>
 									<p>Permissions</p>
 								</a>
@@ -243,18 +243,18 @@
 
 						@if( hasPermission('menus', 'list') )
 						<li class="nav-item">
-							<a href="{{ route('admin.menus.index') }}" class="nav-link {{ Request()->is('admin/menus*') ? 'active' : '' }}">
+							<a href="{{ route('admin.menus.index') }}" class="nav-link {{ Request()->is('menus*') ? 'active' : '' }}">
 								<i class="fa fa-compass nav-icon"></i>
-								<p>Menus</p>
+								<p>{{ __('Menus') }}</p>
 							</a>
 						</li>
 						@endif
 
 						@if( hasPermission('settings', 'list') )
 						<li class="nav-item">
-							<a href="{{ route('admin.site-configuration.index') }}" class="nav-link {{ Request()->is('admin/site-configuration*') ? 'active' : '' }}">
+							<a href="{{ route('admin.site-configuration.index') }}" class="nav-link {{ Request()->is('site-configuration*') ? 'active' : '' }}">
 								<i class="fa fa-cog nav-icon"></i>
-								<p>Site Configuration</p>
+								<p>{{ __('Site Configuration') }}</p>
 							</a>
 						</li>
 						@endif
