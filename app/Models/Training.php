@@ -25,27 +25,27 @@ class Training extends Model
      *                 Model Mutator Functions
      * ======================================================
      */
-    
+
     /**
      * setStartDateAttribute
      *
      * @param  mixed $value
      * @return mixed
      */
-    public function setStartDateAttribute($value)
+    public function setStartDatetimeAttribute($value)
     {
-        $this->attributes['start_date'] = parseDate($value);
+        $this->attributes['start_datetime'] = parseDate($value);
     }
-    
+
     /**
      * setEndDateAttribute
      *
      * @param  string $value
      * @return mixed
      */
-    public function setEndDateAttribute($value)
+    public function setEndDatetimeAttribute($value)
     {
-        $this->attributes['end_date'] = parseDate($value);
+        $this->attributes['end_datetime'] = parseDate($value);
     }
 
     /**
@@ -64,7 +64,7 @@ class Training extends Model
     {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
     }
-    
+
     /**
      * getAttachmentAttribute
      *
@@ -75,7 +75,7 @@ class Training extends Model
     {
         return $value ? explode(",", $value) : [];
     }
-    
+
     /**
      * getAttachmentLinkAttribute
      *
@@ -91,25 +91,25 @@ class Training extends Model
         }
         return $links;
     }
-    
+
     /**
      * getStartDateAttribute
      *
      * @param  string $value
      * @return string
      */
-    public function getStartDateAttribute($value)
+    public function getStartDatetimeAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
     }
-    
+
     /**
      * getEndDateAttribute
      *
      * @param  string $value
      * @return string
      */
-    public function getEndDateAttribute($value)
+    public function getEndDatetimeAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
     }
@@ -120,7 +120,7 @@ class Training extends Model
      *               Model Scope Query Functions
      * ======================================================
      */
-    
+
     /**
      * scopeApplyFilters
      *
@@ -146,6 +146,18 @@ class Training extends Model
         return $query;
     }
 
+    /**
+     * scopeScheduledRecords
+     *
+     * @param  mixed $query
+     * @return void
+     */
+    public function scopeScheduledRecords($query)
+    {
+        return $query
+            ->where('start_datetime', '!=', null)
+            ->where('end_datetime', '!=', null);
+    }
 
     /**
      * ======================================================
@@ -160,9 +172,9 @@ class Training extends Model
      */
     public function status()
     {
-        return ucfirst($this->status);
+        return $this->status == '1' ? __('Open') : __('Closed');
     }
-    
+
     /**
      * removeAttachments
      *

@@ -24,29 +24,29 @@ class Page extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-        
+
     /**
      * getActiveAttribute
      *
      * @param  mixed $attribute
      * @return mixed
      */
-    public function getActiveAttribute ($attribute) 
+    public function getActiveAttribute ($attribute)
     {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
     }
-    
+
     /**
      * getStartDatetimeAttribute
      *
      * @param  mixed $attribute
      * @return void
      */
-    public function getStartDatetimeAttribute($attribute) 
+    public function getStartDatetimeAttribute($attribute)
     {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-    
+
     /**
      * getEndDatetimeAttribute
      *
@@ -57,7 +57,7 @@ class Page extends Model
     {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -68,25 +68,25 @@ class Page extends Model
     {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-    
+
     /**
      * getImageAttribute
      *
      * @param  mixed $value
      * @return void
      */
-    public function getImageAttribute ($value) 
+    public function getImageAttribute ($value)
     {
         return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
     }
-    
+
     /**
      * getLinkAttribute
      *
      * @param  mixed $value
      * @return void
      */
-    public function getLinkAttribute ($value) 
+    public function getLinkAttribute ($value)
     {
         return !empty($this->slug) ? config('settings.client_app_base_url') . $this->slug : null;
     }
@@ -96,7 +96,7 @@ class Page extends Model
      *                 Model Mutator Functions
      * ======================================================
      */
-    
+
     /**
      * setKeywordsAttribute
      *
@@ -107,7 +107,7 @@ class Page extends Model
     {
         $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;
     }
-    
+
     /**
      * setSlugAttribute
      *
@@ -124,14 +124,14 @@ class Page extends Model
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopePublished
      *
      * @param  mixed $query
      * @return void
      */
-    public function scopePublished($query) 
+    public function scopePublished($query)
     {
         return $query->where('published_at', '!=', null)->select('title', 'slug', 'keywords', 'description', 'image');
     }
@@ -146,7 +146,7 @@ class Page extends Model
     {
         return $query->where('start_datetime', '!=', NULL);
     }
-    
+
     /**
      * scopeTodaysPublishedRecords
      *
@@ -163,13 +163,13 @@ class Page extends Model
      *                 Model Helper Functions
      * ======================================================
      */
-    
+
     /**
      * isPublished
      *
      * @return void
      */
-    public function isPublished() 
+    public function isPublished()
     {
         return $this->published_at !== null;
     }
@@ -192,26 +192,26 @@ class Page extends Model
      *
      * @return void
      */
-    public function parseStartDate() 
+    public function parseStartDate()
     {
         if ($this->start_datetime) {
             return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
         }
         return "";
     }
-    
+
     /**
      * parseEndDate
      *
      * @return void
      */
-    public function parseEndDate() 
+    public function parseEndDate()
     {
         if ($this->end_datetime) {
             return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));
         }
         return "";
-    }    
+    }
 
     /**
      * ======================================================
