@@ -198,7 +198,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Date: </label>
-                                <span>{{ $client->dec_date }}</span>
+                                <span>{{ \Carbon\Carbon::parse($client->dec_date)->format('m-d-Y') }}</span>
                             </div>
                         </div>
                     </div>
