@@ -480,10 +480,8 @@ class ClientRegistrationController extends BaseApiController
             $validator = Validator::make($request->all(), [
                 'dec_name'      => 'required|string',
                 'dec_date'      => 'required',
-                'dec_signature' => 'required|file|mimes:png,jpg|max:' . config('settings.maxImageSize')
-            ], [
-                'dec_signature.max' => __('messages.max_file', ['limit' => '2 MB']),
-            ], [
+                'dec_signature' => 'required|string'
+            ], [], [
                 'dec_signature' => 'Declaration signature'
             ]);
 
