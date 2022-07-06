@@ -17,11 +17,11 @@
 					@foreach($categories as $category)
 						@if(old('category_id') == $category->id)
 							<option value="{{ $category->id }}" selected>
-                                {{ truncateWords($category->name, 35) }}
+                                {{ $category->name }}
                             </option>
                             @include('admin.includes.subcategory', ['subcategories' => $category->children, 'separator' => '--'])
 						@else
-							<option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ truncateWords($category->name, 50) }}</option>
+							<option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
 
                             @include('admin.includes.subcategory', ['subcategories' => $category->children, 'separator' => '--'])
 						@endif
