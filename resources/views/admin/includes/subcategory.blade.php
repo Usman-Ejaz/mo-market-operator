@@ -1,5 +1,5 @@
 @foreach ($subcategories as $sub)
-    <option value="{{ $sub->id }}" {{ ($sub->id === $document->category_id) ? 'selected' : '' }}> {{ $separator }} {{ truncateWords($sub->name, 35) }}</option>
+    <option value="{{ $sub->id }}" {{ ($sub->id === $document->category_id) ? 'selected' : '' }}> {{ $separator }} {{ $sub->name }}</option>
 
     @if (count($sub->children) > 0)
         @php
