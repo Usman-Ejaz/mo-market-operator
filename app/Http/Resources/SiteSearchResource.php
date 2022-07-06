@@ -16,7 +16,7 @@ class SiteSearchResource extends JsonResource
     public function toArray($request)
     {
         $linkPrefix = $this->getLinkProfixForModule($this);
-        
+
         return [
             'title' => $this->title ?: $this->question,
             'slug' => $this->slug ? ($linkPrefix . $this->slug) : null,
@@ -34,6 +34,10 @@ class SiteSearchResource extends JsonResource
 
         if ($linkPrefix === "posts") {
             $linkPrefix = Str::plural(strtolower($this->post_category));
+        }
+
+        if ($linkPrefix === "pages") {
+            return "/";
         }
 
         return '/' . $linkPrefix . '/';
