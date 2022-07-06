@@ -50,7 +50,7 @@ class TrainingsApiController extends BaseApiController
                 $status = 0;
             }
 
-            $trainings = Training::where('status', '=', $status)->select('title', 'slug', 'short_description', 'topics', 'location', 'target_audience')->applyFilters()->get();
+            $trainings = Training::where('status', '=', $status)->applyFilters()->select('title', 'slug', 'short_description', 'topics', 'location', 'target_audience')->get();
 
             if ($trainings->count() > 0) {
                 return $this->sendResponse($trainings, __('messages.success'));
