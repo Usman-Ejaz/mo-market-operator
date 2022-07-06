@@ -104,6 +104,24 @@
             </table>
         @endif
 
+        <h4 style="margin-top: 30px;">Declaration of Conformity</h4>
+        <table style="width: 100%; margin-top: 10px;">
+            <tr>
+                <td colspan="2"><strong>Name: </strong> {{ $client->dec_name }} </td>
+                <td colspan="2"><strong>Date: </strong> {{ \Carbon\Carbon::parse($client->dec_date)->format('m-d-Y') }} </td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>Signature: </strong></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <img src="{{ $client->dec_signature }}" width="100px;" height="200px;">
+                </td>
+                <td colspan="2"></td>
+            </tr>
+        </table>
+
         @if ($files_count > 0)
             <h3 style="margin-top: 30px;"></h3>
             <br />
