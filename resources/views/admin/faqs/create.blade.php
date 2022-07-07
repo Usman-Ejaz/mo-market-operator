@@ -62,7 +62,7 @@
 				question: {
 					required: true,
 					minlength: 3,
-					maxlength: 255,
+					maxlength: 150,
 					notNumericValues: true,
                     prevent_special_characters: true
 				},
@@ -84,7 +84,7 @@
 				question: {
 					required: "{{ __('messages.required') }}",
 					minlength: "{{ __('messages.min_characters', ['field' => 'Question', 'limit' => 3]) }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Question', 'limit' => 255]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Question', 'limit' => 150]) }}"
 				},
 				category_id: {
 					required: "{{ __('messages.required') }}",

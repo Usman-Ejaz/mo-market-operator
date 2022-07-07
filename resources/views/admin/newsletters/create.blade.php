@@ -51,7 +51,7 @@
 				subject: {
 					required: true,
 					minlength: 3,
-                    maxlength: 255,
+                    maxlength: 150,
 					notNumericValues: true,
                     prevent_special_characters: true
 				},
@@ -64,7 +64,7 @@
 				subject: {
 					required: '{{ __("messages.required") }}',
 					minlength: '{{ __("messages.min_characters", ["field" => "Subject", "limit" => 3]) }}',
-					maxlength: '{{ __("messages.max_characters", ["field" => "Subject", "limit" => 255]) }}'
+					maxlength: '{{ __("messages.max_characters", ["field" => "Subject", "limit" => 150]) }}'
 				}
 			},
 			errorPlacement: function(error, element) {
