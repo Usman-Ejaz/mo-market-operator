@@ -62,7 +62,7 @@
 				},
 				email: {
 					required: true,
-					validEmailAddress: true,
+					// validEmailAddress: true,
 					notNumericValues: true,
 				},
 				role_id: {
