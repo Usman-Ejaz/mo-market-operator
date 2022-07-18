@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CareersApiController extends BaseApiController
 {
@@ -204,16 +205,17 @@ class CareersApiController extends BaseApiController
      *  )
      */
     public function submitApplication (Request $request) {
-        $validator = Validator::make($request->all(), $this->getRules(), $this->getMessages());
-
-        if ($validator->fails()) {
-            return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
-        }
 
         try {
             $job = Job::published()->where("slug", "=", $request->job_slug)->select("id")->first();
 
             if ($job) {
+                $validator = Validator::make($request->all(), $this->getRules($job), $this->getMessages());
+
+                if ($validator->fails()) {
+                    return $this->sendResponse($validator->errors(), __('messages.error'), HTTP_BAD_REQUEST);
+                }
+
                 $data = $validator->validate();
                 unset($data['job_slug']);
                 $data['job_id'] = $job->id;
@@ -233,10 +235,12 @@ class CareersApiController extends BaseApiController
         }
     }
 
-    private function getRules() {
+    private function getRules($job) {
         return [
             'name'          => 'required|string|min:3|max:255',
-            'email'         => 'required|string|email|max:255|unique:applications,email',
+            'email'         => ['required', 'string', 'email', Rule::unique('applications')->where(function ($query) use ($job) {
+                return $query->where('job_id', $job->id);
+            })],
             'gender'        => 'required|string|min:3|max:15',
             'phone'         => 'required|string|min:3|max:50',
             'experience'    => 'required|string|min:3|max:255',
