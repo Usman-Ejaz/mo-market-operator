@@ -255,7 +255,7 @@ class CareersApiController extends BaseApiController
 
     private function getMessages() {
         return [
-            'email.unique' => 'This email has already applied for the job.',
+            'email.unique' => 'This email has already applied for this job.',
             'resume.max' => __('messages.max_file', ['limit' => '5 MB'])
         ];
     }

@@ -65,18 +65,15 @@ class NewPasswordController extends Controller
     }
 
     public function createPassword(Request $request, $user) {
-        if (! $request->hasValidSignature()) {
-            abort(401);
-        }
 
         $user = User::where(['email' => $user])->first();
 
-        if ($user && $user->password_link === null) {
-            abort(401);
+        if ($user && $user->password_link !== null) {
+            $signature = $request->signature;
+            return view("admin.auth.create-password", compact('user', 'signature'));
         }
 
-        $signature = $request->signature;
-        return view("admin.auth.create-password", compact('user', 'signature'));
+        abort(401, __('Password link has been expired.'));
     }
 
     public function createNewPassword(Request $request) {
