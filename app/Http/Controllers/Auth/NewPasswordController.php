@@ -88,7 +88,7 @@ class NewPasswordController extends Controller
         if ($user) {
 
             if ($user->password_link === null) {
-                abort(401);
+                abort(401, __('Password link has been expired.'));
             }
 
             if ($user->active == "Active") {
