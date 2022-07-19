@@ -64,6 +64,7 @@
 						<img src="{{ $post->image }}" target="_blank" class="img-thumbnail" style="height: 200px;">
 					</a>
 					<span class="btn-sm btn-danger float-right" id="deleteImage"><i class="fa fa-trash"></i></span>
+                    <span class="btn-sm btn-primary float-right mr-2" id="customizeImage" data-src="{{ $post->image }}"><i class="fas fa-file-image"></i></span>
 				</small>
 				@endif
 			</div>
