@@ -69,6 +69,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
     // Routes for Posts Module
     Route::get('posts/list', [PostController::class, 'list'])->name('posts.list');
     Route::post('posts/deleteImage', [PostController::class, 'deleteImage'])->name('posts.deleteImage');
+    Route::post('posts/uploadImage', [PostController::class, 'uploadImage'])->name('posts.uploadImage');
     Route::resource('posts', PostController::class);
 
     // Routes for Job Module
