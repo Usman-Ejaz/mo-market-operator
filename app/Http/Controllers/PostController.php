@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use Image;
 
 class PostController extends Controller
 {
@@ -241,5 +243,43 @@ class PostController extends Controller
             return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $date))));
         }
         return null;
+    }
+
+    public function uploadImage(Request $request)
+    {
+        abort_if(! hasPermission('posts', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+
+        $post = Post::where('id', $request->get('id'))->first();
+
+        if (!$post) {
+            // Show some error here
+            return;
+        }
+
+        $filename = basename($post->image);
+
+        if ($request->has('dataURL')) {
+
+            removeFile(Post::STORAGE_DIRECTORY, $filename);
+
+            $data = $request->get('dataURL');
+            list($type, $data) = explode(';', $data);
+            list(, $data) = explode(',', $data);
+            $data = base64_decode($data);
+            list(, $extension) = explode('/', $type);
+            $filename = md5(time()) . md5(time()) . '.' . $extension;
+            Storage::disk(config('settings.storage_disk'))->put(Post::STORAGE_DIRECTORY . $filename, $data);
+
+            if ($request->has('imageWidth') && $request->has('imageHeight')) {
+                $path = config('settings.storage_disk_base_path') . Post::STORAGE_DIRECTORY . $filename;
+                $width = $request->get('imageWidth');
+                $height = $request->get('imageHeight');
+                Image::make($path)->resize($width, $height)->save($path);
+            }
+        }
+
+        $post->update(['image' => $filename]);
+
+        return response(['message' => __('messages.record_updated', ['module' => 'Post image']), 'status' => 'success'], 200);
     }
 }

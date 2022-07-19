@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\MediaLibrary;
-use App\Models\MediaLibraryFile;
 use Carbon\Carbon;
-use Faker\Provider\Medical;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
-use OpenApi\Attributes\MediaType;
 use Image;
 
 class MediaLibraryController extends Controller
