@@ -69,27 +69,27 @@
         </table>
 
         @if ($secondaryDetails)
-            <h4 style="margin-top: 30px;">{{ ucfirst($primaryDetails->type) }} Details</h4>
+            <h4 style="margin-top: 30px;">{{ ucfirst($secondaryDetails->type) }} Details</h4>
             <table style="width: 100%; margin-top: 10px;">
                 <tr>
-                    <td colspan="2"><strong>Name: </strong> {{ $primaryDetails->name }} </td>
-                    <td colspan="2"><strong>Email: </strong> {{ $primaryDetails->email }} </td>
+                    <td colspan="2"><strong>Name: </strong> {{ $secondaryDetails->name }} </td>
+                    <td colspan="2"><strong>Email: </strong> {{ $secondaryDetails->email }} </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><strong>Address Line One: </strong> {{ $primaryDetails->address_line_one }} </td>
-                    <td colspan="2"><strong>Address Line Two: </strong> {{ $primaryDetails->address_line_two }} </td>
+                    <td colspan="2"><strong>Address Line One: </strong> {{ $secondaryDetails->address_line_one }} </td>
+                    <td colspan="2"><strong>Address Line Two: </strong> {{ $secondaryDetails->address_line_two }} </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><strong>City: </strong> {{ $primaryDetails->city }} </td>
-                    <td colspan="2"><strong>State: </strong> {{ $primaryDetails->state }} </td>
+                    <td colspan="2"><strong>City: </strong> {{ $secondaryDetails->city }} </td>
+                    <td colspan="2"><strong>State: </strong> {{ $secondaryDetails->state }} </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><strong>Zip Code: </strong> {{ $primaryDetails->zipcode }} </td>
+                    <td colspan="2"><strong>Zip Code: </strong> {{ $secondaryDetails->zipcode }} </td>
                     <td colspan="2"> </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><strong>Telephone: </strong> {{ $primaryDetails->telephone }} </td>
-                    <td colspan="2"><strong>Facsimile Telephone: </strong> {{ $primaryDetails->facsimile_telephone }} </td>
+                    <td colspan="2"><strong>Telephone: </strong> {{ $secondaryDetails->telephone }} </td>
+                    <td colspan="2"><strong>Facsimile Telephone: </strong> {{ $secondaryDetails->facsimile_telephone }} </td>
                 </tr>
                 <tr>
                     <td colspan="2"><strong>Signature: </strong></td>
@@ -97,7 +97,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <img src="{{ $primaryDetails->signature }}" width="100px;" height="200px;">
+                        <img src="{{ $secondaryDetails->signature }}" width="100px;" height="200px;">
                     </td>
                     <td colspan="2"></td>
                 </tr>

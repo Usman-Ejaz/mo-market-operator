@@ -210,7 +210,7 @@ class ClientRegistrationController extends BaseApiController
 
 
             'secondary_details.name' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
-            'secondary_details.email' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'email', 'unique:client_details,email,' . $client->id . ',client_id'],
+            'secondary_details.email' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'email'],
             'secondary_details.address_line_one' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
             'secondary_details.address_line_two' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
             'secondary_details.city' => [Rule::requiredIf($request->has('secondary_details')), 'string', 'min:3'],
@@ -330,7 +330,6 @@ class ClientRegistrationController extends BaseApiController
             }
 
             $clientDetails->update([
-                'client_id'             => $clientId,
                 'name'                  => $data['name'],
                 'email'                 => $data['email'],
                 'designation'           => $data['designation'],
@@ -715,10 +714,10 @@ class ClientRegistrationController extends BaseApiController
             ]);
 
             $filename = Str::random(16) . '.PDF';
+            $STORAGE_DIR = 'clients/forms/';
+            Storage::disk(config('settings.storage_disk'))->put($STORAGE_DIR . $filename, $pdf->output());
 
-            Storage::disk(config('settings.storage_disk'))->put('clients/forms/' . $filename, $pdf->output());
-
-            $link = serveFile('clients/forms/', $filename);
+            $link = serveFile($STORAGE_DIR, $filename);
 
             return $this->sendResponse($link, __('messages.success'));
         } catch (\Exception $ex) {

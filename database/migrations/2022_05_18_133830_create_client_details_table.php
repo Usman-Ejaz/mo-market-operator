@@ -17,11 +17,11 @@ class CreateClientDetailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('client_id');
             $table->string('name');
-            $table->string('email')->unique();            
+            $table->string('email')->unique();
             $table->string('type');
             $table->string('designation');
             $table->mediumText('address_line_one');
-            $table->mediumText('address_line_two');            
+            $table->mediumText('address_line_two');
             $table->string('city');
             $table->string('state');
             $table->string('zipcode');
