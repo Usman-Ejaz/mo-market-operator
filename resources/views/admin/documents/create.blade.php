@@ -62,6 +62,7 @@
 		</div>
 	</form>
 </div>
+@include('admin.includes.alert-popup')
 @endsection
 
 @push('optional-scripts')
@@ -180,7 +181,8 @@
                     ? `${pdfFiles.toString()} file is already in PDF.`
                     : `${pdfFiles.toString()} files are already in PDF.`;
 
-				alert(msg);
+                $('#msg_text').text(msg);
+                $('#alertModal').modal('toggle');
 				e.target.checked = false;
 			}
 
@@ -189,11 +191,14 @@
                     ? `${invalidFiles.toString()} document extension is not allowed for conversion.`
                     : `${invalidFiles.toString()} document extensions are not allowed for conversion.`;
 
-				alert(msg);
+                $('#msg_text').text(msg);
+                $('#alertModal').modal('toggle');
 				e.target.checked = false;
 			}
 		} else {
-			alert('Please select the document first.');
+            $('#msg_text').text('Please select the document first.');
+            $('#alertModal').modal('toggle');
+
 			e.target.checked = false;
 		}
 	}

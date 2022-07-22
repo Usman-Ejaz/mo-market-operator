@@ -106,7 +106,7 @@
 					dataType: 'JSON',
 					success: function(data) {
 						if (data.success) {
-							alert('Image Deleted Successfully');
+							toast.success('{{ __("messages.record_deleted", ["module" => "Image"]) }}');
 							$('.imageExists').remove();
 						}
 					}
