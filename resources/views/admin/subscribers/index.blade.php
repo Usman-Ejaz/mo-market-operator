@@ -40,6 +40,7 @@
 	</div>
 	<!-- /.row -->
 </div>
+@include('admin.includes.alert-popup')
 @endsection
 
 @push('optional-styles')
@@ -129,7 +130,8 @@
 					});
 				}
 			} else {
-				alert('Please select checkbox first');
+                $('#msg_text').text("Please select checkbox first");
+                $('#alertModal').modal('toggle');
 			}
 		});
 

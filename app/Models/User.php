@@ -66,7 +66,7 @@ class User extends Authenticatable
      *                 Model Accessor Functions
      * ======================================================
      */
-        
+
     /**
      * getActiveAttribute
      *
@@ -77,7 +77,7 @@ class User extends Authenticatable
     {
         return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
     }
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -95,7 +95,7 @@ class User extends Authenticatable
      * @param  mixed $value
      * @return mixed
      */
-    public function getImageAttribute($value) 
+    public function getImageAttribute($value)
     {
         return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
     }
@@ -124,7 +124,7 @@ class User extends Authenticatable
      *                 Model Helper Functions
      * ======================================================
      * */
-    
+
     /**
      * roles
      *
@@ -133,8 +133,8 @@ class User extends Authenticatable
     public function roles()
     {
         return Role::latest()->get();
-    }       
-    
+    }
+
     /**
      * activeOptions
      *
@@ -147,7 +147,7 @@ class User extends Authenticatable
             1 => 'Active'
         ];
     }
-    
+
     /**
      * removeImage
      *
@@ -158,13 +158,22 @@ class User extends Authenticatable
         removeFile(self::STORAGE_DIRECTORY, $this->image);
     }
 
+    public function readableNotifications()
+    {
+        if ($this->role->hasPermission('contact_page_queries', 'view')) {
+            return $this->unreadNotifications;
+        }
+
+        return collect([]);
+    }
+
 
     /**
      * ======================================================
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopeNotifiable
      *
@@ -175,7 +184,7 @@ class User extends Authenticatable
     {
         return $query->where('show_notifications', '=', 1);
     }
-    
+
     /**
      * scopeSkipOwnAccount
      *
