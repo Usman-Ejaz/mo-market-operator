@@ -97,6 +97,8 @@ class NewPasswordController extends Controller
                 $user->password_link = null;
                 $user->save();
 
+                auth()->check() && auth()->logout();
+
                 return redirect()->route("admin.login")->with('success', __('messages.record_created', ['module' => 'Password']));
             }
 

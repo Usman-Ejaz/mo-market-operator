@@ -15,7 +15,7 @@
 					<tr>
 						<th width="40%">Top Active Pages</th>
 						<th>Users</th>
-					</tr>	
+					</tr>
 				</thead>
 				<tbody>
 				</tbody>
@@ -67,6 +67,7 @@
 	</div>
 	<!-- /.row -->
 </div>
+@include('admin.includes.alert-popup')
 @endsection
 
 @push('optional-styles')
@@ -81,23 +82,26 @@
 	var table = null;
 
 	$(document).ready(() => {
-		
+
 		$(document).prop('title', "Search Statistics - {{ config('app.name') }}");
 		var startDate = "";
 		var endDate = "";
-		
+
 		var datePickerStartDate = "";
 		var datePickerEndDate = "";
-				
-		renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);	
-		
+
+		renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);
+
 		getAnalyticsData();
-		
+
 		// Handle date filters
 		$('body').on('click', '#seachByDate', (e) => {
 			if ($('#start_date_hidden').val().trim().length === 0 && $('#end_date_hidden').val().trim().length === 0) {
-				alert("Please select the date first");
-				e.preventDefault();
+
+                $('#msg_text').text("Please select the date first");
+                $('#alertModal').modal('toggle');
+
+                e.preventDefault();
 				return;
 			}
 			startDate = $('#start_date_hidden').val();
@@ -107,8 +111,11 @@
 			datePickerEndDate = $('#end_date').val();
 
 			if (datePickerStartDate === "" && datePickerEndDate !== "") {
-				alert("Please select the start date first");
-				e.preventDefault();
+
+                $('#msg_text').text("Please select the start date first");
+                $('#alertModal').modal('toggle');
+
+                e.preventDefault();
 				return;
 			}
 
@@ -132,11 +139,11 @@
 				renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate);
 			}
 		});
-			
+
 	});
 
 	function getAnalyticsData()
-	{		
+	{
 		$.ajax({
 			url: '{{ route("admin.search-statistics.analytics-data") }}',
 			method: 'GET',
@@ -182,7 +189,7 @@
 			columns: [{
 					data: 'DT_RowIndex',
 					name: 'DT_RowIndex',
-					orderable: false, 
+					orderable: false,
 				    searchable: false
 				},
 				{
@@ -200,7 +207,7 @@
 		$('#DataTables_Table_0_length').parent().append(`
 			<input name="start_date" id="start_date" class="form-control form-control-sm" readonly placeholder="Start Date" style="position:absolute; width: 35%; right: 100px;" value="${datePickerStartDate}"/>
 			<input type="hidden" id="start_date_hidden" value="${startDate}" />
-		`);	
+		`);
 
 		$('#DataTables_Table_0_filter').parent().css({display: 'flex', flexDirection: 'row-reverse'});
 		$('#DataTables_Table_0_filter').parent().append(`
@@ -210,7 +217,7 @@
 			${(datePickerStartDate !== "") ? `
 				<button class="btn btn-primary btn-sm" type="button" id="clearSearch" style="position:absolute; left: 205px;" >Clear</button>
 			` : ""}
-		`);	
+		`);
 
 		$('#start_date').datetimepicker({
 			format: '{{ config("settings.datetime_format") }}',
@@ -240,7 +247,7 @@
 					minDate: $('#start_date_hidden').val() ? $('#start_date_hidden').val() : false
 				})
 			}
-		});	
+		});
 	}
 
 	function mapDate(date) {

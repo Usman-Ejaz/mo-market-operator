@@ -218,7 +218,7 @@
                             {{ __("General Attachments") }}
                             <a style="font-size: 1rem;font-weight: 400;" href="{{ route('admin.clients.downloadBulkFiles', ['client' => $client->id, 'category' => 0]) }}">{{ __("Download All") }}</a>
                         </h5>
-						<ul>
+						<ol>
 							@foreach($client->generalAttachments() as $attachment)
 								<div class="row">
 									<div class="col-md-12">
@@ -231,14 +231,14 @@
 									</div>
 								</div>
 							@endforeach
-						</ul>
+						</ol>
 
 						@foreach($client->categoryAttachments() as $categoryId => $attachments)
 							<h5 class="mt-3 mb-2" style="font-weight: bold;">
                                 {{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$categoryId]) }}
                                 <a style="font-size: 1rem;font-weight: 400;" href="{{ route('admin.clients.downloadBulkFiles', ['client' => $client->id, 'category' => $categoryId]) }}">{{ __("Download All") }}</a>
                             </h5>
-							<ul>
+							<ol>
 								@foreach($attachments as $attachment)
 									<div class="row">
 										<div class="col-md-12">
@@ -251,7 +251,7 @@
 										</div>
 									</div>
 								@endforeach
-							</ul>
+							</ol>
 						@endforeach
 					@endif
 				</div>
