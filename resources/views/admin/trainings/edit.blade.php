@@ -74,6 +74,7 @@
 		</div>
 	</form>
 </div>
+@include('admin.includes.confirm-popup')
 @endsection
 
 @push('optional-styles')
@@ -179,11 +180,15 @@
 		$(".remove-file").on('click', function() {
 			let { file } = $(this).data();
 
-			if (confirm('Are you sure you want to this file?')) {
-				attachments.push(file);
+            $('#msg_heading').text('Delete record?');
+            $('#msg_body').text('Are you sure you want to delete this image?');
+            $('#confirmModal').modal('toggle');
+            $('body').on('click', '#confirm', (e) => {
+                attachments.push(file);
 				$(this).parent().remove();
 				$("#removeFile").val(`${attachments.toString()}`);
-			}
+                $('#confirmModal').modal('toggle');
+            });
 		});
 
 		$('#update-training-form').validate({

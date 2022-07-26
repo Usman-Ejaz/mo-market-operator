@@ -40,6 +40,7 @@
 	</div>
 	<!-- /.row -->
 </div>
+@include('admin.includes.confirm-popup')
 @include('admin.includes.alert-popup')
 @endsection
 
@@ -112,8 +113,11 @@
 				let ids = '';
 				markedCheckboxs.forEach(checkbox => { ids += checkbox.id.split('_')[1] + ','; });
 				ids = ids.slice(0, ids.length - 1);
-				if (confirm('Are you sure?')) {
-					$.ajax({
+                $('#msg_heading').text('Bulk Action');
+                $('#msg_body').text('Are you sure?');
+                $('#confirmModal').modal('toggle');
+                $('body').on('click', '#confirm', (evt) => {
+                    $.ajax({
 						url: "{{ route('admin.subscribers.bulkToggle') }}",
 						type: 'POST',
 						data: {
@@ -128,7 +132,7 @@
 							}
 						}
 					});
-				}
+                });
 			} else {
                 $('#msg_text').text("Please select checkbox first");
                 $('#alertModal').modal('toggle');
@@ -136,5 +140,29 @@
 		});
 
 	});
+
+    function handleSubscription(type, id, url)
+    {
+        $('#msg_heading').text('Confirm');
+        $('#msg_body').text(`Are you sure you want to ${type}?`);
+        $('#confirmModal').modal('toggle');
+
+        $('body').on('click', '#confirm', (evt) => {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    status: type === 'Subscribe' ? 1 : 0
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+    }
 </script>
 @endpush

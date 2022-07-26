@@ -33,6 +33,7 @@
 	</form>
 
 </div>
+@include('admin.includes.confirm-popup')
 @endsection
 
 @push('optional-scripts')
@@ -106,10 +107,14 @@
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$("#deleteImage").click(function() {
 
-			if (confirm('Are you sure you want to this image?')) {
-				$('#removeImage').val('1');
+            $('#msg_heading').text('Delete record?');
+            $('#msg_body').text('Are you sure you want to delete this image?');
+            $('#confirmModal').modal('toggle');
+            $('body').on('click', '#confirm', (e) => {
+                $('#removeImage').val('1');
 				$('.imageExists').remove();
-			}
+                $('#confirmModal').modal('toggle');
+            });
 		});
 
 		$(document).on('focusin', 'input[type="file"]', function(e){
