@@ -89,6 +89,7 @@
             <tr>
                 <td style="text-align: left; color: #f6f6f6; font-size: 14px; font-weight: 300; vertical-align: middle">© {{ date('Y') }} {{ config('app.name') }}</td>
                 <td style="text-align: right; color: #f6f6f6; vertical-align: middle">
+
                     <ul style="list-style: none; margin-top: 16px; margin-bottom: 16px; text-align: right;">
                         <li style="display: inline-block; margin-right: 20px">
                             <span style="width: 0.75px; height: 18px; display: inline-block; margin-right: 12px; vertical-align: middle; background-color: #f6f6f6"></span>
@@ -96,13 +97,13 @@
                         </li>
                         <li style="display: inline-block; margin-right: 20px">
                             <span style="width: 0.75px; height: 18px; display: inline-block; margin-right: 12px; vertical-align: middle; background-color: #f6f6f6"></span>
-                            <a style="color: #f6f6f6; text-decoration: none; font-size: 14px; font-weight: 300" href="{{ config('settings.client_app_base_url') }}about">{{ __("About") }}</a>
+                            <a style="color: #f6f6f6; text-decoration: none; font-size: 14px; font-weight: 300" href="{{ config('settings.client_app_base_url') }}who-we-are">{{ __("About") }}</a>
                         </li>
                         <li style="display: inline-block; margin-right: 20px">
                             <span style="width: 0.75px; height: 18px; display: inline-block; margin-right: 12px; vertical-align: middle; background-color: #f6f6f6"></span>
-                            <a style="color: #f6f6f6; text-decoration: none; font-size: 14px; font-weight: 300" href="{{ config('settings.client_app_base_url') }}about">{{ __("Contact") }}</a>
+                            <a style="color: #f6f6f6; text-decoration: none; font-size: 14px; font-weight: 300" href="{{ config('settings.client_app_base_url') }}contact-us">{{ __("Contact") }}</a>
                         </li>
-                        @yield('unsubscribe')                        
+                        @yield('unsubscribe')
                     </ul>
                 </td>
             </tr>

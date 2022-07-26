@@ -71,6 +71,8 @@
 		</div>
 	</form>
 </div>
+@include('admin.includes.alert-popup')
+@include('admin.includes.confirm-popup')
 @endsection
 
 @push('optional-scripts')
@@ -163,20 +165,26 @@
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$(".remove-file").on('click', function() {
 			let { path } = $(this).data();
-
-			if (confirm('Are you sure you want to delete this file?')) {
-				paths.push(path);
+            $('#msg_heading').text('Delete record?');
+            $('#msg_body').text('Are you sure you want to delete this file?');
+            $('#confirmModal').modal('toggle');
+            $('body').on('click', '#confirm', (e) => {
+                paths.push(path);
 				$(this).parent().parent().remove();
 				// $('.fileExists').remove();
 				$("#removeFile").val(`${paths.toString()}`);
-			}
+                $('#confirmModal').modal('toggle');
+            });
 		});
 
 		$('#deleteImage').on("click", function () {
-			if (confirm('Are you sure you want to delete this image?')) {
-				$(this).parent().remove();
-				// $("#removeFile").val(`${paths.toString()}`);
-			}
+            $('#msg_heading').text('Delete record?');
+            $('#msg_body').text('Are you sure you want to delete this image?');
+            $('#confirmModal').modal('toggle');
+            $('body').on('click', '#confirm', (e) => {
+                $(this).parent().remove();
+                $('#confirmModal').modal('toggle');
+            });
 		});
 
 		$('.bootstrap-tagsinput > input').on('blur keypress', function (e) {
@@ -224,7 +232,9 @@
                     ? `${pdfFiles.toString()} file is already in PDF.`
                     : `${pdfFiles.toString()} files are already in PDF.`;
 
-				alert(msg);
+                $('#msg_text').text(msg);
+                $('#alertModal').modal('toggle');
+
 				e.target.checked = false;
 			}
 
@@ -233,11 +243,14 @@
                     ? `${invalidFiles.toString()} document extension is not allowed for conversion.`
                     : `${invalidFiles.toString()} document extensions are not allowed for conversion.`;
 
-				alert(msg);
+                $('#msg_text').text(msg);
+                $('#alertModal').modal('toggle');
 				e.target.checked = false;
 			}
 		} else {
-			alert('Please select the document first.');
+            $('#msg_text').text('Please select the document first.');
+            $('#alertModal').modal('toggle');
+
 			e.target.checked = false;
 		}
 

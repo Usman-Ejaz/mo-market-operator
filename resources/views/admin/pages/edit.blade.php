@@ -99,6 +99,7 @@
 		</div>
 	</form>
 </div>
+@include('admin.includes.confirm-popup')
 @endsection
 
 @push('optional-styles')
@@ -318,8 +319,11 @@
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$("#deleteImage").click(function() {
 
-			if (confirm('Are you sure you want to this image?')) {
-				$.ajax({
+            $('#msg_heading').text('Delete record?');
+            $('#msg_body').text('Are you sure you want to delete this image?');
+            $('#confirmModal').modal('toggle');
+            $('body').on('click', '#confirm', (e) => {
+                $.ajax({
 					url: "{{ route('admin.pages.deleteImage') }}",
 					type: 'POST',
 					data: {
@@ -329,12 +333,13 @@
 					dataType: 'JSON',
 					success: function(data) {
 						if (data.success) {
-							alert('Image Deleted Successfully');
+                            $('#confirmModal').modal('toggle');
+							toastr.success('{{ __("messages.record_deleted", ["module" => "Image"]) }}');
 							$('.imageExists').remove();
 						}
 					}
 				});
-			}
+            });
 		});
 
 		// handle social share button clicks

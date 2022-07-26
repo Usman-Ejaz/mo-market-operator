@@ -30,6 +30,7 @@
 	</form>
 
 </div>
+@include('admin.includes.confirm-popup')
 @endsection
 
 @push('optional-scripts')
@@ -97,8 +98,11 @@
 
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 		$("#deleteImage").click(function() {
-			if (confirm('Are you sure you want to this image?')) {
-				$.ajax({
+            $('#msg_heading').text('Delete record?');
+            $('#msg_body').text('Are you sure you want to delete this image?');
+            $('#confirmModal').modal('toggle');
+            $('body').on('click', '#confirm', (e) => {
+                $.ajax({
 					url: "{{ route('admin.managers.deleteImage') }}",
 					type: 'POST',
 					data: {
@@ -108,12 +112,13 @@
 					dataType: 'JSON',
 					success: function(data) {
 						if (data.success) {
+                            $('#confirmModal').modal('toggle');
 							toastr.success(data.message);
 							$('.imageExists').remove();
 						}
 					}
 				});
-			}
+            });
 		});
 
 		$(document).on('focusin', 'input[type="file"]', function(e){

@@ -50,14 +50,9 @@ class SubscriberController extends Controller
                     $options = '';
                     if (hasPermission('subscribers', 'subscribe')) {
                         $class = $row->status == 'Subscribed' ? 'danger' : 'success';
-                        $options .= '<form action="'. route('admin.subscribers.toggleSubscription', ['subscriber' => $row->id]) .'" method="POST" style="display: inline-block;">
-                                '.csrf_field().'
-                                <input type="hidden" name="status" value="' . ($row->status == 'Subscribed' ? 0 : 1) . '">
-                                <button type="submit" class="btn btn-'.$class.'"
-                                    onclick="return confirm(\'Are you sure you want to '.  ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'?\')" title="'. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to Newsletter">
-                                        '. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'
-                                </button>
-                            </form>';
+                        $options .= '<button type="button" class="btn btn-'.$class.'" onclick="handleSubscription(\''.  ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'\', '. $row->id .', \''. route('admin.subscribers.toggleSubscription', ['subscriber' => $row->id]) .'\')" title="'. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .' to Newsletter">
+                                            '. ($row->status == 'Subscribed' ? 'Unsubscribe' : 'Subscribe') .'
+                                    </button>';
                     }
                     return $options;
                 })
@@ -67,16 +62,16 @@ class SubscriberController extends Controller
     }
 
     public function toggleSubscription(Request $request, Subscriber $subscriber)
-    {       
+    {
         abort_if(!hasPermission("subscribers", "subscribe"), 401, __('messages.unauthorized_action'));
 
         $status = intval($request->get("status"));
 
         $subscriber->update(['status' => $status]);
-        
+
         $message = $status == 1 ? "subscribed" : "unsubscribed";
 
-        return redirect()->route('admin.subscribers.index')->with('success', __('messages.subscriber', ['status' => $message]));
+        return response()->json(['success' => __('messages.subscriber', ['status' => $message])]);
     }
 
     public function bulkToggle(Request $request)
@@ -87,7 +82,7 @@ class SubscriberController extends Controller
             return response(['message' => 'Baq Request'], 400);
         }
         $idsList = explode(',', $request->bulkIds);
-        
+
         $status = $request->subscribe == "true" ? 1 : 0;
         $subscribers = Subscriber::find($idsList);
 
