@@ -66,7 +66,7 @@
 		</div>
 		<div class="col-md-6">
 			<div class="form-group">
-				<label>Status <span class="text-danger">*</span></label>
+				<label>Status <span class="text-danger">*</span> <small style="visibility: hidden;">(Allowed max size is 2MB. Allowed types are {{ str_replace("|", ", ", config('settings.image_file_extensions')) }}. Recommended Image dimensions are 250 X 250)</small></label>
 				<select class="custom-select" name="active" id="active">
 					<option value="">Please select a status</option>
 					@if(Request::route()->getName() == "admin.users.create")
