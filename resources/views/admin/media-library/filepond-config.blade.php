@@ -180,7 +180,7 @@
         const pond = FilePond.create(inputElement, {
             acceptedFileTypes: ['image/*'],
             maxFileSize: '2MB',
-            maxFiles: 10,
+            maxFiles: 20,
             maxParallelUploads: 5,
             credits: false,
             allowMultiple: true,
