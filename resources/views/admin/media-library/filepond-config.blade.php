@@ -185,7 +185,7 @@
             credits: false,
             allowMultiple: true,
             required: true,
-            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action"> Browse </span><br /><small style="font-size: 12px;">Maximum 10 files are allowed to upload at a time. Recommended Image dimensions are 1000 X 666</small>',
+            labelIdle: 'Drag & Drop your files or <span class="filepond--label-action"> Browse </span><br /><small style="font-size: 12px;">Maximum 20 files are allowed to upload at a time. Recommended Image dimensions are 1000 X 666</small>',
             labelTapToUndo: '',
             labelTapToCancel: '',
             labelTapToRetry: '',
