@@ -59,17 +59,17 @@
                     <ul class="social-icons" style="padding: 0; list-style: none; text-align: center; display: inline-block; margin: auto; align-items: center; justify-content: center; width: 100%; margin-bottom: 20px;">
                         <li style="margin-right: 10px !important; display: inline-block">
                             <a href="#" style="text-decoration: none; width: 46px; height: 46px; background-color: #ffffff; display: inline-block">
-                                <img style="margin-top: 10px" src="{{ asset('images/email/bx_bxl-facebook') }}.png" />
+                                <img style="margin-top: 10px" src="{{ asset('images/email/bx_bxl-facebook.png') }}" />
                             </a>
                         </li>
                         <li style="margin-right: 10px !important; display: inline-block">
-                            <a href="#" style="text-decoration: none; width: 46px; height: 46px; background-color: #ffffff; display: inline-block">
+                            <a href="https://www.linkedin.com/company/cppag/mycompany/" target="_blank" style="text-decoration: none; width: 46px; height: 46px; background-color: #ffffff; display: inline-block">
                                 <img style="margin-top: 10px" src="{{ asset('images/email/brandico_linkedin.png') }}" />
                             </a>
                         </li>
                         <li style="margin-right: 10px !important; display: inline-block">
-                            <a href="#" style="text-decoration: none; width: 46px; height: 46px; background-color: #ffffff; display: inline-block">
-                                <img style="margin-top: 14px" src="{{ asset('images/email/bx_bxl-youtube') }}.png" />
+                            <a href="https://youtube.com/c/CentralPowerPurchasingAgencyCPPA" target="_blank" style="text-decoration: none; width: 46px; height: 46px; background-color: #ffffff; display: inline-block">
+                                <img style="margin-top: 14px" src="{{ asset('images/email/bx_bxl-youtube.png') }}" />
                             </a>
                         </li>
                         <li style="display: inline-block">
