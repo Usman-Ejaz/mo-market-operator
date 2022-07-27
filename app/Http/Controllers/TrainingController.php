@@ -107,6 +107,8 @@ class TrainingController extends Controller
         $data['attachment'] = $this->handleFileUpload($training, $request);
         unset($data['attachments']);
 
+        $data['slug'] = str_slug($data['title']);
+
         $training->update($data);
 
         $request->session()->flash('success', __('messages.record_updated', ['module' => 'Training']));
@@ -194,7 +196,7 @@ class TrainingController extends Controller
             'status' => 'required|string',
             'start_datetime' => 'required',
             'end_datetime' => 'required',
-            'attachments.*' => 'sometimes|file|mimes:doc,docx,pdf|max:' . config('settings.maxDocumentSize')
+            'attachments.*' => 'sometimes|file|mimes:doc,docx,pdf,ppt|max:' . (config('settings.maxDocumentSize') + 7000)
         ];
 
         return request()->validate($rules, [

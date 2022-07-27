@@ -97,13 +97,12 @@
 			format: '{{ config("settings.datetime_format") }}',
 			step: 5,
 			roundTime: 'ceil',
-			minDate: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(selectedDateTime, $input) {
 
-				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
+				// let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
-				if (selectedDateTime >= todaysDate) {
+				// if (selectedDateTime >= todaysDate) {
 					let currentDateTime = (new Date()).setSeconds(0, 0);
 					if (selectedDateTime >= currentDateTime) {
 						$('#start_date').val(mapDate(selectedDateTime));
@@ -123,11 +122,11 @@
 						$('#start_date').val("");
 						$input.parent().next().text("{{ __('messages.current_system_datetime') }}");
 					}
-				} else {
-					$input.val("");
-					$('#start_date').val("");
-					$input.parent().next().text("{{ __('messages.todays_date') }}");
-				}
+				// } else {
+				// 	$input.val("");
+				// 	$('#start_date').val("");
+				// 	$input.parent().next().text("{{ __('messages.todays_date') }}");
+				// }
 
                 $('#start_datetime').datetimepicker('hide');
 			},
@@ -142,13 +141,12 @@
 			format: '{{ config("settings.datetime_format") }}',
 			step: 5,
 			roundTime: 'ceil',
-			minDate: new Date(),
 			validateOnBlur: false,
 			onChangeDateTime: function(selectedDateTime, $input) {
 
-				let todaysDate = (new Date()).setHours(0, 0, 0, 0);
+				// let todaysDate = (new Date()).setHours(0, 0, 0, 0);
 
-				if (selectedDateTime >= todaysDate) {
+				// if (selectedDateTime >= todaysDate) {
 					$('#end_date').val(mapDate(selectedDateTime));
 
 					let startDate = new Date($("#start_date").val()).setSeconds(0, 0);
@@ -161,11 +159,11 @@
 					} else {
 						$input.parent().next().text("");
 					}
-				} else {
-					$input.val("");
-					$('#end_date').val("");
-					$input.parent().next().text("{{ __('messages.todays_date') }}");
-				}
+				// } else {
+				// 	$input.val("");
+				// 	$('#end_date').val("");
+				// 	$input.parent().next().text("{{ __('messages.todays_date') }}");
+				// }
 
                 $('#end_datetime').datetimepicker('hide');
 			},
@@ -207,14 +205,14 @@
 				topics: {
 					required: true,
 					minlength: 3,
-					maxlength: 64,
+					maxlength: 256,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
 				target_audience: {
 					required: true,
 					minlength: 3,
-					maxlength: 64,
+					maxlength: 256,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
@@ -257,12 +255,12 @@
                 topics: {
 					required: '{{ __("messages.required") }}',
 					minlength: "{{ __('messages.min_characters', ['field' => 'Topics', 'limit' => 3]) }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Topics', 'limit' => 64]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Topics', 'limit' => 256]) }}"
 				},
                 target_audience: {
 					required: '{{ __("messages.required") }}',
 					minlength: "{{ __('messages.min_characters', ['field' => 'Target audience', 'limit' => 3]) }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Target audience', 'limit' => 64]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Target audience', 'limit' => 256]) }}"
 				},
                 location: {
 					required: '{{ __("messages.required") }}',
