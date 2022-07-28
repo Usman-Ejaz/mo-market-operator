@@ -179,7 +179,7 @@
 			let { file } = $(this).data();
 
             $('#msg_heading').text('Delete record?');
-            $('#msg_body').text('Are you sure you want to delete this image?');
+            $('#msg_body').text('Are you sure you want to delete this file?');
             $('#confirmModal').modal('toggle');
             $('body').on('click', '#confirm', (e) => {
                 attachments.push(file);

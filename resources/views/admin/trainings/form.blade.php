@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label for="title">Title <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="title" autocomplete="off" placeholder="Enter training title" name="title"
+                <input type="text" class="form-control" id="title" autocomplete="off" placeholder="Enter training title" name="title"
                     value="{{ old('title') ?? $training->title }}">
                 <span class="form-text text-danger">{{ $errors->first('title') }} </span>
             </div>
@@ -31,7 +31,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="target_audience">Target Audience <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="target_audience" autocomplete="off" placeholder="Enter target audience"
+                <input type="text" class="form-control" id="target_audience" autocomplete="off" placeholder="Enter target audience"
                     name="target_audience" value="{{ old('target_audience') ?? $training->target_audience }}" data-role="tagsinput">
                 <span class="form-text text-danger">{{ $errors->first('target_audience') }} </span>
             </div>
@@ -40,7 +40,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="topics">Topics <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="topics" autocomplete="off" placeholder="Enter topics"
+                <input type="text" class="form-control" id="topics" autocomplete="off" placeholder="Enter topics"
                     name="topics" value="{{ old('topics') ?? $training->topics }}" data-role="tagsinput">
                 <span class="form-text text-danger">{{ $errors->first('topics') }} </span>
             </div>
@@ -51,7 +51,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="location">Location <span class="text-danger">*</span></label>
-                <input type="input" class="form-control" id="location" autocomplete="off" placeholder="Enter location" name="location"
+                <input type="text" class="form-control" id="location" autocomplete="off" placeholder="Enter location" name="location"
                     value="{{ old('location') ?? $training->location }}" data-role="tagsinput">
                 <span class="form-text text-danger">{{ $errors->first('location') }} </span>
             </div>
@@ -62,9 +62,9 @@
                 <label for="status">Status <span class="text-danger">*</span></label>
                 <select class="custom-select" name="status" id="status">
                     <option value="">Please select a status</option>
-                    @if(Request::route()->getName() == "admin.trainings.create")
-                        <option value="1">Open</option>
-                        <option value="0">Closed</option>
+                    @if(Route::is('admin.trainings.create'))
+                        <option value="1" {{ old('status') !== null && old('status') == '1' ? 'selected' : '' }}>Open</option>
+                        <option value="0" {{ old('status') !== null && old('status') == '0' ? 'selected' : '' }}>Closed</option>
 					@else
                         <option value="1" {{ ($training->status === "1" || old('status') === "1") ? 'selected' : '' }}>Open</option>
                         <option value="0" {{ ($training->status === "0" || old('status') === "0") ? 'selected' : '' }}>Closed</option>
