@@ -200,7 +200,7 @@ class TrainingController extends Controller
         ];
 
         return request()->validate($rules, [
-            'attachments.*.max' => __('messages.max_file', ['limit' => '5 MB']),
+            'attachments.*.max' => __('messages.max_file', ['limit' => '12 MB']),
         ]);
     }
 
