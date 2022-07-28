@@ -191,14 +191,14 @@
 				topics: {
 					required: true,
 					minlength: 3,
-					maxlength: 256,
+					maxlength: 255,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
 				target_audience: {
 					required: true,
 					minlength: 3,
-					maxlength: 256,
+					maxlength: 255,
 					notNumericValues: true,
                     // prevent_special_characters: true
 				},
@@ -242,12 +242,12 @@
                 topics: {
 					required: '{{ __("messages.required") }}',
 					minlength: "{{ __('messages.min_characters', ['field' => 'Topics', 'limit' => 3]) }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Topics', 'limit' => 256]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Topics', 'limit' => 255]) }}"
 				},
                 target_audience: {
 					required: '{{ __("messages.required") }}',
 					minlength: "{{ __('messages.min_characters', ['field' => 'Target audience', 'limit' => 3]) }}",
-					maxlength: "{{ __('messages.max_characters', ['field' => 'Target audience', 'limit' => 256]) }}"
+					maxlength: "{{ __('messages.max_characters', ['field' => 'Target audience', 'limit' => 255]) }}"
 				},
                 location: {
 					required: '{{ __("messages.required") }}',

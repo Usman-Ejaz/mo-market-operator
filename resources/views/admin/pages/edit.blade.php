@@ -67,6 +67,7 @@
 
 					<input type="hidden" name="active" id="status">
 					<input type="hidden" name="action" id="action">
+                    <input type="hidden" name="removeImage" id="removeImage" value="0">
 					@if(hasPermission('pages', 'view'))
 						<a href="{{ $cms_page->link . (!$cms_page->isPublished() ? '?unpublished=true' : '') }}" target="_blank" class="btn btn-primary publish_button">Preview</a>
 					@endif
@@ -323,22 +324,24 @@
             $('#msg_body').text('Are you sure you want to delete this image?');
             $('#confirmModal').modal('toggle');
             $('body').on('click', '#confirm', (e) => {
-                $.ajax({
-					url: "{{ route('admin.pages.deleteImage') }}",
-					type: 'POST',
-					data: {
-						_token: "{{ csrf_token() }}",
-						page_id: "{{$cms_page->id}}"
-					},
-					dataType: 'JSON',
-					success: function(data) {
-						if (data.success) {
-                            $('#confirmModal').modal('toggle');
-							toastr.success('{{ __("messages.record_deleted", ["module" => "Image"]) }}');
-							$('.imageExists').remove();
-						}
-					}
-				});
+                $('#removeImage').val('1');
+                $('#confirmModal').modal('toggle');
+                $('.imageExists').remove();
+                // $.ajax({
+				// 	url: "{{ route('admin.pages.deleteImage') }}",
+				// 	type: 'POST',
+				// 	data: {
+				// 		_token: "{{ csrf_token() }}",
+				// 		page_id: "{{$cms_page->id}}"
+				// 	},
+				// 	dataType: 'JSON',
+				// 	success: function(data) {
+				// 		if (data.success) {
+                //             $('#confirmModal').modal('toggle');
+				// 			$('.imageExists').remove();
+				// 		}
+				// 	}
+				// });
             });
 		});
 
