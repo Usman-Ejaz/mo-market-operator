@@ -1,0 +1,29 @@
+
+stages:
+    - build
+    - deploy
+
+Pulling Code For Dev:
+    stage: build
+    script:
+        - cd ~/public_html 
+        - git pull origin development        
+    only:
+        - development
+
+Pulling Code For Stage:
+    stage: build
+    script:
+        - cd ~/public_html/ismo
+        - git pull origin staging
+    only:
+        - staging
+
+Deploy:
+    stage: deploy
+    script:
+        - php artisan migrate
+        - php artisan queue:restart
+    only:
+        - development
+        - staging
