@@ -225,7 +225,7 @@
 					required: true,
 				},
 				'attachments[]': {
-					docx_extension: "doc|docx|pdf"
+					docx_extension: "doc|docx|pdf|ppt"
 				},
 				start_datetime: {
 					required: true
