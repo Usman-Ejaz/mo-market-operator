@@ -3,18 +3,20 @@ stages:
     - build
     - deploy
 
-Pulling Code For Dev:
+Pulling code for dev:
     stage: build
     script:
         - cd ~/public_html 
+        #- git reset --hard
         - git pull origin development        
     only:
         - development
 
-Pulling Code For Stage:
+Pulling code for stage:
     stage: build
     script:
         - cd ~/public_html/ismo
+        #- git reset --hard
         - git pull origin staging
     only:
         - staging
