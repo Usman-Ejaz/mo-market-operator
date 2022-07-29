@@ -195,7 +195,7 @@ class TrainingController extends Controller
             'status' => 'required|string',
             'start_datetime' => 'required',
             'end_datetime' => 'required',
-            'attachments.*' => 'sometimes|file|mimes:doc,docx,pdf,ppt,pptx|max:' . (config('settings.maxDocumentSize') + 7000)
+            'attachments.*' => 'sometimes|file|mimes:doc,docx,pdf,pptx,ppt,pptm,potx,potm,pot,ppsx,ppsm,pps,ppam,ppa,odp|max:' . (config('settings.maxDocumentSize') + 7000)
         ];
 
         return request()->validate($rules, [
