@@ -5,27 +5,46 @@ stages:
 
 Pulling code for dev:
     stage: build
+    variables:
+        GIT_STRATEGY: none
     script:
-        - cd ~/public_html 
+        - cd /home/dev-ismo/public_html 
         #- git reset --hard
-        - git pull origin development        
+        - sudo git pull origin development        
     only:
         - development
 
 Pulling code for stage:
     stage: build
+    variables:
+        GIT_STRATEGY: none
     script:
-        - cd ~/public_html/ismo
+        - cd /home/ismo/public_html/ismo
         #- git reset --hard
-        - git pull origin staging
+        - sudo git pull origin staging
     only:
         - staging
 
-Deploy:
+Deploy Dev:
     stage: deploy
+    variables:
+        GIT_STRATEGY: none
     script:
+        - cd /home/dev-ismo/public_html 
+        - sudo composer dump-autoload
         - php artisan migrate
-        - php artisan queue:restart
+        - sudo php artisan queue:restart
     only:
         - development
+
+Deploy Stage:
+    stage: deploy
+    variables:
+        GIT_STRATEGY: none
+    script:
+        - cd /home/ismo/public_html/ismo
+        - sudo composer dump-autoload
+        - php artisan migrate
+        - sudo php artisan queue:restart
+    only:
         - staging
