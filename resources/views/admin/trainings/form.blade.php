@@ -78,7 +78,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="attachments[]">Attachments <small>(Max allowed size is 12MB. Allowed types are doc, docx, pdf, ppt)</small> </label>
+                <label for="attachments[]">Attachments <small>(Max allowed size is 12MB. Allowed types are doc, docx, pdf, ppt, pptx)</small> </label>
                 <input type="file" class="form-control" id="attachments[]" name="attachments[]" multiple onchange="handleFileChoose(event)">
                 <span class="form-text text-danger">{{ $errors->first('attachments.*') }} </span>
                 @if(isset($training->attachment_links) && count($training->attachment_links) > 0)
