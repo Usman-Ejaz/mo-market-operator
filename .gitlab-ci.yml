@@ -10,7 +10,7 @@ Pulling code for dev:
     script:
         - cd /home/dev-ismo/public_html 
         #- git reset --hard
-        - git pull origin development        
+        - sudo git pull origin development        
     only:
         - development
 
@@ -21,7 +21,7 @@ Pulling code for stage:
     script:
         - cd /home/ismo/public_html/ismo
         #- git reset --hard
-        - git pull origin staging
+        - sudo git pull origin staging
     only:
         - staging
 
