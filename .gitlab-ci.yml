@@ -33,7 +33,7 @@ Deploy Dev:
         - cd /home/dev-ismo/public_html 
         - sudo composer dump-autoload
         - php artisan migrate
-        - php artisan queue:restart
+        - sudo php artisan queue:restart
     only:
         - development
 
@@ -45,6 +45,6 @@ Deploy Stage:
         - cd /home/ismo/public_html/ismo
         - sudo composer dump-autoload
         - php artisan migrate
-        - php artisan queue:restart
+        - sudo php artisan queue:restart
     only:
         - staging
