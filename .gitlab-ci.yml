@@ -30,6 +30,7 @@ Deploy:
     variables:
         GIT_STRATEGY: none
     script:
+        - composer install
         - php artisan migrate
         - php artisan queue:restart
     only:
