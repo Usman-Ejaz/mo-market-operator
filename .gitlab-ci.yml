@@ -5,8 +5,10 @@ stages:
 
 Pulling code for dev:
     stage: build
+    variables:
+        GIT_STRATEGY: none
     script:
-        - cd ~/public_html 
+        - cd /home/dev-ismo/public_html 
         #- git reset --hard
         - git pull origin development        
     only:
@@ -14,8 +16,10 @@ Pulling code for dev:
 
 Pulling code for stage:
     stage: build
+    variables:
+        GIT_STRATEGY: none
     script:
-        - cd ~/public_html/ismo
+        - cd /home/ismo/public_html/ismo
         #- git reset --hard
         - git pull origin staging
     only:
@@ -23,6 +27,8 @@ Pulling code for stage:
 
 Deploy:
     stage: deploy
+    variables:
+        GIT_STRATEGY: none
     script:
         - php artisan migrate
         - php artisan queue:restart
