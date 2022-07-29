@@ -221,7 +221,7 @@
             // },
             onwarning: (err) => {
                 if (err.body === "Max files") {
-                    toastr.error('Maximum 10 files are allowed to upload at a time.');
+                    toastr.error('Maximum 20 files are allowed to upload at a time.');
                 }
             }
         });

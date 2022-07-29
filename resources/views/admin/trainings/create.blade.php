@@ -212,7 +212,7 @@
 					required: true,
 				},
 				'attachments[]': {
-					docx_extension: "doc|docx|pdf|ppt"
+					docx_extension: "doc|docx|pdf|pptx|ppt|pptm|potx|potm|pot|ppsx|ppsm|pps|ppam|ppa|odp"
 				},
 				start_datetime: {
 					required: true
