@@ -31,7 +31,7 @@ Deploy Dev:
         GIT_STRATEGY: none
     script:
         - cd /home/dev-ismo/public_html 
-        - composer dump-autoload
+        - sudo composer dump-autoload
         - php artisan migrate
         - php artisan queue:restart
     only:
@@ -43,7 +43,7 @@ Deploy Stage:
         GIT_STRATEGY: none
     script:
         - cd /home/ismo/public_html/ismo
-        - composer dump-autoload
+        - sudo composer dump-autoload
         - php artisan migrate
         - php artisan queue:restart
     only:
