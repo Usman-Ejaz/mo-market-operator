@@ -25,14 +25,24 @@ Pulling code for stage:
     only:
         - staging
 
-Deploy:
+Deploy Dev:
     stage: deploy
     variables:
         GIT_STRATEGY: none
     script:
         - composer dump-autoload
-        - php artisan migrate
-        - php artisan queue:restart
+        - php /home/dev-ismo/public_html/artisan migrate
+        - php /home/dev-ismo/public_html/artisan queue:restart
     only:
         - development
+
+Deploy Stage:
+    stage: deploy
+    variables:
+        GIT_STRATEGY: none
+    script:
+        - composer dump-autoload
+        - php /home/ismo/public_html/ismo/artisan migrate
+        - php /home/ismo/public_html/ismo/artisan queue:restart
+    only:
         - staging
