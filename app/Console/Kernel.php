@@ -15,7 +15,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        
         $schedule->command('audit:broken-links')
             ->timezone('Asia/Karachi')
             ->dailyAt('8:00');
@@ -27,6 +26,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('toggle:publish-status')
             ->timezone('Asia/Karachi')
             ->everyFiveMinutes();
+
+        $schedule->command('remove:downloaded-forms')
+            ->timezone('Asia/Karachi')
+            ->dailyAt('02:00');     // at night 2AM.
     }
 
     /**
@@ -36,7 +39,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
