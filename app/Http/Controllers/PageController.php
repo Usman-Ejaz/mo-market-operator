@@ -107,7 +107,6 @@ class PageController extends Controller
     {
         abort_if(!hasPermission("pages", "edit"), 401, __('messages.unauthorized_action'));
 
-        $previousImage = $cms_page->image;
         $data = $this->validateRequest($cms_page);
         $data['start_datetime'] = $this->parseDate($request->start_datetime);
         $data['end_datetime'] = $this->parseDate($request->end_datetime);
@@ -122,8 +121,13 @@ class PageController extends Controller
             $message = __('messages.record_published', ['module' => 'Page']);
         }
 
+        if ($request->get('removeImage') == "1") {
+            removeFile(Page::STORAGE_DIRECTORY, $cms_page->image);
+            $data['image'] = null;
+        }
+
         if ($request->hasFile('image')) {
-            $data['image'] = storeFile(Page::STORAGE_DIRECTORY, $request->file('image'), $previousImage);
+            $data['image'] = storeFile(Page::STORAGE_DIRECTORY, $request->file('image'));
         }
 
         $cms_page->update($data);
@@ -180,7 +184,7 @@ class PageController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if (hasPermission('pages', 'view')) {
-                        $link = $row->link . (! $row->isPublished() ? '?unpublished=true' : '');
+                        $link = $row->link . (!$row->isPublished() ? '?unpublished=true' : '');
                         $options .= '<a href="' . $link . '" class="btn btn-primary mr-1" title="Preview" target="_blank">
                             <i class="fas fa-eye"></i>
                         </a>';
@@ -191,8 +195,8 @@ class PageController extends Controller
                         </a>';
                     }
                     if (hasPermission('pages', 'delete')) {
-                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.pages.destroy', $row->id ) .'" title="Delete">
-                                <i class="fas fa-trash" data-action="'. route('admin.pages.destroy', $row->id ) .'"></i>
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.pages.destroy', $row->id) . '" title="Delete">
+                                <i class="fas fa-trash" data-action="' . route('admin.pages.destroy', $row->id) . '"></i>
                         </button>';
                     }
                     return $options;
@@ -202,14 +206,15 @@ class PageController extends Controller
         }
     }
 
-    private function validateRequest($page){
+    private function validateRequest($page)
+    {
 
         return request()->validate([
-            'title' => 'required|min:3|unique:pages,title,'.$page->id,
-            'slug' => 'required|unique:pages,slug,'.$page->id,
+            'title' => 'required|min:3|unique:pages,title,' . $page->id,
+            'slug' => 'required|unique:pages,slug,' . $page->id,
             'description' => 'required',
             'keywords' => 'nullable',
-            'image' => 'sometimes|file|mimes:'. str_replace("|", ",", config('settings.image_file_extensions')) .'|max:' . config('settings.maxImageSize'),
+            'image' => 'sometimes|file|mimes:' . str_replace("|", ",", config('settings.image_file_extensions')) . '|max:' . config('settings.maxImageSize'),
             'start_datetime' => 'nullable',
             'end_datetime' => 'nullable',
             'active' => 'required',
@@ -221,7 +226,8 @@ class PageController extends Controller
         ]);
     }
 
-    public function deleteImage(Request $request){
+    public function deleteImage(Request $request)
+    {
         if ($request->ajax()) {
             if (isset($request->page_id)) {
 
@@ -236,7 +242,8 @@ class PageController extends Controller
         }
     }
 
-    private function parseDate($date) {
+    private function parseDate($date)
+    {
         if ($date) {
             return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $date))));
         }

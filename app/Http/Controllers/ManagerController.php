@@ -17,7 +17,7 @@ class ManagerController extends Controller
      */
     public function index()
     {
-        abort_if(! hasPermission('our_teams', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('our_teams', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         return view('admin.managers.index');
     }
@@ -29,7 +29,7 @@ class ManagerController extends Controller
      */
     public function create()
     {
-        abort_if(! hasPermission('our_teams', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('our_teams', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $manager = new Manager;
         return view('admin.managers.create', compact('manager'));
@@ -43,7 +43,7 @@ class ManagerController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(! hasPermission('our_teams', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('our_teams', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
         $data = $this->validateRequest();
 
         $data['image'] = '';
@@ -78,7 +78,7 @@ class ManagerController extends Controller
      */
     public function edit(Manager $manager)
     {
-        abort_if(! hasPermission('our_teams', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('our_teams', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         return view('admin.managers.edit', compact('manager'));
     }
@@ -92,12 +92,17 @@ class ManagerController extends Controller
      */
     public function update(Request $request, Manager $manager)
     {
-        abort_if(! hasPermission('our_teams', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('our_teams', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($manager);
 
+        if ($request->get('removeImage') == "1") {
+            removeFile(Manager::STORAGE_DIRECTORY, $manager->image);
+            $data['image'] = '';
+        }
+
         if ($request->hasFile('image')) {
-            $data['image'] = storeFile(Manager::STORAGE_DIRECTORY, $request->file('image'), $manager->image);
+            $data['image'] = storeFile(Manager::STORAGE_DIRECTORY, $request->file('image'));
         }
 
         $manager->update($data);
@@ -115,7 +120,7 @@ class ManagerController extends Controller
      */
     public function destroy(Manager $manager)
     {
-        abort_if(! hasPermission('our_teams', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('our_teams', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $manager->removeImage();
         $manager->delete();
@@ -124,10 +129,9 @@ class ManagerController extends Controller
 
     public function list(Request $request)
     {
-        abort_if(! hasPermission('our_teams', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('our_teams', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             $managers = Manager::latest()->get();
 
             return DataTables::of($managers)
@@ -142,7 +146,7 @@ class ManagerController extends Controller
                     return (isset($row->order)) ? $row->order : '';
                 })
                 ->addColumn('image', function ($row) {
-                    return (isset($row->image)) ? '<img src="'. $row->image .'" height="100" width="100" />' : 'No image is selected';
+                    return (isset($row->image)) ? '<img src="' . $row->image . '" height="100" width="100" />' : 'No image is selected';
                 })
                 ->editColumn('created_at', function ($row) {
                     return [
@@ -153,14 +157,14 @@ class ManagerController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if (hasPermission('our_teams', 'edit')) {
-                        $options .= ' <a href="'. route('admin.managers.edit',$row->id) .'" class="btn btn-primary" title="Edit">
+                        $options .= ' <a href="' . route('admin.managers.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
                     if (hasPermission('our_teams', 'delete')) {
-                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.managers.destroy', $row->id ) .'" title="Delete">
-                            <i class="fas fa-trash" data-action="'. route('admin.managers.destroy', $row->id ) .'"></i>
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.managers.destroy', $row->id) . '" title="Delete">
+                            <i class="fas fa-trash" data-action="' . route('admin.managers.destroy', $row->id) . '"></i>
                         </button>';
                     }
 
@@ -178,7 +182,7 @@ class ManagerController extends Controller
             'designation' => 'required|string',
             'description' => 'required|string',
             'order' => 'required|string',
-            'image' => 'sometimes|file|mimes:'. str_replace("|", ",", config('settings.image_file_extensions')) .'|max:' . config('settings.maxImageSize'),
+            'image' => 'sometimes|file|mimes:' . str_replace("|", ",", config('settings.image_file_extensions')) . '|max:' . config('settings.maxImageSize'),
         ];
 
         if ($manager && $manager->image !== "" && $manager->image !== null) {
@@ -190,7 +194,8 @@ class ManagerController extends Controller
         ]);
     }
 
-    public function deleteImage(Request $request){
+    public function deleteImage(Request $request)
+    {
 
         if ($request->ajax()) {
 

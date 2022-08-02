@@ -22,6 +22,8 @@
 					@method('PATCH')
 					@include('admin.team-members.form')
 
+                    <input type="hidden" name="removeImage" id="removeImage" value="0">
+
 					<div class="card-footer text-right">
 						<button type="submit" class="btn btn-primary draft_button width-120">Update</button>
 					</div>
@@ -113,22 +115,25 @@
             $('#msg_body').text('Are you sure you want to delete this image?');
             $('#confirmModal').modal('toggle');
             $('body').on('click', '#confirm', (e) => {
-                $.ajax({
-					url: "{{ route('admin.team-members.deleteImage') }}",
-					type: 'POST',
-					data: {
-						_token: "{{ csrf_token() }}",
-						id: "{{ $teamMember->id }}"
-					},
-					dataType: 'JSON',
-					success: function(data) {
-						if (data.success) {
-                            $('#confirmModal').modal('toggle');
-							toastr.success(data.message);
-							$('.imageExists').remove();
-						}
-					}
-				});
+                $('#removeImage').val('1');
+                $('#confirmModal').modal('toggle');
+                $('.imageExists').remove();
+                // $.ajax({
+				// 	url: "{{ route('admin.team-members.deleteImage') }}",
+				// 	type: 'POST',
+				// 	data: {
+				// 		_token: "{{ csrf_token() }}",
+				// 		id: "{{ $teamMember->id }}"
+				// 	},
+				// 	dataType: 'JSON',
+				// 	success: function(data) {
+				// 		if (data.success) {
+                //             $('#confirmModal').modal('toggle');
+				// 			toastr.success(data.message);
+				// 			$('.imageExists').remove();
+				// 		}
+				// 	}
+				// });
             });
 		});
 
