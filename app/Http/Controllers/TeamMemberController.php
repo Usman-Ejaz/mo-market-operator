@@ -17,7 +17,7 @@ class TeamMemberController extends Controller
      */
     public function index()
     {
-        abort_if(! hasPermission('team_members', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('team_members', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         return view('admin.team-members.index');
     }
@@ -29,7 +29,7 @@ class TeamMemberController extends Controller
      */
     public function create()
     {
-        abort_if(! hasPermission('team_members', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('team_members', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $teamMember = new TeamMember;
         $managers = Manager::select('id', 'name')->latest()->get();
@@ -45,7 +45,7 @@ class TeamMemberController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(! hasPermission('team_members', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('team_members', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
         $data = $this->validateRequest();
 
         $data['image'] = '';
@@ -80,7 +80,7 @@ class TeamMemberController extends Controller
      */
     public function edit(TeamMember $teamMember)
     {
-        abort_if(! hasPermission('team_members', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('team_members', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $managers = Manager::select('id', 'name')->latest()->get();
 
@@ -96,12 +96,17 @@ class TeamMemberController extends Controller
      */
     public function update(Request $request, TeamMember $teamMember)
     {
-        abort_if(! hasPermission('team_members', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('team_members', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($teamMember);
 
+        if ($request->get('removeImage') == "1") {
+            removeFile(Manager::STORAGE_DIRECTORY, $teamMember->image);
+            $data['image'] = '';
+        }
+
         if ($request->hasFile('image')) {
-            $data['image'] = storeFile(TeamMember::STORAGE_DIRECTORY, $request->file('image'), $teamMember->image);
+            $data['image'] = storeFile(TeamMember::STORAGE_DIRECTORY, $request->file('image'));
         }
 
         $teamMember->update($data);
@@ -119,7 +124,7 @@ class TeamMemberController extends Controller
      */
     public function destroy(TeamMember $teamMember)
     {
-        abort_if(! hasPermission('team_members', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('team_members', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $teamMember->removeImage();
         $teamMember->delete();
@@ -128,10 +133,9 @@ class TeamMemberController extends Controller
 
     public function list(Request $request)
     {
-        abort_if(! hasPermission('team_members', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('team_members', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             $teamMembers = TeamMember::with('manager')->latest()->get();
 
             return DataTables::of($teamMembers)
@@ -149,7 +153,7 @@ class TeamMemberController extends Controller
                     return (isset($row->order)) ? $row->order : '';
                 })
                 ->addColumn('image', function ($row) {
-                    return (isset($row->image)) ? '<img src="'. $row->image .'" height="100" width="100" />' : 'No image is selected';
+                    return (isset($row->image)) ? '<img src="' . $row->image . '" height="100" width="100" />' : 'No image is selected';
                 })
                 ->editColumn('created_at', function ($row) {
                     return [
@@ -160,14 +164,14 @@ class TeamMemberController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if (hasPermission('team_members', 'edit')) {
-                        $options .= ' <a href="'. route('admin.team-members.edit',$row->id) .'" class="btn btn-primary" title="Edit">
+                        $options .= ' <a href="' . route('admin.team-members.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
                     if (hasPermission('team_members', 'delete')) {
-                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.team-members.destroy', $row->id ) .'" title="Delete">
-                            <i class="fas fa-trash" data-action="'. route('admin.team-members.destroy', $row->id ) .'"></i>
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.team-members.destroy', $row->id) . '" title="Delete">
+                            <i class="fas fa-trash" data-action="' . route('admin.team-members.destroy', $row->id) . '"></i>
                         </button>';
                     }
 
@@ -185,13 +189,13 @@ class TeamMemberController extends Controller
             'designation' => 'required|string',
             'description' => 'required|string',
             'order' => 'required|string',
-            'image' => 'sometimes|file|mimes:'. str_replace("|", ",", config('settings.image_file_extensions')) .'|max:' . config('settings.maxImageSize'),
+            'image' => 'sometimes|file|mimes:' . str_replace("|", ",", config('settings.image_file_extensions')) . '|max:' . config('settings.maxImageSize'),
             'manager_id' => 'required|string'
         ];
 
         $request = request();
 
-        if (! $request->has('image')) {
+        if (!$request->has('image')) {
             unset($rules['image']);
         }
 
@@ -202,7 +206,8 @@ class TeamMemberController extends Controller
         ]);
     }
 
-    public function deleteImage(Request $request){
+    public function deleteImage(Request $request)
+    {
 
         if ($request->ajax()) {
 
