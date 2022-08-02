@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
 
-        <title>{{ config('app.name', 'ISMO') }} @yield('title')</title>
+        <title>{{ config('app.name', 'MO') }} @yield('title')</title>
 
 
         <!-- Fonts -->
