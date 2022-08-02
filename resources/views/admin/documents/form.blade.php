@@ -15,13 +15,13 @@
 				<select class="custom-select" name="category_id" id="category_id">
 					<option value="">Please select a category</option>
 					@foreach($categories as $category)
-						@if(old('category_id') !== null && old('category_id') == $category->id)
+						@if(old('category_id') == $category->id)
 							<option value="{{ $category->id }}" selected>
                                 {{ $category->name }}
                             </option>
                             @include('admin.includes.subcategory', ['subcategories' => $category->children, 'separator' => '--'])
 						@else
-							<option value="{{ $category->id }}" {{ ((old('category_id') !== null && old('category_id') === $category->id) || $category->id === $document->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
+							<option value="{{ $category->id }}" {{ ($category->id === $document->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
 
                             @include('admin.includes.subcategory', ['subcategories' => $category->children, 'separator' => '--'])
 						@endif
