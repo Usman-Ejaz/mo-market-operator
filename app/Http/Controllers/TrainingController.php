@@ -16,7 +16,7 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        abort_if(! hasPermission('trainings', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('trainings', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         return view('admin.trainings.index');
     }
@@ -28,7 +28,7 @@ class TrainingController extends Controller
      */
     public function create()
     {
-        abort_if(! hasPermission('trainings', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('trainings', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $training = new Training;
         return view('admin.trainings.create', compact('training'));
@@ -42,7 +42,7 @@ class TrainingController extends Controller
      */
     public function store(Request $request)
     {
-        abort_if(! hasPermission('trainings', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('trainings', 'create'), __('auth.error_code'), __('messages.unauthorized_action'));
         $training = new Training;
 
         $data = $this->validateRequest($training);
@@ -86,7 +86,7 @@ class TrainingController extends Controller
      */
     public function edit(Training $training)
     {
-        abort_if(! hasPermission('trainings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('trainings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         return view('admin.trainings.edit', compact('training'));
     }
@@ -100,7 +100,7 @@ class TrainingController extends Controller
      */
     public function update(Request $request, Training $training)
     {
-        abort_if(! hasPermission('trainings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('trainings', 'edit'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $data = $this->validateRequest($training);
 
@@ -124,7 +124,7 @@ class TrainingController extends Controller
      */
     public function destroy(Training $training)
     {
-        abort_if(! hasPermission('trainings', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('trainings', 'delete'), __('auth.error_code'), __('messages.unauthorized_action'));
 
         $training->removeAttachments();
         $training->delete();
@@ -134,10 +134,9 @@ class TrainingController extends Controller
 
     public function list(Request $request)
     {
-        abort_if(! hasPermission('trainings', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
+        abort_if(!hasPermission('trainings', 'list'), __('auth.error_code'), __('messages.unauthorized_action'));
 
-        if ($request->ajax())
-        {
+        if ($request->ajax()) {
             $training = Training::latest()->get();
 
             return DataTables::of($training)
@@ -166,14 +165,14 @@ class TrainingController extends Controller
                 ->addColumn('action', function ($row) {
                     $options = '';
                     if (hasPermission('trainings', 'edit')) {
-                        $options .= ' <a href="'. route('admin.trainings.edit',$row->id) .'" class="btn btn-primary" title="Edit">
+                        $options .= ' <a href="' . route('admin.trainings.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
                     if (hasPermission('trainings', 'delete')) {
-                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.trainings.destroy', $row->id ) .'" title="Delete">
-                            <i class="fas fa-trash" data-action="'. route('admin.trainings.destroy', $row->id ) .'"></i>
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.trainings.destroy', $row->id) . '" title="Delete">
+                            <i class="fas fa-trash" data-action="' . route('admin.trainings.destroy', $row->id) . '"></i>
                         </button>';
                     }
 
@@ -196,11 +195,11 @@ class TrainingController extends Controller
             'status' => 'required|string',
             'start_datetime' => 'required',
             'end_datetime' => 'required',
-            'attachments.*' => 'sometimes|file|mimes:doc,docx,pdf,ppt|max:' . (config('settings.maxDocumentSize') + 7000)
+            'attachments.*' => 'sometimes|file|mimes:doc,docx,pdf,pptx,ppt,pptm,potx,potm,pot,ppsx,ppsm,pps,ppam,ppa,odp|max:' . (config('settings.maxDocumentSize') + 7000)
         ];
 
         return request()->validate($rules, [
-            'attachments.*.max' => __('messages.max_file', ['limit' => '5 MB']),
+            'attachments.*.max' => __('messages.max_file', ['limit' => '12 MB']),
         ]);
     }
 
@@ -208,8 +207,7 @@ class TrainingController extends Controller
     {
         $filenames = implode(",", $training->attachment);
 
-        if ($request->hasFile('attachments'))
-        {
+        if ($request->hasFile('attachments')) {
             $uploadedFiles = $request->file('attachments');
 
             if (count($uploadedFiles) > 0) {
@@ -223,8 +221,7 @@ class TrainingController extends Controller
             }
         }
 
-        if ($request->get('removeFile') !== null)
-        {
+        if ($request->get('removeFile') !== null) {
             $removedFiles = explode(",", $request->get('removeFile'));
             foreach ($removedFiles as $file) {
                 removeFile(Training::STORAGE_DIRECTORY, $file);

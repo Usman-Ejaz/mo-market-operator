@@ -116,8 +116,8 @@
                                     <li>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-slug="{{ \Illuminate\Support\Str::plural(str_slug($name)) }}" data-doc="{{ $id }}" data-title="{{ $name }}">
-                                                {{ \Illuminate\Support\Str::limit($name, 35, $end='...') }}
+                                                <input type="checkbox" name="documentCategories[{{ $id }}]" value="" data-slug="{{ str_slug($name) }}" data-doc="{{ $id }}" data-title="{{ $name }}">
+                                                {{ truncateWords($name, 35) }}
                                                 <a href="{{ route('admin.document-categories.edit', $id) }}" target="_blank"> <i class="fa fa-link"></i></a>
                                             </label>
                                         </div>
