@@ -213,6 +213,8 @@
 
 		const uploadedFiles = $("#file").get(0).files;
 
+        const previouslyUploadedFiles = $('.fileExists');
+
 		if (uploadedFiles.length > 0) {
 			let invalidFiles = [];
 			let pdfFiles = [];
@@ -247,18 +249,14 @@
                 $('#alertModal').modal('toggle');
 				e.target.checked = false;
 			}
-		} else {
+		} else if (previouslyUploadedFiles.length > 0) {
+            // do nothing
+        } else {
             $('#msg_text').text('Please select the document first.');
             $('#alertModal').modal('toggle');
 
 			e.target.checked = false;
 		}
-
-		// if ($(".fileExists").length > 0) {
-		// 	let filename = '$document->file';
-		// 	extension = filename.split(".");
-		// 	extension = extension[extension.length - 1];
-		// }
 	}
 
 	function resetConvertCheckbox(e) {
