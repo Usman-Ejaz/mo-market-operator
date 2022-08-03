@@ -266,7 +266,7 @@ class DocumentController extends Controller
 
         exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir ' . $storagePath . ' ' . $storageFile);
 
-        $convertedFileName = pathinfo($storageFile, PATHINFO_FILENAME);
+        list($convertedFileName, $ext) = explode('.', basename($storageFile));
 
         if (file_exists($storagePath . $convertedFileName . '.pdf')) {
             unlink($storageFile);
