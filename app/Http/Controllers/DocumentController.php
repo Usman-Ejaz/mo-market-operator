@@ -8,9 +8,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+
 class DocumentController extends Controller
 {
-    private $allowedFileExtensions = array('doc','docx', 'txt', 'ppt', 'pptx', 'odt');
+    private $allowedFileExtensions = array('doc', 'docx', 'txt', 'ppt', 'pptx', 'odt');
 
     /**
      * Display a listing of the resource.
@@ -210,15 +211,15 @@ class DocumentController extends Controller
                     ];
                 })
                 ->addColumn('action', function ($row) {
-                   $options = '';
-                    if( hasPermission('documents', 'edit') ) {
+                    $options = '';
+                    if (hasPermission('documents', 'edit')) {
                         $options .= '<a href="' . route('admin.documents.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
-                    if( hasPermission('documents', 'delete') ) {
-                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.documents.destroy', $row->id ) .'" title="Delete">
-                                <i class="fas fa-trash" data-action="'. route('admin.documents.destroy', $row->id ) .'"></i>
+                    if (hasPermission('documents', 'delete')) {
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.documents.destroy', $row->id) . '" title="Delete">
+                                <i class="fas fa-trash" data-action="' . route('admin.documents.destroy', $row->id) . '"></i>
                         </button>';
                     }
                     return $options;
@@ -228,10 +229,11 @@ class DocumentController extends Controller
         }
     }
 
-    private function validateRequest($document) {
+    private function validateRequest($document)
+    {
 
         $rule = [
-            'title' => 'required|min:3|unique:documents,title,'.$document->id,
+            'title' => 'required|min:3|unique:documents,title,' . $document->id,
             'keywords' => 'nullable',
             'category_id' => 'required',
             'file.*' => 'required|max: ' . config('settings.maxDocumentSize'),
@@ -242,11 +244,11 @@ class DocumentController extends Controller
 
         $request = request();
 
-        if (! $request->hasFile('file')) {
+        if (!$request->hasFile('file')) {
             unset($rule['file.*']);
         }
 
-        if (! $request->has('image')) {
+        if (!$request->has('image')) {
             unset($rule['image']);
         }
 
@@ -262,9 +264,9 @@ class DocumentController extends Controller
 
         $storageFile = $storagePath . $filename;
 
-        exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir '.$storagePath.' '.$storageFile);
+        exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir ' . $storagePath . ' "' . $storageFile . '"');
 
-        $convertedFileName = pathinfo($storageFile, PATHINFO_FILENAME);
+        list($convertedFileName, $ext) = explode('.', basename($storageFile));
 
         if (file_exists($storagePath . $convertedFileName . '.pdf')) {
             unlink($storageFile);
@@ -272,9 +274,10 @@ class DocumentController extends Controller
         return $convertedFileName . ".pdf";
     }
 
-    public function deleteFile(Request $request){
+    public function deleteFile(Request $request)
+    {
         if ($request->ajax()) {
-            if( isset($request->document_id) ){
+            if (isset($request->document_id)) {
 
                 $document = Document::find($request->document_id);
                 if (removeFile(Document::STORAGE_DIRECTORY, $document->file)) {
@@ -292,8 +295,7 @@ class DocumentController extends Controller
         $convertFiles = $request->convert !== null && $request->convert == '1';
         $filenames = implode(",", $document->file);
 
-        if ($request->hasFile('file'))
-        {
+        if ($request->hasFile('file')) {
             $uploadedFiles = $request->file('file');
 
             if (count($uploadedFiles) > 0) {
@@ -308,8 +310,7 @@ class DocumentController extends Controller
             }
         }
 
-        if ($request->get('removeFile') !== null)
-        {
+        if ($request->get('removeFile') !== null) {
             $removedFiles = explode(",", $request->get('removeFile'));
             foreach ($removedFiles as $file) {
                 removeFile(Document::STORAGE_DIRECTORY, $file);
@@ -325,15 +326,15 @@ class DocumentController extends Controller
             foreach ($filenames as $filename) {
                 $extension = explode(".", basename($filename))[1];
                 if (in_array($extension, $this->allowedFileExtensions)) {
-                    $filename = $this->convertFile($filename);
+                    $cfile = $this->convertFile($filename);
+                    $tempnames .= $cfile . ",";
+                } else {
                     $tempnames .= $filename . ",";
                 }
             }
-
-            $filenames = $tempnames;
+            $filenames = trim($tempnames, ",");
         }
 
         return $filenames;
     }
 }
-
