@@ -250,7 +250,22 @@
 				e.target.checked = false;
 			}
 		} else if (previouslyUploadedFiles.length > 0) {
-            // do nothing
+            let pdfFiles = [];
+            const elements = Array.from(previouslyUploadedFiles);
+            elements.forEach(element => {
+                const filePath = $(element).children().children()[0].href;
+                const ext = filePath.split('/').at(-1).split('.').at(-1);
+
+                if (ext === "pdf") {
+                    pdfFiles.push(filePath);
+                }
+            });
+
+            if (pdfFiles.length === previouslyUploadedFiles.length) {
+                $('#msg_text').text('File(s) already in PDF.');
+                $('#alertModal').modal('toggle');
+                e.target.checked = false;
+            }
         } else {
             $('#msg_text').text('Please select the document first.');
             $('#alertModal').modal('toggle');
