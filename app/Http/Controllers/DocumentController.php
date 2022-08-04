@@ -264,7 +264,7 @@ class DocumentController extends Controller
 
         $storageFile = $storagePath . $filename;
 
-        exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir ' . $storagePath . ' ' . $storageFile);
+        exec('/usr/lib/libreoffice/program/soffice.bin --headless --convert-to pdf:writer_pdf_Export -env:UserInstallation=file:///tmp/LibreOffice_Conversion_${USER} --outdir ' . $storagePath . ' "' . $storageFile . '"');
 
         list($convertedFileName, $ext) = explode('.', basename($storageFile));
 
