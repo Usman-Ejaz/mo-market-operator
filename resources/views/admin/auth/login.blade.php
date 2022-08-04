@@ -3,7 +3,7 @@
 @section('content')
 <div class="login-box">
     <div class="login-logo">
-        <a href="{{ url('/') }}">{{ config('app.name', 'ISMO') }}</a>
+        <a href="{{ route('admin.login') }}">{{ config('app.name', 'ISMO') }}</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
