@@ -37,7 +37,16 @@ class NewPasswordController extends Controller
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'bail',
+                'required', 
+                'min:8',
+                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+                'confirmed'
+            ],
+        ], [
+            'password.confirmed' => 'Password must be same.',
+            'password.regex' => 'Password should must contain Uppercase, lowercase, number and special characters.'
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we
@@ -80,7 +89,16 @@ class NewPasswordController extends Controller
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'bail',
+                'required', 
+                'min:8',
+                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+                'confirmed'
+            ],
+        ], [
+            'password.confirmed' => 'Password must be same.',
+            'password.regex' => 'Password should must contain Uppercase, lowercase, number and special characters.'
         ]);
 
         $user = User::where(['email' => $request->get("email")])->first();
