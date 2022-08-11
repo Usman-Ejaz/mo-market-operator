@@ -91,6 +91,7 @@ class ChatbotQueriesController extends BaseApiController
             $initiator = ChatbotInitiator::findByEmail($data['email'])->first();
 
             if ($initiator) {
+                $initiator->update($data);
                 return $this->sendResponse(['key' => $initiator->token], __('messages.success'));
             }
 
