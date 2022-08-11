@@ -121,9 +121,16 @@ class ProfileController extends Controller
         
         $request->validate([
             'old_password' => ['required'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'bail',
+                'required', 
+                'min:8',
+                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+                'confirmed'
+            ],
         ], [
-            'password.confirmed' => 'Password must be same.'
+            'password.confirmed' => 'Password must be same.',
+            'password.regex' => 'Password should must contain Uppercase, lowercase, number and special characters.'
         ]);
 
         $user = User::where(['email' => auth()->user()->email])->first();
