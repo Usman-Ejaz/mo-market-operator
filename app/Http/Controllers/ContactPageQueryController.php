@@ -71,7 +71,7 @@ class ContactPageQueryController extends Controller
         if ($chatbotQuery) {
             $contactPageQuery->phone = $chatbotQuery->phone;
             $contactPageQuery->company = $chatbotQuery->company;
-            $contactPageQuery->update();
+            $contactPageQuery->save();
 
             $isChatbotQuery = true;
         }
