@@ -112,7 +112,10 @@ class ContactPageQueryController extends Controller
     {
         abort_if(!hasPermission("contact_page_queries", "delete"), 401, __('messages.unauthorized_action'));
 
+        $contactPageQuery->deleteFromNotifications();
+
         $contactPageQuery->delete();
+
         return redirect()->route('admin.contact-page-queries.index')->with('success', __('messages.record_deleted', ['module' => 'Contact Query']));
     }
 
@@ -144,7 +147,7 @@ class ContactPageQueryController extends Controller
                     ];
                 })
                 ->addColumn('action', function ($row) {
-                   $options = '';
+                    $options = '';
                     if (hasPermission('contact_page_queries', 'edit')) {
                         $options .= '<a href="' . route('admin.contact-page-queries.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
@@ -156,8 +159,8 @@ class ContactPageQueryController extends Controller
                         </a>';
                     }
                     if (hasPermission('contact_page_queries', 'delete')) {
-                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.contact-page-queries.destroy', $row->id ) .'" title="Delete">
-                                <i class="fas fa-trash" data-action="'. route('admin.contact-page-queries.destroy', $row->id ) .'"></i>
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.contact-page-queries.destroy', $row->id) . '" title="Delete">
+                                <i class="fas fa-trash" data-action="' . route('admin.contact-page-queries.destroy', $row->id) . '"></i>
                         </button>';
                     }
                     return $options;
