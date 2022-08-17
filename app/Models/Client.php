@@ -51,8 +51,7 @@ class Client extends Authenticatable
      */
     public function setCategoriesAttribute($value)
     {
-        if ($value === null || $value === "")
-        {
+        if ($value === null || $value === "") {
             $this->attributes['categories'] = null;
             return;
         }
@@ -90,7 +89,7 @@ class Client extends Authenticatable
             $value = explode(',', $value);
             foreach (self::REGISTER_CATEGORIES as $key => $category) {
                 if (in_array($key, $value)) {
-                    $category = __('client.categories.' . $this->type .'.'. $category);
+                    $category = __('client.categories.' . $this->type . '.' . $category);
                     $categories .= $category . ', ';
                 }
             }
@@ -108,7 +107,7 @@ class Client extends Authenticatable
      */
     public function getCreatedAtAttribute($value): string
     {
-        return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : "";
+        return $value ? Carbon::parse($value)->format(config('settings.createdat_datetime_format')) : "";
     }
 
     /**

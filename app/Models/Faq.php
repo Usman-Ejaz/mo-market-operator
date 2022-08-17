@@ -15,7 +15,7 @@ class Faq extends Model
     protected $guarded = [];
 
     protected $attributes = [];
-    
+
     /**
      * ======================================================
      *                  Model Relations
@@ -27,7 +27,7 @@ class Faq extends Model
      *
      * @return mixed
      */
-    public function category() 
+    public function category()
     {
         return $this->belongsTo(FaqCategory::class, "category_id", "id");
     }
@@ -48,7 +48,7 @@ class Faq extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-        
+
     /**
      * getActiveAttribute
      *
@@ -57,9 +57,9 @@ class Faq extends Model
      */
     public function getActiveAttribute($attribute)
     {
-        return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
+        return (isset($attribute)) ? $this->activeOptions()[$attribute] : '';
     }
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -68,7 +68,7 @@ class Faq extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**
@@ -76,14 +76,14 @@ class Faq extends Model
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopePublished
      *
      * @param  mixed $query
      * @return mixed
      */
-    public function scopePublished ($query) 
+    public function scopePublished($query)
     {
         return $query->where("published_at", "!=", null)->select("question", "answer");
     }
@@ -93,7 +93,7 @@ class Faq extends Model
      *                 Model Helper Functions
      * ======================================================
      */
-    
+
     /**
      * isPublished
      *

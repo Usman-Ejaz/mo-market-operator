@@ -18,7 +18,7 @@ class Menu extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-        
+
     /**
      * getActiveAttribute
      *
@@ -27,9 +27,9 @@ class Menu extends Model
      */
     public function getActiveAttribute($attribute)
     {
-        return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
+        return (isset($attribute)) ? $this->activeOptions()[$attribute] : '';
     }
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -38,15 +38,15 @@ class Menu extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
-    
+
     /**
      * ======================================================
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopeByTheme
      *
@@ -61,7 +61,7 @@ class Menu extends Model
         }
         return $query->where('theme', $theme);
     }
-    
+
     /**
      * scopeActive
      *

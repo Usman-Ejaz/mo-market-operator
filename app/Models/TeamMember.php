@@ -21,7 +21,7 @@ class TeamMember extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -30,9 +30,9 @@ class TeamMember extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
-    
+
     /**
      * getImageAttribute
      *
@@ -50,7 +50,7 @@ class TeamMember extends Model
      *                    Model Relations
      * ======================================================
      */
-    
+
     /**
      * manager
      *
@@ -67,7 +67,7 @@ class TeamMember extends Model
      *               Model Scope Query Functions
      * ======================================================
      */
-    
+
     /**
      * scopeSortByOrder
      *
@@ -79,12 +79,12 @@ class TeamMember extends Model
         return $query->orderBy('order', 'asc');
     }
 
-     /**
+    /**
      * ======================================================
      *               Model Helper Functions
      * ======================================================
      */
-    
+
     /**
      * removeImage
      *
@@ -92,8 +92,7 @@ class TeamMember extends Model
      */
     public function removeImage()
     {
-        if ($this->image !== null && $this->image !== "")
-        {
+        if ($this->image !== null && $this->image !== "") {
             removeFile(self::STORAGE_DIRECTORY, $this->image);
         }
     }
