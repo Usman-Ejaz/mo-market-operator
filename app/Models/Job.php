@@ -38,7 +38,7 @@ class Job extends Model
      */
     public function getActiveAttribute($attribute)
     {
-        return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
+        return (isset($attribute)) ? $this->activeOptions()[$attribute] : '';
     }
 
     /**
@@ -71,7 +71,7 @@ class Job extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**
@@ -91,7 +91,7 @@ class Job extends Model
      * @param  mixed $value
      * @return void
      */
-    public function getImageAttribute ($value)
+    public function getImageAttribute($value)
     {
         return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
     }
@@ -174,7 +174,7 @@ class Job extends Model
      * @param  mixed $query
      * @return void
      */
-    public function scopePublished ($query)
+    public function scopePublished($query)
     {
         return $query->where("published_at", "!=", null)->select("title", "slug", "short_description", "description", "location", "salary", "enable", "qualification", "experience", "published_at", "total_positions", "image", "attachments", "start_datetime", "end_datetime");
     }
@@ -248,8 +248,7 @@ class Job extends Model
      */
     public function removeAttachments()
     {
-        foreach ($this->attachments as $file)
-        {
+        foreach ($this->attachments as $file) {
             removeFile(self::STORAGE_DIRECTORY, $file);
         }
     }
@@ -285,7 +284,8 @@ class Job extends Model
      *
      * @return void
      */
-    public function activeOptions(){
+    public function activeOptions()
+    {
         return [
             0 => 'Draft',
             1 => 'Active'

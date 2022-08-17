@@ -29,7 +29,7 @@ class Post extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-        
+
     /**
      * getActiveAttribute
      *
@@ -38,9 +38,9 @@ class Post extends Model
      */
     public function getActiveAttribute($attribute)
     {
-        return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
+        return (isset($attribute)) ? $this->activeOptions()[$attribute] : '';
     }
-    
+
     /**
      * getPostCategoryAttribute
      *
@@ -49,9 +49,9 @@ class Post extends Model
      */
     public function getPostCategoryAttribute($attribute)
     {
-        return ( isset($attribute) && isset( $this->postCategoryOptions()[$attribute] ) ) ? $this->postCategoryOptions()[$attribute] : '';
+        return (isset($attribute) && isset($this->postCategoryOptions()[$attribute])) ? $this->postCategoryOptions()[$attribute] : '';
     }
-    
+
     /**
      * getStartDatetimeAttribute
      *
@@ -62,7 +62,7 @@ class Post extends Model
     {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-    
+
     /**
      * getEndDatetimeAttribute
      *
@@ -73,7 +73,7 @@ class Post extends Model
     {
         return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
     }
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -82,20 +82,20 @@ class Post extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
-    
+
     /**
      * getImageAttribute
      *
      * @param  mixed $value
      * @return mixed
      */
-    public function getImageAttribute ($value) 
+    public function getImageAttribute($value)
     {
         return serveFile(self::STORAGE_DIRECTORY, $value);
     }
-    
+
     /**
      * getLinkAttribute
      *
@@ -104,14 +104,14 @@ class Post extends Model
     public function getLinkAttribute()
     {
         return isset($this->slug) ? config('settings.client_app_base_url') . Str::plural(strtolower($this->post_category)) . '/' . $this->slug : null;
-    }    
+    }
 
     /**
      * ======================================================
      *                 Model Mutator Functions
      * ======================================================
      */
-    
+
     /**
      * setKeywordsAttribute
      *
@@ -122,7 +122,7 @@ class Post extends Model
     {
         $this->attributes['keywords'] = ($attribute) ? trim($attribute, ', ') : NULL;
     }
-    
+
     /**
      * setSlugAttribute
      *
@@ -132,25 +132,25 @@ class Post extends Model
     public function setSlugAttribute($attribute)
     {
         $this->attributes['slug'] = ($attribute) ? strtolower(trim($attribute, '- ')) : NULL;
-    }        
+    }
 
     /**
      * ======================================================
      *                  Model Scope Queries
      * ======================================================
      */
-        
+
     /**
      * scopePublished
      *
      * @param  mixed $query
      * @return mixed
      */
-    public function scopePublished($query) 
+    public function scopePublished($query)
     {
         return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords", "created_by");
     }
-    
+
     /**
      * scopeNews
      *
@@ -161,7 +161,7 @@ class Post extends Model
     {
         return $query->where('post_category', '=', 1);
     }
-    
+
     /**
      * scopeBlogs
      *
@@ -172,7 +172,7 @@ class Post extends Model
     {
         return $query->where('post_category', '=', 2);
     }
-    
+
     /**
      * scopeNewsAndBlogs
      *
@@ -183,7 +183,7 @@ class Post extends Model
     {
         return $query->whereIn('post_category', [1, 2]);
     }
-    
+
     /**
      * scopeAnnouncements
      *
@@ -193,8 +193,8 @@ class Post extends Model
     public function scopeAnnouncements($query)
     {
         return $query->where('post_category', '=', 3);
-    }    
-    
+    }
+
     /**
      * scopeApplyFilters
      *
@@ -204,7 +204,7 @@ class Post extends Model
     public function scopeApplyFilters($query)
     {
         $request = request();
-        
+
         if ($request->has('month')) {
             $query = $query->whereMonth('published_at', '=', $request->get('month'));
         }
@@ -253,7 +253,7 @@ class Post extends Model
      *
      * @return boolean
      */
-    public function isPublished() 
+    public function isPublished()
     {
         return $this->published_at !== null;
     }
@@ -271,7 +271,7 @@ class Post extends Model
             3 => 'Announcements'
         ];
     }
-    
+
     /**
      * activeOptions
      *
@@ -284,26 +284,26 @@ class Post extends Model
             1 => 'Active'
         ];
     }
-    
+
     /**
      * parseStartDate
      *
      * @return mixed
      */
-    public function parseStartDate() 
+    public function parseStartDate()
     {
         if ($this->start_datetime) {
             return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->start_datetime))));
         }
         return "";
     }
-    
+
     /**
      * parseEndDate
      *
      * @return mixed
      */
-    public function parseEndDate() 
+    public function parseEndDate()
     {
         if ($this->end_datetime) {
             return Carbon::create(str_replace('/', '-', str_replace(' PM', ':00', str_replace(' AM', ':00', $this->end_datetime))));

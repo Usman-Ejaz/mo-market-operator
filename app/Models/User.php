@@ -55,7 +55,7 @@ class User extends Authenticatable
     ];
 
     protected $attributes = [
-         'active' => 1
+        'active' => 1
     ];
 
     public const STORAGE_DIRECTORY = 'users/';
@@ -75,7 +75,7 @@ class User extends Authenticatable
      */
     public function getActiveAttribute($attribute)
     {
-        return ( isset($attribute) ) ? $this->activeOptions()[$attribute] : '';
+        return (isset($attribute)) ? $this->activeOptions()[$attribute] : '';
     }
 
     /**
@@ -86,10 +86,10 @@ class User extends Authenticatable
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
 
-     /**
+    /**
      * getImageAttribute
      *
      * @param  mixed $value

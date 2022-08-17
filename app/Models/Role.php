@@ -18,7 +18,7 @@ class Role extends Model
      *                  Model Relations
      * ======================================================
      */
-    
+
     /**
      * users
      *
@@ -28,7 +28,7 @@ class Role extends Model
     {
         return $this->hasMany(User::class);
     }
-    
+
     /**
      * permissions
      *
@@ -37,14 +37,14 @@ class Role extends Model
     public function permissions()
     {
         return $this->hasMany(Permission::class);
-    }        
+    }
 
     /**
      * ======================================================
      *                 Model Accessor Functions
      * ======================================================
      */
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -53,7 +53,7 @@ class Role extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**
@@ -61,14 +61,14 @@ class Role extends Model
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopeOrderByName
      *
      * @param  mixed $query
      * @return void
      */
-    public function scopeOrderByName($query) 
+    public function scopeOrderByName($query)
     {
         return $query->orderBy('name', 'asc');
     }

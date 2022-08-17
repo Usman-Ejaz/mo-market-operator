@@ -18,7 +18,7 @@ class StaticBlock extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-        
+
     /**
      * getCreatedAtAttribute
      *
@@ -27,6 +27,6 @@ class StaticBlock extends Model
      */
     public function getCreatedAtAttribute($value): string
     {
-        return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
+        return $value ? Carbon::parse($value)->format(config('settings.createdat_datetime_format')) : '';
     }
 }

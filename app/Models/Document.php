@@ -78,7 +78,7 @@ class Document extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**
@@ -111,7 +111,7 @@ class Document extends Model
     public function getDocumentLinksAttribute()
     {
         $filePaths = [];
-        foreach($this->file as $filename) {
+        foreach ($this->file as $filename) {
             array_push($filePaths, serveFile(self::STORAGE_DIRECTORY, $filename));
         }
         return $filePaths;
@@ -129,7 +129,7 @@ class Document extends Model
      * @param  mixed $query
      * @return mixed
      */
-    public function scopePublished ($query)
+    public function scopePublished($query)
     {
         return $query->where("published_at", "!=", null)->select("title", "file", "keywords", "category_id", "published_at", "image", "slug");
     }
