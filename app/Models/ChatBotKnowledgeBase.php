@@ -25,9 +25,9 @@ class ChatBotKnowledgeBase extends Model
      * @param  mixed $value
      * @return mixed
      */
-    public function getCreatedAtAttribute ($value) 
+    public function getCreatedAtAttribute($value)
     {
-        return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
+        return $value ? Carbon::parse($value)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**
@@ -35,7 +35,7 @@ class ChatBotKnowledgeBase extends Model
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopeSearchByKeyword
      *
@@ -46,9 +46,9 @@ class ChatBotKnowledgeBase extends Model
     public function scopeSearchByKeyword($query, $question)
     {
         $question = explode(" ", strtolower($question));
-        
+
         $question = $this->unsetCommonWords($question);
-        
+
         $query->where(function ($q) use ($question) {
             foreach ($question as $part) {
                 $q->orWhere('keywords', 'like', "%{$part}%");
@@ -63,7 +63,7 @@ class ChatBotKnowledgeBase extends Model
      *                  Model Helper Functions
      * ======================================================
      */
-    
+
     /**
      * unsetCommonWords
      *

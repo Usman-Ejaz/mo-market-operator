@@ -18,18 +18,18 @@ class Subscriber extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-    
+
     /**
      * getStatusAttribute
      *
      * @param  mixed $attribute
      * @return void
      */
-    public function getStatusAttribute($attribute) 
+    public function getStatusAttribute($attribute)
     {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
     }
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -38,7 +38,7 @@ class Subscriber extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**
@@ -46,14 +46,14 @@ class Subscriber extends Model
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopeNewletters
      *
      * @param  mixed $query
      * @return void
      */
-    public function scopeNewletters($query) 
+    public function scopeNewletters($query)
     {
         return $query->where("status", 1);
     }
@@ -63,13 +63,13 @@ class Subscriber extends Model
      *                 Model Helper Functions
      * ======================================================
      */
-    
+
     /**
      * activeOptions
      *
      * @return void
      */
-    private function activeOptions() 
+    private function activeOptions()
     {
         return [
             0 => 'Unsubscribed',
