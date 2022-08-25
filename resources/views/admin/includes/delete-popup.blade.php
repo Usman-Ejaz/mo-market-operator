@@ -6,7 +6,7 @@
                 {{ csrf_field() }}
                 {{ method_field("DELETE") }}
                 <div class="modal-header bg-primary">
-                    <h5 class="modal-title" id="heading">
+                    <h5 class="modal-title" id="heading_deleteModal">
                         Delete record?
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
