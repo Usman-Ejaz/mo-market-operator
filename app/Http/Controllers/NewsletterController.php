@@ -129,25 +129,30 @@ class NewsletterController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $options = '';
-                    if( hasPermission('newsletters', 'sendNewsLetter') ) {
-                        $options .= '<form action="'. route('admin.newsletters.sendNewsLetter', $row->id ) .'" method="POST" style="display: inline-block;">
-                                '.csrf_field().'
-                                <button type="submit" class="btn btn-info"
-                                    onclick="return confirm(\'Are You Sure Want to send this newsletter to subscribers?\')" title="Send Newsletter">
-                                        <i class="fas fa-paper-plane"></i>
-                                </button>
-                            </form>';
+                    if (hasPermission('newsletters', 'sendNewsLetter')) {
+                        $action = route('admin.newsletters.sendNewsLetter', $row->id);
+                        $options .= '<button type="buttom" class="btn btn-info subscribe_button" data-link="' . $action . '" title="Send Newsletter">
+                                            <i class="fas fa-paper-plane" data-link="' . $action . '"></i>
+                                    </button>';
+
+                        // $options .= '<form action="' . route('admin.newsletters.sendNewsLetter', $row->id) . '" method="POST" style="display: inline-block;">
+                        //         ' . csrf_field() . '
+                        //         <button type="submit" class="btn btn-info"
+                        //             onclick="return confirm(\'Are You Sure Want to send this newsletter to subscribers?\')" title="Send Newsletter">
+                        //                 <i class="fas fa-paper-plane"></i>
+                        //         </button>
+                        //     </form>';
                     }
 
-                    if( hasPermission('newsletters', 'edit') ) {
-                        $options .= ' <a href="'. route('admin.newsletters.edit',$row->id) .'" class="btn btn-primary" title="Edit">
+                    if (hasPermission('newsletters', 'edit')) {
+                        $options .= ' <a href="' . route('admin.newsletters.edit', $row->id) . '" class="btn btn-primary" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                         </a>';
                     }
 
-                    if( hasPermission('newsletters', 'delete') ) {
-                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.newsletters.destroy', $row->id ) .'" title="Delete">
-                                <i class="fas fa-trash" data-action="'. route('admin.newsletters.destroy', $row->id ) .'"></i>
+                    if (hasPermission('newsletters', 'delete')) {
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.newsletters.destroy', $row->id) . '" title="Delete">
+                                <i class="fas fa-trash" data-action="' . route('admin.newsletters.destroy', $row->id) . '"></i>
                         </button>';
                     }
                     return $options;
@@ -157,7 +162,8 @@ class NewsletterController extends Controller
         }
     }
 
-    private function validateRequest($newsletter){
+    private function validateRequest($newsletter)
+    {
 
         return request()->validate([
             'subject' => 'required|min:3',
@@ -173,8 +179,8 @@ class NewsletterController extends Controller
 
         dispatch(new SendNewsletterEmail($newsletter, auth()->id()));
 
-        $request->session()->flash('success', 'Newsletter has been sent successfully!');
-        return redirect()->route('admin.newsletters.index');
+        return response(['message' => 'Newsletter has been sent successfully!'], 200);
+        // $request->session()->flash('success', 'Newsletter has been sent successfully!');
+        // return redirect()->route('admin.newsletters.index');
     }
 }
-
