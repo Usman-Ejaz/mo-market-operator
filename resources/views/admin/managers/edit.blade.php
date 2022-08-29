@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Managers')
+@section('header', 'Edit Manager')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.managers.index') }}">Managers</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Edit Manager</li>
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
 			<div class="col-md-12">
 				<div class="card card-primary">
 					<div class="card-header">
-						<h3 class="card-title">Edit Manager Profile - {{ $manager->name }}</h3>
+						<h3 class="card-title">Edit Manager - {{ $manager->name }}</h3>
 					</div>
 
 					@method('PATCH')
