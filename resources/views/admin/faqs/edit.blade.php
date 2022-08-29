@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'FAQ')
+@section('header', 'Edit FAQ')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.faqs.index') }}">FAQs</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Edit FAQ</li>
 @endsection
 
 @section('content')

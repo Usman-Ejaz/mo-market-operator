@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Users')
+@section('header', 'Create User')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">Users</a></li>
-<li class="breadcrumb-item active">Create</li>
+<li class="breadcrumb-item active">Create User</li>
 @endsection
 
 @section('content')

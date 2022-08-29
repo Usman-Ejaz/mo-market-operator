@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Search Statistics')
+@section('header', 'View Statistics')
 @section('breadcrumbs')
   <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
   <li class="breadcrumb-item"><a href="{{ route('admin.search-statistics.index') }}">Search Statistics</a></li>
-  <li class="breadcrumb-item active">View</li>
+  <li class="breadcrumb-item active">View Statistics</li>
 @endsection
 
 @section('addButton')
@@ -52,12 +52,12 @@
         </div>
         <!-- /.container-fluid -->
 
-    </div>   
+    </div>
 @endsection
 
 @push('optional-styles')
-  
+
 @endpush
 
-@push('optional-scripts')  
+@push('optional-scripts')
 @endpush

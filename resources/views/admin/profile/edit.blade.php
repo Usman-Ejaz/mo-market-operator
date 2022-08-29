@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
-@section('header', 'Profile')
+@section('header', 'Update Profile')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-<li class="breadcrumb-item active">Profile</li>
+<li class="breadcrumb-item active">Update Profile</li>
 @endsection
 
 @section('content')
