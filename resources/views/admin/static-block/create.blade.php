@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Static Block')
+@section('header', 'Create Static Block')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.static-block.index') }}">Static Block</a></li>
-<li class="breadcrumb-item active">Create</li>
+<li class="breadcrumb-item active">Create Static Block</li>
 @endsection
 
 

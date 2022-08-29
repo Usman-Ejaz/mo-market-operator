@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Broken Links')
+@section('header', 'View Broken Link')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.broken-links.index') }}">Broken Links</a></li>
-<li class="breadcrumb-item active">View</li>
+<li class="breadcrumb-item active">View Broken Link</li>
 @endsection
 
 @section('addButton')

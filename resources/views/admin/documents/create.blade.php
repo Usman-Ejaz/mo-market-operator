@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Documents')
+@section('header', 'Create Document')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.documents.index') }}">Documents</a></li>
-<li class="breadcrumb-item active">Create</li>
+<li class="breadcrumb-item active">Create Document</li>
 @endsection
 
 @push('optional-styles')

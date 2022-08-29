@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Media Library')
+@section('header', 'Edit Media Library')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.media-library.index') }}">Media Library</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Edit Media Library</li>
 @endsection
 
 @section('content')

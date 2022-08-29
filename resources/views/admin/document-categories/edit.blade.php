@@ -1,10 +1,10 @@
 @extends('admin.layouts.app')
-@section('header', 'Document Categories')
+@section('header', 'Edit Document Category')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.documents.index') }}">Documents</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.document-categories.index') }}">Document Categories</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Edit Document Category</li>
 @endsection
 
 @section('content')

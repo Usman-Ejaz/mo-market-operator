@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Slider Settings')
+@section('header', 'Edit Slider Settings')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.slider-images.index') }}">Slider Images</a></li>
-<li class="breadcrumb-item active">Slider Settings</li>
+<li class="breadcrumb-item active">Edit Slider Settings</li>
 @endsection
 
 @section('content')
