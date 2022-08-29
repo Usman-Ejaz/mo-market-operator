@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('header', 'Chatbot Feedback')
+@section('header', 'View Chatbot Feedback')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.chatbot-feedbacks.index') }}">Chatbot Feedback</a></li>
