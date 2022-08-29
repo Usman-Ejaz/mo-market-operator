@@ -3,7 +3,7 @@
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.chatbot-feedbacks.index') }}">Chatbot Feedback</a></li>
-<li class="breadcrumb-item active">View</li>
+<li class="breadcrumb-item active">View Chatbot Feedback</li>
 @endsection
 
 @section('addButton')
