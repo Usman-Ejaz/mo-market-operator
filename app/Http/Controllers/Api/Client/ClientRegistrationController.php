@@ -170,8 +170,6 @@ class ClientRegistrationController extends BaseApiController
 
                 return $this->sendResponse($clientToken, __("messages.success"));
             }
-
-
         } catch (\Illuminate\Database\QueryException $ex) {
             return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         } catch (\Exception $ex) {
@@ -184,7 +182,8 @@ class ClientRegistrationController extends BaseApiController
      *
      * @return array
      */
-    private function getRules($request, $client): array {
+    private function getRules($request, $client): array
+    {
         return [
             'name' => 'required|string|min:3',
             'type' => 'required|string|in:' . implode(",", Client::TYPE),
@@ -228,7 +227,8 @@ class ClientRegistrationController extends BaseApiController
      *
      * @return array
      */
-    private function getMessages(): array {
+    private function getMessages(): array
+    {
         return [
             //
         ];
@@ -239,7 +239,8 @@ class ClientRegistrationController extends BaseApiController
      *
      * @return array
      */
-    private function getAttributes(): array {
+    private function getAttributes(): array
+    {
         return [
             'primary_details.name' => 'name',
             'primary_details.email' => 'email',
@@ -272,7 +273,7 @@ class ClientRegistrationController extends BaseApiController
             'address_line_one'  => $data['address_line_one'],
             'address_line_two'  => $data['address_line_two'],
             'city'              => $data['city'],
-            'state'	            => $data['state'],
+            'state'                => $data['state'],
             'zipcode'           => $data['zipcode'],
             'country'           => $data['country'],
             'categories'        => $data['categories']
@@ -304,7 +305,7 @@ class ClientRegistrationController extends BaseApiController
      */
     private function storeClientDetails($data, $type, $clientId, $isUpdating = false)
     {
-        if (! $isUpdating) {
+        if (!$isUpdating) {
             ClientDetail::create([
                 'client_id'             => $clientId,
                 'name'                  => $data['name'],
@@ -314,7 +315,7 @@ class ClientRegistrationController extends BaseApiController
                 'address_line_one'      => $data['address_line_one'],
                 'address_line_two'      => $data['address_line_two'],
                 'city'                  => $data['city'],
-                'state'	                => $data['state'],
+                'state'                    => $data['state'],
                 'zipcode'               => $data['zipcode'],
                 'telephone'             => $data['telephone'],
                 'facsimile_telephone'   => $data['facsimile_telephone'],
@@ -326,23 +327,39 @@ class ClientRegistrationController extends BaseApiController
             $clientDetails = ClientDetail::where(['client_id' => $clientId, 'type' => $type])->first();
 
             if ($clientDetails) {
-                removeFile(ClientDetail::SIGNATURE_DIR ,$clientDetails->signature);
-            }
+                removeFile(ClientDetail::SIGNATURE_DIR, $clientDetails->signature);
 
-            $clientDetails->update([
-                'name'                  => $data['name'],
-                'email'                 => $data['email'],
-                'designation'           => $data['designation'],
-                'type'                  => $type,
-                'address_line_one'      => $data['address_line_one'],
-                'address_line_two'      => $data['address_line_two'],
-                'city'                  => $data['city'],
-                'state'	                => $data['state'],
-                'zipcode'               => $data['zipcode'],
-                'telephone'             => $data['telephone'],
-                'facsimile_telephone'   => $data['facsimile_telephone'],
-                'signature'             => $this->saveSignatures($data['signature'])
-            ]);
+                $clientDetails->update([
+                    'name'                  => $data['name'],
+                    'email'                 => $data['email'],
+                    'designation'           => $data['designation'],
+                    'type'                  => $type,
+                    'address_line_one'      => $data['address_line_one'],
+                    'address_line_two'      => $data['address_line_two'],
+                    'city'                  => $data['city'],
+                    'state'                 => $data['state'],
+                    'zipcode'               => $data['zipcode'],
+                    'telephone'             => $data['telephone'],
+                    'facsimile_telephone'   => $data['facsimile_telephone'],
+                    'signature'             => $this->saveSignatures($data['signature'])
+                ]);
+            } else {
+                ClientDetail::create([
+                    'name'                  => $data['name'],
+                    'email'                 => $data['email'],
+                    'designation'           => $data['designation'],
+                    'type'                  => $type,
+                    'client_id'             => $clientId,
+                    'address_line_one'      => $data['address_line_one'],
+                    'address_line_two'      => $data['address_line_two'],
+                    'city'                  => $data['city'],
+                    'state'                 => $data['state'],
+                    'zipcode'               => $data['zipcode'],
+                    'telephone'             => $data['telephone'],
+                    'facsimile_telephone'   => $data['facsimile_telephone'],
+                    'signature'             => $this->saveSignatures($data['signature'])
+                ]);
+            }
         }
     }
 
@@ -650,7 +667,7 @@ class ClientRegistrationController extends BaseApiController
             'address_line_one'  => $data['address_line_one'],
             'address_line_two'  => $data['address_line_two'],
             'city'              => $data['city'],
-            'state'	            => $data['state'],
+            'state'             => $data['state'],
             'zipcode'           => $data['zipcode'],
             'country'           => $data['country'],
             'categories'        => $data['categories']
@@ -756,7 +773,7 @@ class ClientRegistrationController extends BaseApiController
         $removedCategories = array_diff($clientCategories, $newCategories);
 
         if (count($removedCategories) > 0) {
-            foreach ($removedCategories as $index => $value)  {
+            foreach ($removedCategories as $index => $value) {
 
                 $files = ClientAttachment::where(['client_id' => $clientId, 'category_id' => $value])->get();
 
