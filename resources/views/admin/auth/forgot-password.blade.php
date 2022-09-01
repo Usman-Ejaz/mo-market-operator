@@ -1,5 +1,7 @@
 @extends('admin.layouts.guest')
 
+@section('title', ' - Forgot Password')
+
 @section('content')
 
 <div class="login-box">
@@ -22,7 +24,7 @@
         {{ session('status') }}
         </div>
       @endif
-      
+
       <form method="POST" action="{{ route('admin.password.email') }}" autocomplete="off">
       @csrf
         <div class="input-group mb-3">
