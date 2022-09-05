@@ -1,6 +1,6 @@
 @extends('admin.layouts.guest')
 
-@section('title', ' - Login')
+@section('title', 'Login - ')
 
 @section('content')
 <div class="login-box">
