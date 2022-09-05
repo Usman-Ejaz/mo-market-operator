@@ -1,5 +1,7 @@
 @extends('admin.layouts.guest')
 
+@section('title', 'Create password - ')
+
 @section('content')
 
 <div class="login-box">

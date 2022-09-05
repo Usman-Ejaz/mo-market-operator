@@ -20,7 +20,7 @@ class MediaLibrary extends Model
      *                  Model Relations
      * ======================================================
      */
-    
+
     /**
      * mediaFiles
      *
@@ -30,13 +30,13 @@ class MediaLibrary extends Model
     {
         return $this->hasMany(MediaLibraryFile::class, 'media_library_id', 'id');
     }
-    
+
     /**
      * ======================================================
      *                 Model Accessor Functions
      * ======================================================
      */
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -45,7 +45,7 @@ class MediaLibrary extends Model
      */
     public function getCreatedAtAttribute($value)
     {
-        return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
+        return $value ? Carbon::parse($value)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**

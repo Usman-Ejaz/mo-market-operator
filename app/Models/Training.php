@@ -62,7 +62,7 @@ class Training extends Model
      */
     public function getCreatedAtAttribute($value)
     {
-        return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
+        return $value ? Carbon::parse($value)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**

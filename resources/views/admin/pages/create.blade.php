@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'CMS Pages')
+@section('header', 'Create Page')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.pages.index') }}">CMS Pages</a></li>
-<li class="breadcrumb-item active">Create</li>
+<li class="breadcrumb-item active">Create Page</li>
 @endsection
 
 @push('optional-styles')

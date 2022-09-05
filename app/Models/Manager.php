@@ -20,7 +20,7 @@ class Manager extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-    
+
     /**
      * getCreatedAtAttribute
      *
@@ -29,9 +29,9 @@ class Manager extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
-    
+
     /**
      * getImageAttribute
      *
@@ -48,7 +48,7 @@ class Manager extends Model
      *                  Model Relations
      * ======================================================
      */
-    
+
     /**
      * teamMembers
      *
@@ -64,7 +64,7 @@ class Manager extends Model
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopeSortByOrder
      *

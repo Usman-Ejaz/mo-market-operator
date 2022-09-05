@@ -31,9 +31,9 @@ class Application extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
-    
+
     /**
      * getResumeAttribute
      *
@@ -50,16 +50,14 @@ class Application extends Model
      *                  Model Relations
      * ======================================================
      */
-        
+
     /**
      * applicationsJob
      *
      * @return mixed
      */
     public function applicationsJob()
-    {        
+    {
         return $this->belongsTo(Job::class);
     }
-
-    
 }

@@ -56,8 +56,7 @@ if (!function_exists("removeFile")) {
 
     function removeFile($dir, $oldFile)
     {
-        if (Storage::disk(config('settings.storage_disk'))->exists($dir . basename($oldFile)))
-        {
+        if (Storage::disk(config('settings.storage_disk'))->exists($dir . basename($oldFile))) {
             Storage::disk(config('settings.storage_disk'))->delete($dir . basename($oldFile));
             return true;
         }
@@ -75,7 +74,7 @@ if (!function_exists('downloadFile')) {
     }
 }
 
-if (! function_exists('getFileOriginalName')) {
+if (!function_exists('getFileOriginalName')) {
 
     function getFileOriginalName($file)
     {
@@ -109,14 +108,16 @@ if (!function_exists("hasPermission")) {
 
 if (!function_exists('getNotifiableUsers')) {
 
-    function getNotifiableUsers() {
+    function getNotifiableUsers()
+    {
         return User::notifiable()->get();
     }
 }
 
 if (!function_exists('settings')) {
 
-    function settings($option) {
+    function settings($option)
+    {
 
         if ($option === null || $option === "") return null;
 
@@ -144,16 +145,15 @@ if (!function_exists('str_slug')) {
     }
 }
 
-if (! function_exists('encodeBase64')) {
+if (!function_exists('encodeBase64')) {
 
     function encodeBase64($key)
     {
         return base64_encode(base64_encode(base64_encode($key)));
     }
-
 }
 
-if (! function_exists('decodeBase64')) {
+if (!function_exists('decodeBase64')) {
 
     function decodeBase64($key)
     {

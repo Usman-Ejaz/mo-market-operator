@@ -31,7 +31,7 @@ class Page extends Model
      * @param  mixed $attribute
      * @return mixed
      */
-    public function getActiveAttribute ($attribute)
+    public function getActiveAttribute($attribute)
     {
         return isset($attribute) ? $this->activeOptions()[$attribute] : '';
     }
@@ -66,7 +66,7 @@ class Page extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**
@@ -75,7 +75,7 @@ class Page extends Model
      * @param  mixed $value
      * @return void
      */
-    public function getImageAttribute ($value)
+    public function getImageAttribute($value)
     {
         return !empty($value) ? serveFile(self::STORAGE_DIRECTORY, $value) : null;
     }
@@ -86,7 +86,7 @@ class Page extends Model
      * @param  mixed $value
      * @return void
      */
-    public function getLinkAttribute ($value)
+    public function getLinkAttribute($value)
     {
         return !empty($this->slug) ? config('settings.client_app_base_url') . $this->slug : null;
     }

@@ -39,6 +39,7 @@
 	<!-- /.row -->
 </div>
 @include('admin.includes.delete-popup')
+@include('admin.includes.confirm-popup')
 @endsection
 
 @push('optional-styles')
@@ -97,6 +98,34 @@
         $('#deleteForm').submit(function (event) {
             $(this).attr('action', action);
         });
+
+        $('body').on('click', '.subscribe_button', (e) => {
+            action = e.target.dataset.link;
+            $('#msg_heading').text('Are you sure?');
+            $('#msg_body').text('Are you sure you want to send this newsletter?');
+            $('#confirm').addClass('btn-primary').removeClass('btn-danger');
+            $('#confirmModal').modal('toggle');
+        });
+
+        $('#confirm').click(e => {
+            $.ajax({
+                url: action,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: (response) => {
+                    if (response.message) {
+                        $('#confirmModal').modal('toggle');
+                        toastr.success(response.message);
+                    }
+                },
+                error: (error) => {
+                    $('#confirmModal').modal('toggle');
+                    toastr.error('Something went wrong!');
+                }
+            })
+        })
 
 	});
 </script>

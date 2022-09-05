@@ -1,9 +1,9 @@
 @extends('admin.layouts.app')
-@section('header', 'Chatbot Knowledge Base')
+@section('header', 'Create Chatbot Knowledge Base')
 @section('breadcrumbs')
 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
 <li class="breadcrumb-item"><a href="{{ route('admin.knowledge-base.index') }}">Chatbot Knowledge Base</a></li>
-<li class="breadcrumb-item active">Create</li>
+<li class="breadcrumb-item active">Create Chatbot Knowledge Base</li>
 @endsection
 
 @push('optional-styles')

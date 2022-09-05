@@ -12,7 +12,7 @@ class FaqCategory extends Model
     use HasFactory, CreatedModifiedBy;
 
     protected $guarded = [];
-    
+
     /**
      * ======================================================
      *                 Model Accessor Functions
@@ -27,9 +27,9 @@ class FaqCategory extends Model
      */
     public function getCreatedAtAttribute($attribute)
     {
-        return $attribute ? Carbon::parse($attribute)->format(config('settings.datetime_format')) : '';
+        return $attribute ? Carbon::parse($attribute)->format(config('settings.createdat_datetime_format')) : '';
     }
-    
+
     /**
      * ======================================================
      *                  Model Relations
@@ -41,7 +41,7 @@ class FaqCategory extends Model
      *
      * @return mixed
      */
-    public function faqs() 
+    public function faqs()
     {
         return $this->hasMany(Faq::class, "category_id", "id");
     }

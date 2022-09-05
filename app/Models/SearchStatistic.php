@@ -17,16 +17,16 @@ class SearchStatistic extends Model
      *                 Model Accessor Functions
      * ======================================================
      */
-    
+
     /**
      * getCreatedAtAttribute
      *
      * @param  mixed $value
      * @return mixed
      */
-    public function getCreatedAtAttribute ($value) 
+    public function getCreatedAtAttribute($value)
     {
-        return $value ? Carbon::parse($value)->format(config('settings.datetime_format')) : '';
+        return $value ? Carbon::parse($value)->format(config('settings.createdat_datetime_format')) : '';
     }
 
     /**
@@ -34,18 +34,18 @@ class SearchStatistic extends Model
      *                  Model Scope Queries
      * ======================================================
      */
-    
+
     /**
      * scopeOrderByCount
      *
      * @param  mixed $query
      * @return mixed
      */
-    public function scopeOrderByCount($query) 
+    public function scopeOrderByCount($query)
     {
         return $query->orderBy('count', 'desc');
     }
-    
+
     /**
      * scopeGroupByKeyword
      *
