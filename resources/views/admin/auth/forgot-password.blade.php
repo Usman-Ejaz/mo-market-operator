@@ -1,6 +1,6 @@
 @extends('admin.layouts.guest')
 
-@section('title', ' - Forgot Password')
+@section('title', 'Forgot Password - ')
 
 @section('content')
 
