@@ -60,7 +60,7 @@
                 <td colspan="2"><strong>Signature: </strong></td>
                 <td colspan="2"></td>
             </tr>
-            <tr>
+            <tr colspan="2">
                 <td colspan="2">
                     <img src="{{ $primaryDetails->signature }}" width="100%;">
                 </td>
@@ -95,7 +95,7 @@
                     <td colspan="2"><strong>Signature: </strong></td>
                     <td colspan="2"></td>
                 </tr>
-                <tr>
+                <tr colspan="2">
                     <td colspan="2">
                         <img src="{{ $secondaryDetails->signature }}" width="100%;">
                     </td>
@@ -114,7 +114,7 @@
                 <td colspan="2"><strong>Signature: </strong></td>
                 <td colspan="2"></td>
             </tr>
-            <tr>
+            <tr colspan="2">
                 <td colspan="2">
                     <img src="{{ $client->dec_signature }}" width="100%;">
                 </td>
