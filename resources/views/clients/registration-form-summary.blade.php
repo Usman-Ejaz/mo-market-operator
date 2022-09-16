@@ -60,6 +60,8 @@
                 <td colspan="2"><strong>Signature: </strong></td>
                 <td colspan="2"></td>
             </tr>
+        </table>
+        <table width="100%">
             <tr colspan="2">
                 <td colspan="2">
                     <img src="{{ $primaryDetails->signature }}" width="100%;">
@@ -91,6 +93,8 @@
                     <td colspan="2"><strong>Telephone: </strong> {{ $secondaryDetails->telephone }} </td>
                     <td colspan="2"><strong>Facsimile Telephone: </strong> {{ $secondaryDetails->facsimile_telephone }} </td>
                 </tr>
+            </table>
+            <table width="100%">
                 <tr>
                     <td colspan="2"><strong>Signature: </strong></td>
                     <td colspan="2"></td>
@@ -110,6 +114,9 @@
                 <td colspan="2"><strong>Name: </strong> {{ $client->dec_name }} </td>
                 <td colspan="2"><strong>Date: </strong> {{ \Carbon\Carbon::parse($client->dec_date)->format('m-d-Y') }} </td>
             </tr>
+            
+        </table>
+        <table width="100%">
             <tr>
                 <td colspan="2"><strong>Signature: </strong></td>
                 <td colspan="2"></td>
