@@ -2,7 +2,7 @@
 
 return [
     'datetime_placeholder' => 'DD/MM/YYYY hh:mm',
-    'datetime_format' => 'd/m/Y H:i A',
+    'datetime_format' => 'd/m/Y H:i',
     'createdat_datetime_format' => 'd/m/Y g:i A',
     'themes' => [
         'theme1' => 'Theme 1',
