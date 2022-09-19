@@ -13,60 +13,58 @@
         </h3>
         <table style="width: 100%">
             <tr>
-                <td colspan="2"><strong>Name: </strong> {{ $client->name }} </td>
-                <td colspan="2"><strong>Business: </strong> {{ $client->business }} </td>
+                <td width="50%"><strong>Name: </strong> {{ $client->name }} </td>
+                <td width="50%"><strong>Business: </strong> {{ $client->business }} </td>
             </tr>
             <tr>
-                <td colspan="2"><strong>Type: </strong> {{ __('client.registration_types.' . $client->type) }} </td>
-                <td colspan="2"><strong>Categories: </strong> {{ $client->category_labels }} </td>
+                <td width="50%"><strong>Type: </strong> {{ __('client.registration_types.' . $client->type) }} </td>
+                <td width="50%"><strong>Categories: </strong> {{ $client->category_labels }} </td>
             </tr>
             <tr>
-                <td colspan="2"><strong>Address Line One: </strong> {{ $client->address_line_one }} </td>
-                <td colspan="2"><strong>Address Line Two: </strong> {{ $client->address_line_two }} </td>
+                <td width="50%"><strong>Address Line One: </strong> {{ $client->address_line_one }} </td>
+                <td width="50%"><strong>Address Line Two: </strong> {{ $client->address_line_two }} </td>
             </tr>
             <tr>
-                <td colspan="2"><strong>City: </strong> {{ $client->city }} </td>
-                <td colspan="2"><strong>State: </strong> {{ $client->state }} </td>
+                <td width="50%"><strong>City: </strong> {{ $client->city }} </td>
+                <td width="50%"><strong>State: </strong> {{ $client->state }} </td>
             </tr>
             <tr>
-                <td colspan="2"><strong>Zip Code: </strong> {{ $client->zipcode }} </td>
-                <td colspan="2"><strong>Country: </strong> {{ $client->country }} </td>
+                <td width="50%"><strong>Zip Code: </strong> {{ $client->zipcode }} </td>
+                <td width="50%"><strong>Country: </strong> {{ $client->country }} </td>
             </tr>
         </table>
 
         <h4 style="margin-top: 30px;">{{ ucfirst($primaryDetails->type) }} Details</h4>
         <table style="width: 100%; margin-top: 10px;">
             <tr>
-                <td colspan="2"><strong>Name: </strong> {{ $primaryDetails->name }} </td>
-                <td colspan="2"><strong>Email: </strong> {{ $primaryDetails->email }} </td>
+                <td width="50%"><strong>Name: </strong> {{ $primaryDetails->name }} </td>
+                <td width="50%"><strong>Email: </strong> {{ $primaryDetails->email }} </td>
             </tr>
             <tr>
-                <td colspan="2"><strong>Address Line One: </strong> {{ $primaryDetails->address_line_one }} </td>
-                <td colspan="2"><strong>Address Line Two: </strong> {{ $primaryDetails->address_line_two }} </td>
+                <td width="50%"><strong>Address Line One: </strong> {{ $primaryDetails->address_line_one }} </td>
+                <td width="50%"><strong>Address Line Two: </strong> {{ $primaryDetails->address_line_two }} </td>
             </tr>
             <tr>
-                <td colspan="2"><strong>City: </strong> {{ $primaryDetails->city }} </td>
-                <td colspan="2"><strong>State: </strong> {{ $primaryDetails->state }} </td>
+                <td width="50%"><strong>City: </strong> {{ $primaryDetails->city }} </td>
+                <td width="50%"><strong>State: </strong> {{ $primaryDetails->state }} </td>
             </tr>
             <tr>
-                <td colspan="2"><strong>Zip Code: </strong> {{ $primaryDetails->zipcode }} </td>
-                <td colspan="2"> </td>
+                <td width="50%"><strong>Zip Code: </strong> {{ $primaryDetails->zipcode }} </td>
+                <td width="50%"> </td>
             </tr>
             <tr>
-                <td colspan="2"><strong>Telephone: </strong> {{ $primaryDetails->telephone }} </td>
-                <td colspan="2"><strong>Facsimile Telephone: </strong> {{ $primaryDetails->facsimile_telephone }} </td>
-            </tr>
-            <tr>
-                <td colspan="2"><strong>Signature: </strong></td>
-                <td colspan="2"></td>
+                <td width="50%"><strong>Telephone: </strong> {{ $primaryDetails->telephone }} </td>
+                <td width="50%"><strong>Facsimile Telephone: </strong> {{ $primaryDetails->facsimile_telephone }} </td>
             </tr>
         </table>
         <table width="100%">
-            <tr colspan="2">
-                <td colspan="2">
-                    <img src="{{ $primaryDetails->signature }}" width="100%;">
+            <tr>
+                <td><strong>Signature: </strong></td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="{{ $primaryDetails->signature }}">
                 </td>
-                <td colspan="2"></td>
             </tr>
         </table>
 
@@ -74,36 +72,36 @@
             <h4 style="margin-top: 30px;">{{ ucfirst($secondaryDetails->type) }} Details</h4>
             <table style="width: 100%; margin-top: 10px;">
                 <tr>
-                    <td colspan="2"><strong>Name: </strong> {{ $secondaryDetails->name }} </td>
-                    <td colspan="2"><strong>Email: </strong> {{ $secondaryDetails->email }} </td>
+                    <td width="50%"><strong>Name: </strong> {{ $secondaryDetails->name }} </td>
+                    <td width="50%"><strong>Email: </strong> {{ $secondaryDetails->email }} </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><strong>Address Line One: </strong> {{ $secondaryDetails->address_line_one }} </td>
-                    <td colspan="2"><strong>Address Line Two: </strong> {{ $secondaryDetails->address_line_two }} </td>
+                    <td width="50%"><strong>Address Line One: </strong> {{ $secondaryDetails->address_line_one }} </td>
+                    <td width="50%"><strong>Address Line Two: </strong> {{ $secondaryDetails->address_line_two }} </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><strong>City: </strong> {{ $secondaryDetails->city }} </td>
-                    <td colspan="2"><strong>State: </strong> {{ $secondaryDetails->state }} </td>
+                    <td width="50%"><strong>City: </strong> {{ $secondaryDetails->city }} </td>
+                    <td width="50%"><strong>State: </strong> {{ $secondaryDetails->state }} </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><strong>Zip Code: </strong> {{ $secondaryDetails->zipcode }} </td>
-                    <td colspan="2"> </td>
+                    <td width="50%"><strong>Zip Code: </strong> {{ $secondaryDetails->zipcode }} </td>
+                    <td width="50%"> </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><strong>Telephone: </strong> {{ $secondaryDetails->telephone }} </td>
-                    <td colspan="2"><strong>Facsimile Telephone: </strong> {{ $secondaryDetails->facsimile_telephone }} </td>
+                    <td width="50%"><strong>Telephone: </strong> {{ $secondaryDetails->telephone }} </td>
+                    <td width="50%"><strong>Facsimile Telephone: </strong> {{ $secondaryDetails->facsimile_telephone }} </td>
                 </tr>
             </table>
             <table width="100%">
                 <tr>
-                    <td colspan="2"><strong>Signature: </strong></td>
-                    <td colspan="2"></td>
+                    <td><strong>Signature: </strong></td>
+                    
                 </tr>
-                <tr colspan="2">
-                    <td colspan="2">
-                        <img src="{{ $secondaryDetails->signature }}" width="100%;">
+                <tr>
+                    <td>
+                        <img src="{{ $secondaryDetails->signature }}">
                     </td>
-                    <td colspan="2"></td>
+                    
                 </tr>
             </table>
         @endif
@@ -111,21 +109,20 @@
         <h4 style="margin-top: 30px;">Declaration of Conformity</h4>
         <table style="width: 100%; margin-top: 10px;">
             <tr>
-                <td colspan="2"><strong>Name: </strong> {{ $client->dec_name }} </td>
-                <td colspan="2"><strong>Date: </strong> {{ \Carbon\Carbon::parse($client->dec_date)->format('m-d-Y') }} </td>
+                <td width="50%"><strong>Name: </strong> {{ $client->dec_name }} </td>
+                <td width="50%"><strong>Date: </strong> {{ \Carbon\Carbon::parse($client->dec_date)->format('m-d-Y') }} </td>
             </tr>
             
         </table>
         <table width="100%">
             <tr>
-                <td colspan="2"><strong>Signature: </strong></td>
-                <td colspan="2"></td>
+                <td><strong>Signature: </strong></td>
             </tr>
-            <tr colspan="2">
-                <td colspan="2">
-                    <img src="{{ $client->dec_signature }}" width="100%;">
+            <tr>
+                <td>
+                    <img src="{{ $client->dec_signature }}">
                 </td>
-                <td colspan="2"></td>
+               
             </tr>
         </table>
 
