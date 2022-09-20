@@ -10,7 +10,7 @@
 <body>
     <div style="width: 100%">
         <h4 style="text-align: center; margin-bottom: 30px;">
-            Registration Application
+            <strong>Registration Application</strong>
         </h4>
         <table style="width: 100%">
             <tr>
@@ -35,7 +35,7 @@
             </tr>
         </table>
 
-        <h5 style="margin-top: 30px;">{{ ucfirst($primaryDetails->type) }} Details</h5>
+        <h5 style="margin-top: 30px;"><strong>{{ ucfirst($primaryDetails->type) }} Details</strong></h5>
         <table style="width: 100%; margin-top: 10px;">
             <tr>
                 <td width="50%"><strong>Name: </strong> {{ $primaryDetails->name }} </td>
@@ -70,7 +70,7 @@
         </table>
 
         @if ($secondaryDetails)
-            <h5 style="margin-top: 30px;">{{ ucfirst($secondaryDetails->type) }} Details</h5>
+            <h5 style="margin-top: 30px;"><strong>{{ ucfirst($secondaryDetails->type) }} Details</strong></h5>
             <table style="width: 100%; margin-top: 10px;">
                 <tr>
                     <td width="50%"><strong>Name: </strong> {{ $secondaryDetails->name }} </td>
@@ -107,7 +107,7 @@
             </table>
         @endif
 
-        <h5 style="margin-top: 30px;">Declaration of Conformity</h5>
+        <h5 style="margin-top: 30px;"><strong>Declaration of Conformity</strong></h5>
         <table style="width: 100%; margin-top: 10px;">
             <tr>
                 <td width="50%"><strong>Name: </strong> {{ $client->dec_name }} </td>
@@ -130,7 +130,7 @@
         @if ($files_count > 0)
             <h4 style="margin-top: 30px;"></h4>
             <br />
-            <h6>{{ __('General Attachments') }}</h6>
+            <h6><strong>{{ __('General Attachments') }}</strong></h6>
 
             <ol type="1">
                 @foreach ($generalAttachments as $item)
@@ -141,7 +141,7 @@
             </ol>
 
             @foreach ($categoryAttachments as $key => $items)
-            <h6>{{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$key]) }}</h6>
+            <h6><strong>{{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$key]) }}<strong></strong></h6>
             <ol type="1">
                 @foreach ($items as $item)
                     <li>
