@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{asset('admin-resources/css/adminlte.min.css')}}">
     <title>Registration Form</title>
 </head>
 <body>
     <div style="width: 100%">
-        <h3 style="text-align: center; margin-bottom: 30px;">
+        <h4 style="text-align: center; margin-bottom: 30px;">
             Registration Application
-        </h3>
+        </h4>
         <table style="width: 100%">
             <tr>
                 <td width="50%"><strong>Name: </strong> {{ $client->name }} </td>
@@ -34,7 +35,7 @@
             </tr>
         </table>
 
-        <h4 style="margin-top: 30px;">{{ ucfirst($primaryDetails->type) }} Details</h4>
+        <h5 style="margin-top: 30px;">{{ ucfirst($primaryDetails->type) }} Details</h5>
         <table style="width: 100%; margin-top: 10px;">
             <tr>
                 <td width="50%"><strong>Name: </strong> {{ $primaryDetails->name }} </td>
@@ -69,7 +70,7 @@
         </table>
 
         @if ($secondaryDetails)
-            <h4 style="margin-top: 30px;">{{ ucfirst($secondaryDetails->type) }} Details</h4>
+            <h5 style="margin-top: 30px;">{{ ucfirst($secondaryDetails->type) }} Details</h5>
             <table style="width: 100%; margin-top: 10px;">
                 <tr>
                     <td width="50%"><strong>Name: </strong> {{ $secondaryDetails->name }} </td>
@@ -106,7 +107,7 @@
             </table>
         @endif
 
-        <h4 style="margin-top: 30px;">Declaration of Conformity</h4>
+        <h5 style="margin-top: 30px;">Declaration of Conformity</h5>
         <table style="width: 100%; margin-top: 10px;">
             <tr>
                 <td width="50%"><strong>Name: </strong> {{ $client->dec_name }} </td>
@@ -127,9 +128,9 @@
         </table>
 
         @if ($files_count > 0)
-            <h3 style="margin-top: 30px;"></h3>
+            <h4 style="margin-top: 30px;"></h4>
             <br />
-            <h5>{{ __('General Attachments') }}</h5>
+            <h6>{{ __('General Attachments') }}</h6>
 
             <ol type="1">
                 @foreach ($generalAttachments as $item)
@@ -140,7 +141,7 @@
             </ol>
 
             @foreach ($categoryAttachments as $key => $items)
-            <h5>{{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$key]) }}</h5>
+            <h6>{{ __('client.categories.' . $client->type . '.' . \App\Models\Client::REGISTER_CATEGORIES[$key]) }}</h6>
             <ol type="1">
                 @foreach ($items as $item)
                     <li>
