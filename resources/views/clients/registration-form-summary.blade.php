@@ -63,7 +63,7 @@
             </tr>
             <tr>
                 <td>
-                    <img src="{{ $primaryDetails->signature }}">
+                    <img src="{{ $primaryDetails->signature }}" width="50%">
                 </td>
             </tr>
         </table>
@@ -99,7 +99,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <img src="{{ $secondaryDetails->signature }}">
+                        <img src="{{ $secondaryDetails->signature }}" width="50%">
                     </td>
                     
                 </tr>
@@ -120,7 +120,7 @@
             </tr>
             <tr>
                 <td>
-                    <img src="{{ $client->dec_signature }}">
+                    <img src="{{ $client->dec_signature }}" width="50%">
                 </td>
                
             </tr>
