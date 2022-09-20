@@ -179,7 +179,7 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Signature: </label>
-									<img src="{{ $detail->signature }}" class="img-thumbnail" style="width: 50%; display: block;">
+									<img src="{{ $detail->signature }}" class="img-thumbnail" style="width: 23%; display: block;">
 								</div>
 							</div>
 						</div>
@@ -206,7 +206,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Signature: </label>
-                                <img src="{{ $client->dec_signature }}" class="img-thumbnail" style="width: 50%; display: block;">
+                                <img src="{{ $client->dec_signature }}" class="img-thumbnail" style="width: 23%; display: block;">
                             </div>
                         </div>
                     </div>
