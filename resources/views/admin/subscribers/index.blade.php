@@ -57,6 +57,7 @@
 <script type="text/javascript">
 	$(function() {
 
+		var isScroll = false;
 		var table = $('.yajra-datatable').DataTable({
 			order: [[1, 'desc']],
 			processing: true,
@@ -71,6 +72,12 @@
 				} else {
 					$('.dataTables_info').show();
 				}
+				if (isScroll) {
+                    $('html, body').animate({
+                        scrollTop: $("body").offset().top
+                    }, 500);
+                    isScroll = false;
+                }
 			},
 			columns: [{
 					data: 'multiselect',
@@ -102,11 +109,9 @@
 			]
 		});
 
-		table.on('page.dt', function () {
-			$('html, body').animate({
-			scrollTop: $(".dataTables_wrapper").offset().top
-				}, 'fast');
-		});
+		$(document).on('click', '.paginate_button:not(.disabled)', function () {
+            isScroll = true;
+        });
 		
 		$('#select-all').on('change', function(e) {
 			Array.from(document.querySelectorAll('input[class=multiselect]')).forEach(elem => elem.checked = e.target.checked);
