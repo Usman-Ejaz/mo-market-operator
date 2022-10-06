@@ -112,7 +112,7 @@
 		table.on('page.dt', function () {
 			$('html, body').animate({
 			scrollTop: $(".dataTables_wrapper").offset().top
-				}, 'fast');
+				}, '90000');
 		});
 
 
