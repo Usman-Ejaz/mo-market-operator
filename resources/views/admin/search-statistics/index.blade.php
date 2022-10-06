@@ -83,6 +83,7 @@
 
 	$(document).ready(() => {
 
+		var isScroll = false;
 		$(document).prop('title', "Search Statistics - {{ config('app.name') }}");
 		var startDate = "";
 		var endDate = "";
@@ -185,6 +186,12 @@
 				} else {
 					$('.dataTables_info').show();
 				}
+				if (isScroll) {
+                    $('html, body').animate({
+                        scrollTop: $("body").offset().top
+                    }, 500);
+                    isScroll = false;
+                }
 			},
 			columns: [{
 					data: 'DT_RowIndex',
@@ -203,11 +210,9 @@
 			]
 		});
 
-		table.on('page.dt', function () {
-			$('html, body').animate({
-			scrollTop: $(".dataTables_wrapper").offset().top
-				}, 'fast');
-		});
+		$(document).on('click', '.paginate_button:not(.disabled)', function () {
+            isScroll = true;
+        });
 		
 		$('#DataTables_Table_0_length').parent().css({display: 'flex', flexDirection: 'row'});
 		$('#DataTables_Table_0_length').parent().append(`
