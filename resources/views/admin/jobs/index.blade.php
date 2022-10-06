@@ -109,6 +109,13 @@
 			]
 		});
 
+		table.on('page.dt', function () {
+			$('html, body').animate({
+			scrollTop: $(".dataTables_wrapper").offset().top
+				}, 'fast');
+		});
+
+
         $('body').on('click', '.deleteButton', (e) => {
             action = e.target.dataset.action;
             $('#deleteModal').modal('toggle');

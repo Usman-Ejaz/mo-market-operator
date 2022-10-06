@@ -96,6 +96,12 @@
 			]
 		});
 
+		table.on('page.dt', function () {
+			$('html, body').animate({
+			scrollTop: $(".dataTables_wrapper").offset().top
+				}, 'fast');
+		});
+		
 		let defaultThemes = @json(config('settings.themes'));
 		let html = ``;
 		Object.keys(defaultThemes).forEach(key => {
