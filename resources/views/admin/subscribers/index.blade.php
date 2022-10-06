@@ -102,6 +102,12 @@
 			]
 		});
 
+		table.on('page.dt', function () {
+			$('html, body').animate({
+			scrollTop: $(".dataTables_wrapper").offset().top
+				}, 'fast');
+		});
+		
 		$('#select-all').on('change', function(e) {
 			Array.from(document.querySelectorAll('input[class=multiselect]')).forEach(elem => elem.checked = e.target.checked);
 		});

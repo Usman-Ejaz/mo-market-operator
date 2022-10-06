@@ -203,6 +203,12 @@
 			]
 		});
 
+		table.on('page.dt', function () {
+			$('html, body').animate({
+			scrollTop: $(".dataTables_wrapper").offset().top
+				}, 'fast');
+		});
+		
 		$('#DataTables_Table_0_length').parent().css({display: 'flex', flexDirection: 'row'});
 		$('#DataTables_Table_0_length').parent().append(`
 			<input name="start_date" id="start_date" class="form-control form-control-sm" readonly placeholder="Start Date" style="position:absolute; width: 35%; right: 100px;" value="${datePickerStartDate}"/>
