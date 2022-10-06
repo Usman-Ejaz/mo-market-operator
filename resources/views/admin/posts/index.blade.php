@@ -54,8 +54,8 @@
 <script type="text/javascript">
     let action = "";
     $(function () {
-        var isScroll = false    
 
+        var isScroll = false;    
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -75,7 +75,7 @@
                 }
                 if (isScroll) {
                     $('html, body').animate({
-                        scrollTop: $(".dataTables_wrapper").offset().top
+                        scrollTop: $("body").offset().top
                     }, 500);
                     isScroll = false;
                 }
