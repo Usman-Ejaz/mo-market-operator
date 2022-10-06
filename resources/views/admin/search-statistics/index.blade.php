@@ -83,7 +83,6 @@
 
 	$(document).ready(() => {
 
-		var isScroll = false;
 		$(document).prop('title', "Search Statistics - {{ config('app.name') }}");
 		var startDate = "";
 		var endDate = "";
@@ -162,6 +161,7 @@
 		})
 	}
 
+	var isScroll = false;
 	function renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate)
 	{
 		table = $('.yajra-datatable').DataTable({
