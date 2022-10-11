@@ -49,6 +49,7 @@
     let action = "";
     $(function () {
 
+        var isScroll = false;    
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -67,6 +68,12 @@
                         );
                 } else {
                     $('.dataTables_info').show();
+                }
+                if (isScroll) {
+                    $('html, body').animate({
+                        scrollTop: $("body").offset().top
+                    }, 500);
+                    isScroll = false;
                 }
             },
             columns: [{
@@ -88,6 +95,10 @@
                     searchable: false
                 },
             ]
+        });
+
+        $(document).on('click', '.paginate_button:not(.disabled)', function () {
+            isScroll = true;
         });
 
         $('body').on('click', '.deleteButton', (e) => {

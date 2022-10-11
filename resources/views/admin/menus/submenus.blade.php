@@ -182,6 +182,7 @@
         </div>
 
     </div>
+@include('admin.includes.confirm-popup')
 @endsection
 
 @push('optional-styles')
@@ -395,9 +396,19 @@
 
             // Delete submenu
             $('#deleteButton').click(function(){
+                $('#msg_heading').text('Delete Submenu?');
+                $('#msg_body').text('Are you sure you want to delete this Submenu?');
+                $('#confirm').text("Yes! delete");
+                $('#addNewSubmenuModal').modal('toggle');
+                $('#addNewSubmenuModal').on('hidden.bs.modal', function () {
+                    $('#confirmModal').modal('toggle');
+                });    
+            });
+
+            $('#confirm').click(function(){
                 let menuIdToDelete = $('#newCurrentMenuId').val();
                 $(`li[data-id="${menuIdToDelete}"]`).remove();
-                $('#addNewSubmenuModal').modal('toggle');
+                $('#confirmModal').modal('toggle');
                 $('#nestable').trigger('change');
             });
 

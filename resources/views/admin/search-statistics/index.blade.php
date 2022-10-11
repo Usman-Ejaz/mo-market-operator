@@ -161,6 +161,7 @@
 		})
 	}
 
+	var isScroll = false;
 	function renderTable(startDate, endDate, datePickerStartDate, datePickerEndDate)
 	{
 		table = $('.yajra-datatable').DataTable({
@@ -185,6 +186,12 @@
 				} else {
 					$('.dataTables_info').show();
 				}
+				if (isScroll) {
+                    $('html, body').animate({
+                        scrollTop: $("body").offset().top
+                    }, 500);
+                    isScroll = false;
+                }
 			},
 			columns: [{
 					data: 'DT_RowIndex',
@@ -203,6 +210,10 @@
 			]
 		});
 
+		$(document).on('click', '.paginate_button:not(.disabled)', function () {
+            isScroll = true;
+        });
+		
 		$('#DataTables_Table_0_length').parent().css({display: 'flex', flexDirection: 'row'});
 		$('#DataTables_Table_0_length').parent().append(`
 			<input name="start_date" id="start_date" class="form-control form-control-sm" readonly placeholder="Start Date" style="position:absolute; width: 35%; right: 100px;" value="${datePickerStartDate}"/>

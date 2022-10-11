@@ -49,6 +49,7 @@
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
+	var isScroll = false;
 	var table = null;
     let action = "";
 	function renderTable(theme = "") {
@@ -66,6 +67,12 @@
 				} else {
 					$('.dataTables_info').show();
 				}
+				if (isScroll) {
+                    $('html, body').animate({
+                        scrollTop: $("body").offset().top
+                    }, 500);
+                    isScroll = false;
+                }
 			},
 			columns: [{
 					data: 'id',
@@ -96,6 +103,10 @@
 			]
 		});
 
+		$(document).on('click', '.paginate_button:not(.disabled)', function () {
+            isScroll = true;
+        });
+		
 		let defaultThemes = @json(config('settings.themes'));
 		let html = ``;
 		Object.keys(defaultThemes).forEach(key => {
