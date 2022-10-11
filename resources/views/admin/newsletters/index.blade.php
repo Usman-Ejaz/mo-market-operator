@@ -114,7 +114,8 @@
             action = e.target.dataset.link;
             $('#msg_heading').text('Are you sure?');
             $('#msg_body').text('Are you sure you want to send this newsletter?');
-            $('#confirm').addClass('btn-primary').removeClass('btn-danger');
+            //$('#confirm').addClass('btn-primary').removeClass('btn-danger');
+			$('#confirm').text("Yes! send");
             $('#confirmModal').modal('toggle');
         });
 
