@@ -32,7 +32,7 @@ class Role extends Model
     /**
      * permissions
      *
-     * @return void
+     * 
      */
     public function permissions()
     {
@@ -88,7 +88,7 @@ class Role extends Model
      */
     public function hasPermission($moduleName, $capability)
     {
-        $permissionExists = $this->permissions->where('name', $moduleName)->where('capability', $capability)->first();
+        $permissionExists = $this->permissions()->where('name', $moduleName)->where('capability', $capability)->first();
         if ($permissionExists) {
             return true;
         }
