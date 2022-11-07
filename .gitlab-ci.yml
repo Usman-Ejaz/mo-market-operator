@@ -34,6 +34,7 @@ Deploy Dev:
     - php artisan migrate
     - php artisan scout:import
     - sudo php artisan queue:restart
+    - php artisan l5-swagger:generate
   only:
     - development
 

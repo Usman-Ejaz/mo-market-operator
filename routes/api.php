@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CareersApiController;
 use App\Http\Controllers\Api\ChatbotQueriesController;
 use App\Http\Controllers\Api\Client\ClientAttachmentController;
@@ -40,6 +41,13 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1/auth')->group(function () {
     Route::post('register', [ClientRegistrationController::class, 'register'])->name('client.register');
     Route::post('login', [RegisterApiController::class, 'login']);
+});
+
+Route::prefix('v1/client-auth')->group(function () {
+    Route::post('login', [AuthController::class, 'login'])->name('client.auth.login');
+    Route::post('logout', [AuthController::class, 'logout'])->name('client.auth.logout');
+    Route::post('refresh', [AuthController::class, 'refresh'])->name('client.auth.refresh');
+    Route::post('me', [AuthController::class, 'me'])->name('client.auth.me');
 });
 //Route::post('register', [RegisterController::class, 'register']);
 
