@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Clients\ISMOExternalAPIClient;
 use App\Http\Controllers\Controller;
 use App\Models\MOData;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class MODataController extends Controller
 {
@@ -144,12 +146,30 @@ class MODataController extends Controller
     {
         $moData = MOData::findOrFail($moDatumID);
 
+        $cacheInstance = Cache::store('database');
         $cacheKey = "mo_data_graph_$moDatumID";
 
-        if (!Cache::has($cacheKey)) {
-            Cache::put($cacheKey, $this->fetchGraphData($moData), now()->endOfDay());
+        $graphDBCache = DB::table('cache')->where("key", "mo_cache$cacheKey")->first();
+        $cacheExpired = true;
+        if ($graphDBCache) {
+            $cacheExpired = (($graphDBCache->expiration - now()->unix()) <= 0) ? true : false;
         }
-        return Cache::get($cacheKey);
+
+        $graphData = (object)[];
+        $expiration = now()->addHour();
+        if ($cacheExpired) {
+            try {
+                $graphData = $this->fetchGraphData($moData);
+                $expiration = now()->endOfDay();
+            } catch (Exception $e) {
+                if ($graphDBCache) {
+                    $graphData = unserialize($graphDBCache->value);
+                }
+            }
+            $cacheInstance->put($cacheKey, $graphData, $expiration);
+        }
+
+        return $cacheInstance->get($cacheKey);
     }
 
     private function fetchGraphData(MOData $moData)
