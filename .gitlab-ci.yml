@@ -30,11 +30,12 @@ Deploy Dev:
     GIT_STRATEGY: none
   script:
     - cd /home/dev-ismo/public_html
+    - sudo composer install
     - sudo composer dump-autoload
     - php artisan migrate
     - php artisan scout:import
     - sudo php artisan queue:restart
-    - php artisan l5-swagger:generate
+    - sudo php artisan l5-swagger:generate
   only:
     - development
 
@@ -44,9 +45,11 @@ Deploy Stage:
     GIT_STRATEGY: none
   script:
     - cd /home/ismo/public_html/ismo
+    - sudo composer install
     - sudo composer dump-autoload
     - php artisan migrate
     - php artisan scout:import
     - sudo php artisan queue:restart
+    - sudo php artisan l5:swagger generate
   only:
     - staging
