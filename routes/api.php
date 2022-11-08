@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CareersApiController;
 use App\Http\Controllers\Api\ChatbotQueriesController;
 use App\Http\Controllers\Api\Client\ClientAttachmentController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Api\StaticBlockApiController;
 use App\Http\Controllers\Api\TeamsApiController;
 use App\Http\Controllers\Api\TrainingsApiController;
 use App\Http\Controllers\Api\ChatbotFeedbackApiController;
+use App\Http\Controllers\Api\MODataController;
 use App\Http\Controllers\Api\RSSFeedXMLController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,9 +38,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::prefix('v1/auth')->group(function() {
+Route::prefix('v1/auth')->group(function () {
     Route::post('register', [ClientRegistrationController::class, 'register'])->name('client.register');
     Route::post('login', [RegisterApiController::class, 'login']);
+});
+
+Route::prefix('v1/client-auth')->group(function () {
+    Route::post('login', [AuthController::class, 'login'])->name('client.auth.login');
+    Route::post('logout', [AuthController::class, 'logout'])->name('client.auth.logout');
+    Route::post('refresh', [AuthController::class, 'refresh'])->name('client.auth.refresh');
+    Route::post('me', [AuthController::class, 'me'])->name('client.auth.me');
 });
 //Route::post('register', [RegisterController::class, 'register']);
 
@@ -110,4 +119,7 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
 
     Route::get('rss-feed.xml', [RSSFeedXMLController::class, 'generateXML'])->name("rss-feed.generateXML");
+
+    Route::get('mo-data/{mo_datum}/graph', [MODataController::class, 'getGraph']);
+    Route::resource('mo-data', MODataController::class)->only(['index', 'show']);
 });

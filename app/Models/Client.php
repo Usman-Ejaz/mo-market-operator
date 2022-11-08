@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Passport\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class Client extends Authenticatable
+class Client extends Authenticatable implements JWTSubject
 {
     use HasFactory, HasApiTokens;
 
     protected $appends = ['category_labels'];
+
+    protected $hidden = ['password'];
 
     protected $guarded = [];
 
@@ -263,5 +266,25 @@ class Client extends Authenticatable
     public function scopeIncomplete($query)
     {
         return $query->where('profile_complete', '=', 0)->with(['details', 'attachments'])->select('id', 'name', 'created_at');
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

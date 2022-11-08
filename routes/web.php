@@ -18,6 +18,7 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MODataController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
@@ -196,9 +197,14 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
 
     Route::get('activity-logs', [DashboardController::class, 'getLatestAcitivityLogs'])->name('dashboard.activity-logs');
     Route::get('download-attachment/{module}/{file}', [DashboardController::class, 'downloadAttachment'])->where('module', '(.*)')->name('attachment.download')->withoutMiddleware(['preventBrowserHistory']);
+
+    Route::get('mo-data/list', [MODataController::class, 'list'])->name('mo-data.list');
+    Route::post('mo-data/{mo_datum}/add-file', [MODataController::class, 'addFile'])->name('mo-data.add-file');
+    Route::delete('mo-data/{mo_datum}/remove-file/{file}', [MODataController::class, 'removeFile'])->name('mo-data.remove-file');
+    Route::resource('mo-data', MODataController::class)->only(['index', 'show', 'edit', 'update']);
 });
 
 Route::get('unsubscribe/{subscriber}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe')->middleware(['signed']);
 // Route::get('feed/rss', [RSSFeedXMLController::class, 'generateXML'])->name('rss.feed');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
