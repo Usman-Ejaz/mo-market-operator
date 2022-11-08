@@ -6,7 +6,7 @@
                     action="{{ route('admin.mo-data.remove-file', ['mo_datum' => $data->id, 'file' => $file->id]) }}">
                     <div>
                         <small class="text-primary imageExists">
-                            <a href="{{ serveFile('mo-data/', $file->file_path) }}" target="_blank">
+                            <a href="{{ $file->file_path }}" target="_blank">
                                 {{ $file->name }}
                             </a>
                             <button type="submit" class="btn-sm btn-danger float-right"><i class="fa fa-trash"></i></span>

@@ -111,25 +111,25 @@ class MODataController extends Controller
             $filePath = storeFile(MODataFiles::STORAGE_DIRECTORY, $request->file('file'));
             $data->files()->create([
                 'name' => $request->name,
-                'file_path' => $filePath,
+                'file_path' => config('app.url') . '/storage/uploads/mo-data/' . $filePath,
             ]);
         } else if ($request->link) {
-            $ext = pathinfo($request->link, PATHINFO_EXTENSION);
-            $acceptedExtensions = collect(static::ACCEPTED_FILES);
+            // $ext = pathinfo($request->link, PATHINFO_EXTENSION);
+            // $acceptedExtensions = collect(static::ACCEPTED_FILES);
 
-            if (!$acceptedExtensions->contains($ext)) {
-                throw ValidationException::withMessages([
-                    'link' => 'The file provided is not xls or xlsx.',
-                ]);
-            }
+            // if (!$acceptedExtensions->contains($ext)) {
+            //     throw ValidationException::withMessages([
+            //         'link' => 'The file provided is not xls or xlsx.',
+            //     ]);
+            // }
 
-            $fileContents = file_get_contents($request->link);
+            // $fileContents = file_get_contents($request->link);
 
-            $fileName = Uuid::uuid4()->toString() . ".$ext";
-            Storage::put("public/uploads/mo-data/$fileName", $fileContents);
+            // $fileName = Uuid::uuid4()->toString() . ".$ext";
+            // Storage::put("public/uploads/mo-data/$fileName", $fileContents);
             $data->files()->create([
                 'name' => $request->name,
-                'file_path' => $fileName,
+                'file_path' => $request->link,
             ]);
         }
 
