@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ClientApprovedMail;
 use App\Models\Client;
 use App\Models\ClientAttachment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 use ZipArchive;
+use Illuminate\Support\Str;
 
 class ClientController extends Controller
 {
@@ -18,7 +21,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        abort_if(! hasPermission("clients", "list"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("clients", "list"), 401, __('messages.unauthorized_action'));
 
         return view('admin.clients.index');
     }
@@ -31,7 +34,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        abort_if(! hasPermission("clients", "view"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("clients", "view"), 401, __('messages.unauthorized_action'));
 
         return view('admin.clients.show', compact('client'));
     }
@@ -67,7 +70,7 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        abort_if(! hasPermission("clients", "delete"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("clients", "delete"), 401, __('messages.unauthorized_action'));
 
         $_client = $client;
 
@@ -83,50 +86,50 @@ class ClientController extends Controller
 
     public function list(Request $request)
     {
-        abort_if(! hasPermission("clients", "list"), 401, __('messages.unauthorized_action'));
+        abort_if(!hasPermission("clients", "list"), 401, __('messages.unauthorized_action'));
 
         if ($request->ajax()) {
             $data = Client::latest()->get();
 
             return DataTables::of($data)
-            ->addColumn('name', function ($row) {
-                return ( isset($row->name)) ? truncateWords($row->name, 20) : '';
-            })
-            ->addColumn('email', function ($row) {
-                $primaryDetails = $row->primaryDetails();
-                return ( isset($primaryDetails->email)) ? $primaryDetails->email : '';
-            })
-            ->addColumn('type', function ($row) {
-                return ( isset($row->type)) ? __("client.registration_types.{$row->type}") : '';
-            })
-            ->addColumn('status', function ($row) {
-                return $row->status();
-            })
-            ->editColumn('created_at', function ($row) {
-                return [
-                    'display' => $row->created_at,
-                    'sort' => Carbon::parse(parseDate($row->created_at))->timestamp
-                ];
-            })
-            ->addColumn('action', function ($row) {
-                $options = '';
+                ->addColumn('name', function ($row) {
+                    return (isset($row->name)) ? truncateWords($row->name, 20) : '';
+                })
+                ->addColumn('email', function ($row) {
+                    $primaryDetails = $row->primaryDetails();
+                    return (isset($primaryDetails->email)) ? $primaryDetails->email : '';
+                })
+                ->addColumn('type', function ($row) {
+                    return (isset($row->type)) ? __("client.registration_types.{$row->type}") : '';
+                })
+                ->addColumn('status', function ($row) {
+                    return $row->status();
+                })
+                ->editColumn('created_at', function ($row) {
+                    return [
+                        'display' => $row->created_at,
+                        'sort' => Carbon::parse(parseDate($row->created_at))->timestamp
+                    ];
+                })
+                ->addColumn('action', function ($row) {
+                    $options = '';
 
-                if (hasPermission('clients', 'view')) {
-                    $options .= '<a href="' . route('admin.clients.show', $row->id) . '" class="btn btn-primary" title="View">
+                    if (hasPermission('clients', 'view')) {
+                        $options .= '<a href="' . route('admin.clients.show', $row->id) . '" class="btn btn-primary" title="View">
                         <i class="fas fa-eye"></i>
                     </a>';
-                }
+                    }
 
-                if (hasPermission('clients', 'delete')) {
-                    $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="'. route('admin.clients.destroy', $row->id ) .'" title="Delete">
-                            <i class="fas fa-trash" data-action="'. route('admin.clients.destroy', $row->id ) .'"></i>
+                    if (hasPermission('clients', 'delete')) {
+                        $options .= ' <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.clients.destroy', $row->id) . '" title="Delete">
+                            <i class="fas fa-trash" data-action="' . route('admin.clients.destroy', $row->id) . '"></i>
                     </button>';
-                }
+                    }
 
-                return $options;
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+                    return $options;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
     }
 
@@ -155,5 +158,18 @@ class ClientController extends Controller
 
             return response()->download($filename, $outputFilename . '.zip');
         }
+    }
+
+    public function approve(Client $client)
+    {
+        $password = Str::random(16);
+        $client->update(['approved' => 1, 'password' => bcrypt($password)]);
+
+
+
+        Mail::to($client->email)->queue(new ClientApprovedMail($client->email, $password));
+
+        request()->session()->flash('success', __('Client has been approved'));
+        return redirect()->route('admin.clients.show', ['client' => $client->id]);
     }
 }
