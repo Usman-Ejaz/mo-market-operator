@@ -3,7 +3,7 @@
         <div class="form-group">
             <label for="title">Title <span class="text-danger">*</span></label>
             <input type="input" class="form-control" id="title" autocomplete="off" placeholder="Enter Post Title"
-                name="title" value="{{ old('title') ?? $data->title }}">
+                name="title" value="{{ old('title') ?? $data->title }}" disabled>
             <span class="form-text text-danger">{{ $errors->first('title') }} </span>
         </div>
     </div>
