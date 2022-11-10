@@ -156,6 +156,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
 
     Route::get('download-all/{client}/{category}', [ClientController::class, 'downloadBulkFiles'])->name('clients.downloadBulkFiles')->withoutMiddleware(['preventBrowserHistory']);
     Route::get('clients/list', [ClientController::class, 'list'])->name('clients.list');
+    // Route::post('clients/{client}/approve', [ClientController::class, 'approve'])->name('clients.approve');
     Route::resource('clients', ClientController::class);
 
     Route::get('static-block/list', [StaticBlockController::class, 'list'])->name('static-block.list');
@@ -198,6 +199,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
     Route::get('activity-logs', [DashboardController::class, 'getLatestAcitivityLogs'])->name('dashboard.activity-logs');
     Route::get('download-attachment/{module}/{file}', [DashboardController::class, 'downloadAttachment'])->where('module', '(.*)')->name('attachment.download')->withoutMiddleware(['preventBrowserHistory']);
 
+    //MO Data Routes
     Route::get('mo-data/list', [MODataController::class, 'list'])->name('mo-data.list');
     Route::post('mo-data/{mo_datum}/add-file', [MODataController::class, 'addFile'])->name('mo-data.add-file');
     Route::delete('mo-data/{mo_datum}/remove-file/{file}', [MODataController::class, 'removeFile'])->name('mo-data.remove-file');

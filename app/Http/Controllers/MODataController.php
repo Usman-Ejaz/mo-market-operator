@@ -89,13 +89,9 @@ class MODataController extends Controller
                     return $row->files_count;
                 })
                 ->addColumn('action', function ($row) {
-                    $options = "<a href='" . route('admin.mo-data.show', ['mo_datum' => $row->id]) . "' title='Preview' target='_blank' class='btn btn-primary'>
-                        <i class='fas fa-eye'></i>
-                    </a>
-                    <a href='" . route('admin.mo-data.edit', ['mo_datum' => $row->id]) . "' title='Preview' class='btn btn-primary'>
+                    $options = "<a href='" . route('admin.mo-data.edit', ['mo_datum' => $row->id]) . "' title='Edit' class='btn btn-primary'>
                         <i class='fas fa-pencil-alt'></i>
-                    </a>
-                    ";
+                    </a>";
                     return $options;
                 })
                 ->rawColumns(['action'])
