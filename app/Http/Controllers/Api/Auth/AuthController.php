@@ -47,14 +47,14 @@ class AuthController extends Controller
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property(
-     *                     property="email",
+     *                     property="username",
      *                     type="string"
      *                 ),
      *                 @OA\Property(
      *                     property="password",
      *                     type="string"
      *                 ),
-     *                 example={"email": "abc@example.com", "password": "randomPassword"}
+     *                 example={"username": "MP-LESCO-00001", "password": "randomPassword"}
      *             )
      *         )
      *     ),
@@ -89,7 +89,7 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $credentials = request(['email', 'password']);
+        $credentials = request(['username', 'password']);
 
         if (!$token = auth('api-jwt')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);

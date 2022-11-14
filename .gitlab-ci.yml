@@ -48,7 +48,7 @@ Deploy Dev:
     - php artisan migrate
     - php artisan scout:import
     - sudo php artisan queue:restart
-    - php artisan l5-swagger:generate
+    - sudo php artisan l5-swagger:generate
   only:
     - development
 
@@ -63,7 +63,7 @@ Deploy Stage:
     - php artisan migrate
     - php artisan scout:import
     - sudo php artisan queue:restart
-    - php artisan l5-swagger:generate
+    - sudo php artisan l5-swagger:generate
   only:
     - staging
 
