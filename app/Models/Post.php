@@ -267,7 +267,7 @@ class Post extends Model
     {
         return [
             1 => 'News',
-            2 => 'Blog',
+            2 => 'Strategic Partnerships',
             3 => 'Announcements'
         ];
     }
