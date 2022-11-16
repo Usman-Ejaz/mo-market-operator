@@ -54,7 +54,8 @@ class PublishedPostApiController extends BaseApiController
      *      ),
      *  )
      */
-    public function getPublishedPosts() {
+    public function getPublishedPosts()
+    {
         try {
             $posts = Post::published()->newsAndBlogs()->latest()->get();
 
@@ -94,7 +95,8 @@ class PublishedPostApiController extends BaseApiController
      *      ),
      *  )
      */
-    public function getPublishedAnnouncements() {
+    public function getPublishedAnnouncements()
+    {
         try {
             $posts = Post::published()->announcements()->latest()->get();
 
@@ -212,15 +214,15 @@ class PublishedPostApiController extends BaseApiController
      */
     public function getPostsByCategory($category)
     {
+        // dd($category);
         try {
-            $posts = Post::published()->$category()->applyFilters()->get();
+            $posts = Post::published()->forCategorySlug($category)->applyFilters()->get();
 
             if ($posts->count() > 0) {
                 return $this->sendResponse($posts, __('messages.success'));
             } else {
                 return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
             }
-
         } catch (\Exception $ex) {
             return $this->sendResponse(["errors" => $ex->getMessage()], __("messages.something_wrong"), HTTP_SERVER_ERROR);
         }
@@ -267,7 +269,7 @@ class PublishedPostApiController extends BaseApiController
      *      )
      *  )
      */
-    public function getSinglePost ($category, $slug)
+    public function getSinglePost($category, $slug)
     {
         if ($category === null || $category === "") {
             return $this->sendResponse(null, __('category field is missing.'), HTTP_BAD_REQUEST);
@@ -279,9 +281,9 @@ class PublishedPostApiController extends BaseApiController
 
         try {
             if (request()->has('unpublished') && request()->query('unpublished') == 'true') {
-                $post = Post::with('author:id,name')->$category()->where("slug", "=", $slug)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords", "created_by")->first();
+                $post = Post::with('author:id,name')->forCategorySlug($category)->where("slug", "=", $slug)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords", "created_by")->first();
             } else {
-                $post = Post::with('author:id,name')->published()->$category()->where("slug", "=", $slug)->first();
+                $post = Post::with('author:id,name')->published()->forCategorySlug($category)->where("slug", "=", $slug)->first();
             }
 
             if ($post) {

@@ -14,6 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Yajra\DataTables\DataTables;
 use Ramsey\Uuid\Uuid;
 use stdClass;
+use Illuminate\Support\Str;
 
 class MODataController extends Controller
 {
@@ -139,7 +140,8 @@ class MODataController extends Controller
         $moDatum = MOData::findOrFail($moDatumID);
         $file = $moDatum->files()->where('id', $fileID)->first();
         if ($file) {
-            removeFile('mo-data', $file->file_path);
+            $fileName = Str::of($file->file_path)->explode('/')->last();
+            removeFile('mo-data/', $fileName);
             $file->delete();
         }
         request()->session()->flash('success', 'Successfully removed file');
