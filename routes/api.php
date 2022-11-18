@@ -53,6 +53,7 @@ Route::prefix('v1/client-auth')->group(function () {
 
 Route::prefix('v1')->middleware('auth:api-jwt')->name('client.')->group(function () {
     Route::get('reports/billing-and-settlement', [ReportController::class, 'billingAndSettlement'])->name('reports.billing-and-settlement');
+    Route::get('reports/billing-and-settlement/info', [ReportController::class, 'billingAndSettlementInfo'])->name('reports.billing-and-settlement-info');
     Route::get('reports/{report}', [ReportController::class, 'show'])->name('reports.show');
 });
 //Route::post('register', [RegisterController::class, 'register']);
