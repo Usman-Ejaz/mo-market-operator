@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
+    use \Znck\Eloquent\Traits\BelongsToThrough;
+
     use HasFactory;
 
     protected $fillable = ['name', 'publish_date', 'report_sub_category_id'];
@@ -15,6 +17,11 @@ class Report extends Model
     public function subCategory()
     {
         return $this->belongsTo(ReportSubCategory::class, 'report_sub_category_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsToThrough(ReportCategory::class, ReportSubCategory::class);
     }
 
     public function filledAttributes()

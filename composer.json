@@ -21,6 +21,7 @@
         "laravel/tinker": "^2.5",
         "php-open-source-saver/jwt-auth": "^2.0",
         "ramsey/uuid": "^4.2",
+        "staudenmeir/belongs-to-through": "^2.5",
         "yajra/laravel-datatables-oracle": "^9.18"
     },
     "require-dev": {
