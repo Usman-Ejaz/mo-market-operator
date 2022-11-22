@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetBillingAndSettlementReports;
 use App\Models\Report;
 use App\Models\ReportCategory;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
@@ -112,7 +111,7 @@ class ReportController extends Controller
      *      )
      *  )
      */
-    public function billingAndSettlement(Request $request)
+    public function billingAndSettlement(GetBillingAndSettlementReports $request)
     {
         /** @var ReportCategory $reportCategory */
         $reportCategory = ReportCategory::firstWhere('name', 'Billing and Settlement');
@@ -156,7 +155,7 @@ class ReportController extends Controller
             }
         }
 
-        return $reportsQuery->with('subCategory.category', 'filledAttributes')->paginate(10);
+        return $reportsQuery->with('subCategory.category', 'filledAttributes')->paginate(10)->appends($request->all());
     }
 
 
