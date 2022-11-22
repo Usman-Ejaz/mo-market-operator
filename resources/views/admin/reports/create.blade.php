@@ -6,7 +6,7 @@
     <li class="breadcrumb-item active">Add New Report</li>
 @endsection
 
-@push('optional-styles')
+{{-- @push('optional-styles')
     <link rel="stylesheet" href="{{ asset('admin-resources/css/bootstrap-tagsinput.css') }}" />
     <style type="text/css">
         .bootstrap-tagsinput {
@@ -124,31 +124,30 @@
             margin: 2px 0px;
         }
     </style>
-@endpush
+@endpush --}}
 
 @section('content')
     <div class="container-fluid">
-        <form method="POST" action="{{ route('admin.reports.store') }}" id="update-mo-data-form"
-            enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">Add Report</h3>
-                        </div>
-                        <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Report</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('admin.reports.store') }}" id="update-mo-data-form"
+                            enctype="multipart/form-data">
                             @include('admin.reports.createForm')
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
-        </form>
-
+        </div>
     </div>
     {{-- @include('admin.includes.confirm-popup') --}}
 @endsection
 
-@push('optional-styles')
+{{-- @push('optional-styles')
     <link rel="stylesheet" href="{{ asset('admin-resources/css/tempusdominus-bootstrap-4.min.css') }}">
     <style>
         .social-share-icon {
@@ -156,9 +155,9 @@
             cursor: pointer;
         }
     </style>
-@endpush
+@endpush --}}
 
-@push('optional-scripts')
+{{-- @push('optional-scripts')
     <script type="text/javascript" src="{{ asset('admin-resources/plugins/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('admin-resources/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('admin-resources/js/additional-methods.min.js') }}"></script>
@@ -241,4 +240,4 @@
             });
         });
     </script>
-@endpush
+@endpush --}}

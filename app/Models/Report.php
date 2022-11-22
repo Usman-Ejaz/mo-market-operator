@@ -33,4 +33,25 @@ class Report extends Model
     {
         return $this->hasMany(ReportAttachment::class);
     }
+
+    public function scopeForCategory($query, iterable $categories)
+    {
+        return $query->whereHas('category', function ($q) use (&$categories) {
+            return $q->whereIn('name', $categories);
+        });
+    }
+
+    public function scopeForSubCategory($query, iterable $subCategories)
+    {
+        $query->whereHas('subCategory', function ($q) use (&$subCategories) {
+            return $q->whereIn('name', $subCategories);
+        });
+    }
+
+    public function scopeAttributeWithValue($query, string $attribute, string $value)
+    {
+        return $query->whereHas('filledAttributes', function ($q) use (&$attribute, &$value) {
+            return $q->where('name', $attribute)->where('report_attribute_values.value', $value);
+        });
+    }
 }

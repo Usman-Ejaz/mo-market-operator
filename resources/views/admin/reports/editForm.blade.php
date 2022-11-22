@@ -46,24 +46,11 @@
                     <div class="form-group">
                         <label for="publish_date">{{ $attribute->name }}<span class="text-danger">*</span></label>
                         <select class="form-control" name="report_attributes[{{ $attribute->id }}]" required>
-                            <option value="janaury" {{ $attribute->pivot->value == 'janaury' ? 'selected' : '' }}>Janaury
-                            </option>
-                            <option value="february" {{ $attribute->pivot->value == 'february' ? 'selected' : '' }}>February
-                            </option>
-                            <option value="march" {{ $attribute->pivot->value == 'march' ? 'selected' : '' }}>March</option>
-                            <option value="april" {{ $attribute->pivot->value == 'april' ? 'selected' : '' }}>April</option>
-                            <option value="may" {{ $attribute->pivot->value == 'may' ? 'selected' : '' }}>May</option>
-                            <option value="june" {{ $attribute->pivot->value == 'june' ? 'selected' : '' }}>June</option>
-                            <option value="july" {{ $attribute->pivot->value == 'july' ? 'selected' : '' }}>July</option>
-                            <option value="august" {{ $attribute->pivot->value == 'august' ? 'selected' : '' }}>August</option>
-                            <option value="september" {{ $attribute->pivot->value == 'september' ? 'selected' : '' }}>September
-                            </option>
-                            <option value="october" {{ $attribute->pivot->value == 'october' ? 'selected' : '' }}>October
-                            </option>
-                            <option value="november" {{ $attribute->pivot->value == 'november' ? 'selected' : '' }}>November
-                            </option>
-                            <option value="december" {{ $attribute->pivot->value == 'december' ? 'selected' : '' }}>December
-                            </option>
+                            @foreach ($attribute->type->allowed_values as $value)
+                                <option value="{{ $value }}" {{ $attribute->pivot->value == $value ? 'selected' : '' }}>
+                                    {{ ucfirst($value) }}</option>
+                            @endforeach
+
                         </select>
                         <span class="form-text text-danger">{{ $errors->first("report_attributes[$attribute->id]") }} </span>
                     </div>
@@ -75,17 +62,11 @@
                     <div class="form-group">
                         <label for="publish_date">{{ $attribute->name }} <span class="text-danger">*</span></label>
                         <select class="form-control" name="report_attributes[{{ $attribute->id }}]" required>
-                            <option value="2020" {{ $attribute->pivot->value == 2020 ? 'selected' : '' }}>2020</option>
-                            <option value="2021" {{ $attribute->pivot->value == 2021 ? 'selected' : '' }}>2021</option>
-                            <option value="2022" {{ $attribute->pivot->value == 2022 ? 'selected' : '' }}>2022</option>
-                            <option value="2023" {{ $attribute->pivot->value == 2023 ? 'selected' : '' }}>2023</option>
-                            <option value="2024" {{ $attribute->pivot->value == 2024 ? 'selected' : '' }}>2024</option>
-                            <option value="2025" {{ $attribute->pivot->value == 2025 ? 'selected' : '' }}>2025</option>
-                            <option value="2026" {{ $attribute->pivot->value == 2026 ? 'selected' : '' }}>2026</option>
-                            <option value="2027" {{ $attribute->pivot->value == 2027 ? 'selected' : '' }}>2027</option>
-                            <option value="2028" {{ $attribute->pivot->value == 2028 ? 'selected' : '' }}>2028</option>
-                            <option value="2029" {{ $attribute->pivot->value == 2029 ? 'selected' : '' }}>2029</option>
-                            <option value="2030" {{ $attribute->pivot->value == 2030 ? 'selected' : '' }}>2030</option>
+                            @foreach ($attribute->type->allowed_values as $value)
+                                <option value="{{ $value }}"
+                                    {{ $attribute->pivot->value == $value ? 'selected' : '' }}>
+                                    {{ ucfirst($value) }}</option>
+                            @endforeach
                         </select>
                         <span class="form-text text-danger">{{ $errors->first("report_attributes[$attribute->id]") }} </span>
                     </div>
@@ -114,28 +95,7 @@
                 </div>
         @endswitch
     @endforeach
-
-
-
-    {{-- <div class="col-md-12">
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                <span class="form-text text-danger">{{ $error }} </span>
-            @endforeach
-
-        @endif
-    </div> --}}
-
-
-
+    <div class="col-md-12">
+        <button type="submit" class="btn btn-success btn-block">Update</button>
+    </div>
 </div>
-
-<button type="submit" class="btn btn-success btn-block">Update</button>
-
-</div>
-
-@csrf
-
-@push('optional-scripts')
-    <script type="text/javascript"></script>
-@endpush

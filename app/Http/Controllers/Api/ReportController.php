@@ -77,13 +77,24 @@ class ReportController extends Controller
      *      ),
      * 
      *      @OA\Parameter(
+     *          name="tab",
+     *          description="Data for only this tab",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"monthly", "annual", "archived"}
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
      *          name="type",
      *          description="Data for only this type",
      *          required=false,
      *          in="query",
      *          @OA\Schema(
      *              type="string",
-     *              enum={"monthly", "annual", "archive"}
+     *              enum={"pss", "fss", "ess"}
      *          )
      *      ),
      * 
@@ -107,38 +118,45 @@ class ReportController extends Controller
         $reportCategory = ReportCategory::firstWhere('name', 'Billing and Settlement');
         $reportsQuery = $reportCategory->reports();
         if ($request->has('month')) {
-            $reportsQuery->whereHas('filledAttributes', function ($q) use (&$request) {
-                return $q->where('name', 'Settlement Month')->where('report_attribute_values.value', $request->month);
-            });
+            $reportsQuery->attributeWithValue('Settlement Month', $request->month);
         }
 
         if ($request->has('year')) {
-            $reportsQuery->whereHas('filledAttributes', function ($q) use (&$request) {
-                return $q->where('name', 'Settlement Year')->where('report_attribute_values.value', $request->year);
-            });
+            $reportsQuery->attributeWithValue('Settlement Year', $request->year);
         }
 
-        if ($request->has('type')) {
+        if ($request->has('tab')) {
             $subCategories = [];
-            switch ($request->type) {
+            switch ($request->tab) {
                 case "monthly":
                     $subCategories = ["Monthly ESS", "Monthly FSS", "Monthly PSS"];
                     break;
-                case "Annual":
+                case "annual":
                     $subCategories = ["Annually"];
                     break;
-                case "Archived":
+                case "archived":
                     $subCategories = ["Archive"];
                     break;
             }
 
-            $reportsQuery->whereHas('subCategory', function ($q) use (&$subCategories) {
-                return $q->whereIn('name', $subCategories);
-            });
+            $reportsQuery->forSubCategory($subCategories);
         }
 
-        $reports = $reportsQuery->with('subCategory.category', 'filledAttributes')->paginate(10);
-        return $reports;
+        if ($request->has('type')) {
+            switch ($request->type) {
+                case 'pss':
+                    $reportsQuery->forSubCategory(["Monthly PSS"]);
+                    break;
+                case 'fss':
+                    $reportsQuery->forSubCategory(['Monthly FSS']);
+                    break;
+                case 'ess':
+                    $reportsQuery->forSubCategory(['Monthly ESS']);
+                    break;
+            }
+        }
+
+        return $reportsQuery->with('subCategory.category', 'filledAttributes')->paginate(10);
     }
 
 

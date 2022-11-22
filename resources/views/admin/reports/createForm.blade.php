@@ -57,15 +57,10 @@
         <button type="button" class="btn btn-primary my-1 mx-auto fileInputAddButton"> + Add new attachment </span>
     </div>
 
-
-
+    <div class="col-md-12">
+        <button type="submit" class="btn btn-success btn-block">Update</button>
+    </div>
 </div>
-
-<button type="submit" class="btn btn-success btn-block">Save</button>
-
-</div>
-
-@csrf
 
 @push('optional-scripts')
     <script type="text/javascript">
@@ -149,46 +144,38 @@
 
         function getInputBasedOnType(att) {
             let attributeHTMlString = "";
+
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            };
             switch (att.type.name) {
                 case "month":
+                    const selectOptionsForMonths = att.type.allowed_values.map(value =>
+                            `<option value="${value}">${capitalizeFirstLetter(value)}</option>`)
+                        .join("");
                     attributeHTMlString = `
                         <div class="col-md-6 attribute">
                             <div class="form-group">
                                 <label for="publish_date">${att.name} <span class="text-danger">*</span></label>
                                 <select class="form-control" name="report_attributes[${att.id}]" required>
-                                    <option value="janaury" selected>Janaury</option>
-                                    <option value="february">February</option>
-                                    <option value="march">March</option>
-                                    <option value="april">April</option>
-                                    <option value="may">May</option>
-                                    <option value="june">June</option>
-                                    <option value="july">July</option>
-                                    <option value="august">August</option>
-                                    <option value="september">September</option>
-                                    <option value="october">October</option>
-                                    <option value="november">November</option>
-                                    <option value="december">December</option>
+                                    <option value="" selected></option>
+                                    ${selectOptionsForMonths}
                                 </select>
                                 <span class="form-text text-danger">{{ $errors->first('report_attributes') }} </span>
                             </div>
                         </div>`;
                     break;
                 case "year":
+                    const selectOptionsForYears = att.type.allowed_values.map(value =>
+                            `<option value="${value}">${value}</option>`)
+                        .join("");
                     attributeHTMlString = `
                         <div class="col-md-6 attribute">
                             <div class="form-group">
                                 <label for="publish_date">${att.name} <span class="text-danger">*</span></label>
                                 <select class="form-control" name="report_attributes[${att.id}]" required>
-                                    <option value="2020" selected>2020</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                    <option value="2027">2027</option>
-                                    <option value="2028">2028</option>
-                                    <option value="2029">2029</option>
-                                    <option value="2030">2030</option>
+                                    <option value="" selected></option>
+                                    ${selectOptionsForYears}
                                 </select>
                                 <span class="form-text text-danger">{{ $errors->first('report_attributes') }} </span>
                             </div>
