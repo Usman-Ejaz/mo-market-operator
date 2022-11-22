@@ -138,6 +138,7 @@
                         <form method="POST" action="{{ route('admin.reports.store') }}" id="update-mo-data-form"
                             enctype="multipart/form-data">
                             @include('admin.reports.createForm')
+                            @csrf
                         </form>
                     </div>
                 </div>

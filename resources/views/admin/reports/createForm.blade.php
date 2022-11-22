@@ -58,7 +58,7 @@
     </div>
 
     <div class="col-md-12">
-        <button type="submit" class="btn btn-success btn-block">Update</button>
+        <button type="submit" class="btn btn-success btn-block">Add</button>
     </div>
 </div>
 
