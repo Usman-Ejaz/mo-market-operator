@@ -155,7 +155,7 @@ class ReportController extends Controller
             }
         }
 
-        return $reportsQuery->with('subCategory.category', 'filledAttributes')->paginate(10)->appends($request->all());
+        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 
 
