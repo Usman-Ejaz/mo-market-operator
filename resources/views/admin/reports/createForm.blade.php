@@ -60,6 +60,18 @@
     <div class="col-md-12">
         <button type="submit" class="btn btn-success btn-block">Add</button>
     </div>
+
+    @if ($errors->has('report_attributes.*'))
+        <div class="col-md-12">
+            <span class="text-center text-danger">Some of the report attribute fields are invalid.</span>
+        </div>
+    @endif
+
+    {{-- @foreach ($errors->get('report_attributes') as $key => $message)
+        <div class="col-md-12">
+            <span class="text-danger"> {{ $key . ': ' . $message[0] }} </span>
+        </div>
+    @endforeach --}}
 </div>
 
 @push('optional-scripts')
@@ -161,7 +173,6 @@
                                     <option value="" selected></option>
                                     ${selectOptionsForMonths}
                                 </select>
-                                <span class="form-text text-danger">{{ $errors->first('report_attributes') }} </span>
                             </div>
                         </div>`;
                     break;
@@ -177,7 +188,6 @@
                                     <option value="" selected></option>
                                     ${selectOptionsForYears}
                                 </select>
-                                <span class="form-text text-danger">{{ $errors->first('report_attributes') }} </span>
                             </div>
                         </div>`;
                     break;
@@ -186,8 +196,7 @@
                             <div class="col-md-6 attribute">
                                 <div class="form-group">
                                     <label for="publish_date">${att.name} <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="" name="report_attributes[${att.id}]">
-                                    <span class="form-text text-danger">{{ $errors->first('report_attributes') }} </span>
+                                    <input type="date" class="form-control" id="" name="report_attributes[${att.id}]" required>
                                 </div>
                             </div>`;
                     break;
@@ -197,8 +206,7 @@
                             <div class="col-md-6 attribute">
                                 <div class="form-group">
                                     <label for="publish_date">${att.name} <span class="text-danger">*</span></label>
-                                    <input type="input" class="form-control" id="" name="report_attributes[${att.id}]">
-                                    <span class="form-text text-danger">{{ $errors->first('report_attributes') }} </span>
+                                    <input type="input" class="form-control" id="" name="report_attributes[${att.id}]"  required>
                                 </div>
                             </div>`;
             }

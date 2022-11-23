@@ -52,7 +52,7 @@
                             @endforeach
 
                         </select>
-                        <span class="form-text text-danger">{{ $errors->first("report_attributes[$attribute->id]") }} </span>
+                        <span class="form-text text-danger">{{ $errors->first("report_attributes.$attribute->id") }}</span>
                     </div>
                 </div>
             @break
@@ -68,7 +68,7 @@
                                     {{ ucfirst($value) }}</option>
                             @endforeach
                         </select>
-                        <span class="form-text text-danger">{{ $errors->first("report_attributes[$attribute->id]") }} </span>
+                        <span class="form-text text-danger">{{ $errors->first("report_attributes.$attribute->id") }} </span>
                     </div>
                 </div>
             @break
@@ -78,8 +78,8 @@
                     <div class="form-group">
                         <label for="publish_date">{{ $attribute->name }} <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id=""
-                            name="report_attributes[{{ $attribute->id }}]" value="{{ $attribute->pivot->value }}">
-                        <span class="form-text text-danger">{{ $errors->first('report_attributes') }} </span>
+                            name="report_attributes[{{ $attribute->id }}]" value="{{ $attribute->pivot->value }}" required>
+                        <span class="form-text text-danger">{{ $errors->first("report_attributes.$attribute->id") }} </span>
                     </div>
                 </div>
             @break
@@ -89,8 +89,8 @@
                     <div class="form-group">
                         <label for="publish_date">{{ $attribute->name }} <span class="text-danger">*</span></label>
                         <input type="input" class="form-control" id=""
-                            name="report_attributes[{{ $attribute->id }}]" value="{{ $attribute->pivot->value }}">
-                        <span class="form-text text-danger">{{ $errors->first("report_attributes[$attribute->id]") }} </span>
+                            name="report_attributes[{{ $attribute->id }}]" value="{{ $attribute->pivot->value }}" required>
+                        <span class="form-text text-danger">{{ $errors->first("report_attributes.$attribute->id") }} </span>
                     </div>
                 </div>
         @endswitch
@@ -98,4 +98,10 @@
     <div class="col-md-12">
         <button type="submit" class="btn btn-success btn-block">Update</button>
     </div>
+
+    @if ($errors->has('report_attributes.*'))
+        <div class="col-md-12">
+            <span class="text-center text-danger">Some of the report attribute fields are invalid.</span>
+        </div>
+    @endif
 </div>

@@ -27,6 +27,14 @@ class UpdateReportRequest extends FormRequest
             'name' => ["required", "string"],
             'publish_date' => ["required", "date"],
             'report_attributes' => ["required", "array"],
+            'report_attributes.*' => ["string"],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            "report_attributes.*.string" => "Invalid value"
         ];
     }
 }
