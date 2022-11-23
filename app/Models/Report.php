@@ -37,14 +37,14 @@ class Report extends Model
     public function scopeForCategory($query, iterable $categories)
     {
         return $query->whereHas('category', function ($q) use (&$categories) {
-            return $q->whereIn('name', $categories);
+            return $q->whereIn('report_categories.name', $categories);
         });
     }
 
     public function scopeForSubCategory($query, iterable $subCategories)
     {
         $query->whereHas('subCategory', function ($q) use (&$subCategories) {
-            return $q->whereIn('name', $subCategories);
+            return $q->whereIn('report_sub_categories.name', $subCategories);
         });
     }
 

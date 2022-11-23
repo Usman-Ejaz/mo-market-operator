@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetBillingAndSettlementReports;
+use App\Http\Requests\GetContractDetailsRequest;
 use App\Models\Report;
 use App\Models\ReportCategory;
 
@@ -40,7 +41,7 @@ class ReportController extends Controller
      *      operationId="billingAndSettlement",
      *      description="API endpoints for reports",
      *      tags={"Reports"},
-     *      summary="Get all biling and settlement reports paginated",
+     *      summary="Get all billing and settlement reports paginated",
      *      description="Returns billing and settlement reports paginated",
      *      security={{"BearerAppKey": {}}},
      *      @OA\Parameter(
@@ -158,6 +159,60 @@ class ReportController extends Controller
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 
+    /**
+     *
+     * @OA\Get(
+     *      path="/reports/contract-details",
+     *      operationId="contractDetails",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get all contract details reports paginated",
+     *      description="Returns contract details reports paginated",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="Page number",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="month",
+     *          description="Data for only this month",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"}
+     *          )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function contractDetails(GetContractDetailsRequest $request)
+    {
+        $reportsQuery = Report::forCategory(['Contract Details']);
+
+        if ($request->has('month')) {
+        }
+
+        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+    }
 
     /**
      *
@@ -188,6 +243,37 @@ class ReportController extends Controller
     {
         return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Billing and Settlement');
     }
+
+    /**
+     *
+     * @OA\Get(
+     *      path="/reports/contract-details/info",
+     *      operationId="contractDetailsInfo",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get sub categories and attributes info for contract details",
+     *      description="Returns contract details info",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function contractDetailsInfo()
+    {
+        return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Contract Details');
+    }
+
 
     /**
      * Display the specified resource.
