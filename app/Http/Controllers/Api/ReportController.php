@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetBillingAndSettlementReports;
 use App\Http\Requests\GetContractDetailsRequest;
+use App\Http\Requests\GetFirmCapacityCertificateRequest;
 use App\Models\Report;
 use App\Models\ReportCategory;
 
@@ -217,6 +218,47 @@ class ReportController extends Controller
     /**
      *
      * @OA\Get(
+     *      path="/reports/firm-capacity-certificate",
+     *      operationId="firmCapacityCertificate",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get all firm capacity certificate reports paginated",
+     *      description="Returns firm capacity certificate reports paginated",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="Page number",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function firmCapacityCertificate(GetFirmCapacityCertificateRequest $request)
+    {
+        $reportsQuery = Report::forCategory(['Firm Capacity Certificate']);
+
+        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+    }
+
+    /**
+     *
+     * @OA\Get(
      *      path="/reports/billing-and-settlement/info",
      *      operationId="billingAndSettlementInfo",
      *      description="API endpoints for reports",
@@ -272,6 +314,36 @@ class ReportController extends Controller
     public function contractDetailsInfo()
     {
         return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Contract Details');
+    }
+
+    /**
+     *
+     * @OA\Get(
+     *      path="/reports/firm-capacity-certificate/info",
+     *      operationId="firmCapacityCertificateInfo",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get sub categories and attributes info for firm capacity certificate",
+     *      description="Returns firm capacity certificate info",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function firmCapacityCertificateInfo()
+    {
+        return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Firm Capacity Certificate');
     }
 
 

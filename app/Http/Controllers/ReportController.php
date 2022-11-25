@@ -178,7 +178,9 @@ class ReportController extends Controller
 
     public function getAttributes($subCategoryID)
     {
-        return ReportSubCategory::with('attributes.type')->findOrFail($subCategoryID)->attributes;
+        return ReportSubCategory::with(['attributes' => function ($q) {
+            return $q->orderBy('report_attributes.id', 'desc');
+        }, 'attributes.type'])->findOrFail($subCategoryID)->attributes;
     }
 
     public function addAttachment(AddAttachmentToReportRequest $request, $id)

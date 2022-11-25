@@ -56,6 +56,8 @@ Route::prefix('v1')->middleware('auth:api-jwt')->name('client.')->group(function
     Route::get('reports/billing-and-settlement/info', [ReportController::class, 'billingAndSettlementInfo'])->name('reports.billing-and-settlement-info');
     Route::get('reports/contract-details', [ReportController::class, 'contractDetails'])->name('reports.contract-details');
     Route::get('reports/contract-details/info', [ReportController::class, 'contractDetails'])->name('reports.contract-details-info');
+    Route::get('reports/firm-capacity-certificate', [ReportController::class, 'firmCapacityCertificate'])->name('reports.firm-capacity-certificate');
+    Route::get('reports/firm-capacity-certificate/info', [ReportController::class, 'firmCapacityCertificateInfo'])->name('reports.firm-capacity-certificate-info');
     Route::get('reports/{report}', [ReportController::class, 'show'])->name('reports.show');
 });
 //Route::post('register', [RegisterController::class, 'register']);
