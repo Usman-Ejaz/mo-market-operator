@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GetBillingAndSettlementReports;
 use App\Http\Requests\GetContractDetailsRequest;
 use App\Http\Requests\GetFirmCapacityCertificateRequest;
+use App\Http\Requests\GetMeteringDataRequest;
 use App\Models\Report;
 use App\Models\ReportCategory;
 
@@ -259,6 +260,46 @@ class ReportController extends Controller
     /**
      *
      * @OA\Get(
+     *      path="/reports/metering-data",
+     *      operationId="meteringData",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get all metering data reports paginated",
+     *      description="Returns metering data reports paginated",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="Page number",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function meteringData(GetMeteringDataRequest $request)
+    {
+        $reportsQuery = Report::forCategory(['Metering Data']);
+        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+    }
+
+    /**
+     *
+     * @OA\Get(
      *      path="/reports/info",
      *      operationId="reportsInfo",
      *      description="API endpoints for reports",
@@ -374,6 +415,36 @@ class ReportController extends Controller
     public function firmCapacityCertificateInfo()
     {
         return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Firm Capacity Certificate');
+    }
+
+    /**
+     *
+     * @OA\Get(
+     *      path="/reports/metering-data/info",
+     *      operationId="meteringDataInfo",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get sub categories and attributes info for metering data",
+     *      description="Returns metering data info",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function meteringDataInfo()
+    {
+        return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Metering Data');
     }
 
 
