@@ -218,8 +218,8 @@ class ReportController extends Controller
     /**
      *
      * @OA\Get(
-     *      path="/reports/firm-capacity-certificates",
-     *      operationId="firmCapacityCertificates",
+     *      path="/reports/firm-capacity-certificate",
+     *      operationId="firmCapacityCertificate",
      *      description="API endpoints for reports",
      *      tags={"Reports"},
      *      summary="Get all firm capacity certificate reports paginated",
@@ -249,7 +249,7 @@ class ReportController extends Controller
      *      )
      *  )
      */
-    public function firmCapacityCertificates(GetFirmCapacityCertificateRequest $request)
+    public function firmCapacityCertificate(GetFirmCapacityCertificateRequest $request)
     {
         $reportsQuery = Report::forCategory(['Firm Capacity Certificate']);
 
@@ -349,8 +349,8 @@ class ReportController extends Controller
     /**
      *
      * @OA\Get(
-     *      path="/reports/firm-capacity-certificates/info",
-     *      operationId="firmCapacityCertificatesInfo",
+     *      path="/reports/firm-capacity-certificate/info",
+     *      operationId="firmCapacityCertificateInfo",
      *      description="API endpoints for reports",
      *      tags={"Reports"},
      *      summary="Get sub categories and attributes info for firm capacity certificate",
@@ -371,7 +371,7 @@ class ReportController extends Controller
      *      )
      *  )
      */
-    public function firmCapacityCertificatesInfo()
+    public function firmCapacityCertificateInfo()
     {
         return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Firm Capacity Certificate');
     }
