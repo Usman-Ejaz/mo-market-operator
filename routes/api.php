@@ -61,6 +61,8 @@ Route::prefix('v1')->middleware('auth:api-jwt')->name('client.')->group(function
     Route::get('reports/firm-capacity-certificate/info', [ReportController::class, 'firmCapacityCertificateInfo'])->name('reports.firm-capacity-certificate-info');
     Route::get('reports/metering-data', [ReportController::class, 'meteringData'])->name('reports.metering-data');
     Route::get('reports/metering-data/info', [ReportController::class, 'meteringDataInfo'])->name('reports.metering-data-info');
+    Route::get('reports/security-cover', [ReportController::class, 'securityCover'])->name('reports.security-cover');
+    Route::get('reports/security-cover/info', [ReportController::class, 'securityCoverInfo'])->name('reports.security-cover-info');
     Route::get('reports/{report}', [ReportController::class, 'show'])->name('reports.show');
 });
 //Route::post('register', [RegisterController::class, 'register']);

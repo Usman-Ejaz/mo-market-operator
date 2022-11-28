@@ -7,6 +7,7 @@ use App\Http\Requests\GetBillingAndSettlementReports;
 use App\Http\Requests\GetContractDetailsRequest;
 use App\Http\Requests\GetFirmCapacityCertificateRequest;
 use App\Http\Requests\GetMeteringDataRequest;
+use App\Http\Requests\GetSecurityCoverRequest;
 use App\Models\Report;
 use App\Models\ReportCategory;
 
@@ -300,6 +301,46 @@ class ReportController extends Controller
     /**
      *
      * @OA\Get(
+     *      path="/reports/security-cover",
+     *      operationId="securityCover",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get all Security Cover reports paginated",
+     *      description="Returns security-cover reports paginated",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="Page number",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function securityCover(GetSecurityCoverRequest $request)
+    {
+        $reportsQuery = Report::forCategory(['Security Cover']);
+        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+    }
+
+    /**
+     *
+     * @OA\Get(
      *      path="/reports/info",
      *      operationId="reportsInfo",
      *      description="API endpoints for reports",
@@ -447,6 +488,35 @@ class ReportController extends Controller
         return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Metering Data');
     }
 
+    /**
+     *
+     * @OA\Get(
+     *      path="/reports/security-cover/info",
+     *      operationId="securityCoverInfo",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get sub categories and attributes info for Security Cover",
+     *      description="Returns Security Cover info",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function securityCoverInfo()
+    {
+        return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Security Cover');
+    }
 
     /**
      * Display the specified resource.
