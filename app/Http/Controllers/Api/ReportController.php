@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetBillingAndSettlementReports;
+use App\Http\Requests\GetComplianceWithCapacityObligationRequest;
 use App\Http\Requests\GetContractDetailsRequest;
 use App\Http\Requests\GetFirmCapacityCertificateRequest;
 use App\Http\Requests\GetMeteringDataRequest;
@@ -341,6 +342,46 @@ class ReportController extends Controller
     /**
      *
      * @OA\Get(
+     *      path="/reports/compliance-with-capacity-obligation",
+     *      operationId="complianceWithCapacityObligation",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get all Compliance With Capacity Obligation reports paginated",
+     *      description="Returns Compliance With Capacity Obligation reports paginated",
+     *      security={{"BearerAppKey": {}}},
+     *      @OA\Parameter(
+     *          name="page",
+     *          description="Page number",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function complianceWithCapacityObligation(GetComplianceWithCapacityObligationRequest $request)
+    {
+        $reportsQuery = Report::forCategory(['Compliance With Capacity Obligation']);
+        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+    }
+
+    /**
+     *
+     * @OA\Get(
      *      path="/reports/info",
      *      operationId="reportsInfo",
      *      description="API endpoints for reports",
@@ -516,6 +557,36 @@ class ReportController extends Controller
     public function securityCoverInfo()
     {
         return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Security Cover');
+    }
+
+    /**
+     *
+     * @OA\Get(
+     *      path="/reports/compliance-with-capacity-obligation/info",
+     *      operationId="complianceWithCapacityObligationInfo",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get sub categories and attributes info for Compliance With Capacity Obligation",
+     *      description="Returns Compliance With Capacity Obligation info",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function complianceWithCapacityObligationInfo()
+    {
+        return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Compliance With Capacity Obligation');
     }
 
     /**
