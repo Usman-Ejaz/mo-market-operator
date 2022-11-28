@@ -259,6 +259,36 @@ class ReportController extends Controller
     /**
      *
      * @OA\Get(
+     *      path="/reports/info",
+     *      operationId="reportsInfo",
+     *      description="API endpoints for reports",
+     *      tags={"Reports"},
+     *      summary="Get all categories with sub categories and attributes",
+     *      description="Returns all categories with sub categories and attributes",
+     *      security={{"BearerAppKey": {}}},
+     * 
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *  )
+     */
+    public function info()
+    {
+        return ReportCategory::with('subCategories.attributes')->get();
+    }
+
+    /**
+     *
+     * @OA\Get(
      *      path="/reports/billing-and-settlement/info",
      *      operationId="billingAndSettlementInfo",
      *      description="API endpoints for reports",
