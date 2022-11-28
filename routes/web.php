@@ -15,6 +15,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ChatbotFeedbackController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ManagerController;
+// use App\Http\Controllers\MCVsDemandRecordController;
 use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MenuController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchStatisticController;
 use App\Http\Controllers\SliderImageController;
 use App\Http\Controllers\SliderSettingController;
@@ -204,6 +206,20 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
     Route::post('mo-data/{mo_datum}/add-file', [MODataController::class, 'addFile'])->name('mo-data.add-file');
     Route::delete('mo-data/{mo_datum}/remove-file/{file}', [MODataController::class, 'removeFile'])->name('mo-data.remove-file');
     Route::resource('mo-data', MODataController::class)->only(['index', 'show', 'edit', 'update']);
+
+    //MCVsDemand Routes
+    // Route::get('mc-vs-demand/list', [MCVsDemandRecordController::class, 'list'])->name('mc-vs-demand.list');
+    // Route::get('mc-vs-demand', [MCVsDemandRecordController::class, 'index'])->name('mc-vs-demand.index');
+    // Route::get('mc-vs-demand/{for_date}', [MCVsDemandRecordController::class, 'show'])->name('mc-vs-demand.show');
+
+
+    //Report Routes
+    Route::get('reports/{category_id}/sub-categories', [ReportController::class, 'getSubCategories'])->name('reports.sub-categories');
+    Route::get('reports/{sub_category_id}/attributes', [ReportController::class, 'getAttributes'])->name('reports.attributes');
+    Route::post('reports/{report}/add-attachment', [ReportController::class, 'addAttachment'])->name('reports.add-attachment');
+    Route::delete('reports/{report}/remove-attachment/{attachment}', [ReportController::class, 'removeAttachment'])->name('reports.remove-attachment');
+    Route::get('reports/list', [ReportController::class, 'list'])->name('reports.list');
+    Route::resource('reports', ReportController::class)->except('show');
 });
 
 Route::get('unsubscribe/{subscriber}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe')->middleware(['signed']);

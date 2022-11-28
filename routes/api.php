@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\TeamsApiController;
 use App\Http\Controllers\Api\TrainingsApiController;
 use App\Http\Controllers\Api\ChatbotFeedbackApiController;
 use App\Http\Controllers\Api\MODataController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RSSFeedXMLController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,16 @@ Route::prefix('v1/client-auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('client.auth.logout');
     Route::post('refresh', [AuthController::class, 'refresh'])->name('client.auth.refresh');
     Route::post('me', [AuthController::class, 'me'])->name('client.auth.me');
+});
+
+Route::prefix('v1')->middleware('auth:api-jwt')->name('client.')->group(function () {
+    Route::get('reports/billing-and-settlement', [ReportController::class, 'billingAndSettlement'])->name('reports.billing-and-settlement');
+    Route::get('reports/billing-and-settlement/info', [ReportController::class, 'billingAndSettlementInfo'])->name('reports.billing-and-settlement-info');
+    Route::get('reports/contract-details', [ReportController::class, 'contractDetails'])->name('reports.contract-details');
+    Route::get('reports/contract-details/info', [ReportController::class, 'contractDetailsInfo'])->name('reports.contract-details-info');
+    Route::get('reports/firm-capacity-certificates', [ReportController::class, 'firmCapacityCertificates'])->name('reports.firm-capacity-certificates');
+    Route::get('reports/firm-capacity-certificates/info', [ReportController::class, 'firmCapacityCertificatesInfo'])->name('reports.firm-capacity-certificates-info');
+    Route::get('reports/{report}', [ReportController::class, 'show'])->name('reports.show');
 });
 //Route::post('register', [RegisterController::class, 'register']);
 
