@@ -24,11 +24,11 @@ class GetBillingAndSettlementReports extends FormRequest
     public function rules()
     {
         return [
+            'sub_category_id' => 'integer',
             'month' => 'string',
             'year' => "integer",
-            'tab' => 'string',
             'type' => 'string',
-            'page' => 'integer'
+            'page' => 'integer',
         ];
     }
 }

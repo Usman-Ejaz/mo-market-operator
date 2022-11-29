@@ -41,9 +41,16 @@ class Report extends Model
         });
     }
 
+    public function scopeForSubCategoryIDs($query, iterable $subCategorieIDs)
+    {
+        return $query->whereHas('subCategory', function ($q) use (&$subCategorieIDs) {
+            return $q->whereIn('report_sub_categories.id', $subCategorieIDs);
+        });
+    }
+
     public function scopeForSubCategory($query, iterable $subCategories)
     {
-        $query->whereHas('subCategory', function ($q) use (&$subCategories) {
+        return $query->whereHas('subCategory', function ($q) use (&$subCategories) {
             return $q->whereIn('report_sub_categories.name', $subCategories);
         });
     }

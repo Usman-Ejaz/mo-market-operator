@@ -121,29 +121,16 @@ class ReportController extends Controller
         /** @var ReportCategory $reportCategory */
         $reportCategory = ReportCategory::firstWhere('name', 'Billing and Settlement');
         $reportsQuery = $reportCategory->reports();
+        if ($request->has('sub_category_id')) {
+            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
+        }
+
         if ($request->has('month')) {
             $reportsQuery->attributeWithValue('Settlement Month', $request->month);
         }
 
         if ($request->has('year')) {
             $reportsQuery->attributeWithValue('Settlement Year', $request->year);
-        }
-
-        if ($request->has('tab')) {
-            $subCategories = [];
-            switch ($request->tab) {
-                case "monthly":
-                    $subCategories = ["Monthly ESS", "Monthly FSS", "Monthly PSS"];
-                    break;
-                case "annual":
-                    $subCategories = ["Annually"];
-                    break;
-                case "archived":
-                    $subCategories = ["Archive"];
-                    break;
-            }
-
-            $reportsQuery->forSubCategory($subCategories);
         }
 
         if ($request->has('type')) {
@@ -212,6 +199,10 @@ class ReportController extends Controller
     {
         $reportsQuery = Report::forCategory(['Contract Details']);
 
+        if ($request->has('sub_category_id')) {
+            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
+        }
+
         if ($request->has('month')) {
         }
 
@@ -255,7 +246,9 @@ class ReportController extends Controller
     public function firmCapacityCertificate(GetFirmCapacityCertificateRequest $request)
     {
         $reportsQuery = Report::forCategory(['Firm Capacity Certificate']);
-
+        if ($request->has('sub_category_id')) {
+            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
+        }
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 
@@ -296,6 +289,9 @@ class ReportController extends Controller
     public function meteringData(GetMeteringDataRequest $request)
     {
         $reportsQuery = Report::forCategory(['Metering Data']);
+        if ($request->has('sub_category_id')) {
+            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
+        }
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 
@@ -336,6 +332,9 @@ class ReportController extends Controller
     public function securityCover(GetSecurityCoverRequest $request)
     {
         $reportsQuery = Report::forCategory(['Security Cover']);
+        if ($request->has('sub_category_id')) {
+            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
+        }
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 
@@ -376,6 +375,9 @@ class ReportController extends Controller
     public function complianceWithCapacityObligation(GetComplianceWithCapacityObligationRequest $request)
     {
         $reportsQuery = Report::forCategory(['Compliance With Capacity Obligation']);
+        if ($request->has('sub_category_id')) {
+            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
+        }
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 

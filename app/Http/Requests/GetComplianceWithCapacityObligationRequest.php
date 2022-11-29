@@ -24,7 +24,8 @@ class GetComplianceWithCapacityObligationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'sub_category_id' => 'integer',
+            'page' => 'integer',
         ];
     }
 }

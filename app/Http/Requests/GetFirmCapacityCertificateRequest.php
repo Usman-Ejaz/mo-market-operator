@@ -23,6 +23,9 @@ class GetFirmCapacityCertificateRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'sub_category_id' => 'integer',
+            'page' => 'integer',
+        ];
     }
 }

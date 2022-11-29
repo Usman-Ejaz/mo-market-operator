@@ -24,7 +24,9 @@ class GetContractDetailsRequest extends FormRequest
     public function rules()
     {
         return [
+            'sub_category_id' => 'integer',
             'month' => 'string',
+            'page' => 'integer',
         ];
     }
 }
