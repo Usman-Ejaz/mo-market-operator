@@ -46,13 +46,13 @@
                 @endif
 
                 {{-- @if (hasPermission('clients', 'list')) --}}
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('admin.reports.index') }}"
                         class="nav-link {{ Request::is('reports*') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-user"></i>
                         <p>{{ __('Reports') }}</p>
                     </a>
-                </li>
+                </li> --}}
                 {{-- @endif --}}
 
                 @if (hasPermission('posts', 'list'))
