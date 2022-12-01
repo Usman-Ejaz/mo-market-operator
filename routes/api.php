@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CareersApiController;
 use App\Http\Controllers\Api\ChatbotQueriesController;
 use App\Http\Controllers\Api\Client\ClientAttachmentController;
@@ -20,6 +21,8 @@ use App\Http\Controllers\Api\StaticBlockApiController;
 use App\Http\Controllers\Api\TeamsApiController;
 use App\Http\Controllers\Api\TrainingsApiController;
 use App\Http\Controllers\Api\ChatbotFeedbackApiController;
+use App\Http\Controllers\Api\MODataController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RSSFeedXMLController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,9 +39,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::prefix('v1/auth')->group(function() {
+Route::prefix('v1/auth')->group(function () {
     Route::post('register', [ClientRegistrationController::class, 'register'])->name('client.register');
     Route::post('login', [RegisterApiController::class, 'login']);
+});
+
+Route::prefix('v1/client-auth')->group(function () {
+    Route::post('login', [AuthController::class, 'login'])->name('client.auth.login');
+    Route::post('logout', [AuthController::class, 'logout'])->name('client.auth.logout');
+    Route::post('refresh', [AuthController::class, 'refresh'])->name('client.auth.refresh');
+    Route::post('me', [AuthController::class, 'me'])->name('client.auth.me');
+});
+
+Route::prefix('v1')->middleware('auth:api-jwt')->name('client.')->group(function () {
+    Route::get('reports/info', [ReportController::class, 'info'])->name('reports.info');
+    Route::get('reports/billing-and-settlement', [ReportController::class, 'billingAndSettlement'])->name('reports.billing-and-settlement');
+    Route::get('reports/billing-and-settlement/info', [ReportController::class, 'billingAndSettlementInfo'])->name('reports.billing-and-settlement-info');
+    Route::get('reports/contract-details', [ReportController::class, 'contractDetails'])->name('reports.contract-details');
+    Route::get('reports/contract-details/info', [ReportController::class, 'contractDetailsInfo'])->name('reports.contract-details-info');
+    Route::get('reports/firm-capacity-certificate', [ReportController::class, 'firmCapacityCertificate'])->name('reports.firm-capacity-certificate');
+    Route::get('reports/firm-capacity-certificate/info', [ReportController::class, 'firmCapacityCertificateInfo'])->name('reports.firm-capacity-certificate-info');
+    Route::get('reports/metering-data', [ReportController::class, 'meteringData'])->name('reports.metering-data');
+    Route::get('reports/metering-data/info', [ReportController::class, 'meteringDataInfo'])->name('reports.metering-data-info');
+    Route::get('reports/security-cover', [ReportController::class, 'securityCover'])->name('reports.security-cover');
+    Route::get('reports/security-cover/info', [ReportController::class, 'securityCoverInfo'])->name('reports.security-cover-info');
+    Route::get('reports/compliance-with-capacity-obligation', [ReportController::class, 'complianceWithCapacityObligation'])->name('reports.compliance-with-capacity-obligation');
+    Route::get('reports/compliance-with-capacity-obligation/info', [ReportController::class, 'complianceWithCapacityObligationInfo'])->name('reports.compliance-with-capacity-obligation-info');
+    Route::get('reports/{report}', [ReportController::class, 'show'])->name('reports.show');
 });
 //Route::post('register', [RegisterController::class, 'register']);
 
@@ -110,4 +137,7 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get('sitemap', [SitemapApiController::class, 'index'])->name("sitemap.index");
 
     Route::get('rss-feed.xml', [RSSFeedXMLController::class, 'generateXML'])->name("rss-feed.generateXML");
+
+    Route::get('mo-data/{mo_datum}/graph', [MODataController::class, 'getGraph']);
+    Route::resource('mo-data', MODataController::class)->only(['index', 'show']);
 });

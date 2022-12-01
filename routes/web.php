@@ -15,9 +15,11 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ChatbotFeedbackController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ManagerController;
+// use App\Http\Controllers\MCVsDemandRecordController;
 use App\Http\Controllers\MediaFileController;
 use App\Http\Controllers\MediaLibraryController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MODataController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingsController;
@@ -26,6 +28,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchStatisticController;
 use App\Http\Controllers\SliderImageController;
 use App\Http\Controllers\SliderSettingController;
@@ -155,6 +158,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
 
     Route::get('download-all/{client}/{category}', [ClientController::class, 'downloadBulkFiles'])->name('clients.downloadBulkFiles')->withoutMiddleware(['preventBrowserHistory']);
     Route::get('clients/list', [ClientController::class, 'list'])->name('clients.list');
+    // Route::post('clients/{client}/approve', [ClientController::class, 'approve'])->name('clients.approve');
     Route::resource('clients', ClientController::class);
 
     Route::get('static-block/list', [StaticBlockController::class, 'list'])->name('static-block.list');
@@ -196,9 +200,29 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
 
     Route::get('activity-logs', [DashboardController::class, 'getLatestAcitivityLogs'])->name('dashboard.activity-logs');
     Route::get('download-attachment/{module}/{file}', [DashboardController::class, 'downloadAttachment'])->where('module', '(.*)')->name('attachment.download')->withoutMiddleware(['preventBrowserHistory']);
+
+    //MO Data Routes
+    Route::get('mo-data/list', [MODataController::class, 'list'])->name('mo-data.list');
+    Route::post('mo-data/{mo_datum}/add-file', [MODataController::class, 'addFile'])->name('mo-data.add-file');
+    Route::delete('mo-data/{mo_datum}/remove-file/{file}', [MODataController::class, 'removeFile'])->name('mo-data.remove-file');
+    Route::resource('mo-data', MODataController::class)->only(['index', 'show', 'edit', 'update']);
+
+    //MCVsDemand Routes
+    // Route::get('mc-vs-demand/list', [MCVsDemandRecordController::class, 'list'])->name('mc-vs-demand.list');
+    // Route::get('mc-vs-demand', [MCVsDemandRecordController::class, 'index'])->name('mc-vs-demand.index');
+    // Route::get('mc-vs-demand/{for_date}', [MCVsDemandRecordController::class, 'show'])->name('mc-vs-demand.show');
+
+
+    //Report Routes
+    Route::get('reports/{category_id}/sub-categories', [ReportController::class, 'getSubCategories'])->name('reports.sub-categories');
+    Route::get('reports/{sub_category_id}/attributes', [ReportController::class, 'getAttributes'])->name('reports.attributes');
+    Route::post('reports/{report}/add-attachment', [ReportController::class, 'addAttachment'])->name('reports.add-attachment');
+    Route::delete('reports/{report}/remove-attachment/{attachment}', [ReportController::class, 'removeAttachment'])->name('reports.remove-attachment');
+    Route::get('reports/list', [ReportController::class, 'list'])->name('reports.list');
+    Route::resource('reports', ReportController::class)->except('show');
 });
 
 Route::get('unsubscribe/{subscriber}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe')->middleware(['signed']);
 // Route::get('feed/rss', [RSSFeedXMLController::class, 'generateXML'])->name('rss.feed');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

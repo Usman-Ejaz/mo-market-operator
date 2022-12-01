@@ -151,6 +151,14 @@ class Post extends Model
         return $query->where("published_at", "!=", null)->select("title", "image", "description", "published_at", "post_category", "slug", "keywords", "created_by");
     }
 
+    public function scopeForCategorySlug($query, $slug)
+    {
+        $categoryName = Str::title(str_replace("-", " ", $slug));
+        $postCategoryID = collect($this->postCategoryOptions())->search($categoryName);
+        return $query->where('post_category', '=', $postCategoryID);
+    }
+
+
     /**
      * scopeNews
      *
@@ -267,7 +275,7 @@ class Post extends Model
     {
         return [
             1 => 'News',
-            2 => 'Blog',
+            2 => 'Strategic Partnerships',
             3 => 'Announcements'
         ];
     }

@@ -10,8 +10,8 @@
         "barryvdh/laravel-dompdf": "^1.0",
         "darkaonline/l5-swagger": "^8.3",
         "doctrine/dbal": "^3.3",
-        "google/apiclient": "^2.0",
         "fruitcake/laravel-cors": "^2.0",
+        "google/apiclient": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.7",
         "laravel/framework": "^8.75",
@@ -19,6 +19,9 @@
         "laravel/sanctum": "^2.11",
         "laravel/scout": "^9.4",
         "laravel/tinker": "^2.5",
+        "php-open-source-saver/jwt-auth": "^2.0",
+        "ramsey/uuid": "^4.2",
+        "staudenmeir/belongs-to-through": "^2.5",
         "yajra/laravel-datatables-oracle": "^9.18"
     },
     "require-dev": {

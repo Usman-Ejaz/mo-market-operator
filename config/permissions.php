@@ -129,7 +129,7 @@ return [
             "delete" => "Delete",
             "submenus" => "SubMenus"
         ]
-    ],    
+    ],
     [
         "name" => "settings",
         "display_name" => "Site Configurations",
@@ -157,7 +157,7 @@ return [
             // "delete" => "Delete",
             "subscribe" => "Subscribe",
         ]
-    ],    
+    ],
     [
         "name" => "contact_page_queries",
         "display_name" => "Contact Page Queries",
@@ -288,6 +288,17 @@ return [
             "list" => "List",
             "view" => "View",
             // "edit" => "Edit",
+            "delete" => "Delete",
+        ]
+    ],
+
+    [
+        "name" => "mo-data",
+        "display_name" => "Mo Data",
+        "capabilities" => [
+            "list" => "List",
+            "view" => "View",
+            "edit" => "Edit",
             "delete" => "Delete",
         ]
     ],
