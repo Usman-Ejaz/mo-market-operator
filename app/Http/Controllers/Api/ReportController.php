@@ -32,6 +32,31 @@ class ReportController extends Controller
         return Report::all();
     }
 
+    private function applyCommonFilters($request, $reportsQuery)
+    {
+        if ($request->has('search')) {
+            $reportsQuery->search($request->search);
+        }
+
+        if ($request->has('sub_category_id')) {
+            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
+        }
+
+        if ($request->has('month')) {
+            $reportsQuery->forPublishMonth($request->month);
+        }
+
+        if ($request->has('year')) {
+            $reportsQuery->forPublishYear($request->year);
+        }
+
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $reportsQuery->betweenPublishDates($request->start_date, $request->end_date);
+        }
+
+        return $reportsQuery;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -81,24 +106,42 @@ class ReportController extends Controller
      *      ),
      * 
      *      @OA\Parameter(
-     *          name="tab",
-     *          description="Data for only this tab",
+     *          name="search",
+     *          description="Report containing this text",
      *          required=false,
      *          in="query",
      *          @OA\Schema(
      *              type="string",
-     *              enum={"monthly", "annual", "archived"}
      *          )
      *      ),
      * 
      *      @OA\Parameter(
-     *          name="type",
-     *          description="Data for only this type",
+     *          name="sub_category_id",
+     *          description="Data for only this sub category id.",
      *          required=false,
      *          in="query",
      *          @OA\Schema(
      *              type="string",
-     *              enum={"pss", "fss", "ess"}
+     *          )
+     *      ),
+     *      
+     *      @OA\Parameter(
+     *          name="start_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="end_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
      *          )
      *      ),
      * 
@@ -121,31 +164,7 @@ class ReportController extends Controller
         /** @var ReportCategory $reportCategory */
         $reportCategory = ReportCategory::firstWhere('name', 'Billing and Settlement');
         $reportsQuery = $reportCategory->reports();
-        if ($request->has('sub_category_id')) {
-            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
-        }
-
-        if ($request->has('month')) {
-            $reportsQuery->attributeWithValue('Settlement Month', $request->month);
-        }
-
-        if ($request->has('year')) {
-            $reportsQuery->attributeWithValue('Settlement Year', $request->year);
-        }
-
-        if ($request->has('type')) {
-            switch ($request->type) {
-                case 'pss':
-                    $reportsQuery->forSubCategory(["Monthly PSS"]);
-                    break;
-                case 'fss':
-                    $reportsQuery->forSubCategory(['Monthly FSS']);
-                    break;
-                case 'ess':
-                    $reportsQuery->forSubCategory(['Monthly ESS']);
-                    break;
-            }
-        }
+        $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
 
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
@@ -181,6 +200,58 @@ class ReportController extends Controller
      *          )
      *      ),
      * 
+     * 
+     *      @OA\Parameter(
+     *          name="year",
+     *          description="Data for only this year",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="search",
+     *          description="Report containing this text",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="sub_category_id",
+     *          description="Data for only this sub category id.",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *      
+     *      @OA\Parameter(
+     *          name="start_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="end_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     * 
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation"
@@ -198,13 +269,7 @@ class ReportController extends Controller
     public function contractDetails(GetContractDetailsRequest $request)
     {
         $reportsQuery = Report::forCategory(['Contract Details']);
-
-        if ($request->has('sub_category_id')) {
-            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
-        }
-
-        if ($request->has('month')) {
-        }
+        $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
 
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
@@ -229,6 +294,68 @@ class ReportController extends Controller
      *          )
      *      ),
      * 
+     *      @OA\Parameter(
+     *          name="month",
+     *          description="Data for only this month",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"}
+     *          )
+     *      ),
+     * 
+     * 
+     *      @OA\Parameter(
+     *          name="year",
+     *          description="Data for only this year",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="search",
+     *          description="Report containing this text",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="sub_category_id",
+     *          description="Data for only this sub category id.",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *      
+     *      @OA\Parameter(
+     *          name="start_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="end_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation"
@@ -246,9 +373,7 @@ class ReportController extends Controller
     public function firmCapacityCertificate(GetFirmCapacityCertificateRequest $request)
     {
         $reportsQuery = Report::forCategory(['Firm Capacity Certificate']);
-        if ($request->has('sub_category_id')) {
-            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
-        }
+        $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 
@@ -272,6 +397,68 @@ class ReportController extends Controller
      *          )
      *      ),
      * 
+     *      @OA\Parameter(
+     *          name="month",
+     *          description="Data for only this month",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"}
+     *          )
+     *      ),
+     * 
+     * 
+     *      @OA\Parameter(
+     *          name="year",
+     *          description="Data for only this year",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="search",
+     *          description="Report containing this text",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="sub_category_id",
+     *          description="Data for only this sub category id.",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *      
+     *      @OA\Parameter(
+     *          name="start_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="end_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation"
@@ -289,9 +476,7 @@ class ReportController extends Controller
     public function meteringData(GetMeteringDataRequest $request)
     {
         $reportsQuery = Report::forCategory(['Metering Data']);
-        if ($request->has('sub_category_id')) {
-            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
-        }
+        $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 
@@ -315,6 +500,68 @@ class ReportController extends Controller
      *          )
      *      ),
      * 
+     *      @OA\Parameter(
+     *          name="month",
+     *          description="Data for only this month",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"}
+     *          )
+     *      ),
+     * 
+     * 
+     *      @OA\Parameter(
+     *          name="year",
+     *          description="Data for only this year",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="search",
+     *          description="Report containing this text",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="sub_category_id",
+     *          description="Data for only this sub category id.",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *      
+     *      @OA\Parameter(
+     *          name="start_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="end_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation"
@@ -332,9 +579,7 @@ class ReportController extends Controller
     public function securityCover(GetSecurityCoverRequest $request)
     {
         $reportsQuery = Report::forCategory(['Security Cover']);
-        if ($request->has('sub_category_id')) {
-            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
-        }
+        $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 
@@ -358,6 +603,68 @@ class ReportController extends Controller
      *          )
      *      ),
      * 
+     *      @OA\Parameter(
+     *          name="month",
+     *          description="Data for only this month",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"}
+     *          )
+     *      ),
+     * 
+     * 
+     *      @OA\Parameter(
+     *          name="year",
+     *          description="Data for only this year",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="search",
+     *          description="Report containing this text",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="sub_category_id",
+     *          description="Data for only this sub category id.",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     *      
+     *      @OA\Parameter(
+     *          name="start_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="end_date",
+     *          description="Data within start and end date",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *      ),
+     * 
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation"
@@ -375,9 +682,7 @@ class ReportController extends Controller
     public function complianceWithCapacityObligation(GetComplianceWithCapacityObligationRequest $request)
     {
         $reportsQuery = Report::forCategory(['Compliance With Capacity Obligation']);
-        if ($request->has('sub_category_id')) {
-            $reportsQuery->forSubCategoryIDs([$request->get('sub_category_id')]);
-        }
+        $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
         return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
     }
 

@@ -2,33 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+// use Illuminate\Foundation\Http\FormRequest;
 
-class GetBillingAndSettlementReports extends FormRequest
+class GetBillingAndSettlementReports extends GetReportsRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'sub_category_id' => 'integer',
-            'month' => 'string',
-            'year' => "integer",
-            'type' => 'string',
-            'page' => 'integer',
-        ];
-    }
 }

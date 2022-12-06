@@ -81,19 +81,19 @@
                     },
                     {
                         data: 'name',
-                        name: 'Name'
+                        name: 'name'
                     },
                     {
                         data: 'category/sub_category',
-                        name: 'Category / Sub-Category'
+                        name: 'category/sub_category'
                     },
                     {
                         data: 'publish_date',
-                        name: 'Publish Date'
+                        name: 'publish_date'
                     },
                     {
                         data: 'created_at',
-                        name: 'Created At'
+                        name: 'created_at'
                     },
                     {
                         data: 'action',
