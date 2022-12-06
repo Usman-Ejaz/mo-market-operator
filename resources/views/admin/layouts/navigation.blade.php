@@ -45,15 +45,15 @@
                     </li>
                 @endif
 
-                {{-- @if (hasPermission('clients', 'list')) --}}
-                <li class="nav-item">
-                    <a href="{{ route('admin.reports.index') }}"
-                        class="nav-link {{ Request::is('reports*') ? 'active' : '' }}">
-                        <i class="nav-icon fa fa-user"></i>
-                        <p>{{ __('Reports') }}</p>
-                    </a>
-                </li>
-                {{-- @endif --}}
+                @if (hasPermission('reports', 'list'))
+                    <li class="nav-item">
+                        <a href="{{ route('admin.reports.index') }}"
+                            class="nav-link {{ Request::is('reports*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-user"></i>
+                            <p>{{ __('Reports') }}</p>
+                        </a>
+                    </li>
+                @endif
 
                 @if (hasPermission('posts', 'list'))
                     <li class="nav-item">
@@ -237,21 +237,23 @@
                     </li>
                 @endif
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-area"></i>
-                        <p>{{ __('Market Data') }} <i class="fas fa-angle-left right"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.mo-data.index') }}"
-                                class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-signal"></i>
-                                <p>{{ __('All Data') }}</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if (hasPermission('mo-data', 'list'))
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-chart-area"></i>
+                            <p>{{ __('Market Data') }} <i class="fas fa-angle-left right"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.mo-data.index') }}"
+                                    class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-signal"></i>
+                                    <p>{{ __('All Data') }}</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 @if (hasPermission('roles_and_permissions', 'list') ||
                     hasPermission('menus', 'list') ||
                     hasPermission('settings', 'list') ||

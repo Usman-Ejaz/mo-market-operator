@@ -9,10 +9,8 @@ use App\Models\Report;
 use App\Models\ReportAttachment;
 use App\Models\ReportCategory;
 use App\Models\ReportSubCategory;
-use Google\Service\CloudSourceRepositories\UpdateRepoRequest;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
-use Symfony\Component\HttpFoundation\FileBag;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
 
@@ -25,6 +23,7 @@ class ReportController extends Controller
      */
     public function index()
     {
+        abort_if(!hasPermission("reports", "list"), 401, __('messages.unauthorized_action'));
         return view('admin.reports.index');
     }
 
@@ -35,6 +34,7 @@ class ReportController extends Controller
      */
     public function create()
     {
+        abort_if(!hasPermission("reports", "create"), 401, __('messages.unauthorized_action'));
         $categories = ReportCategory::with(['subCategories'])->get();
         return view('admin.reports.create', ['categories' => $categories]);
     }
@@ -47,6 +47,7 @@ class ReportController extends Controller
      */
     public function store(AddReportRequest $request)
     {
+        abort_if(!hasPermission("reports", "create"), 401, __('messages.unauthorized_action'));
         /** @var Report $report */
         $report = Report::create([
             'name' => $request->name,
@@ -60,12 +61,28 @@ class ReportController extends Controller
         // dd($attributes);
         $report->filledAttributes()->attach($attributes);
 
+        // $this->storeFileAttachments($report, $request->file_attachments);
         if ($request->attachment_files) {
             $this->storeFiles($report, $request->attachment_files);
         }
         $request->session()->flash('success', "Successfully created a new report.");
         return redirect()->route('admin.reports.index');
     }
+
+    // /** @param UploadedFile[] $files */
+    // private function storeFileAttachments(Report $report, iterable $files)
+    // {
+    //     $filesToStore = collect($files)->mapWithKeys(function (UploadedFile $file, $attID) {
+    //         $fileStoredName = storeFile(ReportAttachment::STORAGE_DIRECTORY, $file);
+    //         return [
+    //             $attID => [
+    //                 'value' => config('app.url') . '/storage/uploads/' . ReportAttachment::STORAGE_DIRECTORY . $fileStoredName,
+    //             ]
+    //         ];
+    //     });
+
+    //     $report->filledAttributes()->attach($filesToStore);
+    // }
 
     private function storeFiles(Report $report, iterable $files)
     {
@@ -89,6 +106,7 @@ class ReportController extends Controller
      */
     public function edit($id)
     {
+        abort_if(!hasPermission("reports", "edit"), 401, __('messages.unauthorized_action'));
         $report = Report::with(['subCategory' => function ($q) {
             return $q->with('category');
         }, 'attachments', 'filledAttributes' => function ($q) {
@@ -107,6 +125,7 @@ class ReportController extends Controller
      */
     public function update(UpdateReportRequest $request, $id)
     {
+        abort_if(!hasPermission("reports", "edit"), 401, __('messages.unauthorized_action'));
         /** @var Report $report */
         $report = Report::findOrFail($id);
         $report->update($request->only(['name', 'publish_date']));
@@ -130,12 +149,14 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
+        abort_if(!hasPermission("reports", "delete"), 401, __('messages.unauthorized_action'));
         Report::findOrFail($id)->delete();
         return redirect()->route('admin.reports.index');
     }
 
     public function list()
     {
+        abort_if(!hasPermission("reports", "list"), 401, __('messages.unauthorized_action'));
         if (request()->ajax()) {
             $reports = Report::with(['subCategory.category'])->get();
             return DataTables::of($reports)
@@ -147,7 +168,7 @@ class ReportController extends Controller
                     return $row->subCategory->category->name . '/' . $row->subCategory->name;
                 })
                 ->addColumn('publish_date', function ($row) {
-                    return $row->publish_date->format('d-m-Y');
+                    return Carbon::parse($row->publish_date)->format('d-m-Y');
                 })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d-m-Y');
@@ -173,11 +194,13 @@ class ReportController extends Controller
 
     public function getSubCategories($categoryID)
     {
+        abort_if(!hasPermission("reports", "create"), 401, __('messages.unauthorized_action'));
         return ReportCategory::with('subCategories')->findOrFail($categoryID)->subCategories;
     }
 
     public function getAttributes($subCategoryID)
     {
+        abort_if(!hasPermission("reports", "create"), 401, __('messages.unauthorized_action'));
         return ReportSubCategory::with(['attributes' => function ($q) {
             return $q->orderBy('report_attributes.id', 'desc');
         }, 'attributes.type'])->findOrFail($subCategoryID)->attributes;
@@ -185,6 +208,7 @@ class ReportController extends Controller
 
     public function addAttachment(AddAttachmentToReportRequest $request, $id)
     {
+        abort_if(!hasPermission("reports", "edit"), 401, __('messages.unauthorized_action'));
         /** @var Report $report */
         $report = Report::findOrFail($id);
 
@@ -196,7 +220,7 @@ class ReportController extends Controller
 
     public function removeAttachment($reportID, $attachmentID)
     {
-        // dd($reportID, $attachmentID);
+        abort_if(!hasPermission("reports", "edit"), 401, __('messages.unauthorized_action'));
         $report = Report::with(['attachments' => function ($q) use (&$attachmentID) {
             return $q->where('id', $attachmentID);
         }])->findOrFail($reportID);

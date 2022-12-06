@@ -30,7 +30,7 @@
         <div class="form-group">
             <label for="publish_date">Publish Date <span class="text-danger">*</span></label>
             <input type="date" class="form-control" id="name" placeholder="Enter the publish date"
-                name="publish_date" value="{{ $report->publish_date->format('Y-m-d') }}">
+                name="publish_date" value="{{ $report->publish_date }}">
             <span class="form-text text-danger">{{ $errors->first('publish_date') }} </span>
         </div>
     </div>

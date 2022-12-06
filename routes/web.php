@@ -205,7 +205,7 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
     Route::get('mo-data/list', [MODataController::class, 'list'])->name('mo-data.list');
     Route::post('mo-data/{mo_datum}/add-file', [MODataController::class, 'addFile'])->name('mo-data.add-file');
     Route::delete('mo-data/{mo_datum}/remove-file/{file}', [MODataController::class, 'removeFile'])->name('mo-data.remove-file');
-    Route::resource('mo-data', MODataController::class)->only(['index', 'show', 'edit', 'update']);
+    Route::resource('mo-data', MODataController::class)->only(['index', 'edit', 'update']);
 
     //MCVsDemand Routes
     // Route::get('mc-vs-demand/list', [MCVsDemandRecordController::class, 'list'])->name('mc-vs-demand.list');

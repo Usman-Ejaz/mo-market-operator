@@ -297,9 +297,18 @@ return [
         "display_name" => "Mo Data",
         "capabilities" => [
             "list" => "List",
-            "view" => "View",
+            "edit" => "Edit",
+        ]
+    ],
+
+    [
+        "name" => "reports",
+        "display_name" => "Reports",
+        "capabilities" => [
+            "list" => "List",
             "edit" => "Edit",
             "delete" => "Delete",
-        ]
+            'create' => "Create",
+        ],
     ],
 ];

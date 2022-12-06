@@ -27,19 +27,8 @@ class MODataController extends Controller
      */
     public function index()
     {
+        abort_if(!hasPermission("mo-data", "list"), 401, __('messages.unauthorized_action'));
         return view('admin.mo-data.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($mODatum)
-    {
-        $data = MOData::with('files')->findOrFail($mODatum);
-        return view('admin.mo-data.show', compact('data'));
     }
 
     /**
@@ -50,6 +39,7 @@ class MODataController extends Controller
      */
     public function edit($mODatum)
     {
+        abort_if(!hasPermission("mo-data", "edit"), 401, __('messages.unauthorized_action'));
         $relationsToInclude = ['files', 'extraAttributes'];
         $data = MOData::with($relationsToInclude)->withCount($relationsToInclude)->findOrFail($mODatum);
         return view('admin.mo-data.edit', compact('data'));
@@ -64,6 +54,7 @@ class MODataController extends Controller
      */
     public function update(UpdateMODataRequest $request, $id)
     {
+        abort_if(!hasPermission("mo-data", "edit"), 401, __('messages.unauthorized_action'));
         $moData = MOData::findOrFail($id);
         $moData->update([
             'title' => $request->title,
@@ -79,6 +70,7 @@ class MODataController extends Controller
 
     public function list()
     {
+        abort_if(!hasPermission("mo-data", "list"), 401, __('messages.unauthorized_action'));
         if (request()->ajax()) {
             $moData = MOData::withCount('files')->get();
             return DataTables::of($moData)
@@ -102,6 +94,7 @@ class MODataController extends Controller
 
     public function addFile(AddFileToMODataRequest $request, $id)
     {
+        abort_if(!hasPermission("mo-data", "edit"), 401, __('messages.unauthorized_action'));
         /** @var MOData $data */
         $data = MOData::findOrFail($id);
         if ($request->file) {
@@ -136,6 +129,7 @@ class MODataController extends Controller
 
     public function removeFile(RemoveFileFromMODataRequest $request, $moDatumID, $fileID)
     {
+        abort_if(!hasPermission("mo-data", "edit"), 401, __('messages.unauthorized_action'));
         /** @var MOData $moDatum */
         $moDatum = MOData::findOrFail($moDatumID);
         $file = $moDatum->files()->where('id', $fileID)->first();
