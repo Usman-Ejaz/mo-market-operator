@@ -11,8 +11,8 @@ return [
     ],
     "createPassowrdLinkExpiryTime" => 30, // in mins
 
-    "maxImageSize" => 2000,     // 2 MB
-    "maxDocumentSize" => 5000,   // 5 MB
+    "maxImageSize" => 25000,     // 2 MB
+    "maxDocumentSize" => 25000,   // 5 MB
     "image_file_extensions" => "jpg|jpeg|png|ico|bmp",
 
     "client_app_base_url" => env('CLIENT_BASE_URL'),
