@@ -82,6 +82,11 @@ class Report extends Model
         return $query->whereBetween('publish_date', [$fromDate, $toDate]);
     }
 
+    public function scopeAfterPublishDate($query, $fromDate)
+    {
+        return $query->whereDate('publish_date', '>=', $fromDate);
+    }
+
     public function scopeAttributeWithValue($query, string $attribute, string $value)
     {
         return $query->whereHas('filledAttributes', function ($q) use (&$attribute, &$value) {

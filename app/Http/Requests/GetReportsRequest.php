@@ -30,7 +30,7 @@ class GetReportsRequest extends FormRequest
             'page' => 'integer',
             'search' => "string",
             'start_date' => ["required_with:end_date", "date"],
-            'end_date' => ["required_with:start_date", "date"],
+            'end_date' => ["date"],
         ];
     }
 }

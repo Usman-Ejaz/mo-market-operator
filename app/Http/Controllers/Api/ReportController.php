@@ -54,6 +54,11 @@ class ReportController extends Controller
             $reportsQuery->betweenPublishDates($request->start_date, $request->end_date);
         }
 
+        // If only start date given
+        if ($request->has('start_date') && !$request->has('end_date')) {
+            $reportsQuery->afterPublishDate($request->start_date);
+        }
+
         return $reportsQuery;
     }
 
