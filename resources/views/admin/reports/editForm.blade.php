@@ -84,6 +84,35 @@
                 </div>
             @break
 
+            @case('number')
+                <div class="col-md-6 attribute">
+                    <div class="form-group">
+                        <label for="publish_date">{{ $attribute->name }} <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id=""
+                            name="report_attributes[{{ $attribute->id }}]" value="{{ $attribute->pivot->value }}" required>
+                        <span class="form-text text-danger">{{ $errors->first("report_attributes.$attribute->id") }} </span>
+                    </div>
+                </div>
+            @break
+
+            @case('file')
+                <div class="col-md-12 attribute">
+                    <div class="form-group">
+                        <label for="publish_date">{{ $attribute->name }} <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id=""
+                            name="file_attachments[{{ $attribute->id }}]">
+                        <small class="fileExists">
+                            <p>
+                                Open Attachment Of -
+                                <a href="{{ $attribute->pivot->value }}"
+                                    target="_blank">{{ collect(explode('/', $attribute->pivot->value))->last() }}</a>
+                            </p>
+                        </small>
+                        <span class="form-text text-danger">{{ $errors->first("file_attachments.$attribute->id") }} </span>
+                    </div>
+                </div>
+            @break
+
             @default
                 <div class="col-md-6 attribute">
                     <div class="form-group">

@@ -48,14 +48,14 @@
         <h1 class="text-center">Report Attributes</h1>
     </div>
 
-    <div class="col-md-12">
+    {{-- <div class="col-md-12">
         <h1 class="text-center">Attachments</h1>
         <span class="form-text text-danger text-center">{{ $errors->first('attachment_files.*') }}</span>
-    </div>
+    </div> --}}
 
-    <div class="col-md-12 fileInputAddButtonContainer">
+    {{-- <div class="col-md-12 fileInputAddButtonContainer">
         <button type="button" class="btn btn-primary my-1 mx-auto fileInputAddButton"> + Add new attachment </span>
-    </div>
+    </div> --}}
 
     <div class="col-md-12">
         <button type="submit" class="btn btn-success btn-block">Add</button>
@@ -80,7 +80,7 @@
         const categorySelect = document.querySelector('#category_select');
         const subCategorySelect = document.querySelector('#sub_category_select');
         const attributesHeader = document.querySelector('.attributes-header');
-        const fileInputHTML = `
+        {{-- const fileInputHTML = `
         <div class="col-md-6 fileNameInput">
             <div class="form-group">
                 <label for="attachment_files">Name</label>
@@ -95,7 +95,7 @@
             </div>
         </div>`;
         const fileInputAddButtonContainer = document.querySelector(".fileInputAddButtonContainer");
-        const fileInputAddButton = document.querySelector(".fileInputAddButton");
+        const fileInputAddButton = document.querySelector(".fileInputAddButton"); --}}
 
         const domParser = new DOMParser();
 
@@ -132,9 +132,9 @@
             return;
         });
 
-        fileInputAddButton.addEventListener('click', async function(e) {
+        {{-- fileInputAddButton.addEventListener('click', async function(e) {
             addAttachmentFields();
-        });
+        }); --}}
 
 
 
@@ -201,6 +201,26 @@
                             </div>`;
                     break;
 
+                case "number":
+                    attributeHTMlString = `
+                            <div class="col-md-6 attribute">
+                                <div class="form-group">
+                                    <label for="publish_date">${att.name} <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="" name="report_attributes[${att.id}]" required>
+                                </div>
+                            </div>`;
+                    break;
+
+                case "file":
+                    attributeHTMlString = `
+                            <div class="col-md-6 attribute">
+                                <div class="form-group">
+                                    <label for="publish_date">${att.name} <span class="text-danger">*</span></label>
+                                    <input type="file" class="form-control" id="" name="file_attachments[${att.id}]" required>
+                                </div>
+                            </div>`;
+                    break;
+
                 default:
                     attributeHTMlString = `
                             <div class="col-md-6 attribute">
@@ -231,7 +251,7 @@
             selectNode.appendChild(createOption(defaultText, ""));
         }
 
-        function addAttachmentFields() {
+        {{-- function addAttachmentFields() {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = fileInputHTML;
             fileInputAddButtonContainer.before(tempDiv.children[0], tempDiv.children[1]);
@@ -245,6 +265,6 @@
                 currentFileInput.remove();
                 currentFileNameInput.remove();
             });
-        }
+        } --}}
     </script>
 @endpush

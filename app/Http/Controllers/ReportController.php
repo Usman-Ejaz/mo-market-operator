@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddAttachmentToReportRequest;
 use App\Http\Requests\AddReportRequest;
+use App\Http\Requests\RemoveAttachmentFromReport;
 use App\Http\Requests\UpdateReportRequest;
 use App\Models\Report;
 use App\Models\ReportAttachment;
@@ -61,42 +62,42 @@ class ReportController extends Controller
         // dd($attributes);
         $report->filledAttributes()->attach($attributes);
 
-        // $this->storeFileAttachments($report, $request->file_attachments);
-        if ($request->attachment_files) {
-            $this->storeFiles($report, $request->attachment_files);
-        }
+        $this->storeFileAttachments($report, $request->file_attachments);
+        // if ($request->attachment_files) {
+        //     $this->storeFiles($report, $request->attachment_files);
+        // }
         $request->session()->flash('success', "Successfully created a new report.");
         return redirect()->route('admin.reports.index');
     }
 
-    // /** @param UploadedFile[] $files */
-    // private function storeFileAttachments(Report $report, iterable $files)
-    // {
-    //     $filesToStore = collect($files)->mapWithKeys(function (UploadedFile $file, $attID) {
-    //         $fileStoredName = storeFile(ReportAttachment::STORAGE_DIRECTORY, $file);
-    //         return [
-    //             $attID => [
-    //                 'value' => config('app.url') . '/storage/uploads/' . ReportAttachment::STORAGE_DIRECTORY . $fileStoredName,
-    //             ]
-    //         ];
-    //     });
-
-    //     $report->filledAttributes()->attach($filesToStore);
-    // }
-
-    private function storeFiles(Report $report, iterable $files)
+    /** @param UploadedFile[] $files */
+    private function storeFileAttachments(Report $report, iterable $files)
     {
-        // dd($files->all()['files']);
-        $filesToStore = collect($files)->map(function (iterable $file) {
-            $fileStoredName = storeFile(ReportAttachment::STORAGE_DIRECTORY, $file['file']);
+        $filesToStore = collect($files)->mapWithKeys(function (UploadedFile $file, $attID) {
+            $fileStoredName = storeFile(ReportAttachment::STORAGE_DIRECTORY, $file);
             return [
-                'name' => $file['name'],
-                'file_path' => config('app.url') . '/storage/uploads/' . ReportAttachment::STORAGE_DIRECTORY . $fileStoredName,
+                $attID => [
+                    'value' => config('app.url') . '/storage/uploads/' . ReportAttachment::STORAGE_DIRECTORY . $fileStoredName,
+                ]
             ];
         });
 
-        $report->attachments()->createMany($filesToStore);
+        $report->filledAttributes()->syncWithoutDetaching($filesToStore);
     }
+
+    // private function storeFiles(Report $report, iterable $files)
+    // {
+    //     // dd($files->all()['files']);
+    //     $filesToStore = collect($files)->map(function (iterable $file) {
+    //         $fileStoredName = storeFile(ReportAttachment::STORAGE_DIRECTORY, $file['file']);
+    //         return [
+    //             'name' => $file['name'],
+    //             'file_path' => config('app.url') . '/storage/uploads/' . ReportAttachment::STORAGE_DIRECTORY . $fileStoredName,
+    //         ];
+    //     });
+
+    //     $report->attachments()->createMany($filesToStore);
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -134,11 +135,15 @@ class ReportController extends Controller
             return [$attID => ['value' => $value]];
         })->toArray();
 
-        $report->filledAttributes()->sync($attributes);
+        $report->filledAttributes()->syncWithoutDetaching($attributes);
+
+        if ($request->has('file_attachments')) {
+            $this->storeFileAttachments($report, $request->file_attachments);
+        }
 
         $request->session()->flash('success', "Successfully updated post data.");
 
-        return redirect()->route('admin.reports.index');
+        return redirect()->route('admin.reports.edit', [$report->id]);
     }
 
     /**
@@ -218,7 +223,7 @@ class ReportController extends Controller
         return redirect()->route('admin.reports.edit', $id);
     }
 
-    public function removeAttachment($reportID, $attachmentID)
+    public function removeAttachment($reportID, $attachmentID, RemoveAttachmentFromReport $request)
     {
         abort_if(!hasPermission("reports", "edit"), 401, __('messages.unauthorized_action'));
         $report = Report::with(['attachments' => function ($q) use (&$attachmentID) {

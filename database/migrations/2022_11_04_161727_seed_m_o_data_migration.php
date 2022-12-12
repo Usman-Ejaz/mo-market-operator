@@ -15,7 +15,7 @@ class SeedMODataMigration extends Migration
     public function up()
     {
         MOData::create([
-            'title' => "Market Data Glance",
+            'title' => "Market at Glance",
             'description' => '<p><iframe align="middle" frameborder="0" height="800" name="MO Website" scrolling="no" src="https://app.powerbi.com/view?r=eyJrIjoiZjBjOTM4MjYtMGVlMS00MTA3LTk5YzktMDZhZWQ3NDQyOTdkIiwidCI6Ijc2Mzk0NTVkLWIwMzYtNDJlYS05ZDE0LWVhNzYzYTJlOWFmYiIsImMiOjl9&amp;pageName=ReportSection" width="100%"></iframe></p>
 
                 <h2>Overview</h2>

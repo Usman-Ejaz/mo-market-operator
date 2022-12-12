@@ -28,13 +28,15 @@ class UpdateReportRequest extends FormRequest
             'publish_date' => ["required", "date"],
             'report_attributes' => ["required", "array"],
             'report_attributes.*' => ["string"],
+            'file_attachments' => ["array"],
+            'file_attachments.*' => ["file", "max:25000"],
         ];
     }
 
     public function messages()
     {
         return [
-            "report_attributes.*.string" => "Invalid value"
+            // "report_attributes.*.string" => "Invalid value"
         ];
     }
 }
