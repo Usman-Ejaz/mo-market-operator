@@ -24,6 +24,14 @@
                     <span class="form-text text-danger">{{ $errors->first('file') }} </span>
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="date" class="form-label">Date</label>
+                    <input class="form-control" type="date" id="date" name="date">
+                    <span class="form-text text-danger">{{ $errors->first('date') }} </span>
+                </div>
+            </div>
         </div>
         <button type="submit" class="btn btn-primary">Add File</button>
     </div>

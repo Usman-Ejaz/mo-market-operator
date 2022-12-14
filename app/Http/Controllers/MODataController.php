@@ -102,6 +102,7 @@ class MODataController extends Controller
             $data->files()->create([
                 'name' => $request->name,
                 'file_path' => config('app.url') . '/storage/uploads/mo-data/' . $filePath,
+                'date' => $request->date,
             ]);
         } else if ($request->link) {
             // $ext = pathinfo($request->link, PATHINFO_EXTENSION);

@@ -30,6 +30,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('remove:downloaded-forms')
             ->timezone('Asia/Karachi')
             ->dailyAt('02:00');     // at night 2AM.
+
+        $schedule->command('ismo-graph:refresh')
+            ->timezone('Asia/Karachi')
+            ->hourlyAt(1)
+            ->withoutOverlapping();
     }
 
     /**

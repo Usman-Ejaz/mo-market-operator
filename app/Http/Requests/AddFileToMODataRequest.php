@@ -40,6 +40,11 @@ class AddFileToMODataRequest extends FormRequest
                 'required_without:file',
                 'url'
             ],
+
+            'date' => [
+                'required',
+                'date'
+            ]
         ];
     }
 }

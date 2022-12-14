@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Clients\ISMOExternalAPIClient;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetMODataAttachmentRequest;
 use App\Models\MOData;
-use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class MODataController extends Controller
 {
@@ -144,46 +141,94 @@ class MODataController extends Controller
      */
     public function getGraph($moDatumID)
     {
-        $moData = MOData::findOrFail($moDatumID);
-
+        $moData = MOData::whereNotNull('external_graph_id')->findOrFail($moDatumID);
         $cacheInstance = Cache::store('database');
         $cacheKey = "mo_data_graph_$moDatumID";
 
-        $graphDBCache = DB::table('cache')->where("key", "mo_cache$cacheKey")->first();
-        $cacheExpired = true;
-        if ($graphDBCache) {
-            $cacheExpired = (($graphDBCache->expiration - now()->unix()) <= 0) ? true : false;
-        }
-
-        $graphData = (object)[];
-        $expiration = now()->addHour();
-        if ($cacheExpired) {
-            try {
-                $graphData = $this->fetchGraphData($moData);
-                $expiration = now()->endOfDay();
-            } catch (Exception $e) {
-                if ($graphDBCache) {
-                    $graphData = unserialize($graphDBCache->value);
-                }
-            }
-            $cacheInstance->put($cacheKey, $graphData, $expiration);
+        if (!$cacheInstance->has($cacheKey)) {
+            return (object)[];
         }
 
         return $cacheInstance->get($cacheKey);
     }
 
-    private function fetchGraphData(MOData $moData)
+    /**
+     *
+     * @OA\Get(
+     *      path="/mo-data/{id}/files",
+     *      operationId="showSpecficMODataFiles",
+     *      tags={"Market Operational Data"},
+     *      summary="Get specific MO Data files",
+     *      description="Returns single MO Data files based on filters",
+     *      security={{"BearerAppKey": {}}},
+     *      
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="MO data id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="month",
+     *          description="Files for only this month",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *              enum={"january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"}
+     *          )
+     *      ),
+     * 
+     *      @OA\Parameter(
+     *          name="year",
+     *          description="Files for only this year",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation"
+     *       ),
+     *      @OA\Response(
+     *          response=402,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Not found"
+     *      )
+     *  )
+     */
+    public function files($moDatumID, GetMODataAttachmentRequest $request)
     {
-        if ($moData->external_graph_id != null) {
-            $client = ISMOExternalAPIClient::getClient();
-            // dd("reached jere", $client);
-            return json_decode($client->get('api/values/GetData', [
-                'query' => [
-                    'GraphId' => $moData->external_graph_id,
-                ],
-            ])->getBody()->getContents());
+        /** @var MOData $moDatum */
+        $moDatum = MOData::findOrFail($moDatumID);
+        $moDataFileQuery = $this->applyFileFilters($request, $moDatum->files());
+
+        return $moDataFileQuery->orderBy("date", "desc")->paginate(10)->appends($request->all());
+    }
+
+    public function applyFileFilters($request, $moDataFileQuery)
+    {
+        if ($request->has('month')) {
+            $moDataFileQuery->forMonth($request->month);
         }
 
-        return (object)[];
+        if ($request->has('year')) {
+            $moDataFileQuery->forYear($request->year);
+        }
+        return $moDataFileQuery;
     }
 }

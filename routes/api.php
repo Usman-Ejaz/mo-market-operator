@@ -139,5 +139,6 @@ Route::prefix("v1")->middleware('verifyApiKey')->group(function () {
     Route::get('rss-feed.xml', [RSSFeedXMLController::class, 'generateXML'])->name("rss-feed.generateXML");
 
     Route::get('mo-data/{mo_datum}/graph', [MODataController::class, 'getGraph']);
+    Route::get('mo-data/{mo_datum}/files', [MODataController::class, 'files']);
     Route::resource('mo-data', MODataController::class)->only(['index', 'show']);
 });
