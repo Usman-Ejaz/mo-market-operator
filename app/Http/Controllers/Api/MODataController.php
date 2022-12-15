@@ -220,7 +220,7 @@ class MODataController extends Controller
         return $moDataFileQuery->orderBy("date", "desc")->paginate(10)->appends($request->all());
     }
 
-    public function applyFileFilters($request, $moDataFileQuery)
+    private function applyFileFilters($request, $moDataFileQuery)
     {
         if ($request->has('month')) {
             $moDataFileQuery->forMonth($request->month);
