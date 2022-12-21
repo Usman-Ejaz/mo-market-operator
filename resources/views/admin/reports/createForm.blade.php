@@ -216,7 +216,7 @@
                             <div class="col-md-6 attribute">
                                 <div class="form-group">
                                     <label for="publish_date">${att.name} <span class="text-danger">*</span></label>
-                                    <input type="file" class="form-control" id="" name="file_attachments[${att.id}]" required>
+                                    <input type="file" class="form-control" id="" name="file_attachments[${att.id}]" accept=".xls,.xlsx,.pdf,.doc,.docx" required>
                                 </div>
                             </div>`;
                     break;

@@ -31,7 +31,7 @@ class AddReportRequest extends FormRequest
             'category_id' => ["required", "integer"],
             'sub_category_id' => ["required", "integer"],
             'file_attachments' => ['required', 'array'],
-            'file_attachmetns.*' => ['file', 'max:25000'],
+            'file_attachments.*' => ['file', 'mimes:xls,xlsx,pdf,doc,docx', 'max:25000'],
             // 'attachment_files' => ["array"],
             // 'attachment_files.*' => ["array:name,file"],
             // 'attachment_files.*.name' => ["string"],

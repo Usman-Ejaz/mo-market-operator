@@ -29,14 +29,14 @@ class UpdateReportRequest extends FormRequest
             'report_attributes' => ["required", "array"],
             'report_attributes.*' => ["string"],
             'file_attachments' => ["array"],
-            'file_attachments.*' => ["file", "max:25000"],
+            'file_attachments.*' => ["file", 'mimes:xls,xlsx,pdf,doc,docx', "max:25000"],
         ];
     }
 
     public function messages()
     {
         return [
-            // "report_attributes.*.string" => "Invalid value"
+            'file_attachments.*.mimes' => "The attached file must be: xls,xlsx,pdf,doc,docx.",
         ];
     }
 }

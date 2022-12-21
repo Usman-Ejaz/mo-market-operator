@@ -99,8 +99,8 @@
                 <div class="col-md-12 attribute">
                     <div class="form-group">
                         <label for="publish_date">{{ $attribute->name }} <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control" id=""
-                            name="file_attachments[{{ $attribute->id }}]">
+                        <input type="file" class="form-control" id="" name="file_attachments[{{ $attribute->id }}]"
+                            accept=".xls,.xlsx,.pdf,.doc,.docx">
                         <small class="fileExists">
                             <p>
                                 Open Attachment Of -
