@@ -171,7 +171,7 @@ class ReportController extends Controller
         $reportsQuery = $reportCategory->reports();
         $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
 
-        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+        return $this->fetchReports($reportsQuery, $request);
     }
 
     /**
@@ -276,7 +276,7 @@ class ReportController extends Controller
         $reportsQuery = Report::forCategory(['Contract Details']);
         $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
 
-        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+        return $this->fetchReports($reportsQuery, $request);
     }
 
     /**
@@ -379,7 +379,7 @@ class ReportController extends Controller
     {
         $reportsQuery = Report::forCategory(['Firm Capacity Certificate']);
         $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
-        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+        return $this->fetchReports($reportsQuery, $request);
     }
 
     /**
@@ -482,7 +482,7 @@ class ReportController extends Controller
     {
         $reportsQuery = Report::forCategory(['Metering Data']);
         $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
-        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+        return $this->fetchReports($reportsQuery, $request);
     }
 
     /**
@@ -585,7 +585,7 @@ class ReportController extends Controller
     {
         $reportsQuery = Report::forCategory(['Security Cover']);
         $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
-        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+        return $this->fetchReports($reportsQuery, $request);
     }
 
     /**
@@ -688,7 +688,7 @@ class ReportController extends Controller
     {
         $reportsQuery = Report::forCategory(['Compliance With Capacity Obligation']);
         $reportsQuery = $this->applyCommonFilters($request, $reportsQuery);
-        return $reportsQuery->with('subCategory.category', 'filledAttributes')->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+        return $this->fetchReports($reportsQuery, $request);
     }
 
     /**
@@ -901,6 +901,11 @@ class ReportController extends Controller
         return ReportCategory::with(['subCategories.attributes.type'])->firstWhere('name', 'Compliance With Capacity Obligation');
     }
 
+    private function fetchReports($reportsQuery, $request)
+    {
+        return $reportsQuery->with(['subCategory.category', 'filledAttributes', 'filledAttributes.type:id,name'])->orderBy('id', 'desc')->paginate(10)->appends($request->all());
+    }
+
     /**
      * Display the specified resource.
      *
@@ -943,6 +948,6 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        return Report::with('subCategory.category', 'filledAttributes', 'attachments')->firstWhere('id', $id);
+        return Report::with(['subCategory.category', 'filledAttributes', 'filledAttributes.type:id,name'])->firstWhere('id', $id);
     }
 }
