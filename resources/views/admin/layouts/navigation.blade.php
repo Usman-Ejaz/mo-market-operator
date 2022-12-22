@@ -238,15 +238,15 @@
                 @endif
 
                 @if (hasPermission('mo-data', 'list'))
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->is('mo-data*')? 'menu-is-opening menu-open' : '' }}">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-chart-area"></i>
-                            <p>{{ __('Market Data') }} <i class="fas fa-angle-left right"></i></p>
+                            <p>{{ __('Market Data') }} <i class="fas fa-angle-right right"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{ route('admin.mo-data.index') }}"
-                                    class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
+                                    class="nav-link {{ Request::is('mo-data*') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-signal"></i>
                                     <p>{{ __('All Data') }}</p>
                                 </a>
@@ -262,7 +262,7 @@
                         class="nav-item {{ request()->is('roles*') || request()->is('permissions*') || request()->is('menus*') || request()->is('site-configuration*') || request()->is('users*') ? 'menu-is-opening menu-open' : '' }}">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-cogs"></i>
-                            <p>{{ __('Settings') }} <i class="fas fa-angle-left right"></i></p>
+                            <p>{{ __('Settings') }} <i class="fas fa-angle-right right"></i></p>
                         </a>
 
                         <ul class="nav nav-treeview">

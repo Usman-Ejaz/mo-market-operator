@@ -30,7 +30,7 @@
             <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Edit Report Data</h3>
+                        <h3 class="card-title">Edit Report - {{ $report->name }}</h3>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.reports.update', $report->id) }}"

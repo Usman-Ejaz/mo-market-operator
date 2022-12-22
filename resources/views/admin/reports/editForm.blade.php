@@ -21,7 +21,7 @@
         <div class="form-group">
             <label for="name">Title <span class="text-danger">*</span></label>
             <input type="input" class="form-control" id="name" placeholder="Enter report title" name="name"
-                value="{{ $report->name }}">
+                value="{{ $report->name }}" required>
             <span class="form-text text-danger">{{ $errors->first('name') }} </span>
         </div>
     </div>
@@ -30,7 +30,7 @@
         <div class="form-group">
             <label for="publish_date">Publish Date <span class="text-danger">*</span></label>
             <input type="date" class="form-control" id="name" placeholder="Enter the publish date"
-                name="publish_date" value="{{ $report->publish_date }}">
+                name="publish_date" value="{{ $report->publish_date }}" required>
             <span class="form-text text-danger">{{ $errors->first('publish_date') }} </span>
         </div>
     </div>

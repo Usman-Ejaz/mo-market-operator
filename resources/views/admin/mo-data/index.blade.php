@@ -83,7 +83,7 @@
                     },
                     {
                         data: 'files_count',
-                        name: 'File Count'
+                        name: 'files_count'
                     },
                     {
                         data: 'action',

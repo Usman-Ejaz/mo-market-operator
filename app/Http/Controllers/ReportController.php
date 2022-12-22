@@ -66,7 +66,7 @@ class ReportController extends Controller
         // if ($request->attachment_files) {
         //     $this->storeFiles($report, $request->attachment_files);
         // }
-        $request->session()->flash('success', "Successfully created a new report.");
+        $request->session()->flash('success', "Report has been created successfully.");
         return redirect()->route('admin.reports.index');
     }
 
@@ -141,9 +141,9 @@ class ReportController extends Controller
             $this->storeFileAttachments($report, $request->file_attachments);
         }
 
-        $request->session()->flash('success', "Successfully updated post data.");
+        $request->session()->flash('success', "Report has been updated successfully.");
 
-        return redirect()->route('admin.reports.edit', [$report->id]);
+        return redirect()->route('admin.reports.index');
     }
 
     /**
@@ -163,7 +163,7 @@ class ReportController extends Controller
     {
         abort_if(!hasPermission("reports", "list"), 401, __('messages.unauthorized_action'));
         if (request()->ajax()) {
-            $reports = Report::with(['subCategory.category'])->get();
+            $reports = Report::orderBy('updated_at', 'desc')->with(['subCategory.category']);
             return DataTables::of($reports)
                 ->addIndexColumn()
                 ->addColumn('name', function ($row) {
@@ -179,17 +179,15 @@ class ReportController extends Controller
                     return $row->created_at->format('d-m-Y');
                 })
                 ->addColumn('action', function ($row) {
-                    $options = "<a href='" . route('admin.reports.edit', ['report' => $row->id]) . "' title='Edit' class='btn btn-primary'>
-                    <i class='fas fa-pencil-alt'></i>
-                </a>
+                    $options = "
+                        <a href='" . route('admin.reports.edit', ['report' => $row->id]) . "' title='Edit' class='btn btn-primary'>
+                            <i class='fas fa-pencil-alt'></i>
+                        </a>    
                 " .
-                        '<form method="POST" action="' . route('admin.reports.destroy', ['report' => $row->id]) . '" style="display:inline">' .
-                        method_field('DELETE') .
-                        csrf_field() .
-                        '<button type="submit" class="btn btn-danger" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                            </button>
-                        </form>';
+                        '
+                        <button type="button" class="btn btn-danger deleteButton" data-action="' . route('admin.reports.destroy', $row->id) . '" title="Delete">
+                            <i class="fas fa-trash" data-action="' . route('admin.pages.destroy', $row->id) . '"></i>
+                        </button>';
                     return $options;
                 })
                 ->rawColumns(['action'])

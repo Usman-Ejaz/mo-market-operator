@@ -6,9 +6,9 @@
 @endsection
 
 @section('addButton')
-    {{-- @if (hasPermission('jobs', 'create')) --}}
-    <a class="btn btn-primary float-right" href="{{ route('admin.reports.create') }}">Add New Report</a>
-    {{-- @endif --}}
+    @if (hasPermission('reports', 'create'))
+        <a class="btn btn-primary float-right" href="{{ route('admin.reports.create') }}">Add New Report</a>
+    @endif
 @endsection
 
 @section('content')
@@ -22,7 +22,7 @@
                             <th>Name</th>
                             <th>Category/Sub Category</th>
                             <th>Publish Date</th>
-                            <th>Created at</th>
+                            <th>Created Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -34,6 +34,7 @@
             </div>
         </div>
     </div>
+    @include('admin.includes.delete-popup')
 @endsection
 
 @push('optional-styles')
@@ -53,9 +54,6 @@
                 processing: true,
                 serverSide: true,
                 pageLength: 25,
-                order: [
-                    [0, 'asc']
-                ],
                 ajax: "{{ route('admin.reports.list') }}",
                 fnDrawCallback: function() {
                     if (this.fnSettings()._iRecordsDisplay === 0 || this.fnSettings()
@@ -106,6 +104,15 @@
 
             $(document).on('click', '.paginate_button:not(.disabled)', function() {
                 isScroll = true;
+            });
+
+            $('body').on('click', '.deleteButton', (e) => {
+                action = e.target.dataset.action;
+                $('#deleteModal').modal('toggle');
+            });
+
+            $('#deleteForm').submit(function(event) {
+                $(this).attr('action', action);
             });
         });
     </script>
