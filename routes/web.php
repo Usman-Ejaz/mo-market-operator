@@ -13,6 +13,7 @@ use App\Http\Controllers\DocumentCategoryController;
 use App\Http\Controllers\FaqCategoryController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ChatbotFeedbackController;
+use App\Http\Controllers\ComplaintDepartmentController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ManagerController;
 // use App\Http\Controllers\MCVsDemandRecordController;
@@ -219,7 +220,11 @@ Route::middleware(['auth', 'preventBrowserHistory'])->name("admin.")->group(func
     Route::post('reports/{report}/add-attachment', [ReportController::class, 'addAttachment'])->name('reports.add-attachment');
     Route::delete('reports/{report}/remove-attachment/{attachment}', [ReportController::class, 'removeAttachment'])->name('reports.remove-attachment');
     Route::get('reports/list', [ReportController::class, 'list'])->name('reports.list');
-    Route::resource('reports', ReportController::class)->except('show');
+    Route::resource('reports', ReportController::class)->except(['show']);
+
+    Route::get('complaint-departments/list', [ComplaintDepartmentController::class, 'list'])->name('complaint-departments.list');
+    Route::get('complaint-departments/user', [ComplaintDepartmentController::class, 'getUserInfo'])->name('complaint-departments.getUserInfo');
+    Route::resource('complaint-departments', ComplaintDepartmentController::class)->except(['show']);
 });
 
 Route::get('unsubscribe/{subscriber}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe')->middleware(['signed']);

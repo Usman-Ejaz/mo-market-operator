@@ -55,6 +55,24 @@
                     </li>
                 @endif
 
+                @if (hasPermission('complaint-departments', 'list'))
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-chart-area"></i>
+                            <p>{{ __('Complaints') }} <i class="fas fa-angle-right right"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.complaint-departments.index') }}"
+                                    class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-signal"></i>
+                                    <p>{{ __('Departments') }}</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
                 @if (hasPermission('posts', 'list'))
                     <li class="nav-item">
                         <a href="{{ route('admin.posts.index') }}"

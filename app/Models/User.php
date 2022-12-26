@@ -195,4 +195,9 @@ class User extends Authenticatable
     {
         return $query->where('id', '!=', auth()->id());
     }
+
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->where('name', 'LIKE', "%$searchTerm%");
+    }
 }

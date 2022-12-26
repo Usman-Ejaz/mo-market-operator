@@ -311,4 +311,15 @@ return [
             'create' => "Create",
         ],
     ],
+
+    [
+        "name" => "complaint-departments",
+        "display_name" => "Complaint Departments",
+        "capabilities" => [
+            "list" => "List",
+            "edit" => "Edit",
+            "delete" => "Delete",
+            'create' => "Create",
+        ],
+    ],
 ];
