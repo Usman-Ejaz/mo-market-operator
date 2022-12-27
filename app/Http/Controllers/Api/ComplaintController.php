@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Api\BaseApiController;
 use App\Http\Requests\GetComplaintsRequest;
 use App\Http\Requests\StoreComplaintRequest;
 use App\Models\Client;
@@ -10,7 +9,6 @@ use App\Models\Complaint;
 use App\Models\ComplaintAttachment;
 use App\Models\ComplaintDepartment;
 use Illuminate\Http\UploadedFile;
-use PDO;
 
 class ComplaintController extends BaseApiController
 {
@@ -238,7 +236,7 @@ class ComplaintController extends BaseApiController
             return $complaint;
         }
 
-        return $this->sendResponse(null, __("messages.data_not_found"), HTTP_NOT_FOUND);
+        return $this->sendResponse([], __('messages.data_not_found'), HTTP_NOT_FOUND);
     }
 
 
