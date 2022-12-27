@@ -245,6 +245,11 @@ class Client extends Authenticatable implements JWTSubject
         return $this->hasMany(ClientDetail::class, 'client_id', 'id');
     }
 
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class, 'complainant_id');
+    }
+
 
     /**
      * attachments

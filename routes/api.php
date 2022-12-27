@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\StaticBlockApiController;
 use App\Http\Controllers\Api\TeamsApiController;
 use App\Http\Controllers\Api\TrainingsApiController;
 use App\Http\Controllers\Api\ChatbotFeedbackApiController;
+use App\Http\Controllers\API\ComplaintController;
 use App\Http\Controllers\Api\MODataController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RSSFeedXMLController;
@@ -66,6 +67,10 @@ Route::prefix('v1')->middleware('auth:api-jwt')->name('client.')->group(function
     Route::get('reports/compliance-with-capacity-obligation', [ReportController::class, 'complianceWithCapacityObligation'])->name('reports.compliance-with-capacity-obligation');
     Route::get('reports/compliance-with-capacity-obligation/info', [ReportController::class, 'complianceWithCapacityObligationInfo'])->name('reports.compliance-with-capacity-obligation-info');
     Route::get('reports/{report}', [ReportController::class, 'show'])->name('reports.show');
+
+    //Complaint Module Routes
+    Route::get('complaints/departments', [ComplaintController::class, 'getDepartments'])->name('complaints.departments');
+    Route::apiResource('complaints', ComplaintController::class)->only(['index', 'store', 'show']);
 });
 //Route::post('register', [RegisterController::class, 'register']);
 

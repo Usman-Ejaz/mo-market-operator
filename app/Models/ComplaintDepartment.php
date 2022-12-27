@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ComplaintDepartment extends Model
@@ -17,5 +16,10 @@ class ComplaintDepartment extends Model
     public function apm()
     {
         return $this->belongsTo(User::class, 'apm_id', 'id');
+    }
+
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class, 'complaint_department_id');
     }
 }
