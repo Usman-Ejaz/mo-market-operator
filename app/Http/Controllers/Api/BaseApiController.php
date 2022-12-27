@@ -42,7 +42,7 @@ class BaseApiController extends Controller
      */
 
 
-    public function sendResponse($data = null, $message, $code = HTTP_SUCCESS)
+    public function sendResponse($data, $message, $code = HTTP_SUCCESS)
     {
         $response = [
             'statusCode'    => $code,
