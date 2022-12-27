@@ -21,7 +21,7 @@ use App\Http\Controllers\Api\StaticBlockApiController;
 use App\Http\Controllers\Api\TeamsApiController;
 use App\Http\Controllers\Api\TrainingsApiController;
 use App\Http\Controllers\Api\ChatbotFeedbackApiController;
-use App\Http\Controllers\API\ComplaintController;
+use App\Http\Controllers\Api\ComplaintController;
 use App\Http\Controllers\Api\MODataController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RSSFeedXMLController;
