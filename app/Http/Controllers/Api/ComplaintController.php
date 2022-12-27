@@ -165,9 +165,9 @@ class ComplaintController extends BaseApiController
      *             )
      *         )
      *     ),
-     * 
+     *     
      *      @OA\Response(
-     *          response=200,
+     *          response=201,
      *          description="Successful operation"
      *       ),
      *      @OA\Response(
@@ -183,9 +183,12 @@ class ComplaintController extends BaseApiController
     public function store(StoreComplaintRequest $request)
     {
         /** @var Client $client */
+        // dd($request->attachments);
         $client = auth()->user();
         $complaint = $client->complaints()->create($request->validated());
-        $this->storeAttachments($complaint, $request);
+        if ($request->has('attachments')) {
+            $this->storeAttachments($complaint, $request);
+        }
 
         return $complaint->load(['department', 'attachments']);
     }
